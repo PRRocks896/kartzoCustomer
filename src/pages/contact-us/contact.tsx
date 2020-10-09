@@ -1,5 +1,6 @@
 import React from "react";
 import { about, applink, contact } from "../components/helper/images";
+import {scrollToTop} from '../utils';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "./contact.css";
@@ -7,6 +8,10 @@ import "./contact.css";
 class ContactUs extends React.Component {
   constructor(props: any) {
     super(props);
+  }
+
+  componentDidMount() {
+    scrollToTop();
   }
 
   render() {
