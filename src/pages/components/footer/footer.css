@@ -1,0 +1,85 @@
+/* footer start */
+
+.footer {
+	position: relative;
+	background-image: linear-gradient(to top, #FBB034, #ECCE09);
+	padding: 100px 0px;
+	overflow: hidden;
+	text-align: center;
+}
+
+.footer .container-fluid {
+	max-width: 1170px;
+}
+
+.footer::before {
+	position: absolute;
+	content: "";
+	background: url('../../../assets/images/delivery2.png') no-repeat;
+	width: 556px;
+	background-size: 556px 556px !important;
+	width: 11;
+	height: 556px;
+	overflow: hidden;
+	left: 50%;
+	transform: translate(30%, 0%);
+	top: 0px;
+}
+
+.footer .tt-1 {
+	font-size: 22px;
+	color: #fff;
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+.footer .logo-footer {
+	margin-bottom: 50px;
+}
+
+.footer ul {
+	padding: 0px;
+	text-align: left;
+}
+
+.footer li {
+	list-style: none;
+	margin-top: 10px;
+}
+
+.footer a {
+	font-size: 16px;
+	color: #fff;
+	text-decoration: none;
+}
+
+/* responsive start */
+@media only screen and (max-width: 1200px) {
+}
+
+@media only screen and (max-width: 991px) {
+	.services-offer,
+	.footer {
+		padding: 80px 0px;
+	}
+
+	.footer::before {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	.footer {
+		padding: 30px 0;
+	}
+
+	/* p all text */
+	.footer a {
+		font-size: 14px;
+	}
+
+	.footer .tt-1 {
+		font-size: 20px;
+	}
+}
+/* responsive end */

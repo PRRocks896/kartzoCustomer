@@ -1,0 +1,281 @@
+.about-bnr {
+	background: url('../../assets/images/business/banners-1.png') no-repeat;
+	background-size: cover;
+	text-align: center;
+	padding: 80px 0;
+}
+
+.about-bnr .container-fluid {
+	max-width: 1170px;
+}
+
+.about-bnr .banr-tt .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin-bottom: 25px;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.about-bnr p {
+	color: #fff;
+	margin-bottom: 40px;
+	max-width: 480px;
+	margin: auto;
+}
+
+.about-bnr .logo1 {
+	margin-bottom: 40px;
+}
+
+.about-bnr .banr-tt .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+
+.about-bnr .banr-tt .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+
+.banr-tt {
+	width: 100%;
+}
+
+.about-bnr .tt1 {
+	font-size: 50px;
+	font-weight: bold;
+	color: #fff;
+}
+
+.about-bnr .btn-1 a i {
+	margin-left: 12px;
+}
+
+/*  */
+.about-section-2 {
+	padding: 100px 0px;
+}
+
+.about-section-2 .container-fluid {
+	max-width: 1170px;
+}
+
+.about-section-2 p {
+	width: 100%;
+}
+
+/*  */
+/* One app */
+.about-one-app {
+	padding-bottom: 100px;
+
+}
+
+.about-one-app .container-fluid {
+	max-width: 1170px;
+}
+
+.about-one-app .flex-box {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.about-one-app .right-img {
+	width: 50%;
+}
+
+.about-one-app .tt1 {
+	font-size: 36px;
+	color: #071828;
+	max-width: 400px;
+	margin-bottom: 40px;
+}
+
+.about-one-app .src-location {
+	background: #fff;
+	max-width: 431px;
+	margin: auto;
+	height: 50px;
+	border-radius: 50px;
+	display: flex;
+	justify-content: space-between;
+	margin-top: 40px;
+	box-shadow: 0px 1px 5px #919191;
+	align-items: center;
+}
+
+.about-one-app .src-location input {
+	border: none;
+	text-indent: 22px;
+	width: 73%;
+	font-size: 12px;
+	font-weight: 500;
+	color: #13253B;
+	height: 22px;
+	border-left: 1px solid #acacac;
+	margin-left: 15px;
+}
+
+.about-one-app .src-location button {
+	background: #071828;
+	color: #fff;
+	border: none;
+	border-radius: 50px;
+	padding: 0px 30px;
+	height: 50px;
+	width: 216px;
+}
+
+.about-one-app .img-flex a:first-child {
+	margin-right: 20px;
+}
+
+.about-one-app .src-location img {
+	margin-left: 24px;
+}
+
+.about-one-app .img-flex a img {
+	box-shadow: 0px 1px 5px #dbdbdb;
+	border-radius: 4px;
+}
+
+.about-one-app .src-location .input-box {
+	width: 100%;
+	}
+
+/* We will KART it to you */
+
+
+
+/* Footer End */
+
+@media only screen and (max-width: 991px) {
+	.about-one-app .flex-box {
+		flex-flow: column;
+	}
+
+	.footer::before {
+		display: none;
+	}
+
+	.about-one-app .left-box {
+		order: 1;
+		width: 100%;
+		text-align: center;
+	}
+
+	.about-one-app .tt1 {
+		max-width: 100%;
+	}
+
+	.about-one-app .right-img {
+		width: auto;
+	}
+
+	.about-one-app .left-box .input-box {
+		text-align: left;
+	}
+
+	.about-one-app .right-img img {
+		max-width: 100%;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+
+	/* title text */
+	.about-bnr .tt1,
+	.about-one-app .tt1 {
+		font-size: 25px;
+	}
+
+	.about-bnr,
+	.about-section-2,
+	.about-one-app,
+	.footer {
+		padding: 30px 0;
+	}
+
+	/* p all text */
+	.about-bnr p,
+	.about-section-2 p,
+	.footer a {
+		font-size: 14px;
+	}
+
+	.footer .tt-1 {
+		font-size: 20px;
+	}
+
+	.about-one-app .src-location {
+		background: none;
+		box-shadow: none;
+		max-width: 540px;
+		height: auto;
+		text-align: center;
+		border-radius: 0px;
+		display: block;
+		justify-content: space-between;
+		overflow: visible;
+		-webkit-border-radius: 0px;
+		-moz-border-radius: 0px;
+		-ms-border-radius: 0px;
+		-o-border-radius: 0px;
+	}
+
+	.about-one-app .src-location button {
+		background: #071828;
+		color: #fff;
+		border: none;
+		border-radius: 40px;
+		padding: 10px 30px;
+		margin-top: 30px;
+		-webkit-border-radius: 40px;
+		-moz-border-radius: 40px;
+		-ms-border-radius: 40px;
+		-o-border-radius: 40px;
+	}
+
+	.about-one-app .src-location button {
+		height: auto;
+
+	}
+
+	.about-one-app .input-box {
+		background: #fff;
+		border-radius: 40px;
+		height: 40px;
+		text-align: left;
+		line-height: 40px;
+		box-shadow: 0px 1px 5px #919191;
+	}
+
+	.about-one-app .src-location input {
+		height: 20px;
+		box-shadow: 0px;
+		border-radius: 0px;
+		-webkit-border-radius: 0px;
+		-moz-border-radius: 0px;
+		-ms-border-radius: 0px;
+		-o-border-radius: 0px;
+	}
+
+	.about-one-app .img-flex a:first-child {
+		margin-right: 0px;
+		margin-bottom: 15px;
+		display: block;
+	}
+
+	.about-one-app .right-img {
+		width: 100%;
+		margin-bottom: 25px;
+	}
+}
