@@ -1,0 +1,135 @@
+.header {
+	background: #071828;
+	padding: 15px 0px;
+}
+.header .container-fluid {
+    max-width: 1170px;
+}
+.header .search-box {
+	padding-bottom: 1px;
+	border-bottom: 1px solid aliceblue;
+	width: 189px;
+	margin-left: 50px;
+	background: url('../../assets/images/bottom-arrow.svg') no-repeat;
+	background-position: center right 12px;
+	background-size: 6px;
+}
+.header .dis-flx {
+	display: flex;
+	 justify-content: space-between;
+}
+.header .left-content {
+	display: flex;
+	align-items: center;
+}
+.header .right-content {
+	display: flex;
+	align-items: center;
+}
+.header .c-btn {
+	height: 38px;
+	color: #fff;
+	background-image: linear-gradient(to bottom, #FBB034 , #ECCE09);
+	font-size: 16px;
+	line-height: 38px;
+	padding: 0px 25px;
+	border-radius: 38px;
+	margin-right: 15px;
+    font-weight: 500;
+    border: 1px solid  #FBB034 ;
+}
+.header .btn-partnr.c-btn {
+    background: #071828;
+    border: 1px solid  #FBB034 ;
+}
+.header .c-btn:hover {
+    color: #fff;
+}
+.header .cart-icon {
+	margin-left: 12px;
+	margin-right: 20px;
+}
+.header .sign-tt ,.header .sign-tt:hover ,.header .search-text{
+    color:#fff;
+    font-size: 16px;
+}
+/* place -order */
+.place-order .container-fluid {
+    max-width: 1170px;
+}
+.place-order .main-flex {
+	display: flex;
+	align-items: self-start;
+	padding: 100px 0px;
+}
+/* rihgt box */
+.place-order .left-box {
+	width: 100%;
+	margin-right: 30px;
+}
+.place-order .left-box img{
+	max-width: 100%;	
+}
+.right-box {
+	width: 591px;
+
+}
+.right-box .track-box {
+	padding: 20px 14px;
+	border: 1px solid #FBB231;
+	border-radius: 4px;
+	margin-bottom: 20px;
+}
+.right-box .dis-box {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.right-box .link-tt {
+	color: #f6b827;
+	font-weight: 600;
+}
+.right-box .link-tt:hover {
+	color: #f6b827;
+	text-decoration: underline;
+}
+.right-box .tt-1, .right-box .tt-2 {
+	font-size: 18px;
+	margin-top: 10px;
+	margin-bottom: 0px;
+	font-weight: 600;
+}
+.right-box .tt-2 {
+	font-size: 16px;
+	margin-top: 0px;
+	font-weight: 600;
+
+}
+.right-box .btn-done {
+	font-size: 14px;
+	color: #fff;
+	background: #FCBC25;
+	padding: 6px 22px;
+	border-radius: 28px;
+	font-weight: 500;
+}
+.right-box .btn-done:hover {
+	color: #fff;
+}
+.right-box .dis-box.bdr-btm {
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 18px;
+	margin-bottom: 18px;
+}
+.right-box .inr-box img {
+	float: left;
+	margin-right: 20px;
+}
+.right-box .tt-inr-box {
+	overflow: hidden;
+}
+.right-box .inr-box.inr-box2 {
+	display: flex;
+	align-items: center;
+	margin-top: 13px;
+}

@@ -1,0 +1,484 @@
+.business-bnr {
+	background: url('../../assets/images/business/bg-bnr.png') repeat-y;
+	background-size: 100%;
+	overflow: hidden;
+	padding: 100px 0;
+	position: relative;
+}
+
+.business-bnr::after {
+	content: "";
+	background: url('../../assets/images/business/3523653.jpg') repeat-y;
+	height: 100%;
+	width: 50%;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	z-index: -2;
+}
+
+.business-bnr .img-bnr {
+	position: relative;
+	z-index: -6;
+}
+
+.business-bnr .container-fluid {
+	max-width: 1170px;
+}
+
+.business-bnr .left-box {
+	text-align: left;
+	max-width: 520px;
+}
+
+.business-bnr .left-box .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin-bottom: 25px;
+	margin-top: 20px;
+}
+
+.business-bnr p {
+	color: #fff;
+	margin-bottom: 40px;
+}
+
+.business-bnr .logo1 {
+	margin-top: 40px;
+}
+
+.business-bnr .left-box .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+
+.business-bnr .left-box .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+
+.business-bnr .btn-1 a {
+	background: #071828;
+	color: #fff;
+	border-radius: 50px;
+	padding: 0px 40px;
+	display: inline-block;
+	border: 1px solid #071828;
+	line-height: 50px;
+	transition: 0.5s ease-in-out;
+	text-decoration: none;
+}
+
+.business-bnr .btn-1 .login {
+	background: none;
+	color: #071828;
+	border: 1px solid #071828;
+	margin-left: 30px;
+}
+
+/* .business-bnr .btn-1 a:hover {
+	background:none;
+	color: #071828;
+	border: 1px solid #071828;
+}
+.business-bnr .btn-1 .login:hover {
+	background:#071828;
+	color: #fff;
+	
+} */
+.business-bnr .tt1 {
+	font-size: 50px;
+	font-weight: bold;
+	color: #fff;
+}
+
+.business-bnr .btn-1 a i {
+	margin-left: 12px;
+}
+
+.business-bnr .dis-flex {
+	display: flex;
+	align-items: center;
+}
+
+
+/* why-use-kartzo */
+.why-use-kartzo {
+	text-align: center;
+	padding: 100px 0;
+}
+
+.why-use-kartzo .container-fluid {
+	max-width: 1170px;
+}
+
+.why-use-kartzo .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin: auto;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.why-use-kartzo .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+
+.why-use-kartzo .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+
+.why-use-kartzo .tt1 {
+	font-size: 36px;
+}
+
+.why-use-kartzo .box {
+	padding: 30px 50px;
+}
+
+.why-use-kartzo .box .sub-title {
+	font-size: 22px;
+	margin-top: 20px;
+}
+
+/* why-use-kartzo End*/
+
+/* Brands in association */
+
+.brands-association {
+	text-align: center;
+	padding: 100px 0;
+	padding-top: 0px;
+}
+
+.brands-association .container-fluid {
+	max-width: 1170px;
+}
+
+.brands-association .tt1 {
+	font-size: 36px;
+}
+
+.brands-association .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin: auto;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.brands-association .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+
+.brands-association .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+
+.brands-association .col-md-4 {
+	margin-top: 30px;
+}
+
+.brands-association .logo-div img {
+	max-width: 100%;
+}
+
+/* Brands in association end*/
+
+/* Sell on Kartzo */
+
+.sell-on {
+	background: linear-gradient(to right, #FBB034, #ECCE09);
+	background-size: 100%;
+	overflow: hidden;
+}
+
+.sell-on .img-bnr img {
+	position: relative;
+	max-width: 100%;
+	margin-left: 135px;
+	padding-top: 50px;
+}
+
+.sell-on .container-fluid {
+	max-width: 1170px;
+}
+
+.sell-on .left-box {
+	text-align: left;
+	max-width: 520px;
+}
+
+.sell-on .left-box .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin-bottom: 25px;
+	margin-top: 20px;
+}
+
+.sell-on p {
+	color: #fff;
+	margin-bottom: 40px;
+}
+
+.sell-on .logo1 {
+	margin-top: 40px;
+}
+
+.sell-on .left-box .big {
+	height: 10px;
+	width: 57px;
+	background: #FFF;
+	border-radius: 10px;
+}
+
+.sell-on .left-box .small {
+	height: 10px;
+	width: 18px;
+	background: #FFF;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+
+.sell-on .btn-1 .sign-up-btn {
+	background: #071828;
+	color: #fff;
+	border-radius: 50px;
+	padding: 0px 40px;
+	display: inline-block;
+	border: 1px solid #071828;
+	line-height: 48px;
+	transition: 0.5s ease-in-out;
+	text-decoration: none;
+}
+
+.sell-on .tt1 {
+	font-size: 50px;
+	font-weight: bold;
+	color: #fff;
+}
+
+.sell-on .btn-1 a i {
+	margin-left: 12px;
+}
+
+.sell-on .dis-flex {
+	display: flex;
+	align-items: center;
+}
+
+/* Sell on Kartzo end*/
+
+/* he said */
+
+.he-said {
+	text-align: center;
+	padding: 100px 0;
+}
+
+.he-said .container-fluid {
+	max-width: 1170px;
+}
+
+.he-said .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin: auto;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.he-said .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+
+.he-said .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+
+.he-said .tt1 {
+	font-size: 36px;
+}
+
+.he-said .tt-text {
+	max-width: 322px;
+	margin: auto;
+}
+
+.he-said .said-box {
+	border: 1px solid #FBB330;
+	border-radius: 8px;
+	padding: 21px 19px;
+}
+
+.he-said .img-name-box {
+	display: flex;
+	align-items: center;
+}
+
+.he-said .said-box .name-1 {
+	text-align: left;
+	margin-left: 15px;
+}
+
+.he-said .said-box .tt1 {
+	font-size: 18px;
+	margin: 0px;
+	text-align: left;
+}
+
+.he-said .said-box .text-box .big-tt {
+	font-size: 44px;
+	position: absolute;
+	left: 14px;
+	top: -10px;
+}
+
+.he-said .said-box .text-box .big-tt2 {
+	font-size: 44px;
+	position: absolute;
+	left: auto;
+	top: auto;
+	margin-left: 6px;
+}
+
+.he-said .said-box .text-box {
+	margin-top: 20px;
+	padding: 0px 15px;
+	position: relative;
+	font-size: 16px;
+	padding-left: 34px;
+	text-align: left;
+}
+
+.main-div {
+	padding-top: 20px;
+}
+
+.main-div .col-md-4 {
+	margin-top: 30px;
+}
+
+/* he said end*/
+
+@media only screen and (max-width: 991px) {
+	.header .btn-partnr {
+		display: none;
+	}
+
+	.footer::before {
+		display: none;
+	}
+
+	.sell-on .dis-flex {
+		flex-flow: column;
+	}
+
+	.sell-on .left-box {
+		text-align: center;
+	}
+
+	.sell-on .left-box .bdr-tt {
+		margin: auto;
+		margin-bottom: 25px;
+		margin-top: 20px;
+	}
+
+	.sell-on {
+		padding-top: 80px;
+	}
+
+	.sell-on .img-bnr img {
+		margin-left: 0px;
+		max-width: 100%;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	.header .btn-business {
+		display: none;
+	}
+
+	/* title text */
+	.business-bnr .tt1,
+	.why-use-kartzo .tt1,
+	.brands-association .tt1,
+	.sell-on .tt1,
+	.he-said .tt1 {
+		font-size: 25px;
+	}
+
+	/* p all text */
+	.footer a,
+	.business-bnr p,
+	.business-bnr .btn-1 a,
+	.he-said .said-box .tt2,
+	.he-said .said-box .text-box,
+	.why-use-kartzo,
+	.sell-on .btn-1 .sign-up-btn {
+		font-size: 14px;
+	}
+
+	/* sub-title */
+	.why-use-kartzo .box .sub-title,
+	.he-said .said-box .tt1 {
+		font-size: 16px;
+		font-weight: 600;
+	}
+
+	.footer .tt-1 {
+		font-size: 20px;
+	}
+
+	.business-bnr .btn-1 .login {
+		margin-left: 10px;
+	}
+
+	.business-bnr .btn-1 a {
+		line-height: 38px;
+		padding: 0px 20px;
+	}
+
+	.business-bnr,
+	.why-use-kartzo,
+	.he-said,
+	.footer {
+		padding: 30px 0;
+	}
+
+	.brands-association {
+		padding-bottom: 30px;
+	}
+
+	.sell-on .btn-1 .sign-up-btn {
+		line-height: 38px;
+	}
+}
+
+/* responsive end */

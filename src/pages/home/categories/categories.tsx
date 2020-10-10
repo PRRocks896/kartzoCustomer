@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import constant from "../../constant/constant";
 
 class Categories extends React.Component {
@@ -23,6 +24,7 @@ class Categories extends React.Component {
             <div className="row">
               {constant.imagearray.map((img: any, index: number) => (
                 <div key={index} className="col-sm-6 col-md-4 col-lg-3">
+                  <Link to="/track-order">
                   <div
                     className="box-1"
                     style={{
@@ -38,6 +40,7 @@ class Categories extends React.Component {
                     <img src={img.src} alt={img.alt} />
                     <div className="tt-1">{img.name}</div>
                   </div>
+                </Link>
                 </div>
               ))}
 

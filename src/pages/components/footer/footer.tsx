@@ -25,7 +25,7 @@ class Footer extends React.Component {
                   {/* <a href="#"></a> */}
                 </li>
                 <li>
-                  <a href="#">Jobs</a>
+                  <Link to="/carrers">Jobs</Link>
                 </li>
                 <li>
                   <Link to="/contact-us">Contact</Link>
@@ -37,10 +37,10 @@ class Footer extends React.Component {
                   <a href="#">Privacy Policy </a>
                 </li>
                 <li>
-                  <a href="#">Kartzo for partner</a>
+                  <Link to="/partners">Kartzo for partner</Link>
                 </li>
                 <li>
-                  <a href="#">Kartzo for business</a>
+                  <Link to="/business">Kartzo for business</Link>
                 </li>
               </ul>
             </div>

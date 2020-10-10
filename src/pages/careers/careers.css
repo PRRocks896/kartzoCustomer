@@ -1,0 +1,425 @@
+.career-bnr {
+	background: url('../../assets/images/career/career-bnr.png') no-repeat;
+	background-size: cover;
+	background-position: bottom;
+	position: relative;
+	padding: 100px 0px;
+}
+
+.career-bnr::before {
+	content: "";
+	background: linear-gradient(to right, #FBB034, #ECCE09);
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0px;
+	left: 0px;
+	opacity: 0.9;
+}
+
+.career-bnr .container-fluid {
+	max-width: 1170px;
+	position: relative;
+}
+
+.career-bnr .left-box {
+	text-align: left;
+	width: 520px;
+}
+
+.career-bnr .left-box .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin-bottom: 25px;
+	margin-top: 20px;
+}
+
+.career-bnr p {
+	color: #fff;
+	margin-bottom: 40px;
+}
+
+.career-bnr .left-box .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+
+.career-bnr .left-box .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+
+.career-bnr .btn-1 a {
+	background: #071828;
+	color: #fff;
+	border: none;
+	border-radius: 50px;
+	padding: 0px 40px;
+	height: 54px;
+	display: inline-block;
+	line-height: 35px;
+	line-height: 54px;
+	text-decoration: none;
+}
+
+.career-bnr .tt1 {
+	font-size: 50px;
+	font-weight: bold;
+	color: #fff;
+}
+
+.career-bnr .btn-1 a i {
+	margin-left: 12px;
+}
+
+.career-bnr .dis-flex {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	justify-content: space-between;
+}
+
+/* Popular locations */
+.career-con-1 {
+	text-align: left;
+	padding: 100px 0;
+}
+
+.career-con-1 .container-fluid {
+	max-width: 1170px;
+}
+
+.career-con-1 .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.career-con-1 .tt1 {
+	font-size: 36px;
+}
+
+.career-con-1 .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+
+.career-con-1 .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+
+.career-con-1 .bt-tt {
+	font-size: 25px;
+	font-weight: 600;
+	margin-bottom: 10px;
+	display: block;
+}
+
+.career-con-2 {
+	padding-top: 0px;
+}
+
+/* Popular locations end*/
+/* values-kartzo */
+.values-kartzo {
+	text-align: center;
+	padding: 100px 0;
+	padding-top: 0px;
+}
+
+.values-kartzo .container-fluid {
+	max-width: 1170px;
+}
+
+.values-kartzo .tt1 {
+	font-size: 36px;
+}
+
+.values-kartzo .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin: auto;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.values-kartzo .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+
+.values-kartzo .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+
+.values-kartzo .box {
+	padding: 30px 0px;
+	text-align: center;
+}
+
+.values-kartzo .box .sub-title {
+	font-size: 22px;
+	margin-top: 20px;
+}
+
+/* values-kartzo End*/
+
+/* kartzo-benefits */
+.kartzo-benefits {
+	text-align: center;
+	padding: 100px 0;
+	background: #F5F5F5;
+}
+
+.kartzo-benefits .container-fluid {
+	max-width: 1170px;
+}
+
+.kartzo-benefits .tt1 {
+	font-size: 36px;
+}
+
+.kartzo-benefits .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin: auto;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.kartzo-benefits .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+
+.kartzo-benefits .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+
+.kartzo-benefits .slider-caro {
+	max-width: 790px;
+	margin: auto;
+	display: flex;
+	text-align: left;
+	align-items: center;
+	border: 1px solid #FBB231;
+	border-radius: 12px;
+	padding: 18px 18px;
+	margin-top: 40px;
+}
+
+.kartzo-benefits .box-text {
+	padding-left: 13px;
+	padding-right: 45px;
+}
+
+.kartzo-benefits .sub-tt {
+	font-size: 22px;
+}
+
+.kartzo-benefits .carousel {
+	position: relative;
+	padding-bottom: 50px;
+}
+
+.kartzo-benefits .carousel-indicators {
+	margin-bottom: 0px;
+}
+
+.kartzo-benefits .carousel-indicators .active {
+	background: #071828;
+}
+
+.kartzo-benefits .carousel-indicators li {
+	width: 10px;
+	opacity: 1;
+	height: 10px;
+	background-color: #FDD56D;
+	border-top: 0px;
+	border-bottom: 0px;
+	border-radius: 20px;
+	border: 5px solid #FDD56D;
+}
+.career-con-1 img{
+	max-width: 100%;
+}
+
+/* kartzo-benefits End */
+
+
+/* Current Job Openings */
+.current-job {
+	text-align: center;
+	padding: 100px 0;
+}
+
+.current-job .tt1 {
+	font-size: 36px;
+}
+
+.current-job .container-fluid {
+	max-width: 1170px;
+}
+
+.current-job .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin: auto;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+.current-job .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+
+.current-job .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+
+.current-job .select-1 {
+	text-align: left;
+	display: inline-block;
+	margin: 15px 30px;
+}
+
+.current-job .select-1 label {
+	display: block;
+	font-size: 14px;
+	font-weight: 500;
+	color: #071828;
+}
+
+.current-job .select-1 #cars {
+	height: 40px;
+	width: 230px;
+	text-indent: 7px;
+	border: 1px solid #FCBC25;
+	border-radius: 40px;
+	font-size: 14px;
+}
+
+.current-job .box-data {
+	padding-top: 30px;
+}
+
+.current-job .box-data .box-1 {
+	text-align: left;
+}
+
+.current-job .box-data p {
+	margin: 0px;
+	color: #5C6978;
+}
+
+.current-job .box-data .box-1 {
+	text-align: left;
+	box-shadow: 0px 1px 3px #cacaca;
+	display: block;
+	border-radius: 4px;
+	padding: 18px 25px;
+	margin-top: 20px;
+}
+
+.current-job h3 {
+	font-size: 22px;
+	color: #FBB231;
+}
+
+.current-job .box-data .box-1:hover h3 {
+	text-decoration: underline;
+}
+
+/* Current Job Openings */
+
+
+@media only screen and (max-width: 991px) {
+
+	.footer::before {
+		display: none;
+	}
+	.career-bnr .img-bnr {
+		display: none;
+	}
+	.header .btn-partnr {
+		display: none;
+	}
+	.kartzo-benefits .box-img img{
+		max-width: 100%;
+	}
+
+}
+
+@media only screen and (max-width: 768px) {
+
+	/* title text */
+	.career-bnr .tt1,
+	.career-con-1 .tt1,
+	.values-kartzo .tt1,
+	.kartzo-benefits .tt1,
+	.current-job .tt1 {
+		font-size: 25px;
+	}
+
+	.about-bnr,
+	.career-con-1,
+	.about-one-app,
+	.footer,
+	.values-kartzo,
+	.kartzo-benefits,
+	.current-job {
+		padding: 30px 0;
+	}
+
+
+	/* p all text */
+	.career-con-1 p, .values-kartzo p, .kartzo-benefits p, .current-job .box-data p, .career-bnr .btn-1 a, .career-bnr p {
+		font-size: 14px;
+	}
+	.header .btn-business {
+		display: none;
+	}
+
+	.footer .tt-1 {
+		font-size: 20px;
+	}
+	.career-con-1 img {
+		max-width: 100%;
+	}
+	/* sub-title */
+	.current-job h3, .kartzo-benefits .sub-tt, .values-kartzo .box .sub-title, .career-con-1 .bt-tt {
+		font-size: 16px;
+		font-weight: 600;
+	}
+}
