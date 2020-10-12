@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import EventEmitter from "../../event";
 import { header, trackorder } from "../../pages/components/helper/images";
 import Layout from "../components/layout/layout";
 import './trackorder.css';
@@ -10,13 +11,39 @@ class TrackOrder extends React.Component<{show: boolean}> {
   }
 
   componentDidMount() {
-    // <Layout show={}/>
+    EventEmitter.dispatch('isShow', true);
   }
 
   render() {
-      console.log("TrackOrder",this.props)
+      // console.log("TrackOrder",this.props)
     return (
       <>
+        <header className="header">
+            <div className="container-fluid">
+              <div className="dis-flx">
+                <div className="left-content">
+                    <Link to = '/'>
+                  <img src={header.logo} alt="logo" />
+                    </Link>
+                  <a href="#">
+                    <div className="search-box">
+                      <img src={trackorder.location} alt="location" />
+                      <span className="search-text"> Pretoria</span>
+                    </div>
+                  </a>
+                </div>
+                <div className="right-content">
+                  
+                  <div className="cart-icon">
+                    <img src={trackorder.shopping} alt="cart-icon" />
+                  </div>
+                  <a href="#" className="sign-tt">
+                    Sign in
+                  </a>
+                </div>
+              </div>
+            </div>
+          </header>
         <section className="place-order">
           <div className="container-fluid">
             <div className="main-flex">

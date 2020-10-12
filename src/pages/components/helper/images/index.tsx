@@ -7,6 +7,10 @@ export const footer = {
   logo: require("../../../../assets/images/3.png"),
 };
 
+export const login = {
+  backarrow: require("../../../../assets/images/back-arrow.svg"),
+};
+
 export const categories = {
   Groceries: require("../../../../assets/images/Groceries-Essentials.png"),
   Fruits: require("../../../../assets/images/Fruits-Vegetables.png"),
@@ -113,3 +117,22 @@ export const search = {
     orderpicked: require("../../../../assets/images/order-picked.jpg"),
     man: require("../../../../assets/images/afro-man-city-260nw-1073895656.png")
   };
+
+  export const findstore = {
+    store: require("../../../../assets/images/store-img.png"),
+    left: require("../../../../assets/images/left.png"),
+    right: require("../../../../assets/images/right.png")
+  };
+
+  export const storeitem = {
+    product: require("../../../../assets/images/MmpaRGdyVDFzWmlhczFPVHBmdHN3UT09-product_image.png"),
+    Untitled: require("../../../../assets/images/Untitled-12.png")
+  };
+
+  export const placeorder = {
+    upiLogo: require("../../../../assets/images/upiLogo6.gif"),
+    paytm: require("../../../../assets/images/paytm-icon.webp")
+  };
+
+
+

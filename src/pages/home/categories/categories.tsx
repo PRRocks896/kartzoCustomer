@@ -24,7 +24,7 @@ class Categories extends React.Component {
             <div className="row">
               {constant.imagearray.map((img: any, index: number) => (
                 <div key={index} className="col-sm-6 col-md-4 col-lg-3">
-                  <Link to="/track-order">
+                  <Link to="/find-store">
                   <div
                     className="box-1"
                     style={{

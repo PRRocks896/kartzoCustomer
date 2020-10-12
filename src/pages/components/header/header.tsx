@@ -1,45 +1,37 @@
 import React from "react";
 import "./header.css";
 // import ProtectedRoute from 'react-protected-route-component'
-import {header,trackorder} from '../helper/images';
+import { header, trackorder } from "../helper/images";
 import { Link } from "react-router-dom";
+import EventEmitter from "../../../event";
 
 class Header extends React.Component {
-
   state = {
-    isShow:false
-  }
+    isShow: false
+  };
 
-  constructor(props:any) {
+  constructor(props: any) {
     super(props);
-
+    EventEmitter.subscribe("isShow", (data: any) => {
+      this.setState({
+        isShow: this.state.isShow = data,
+      });
+    });
   }
 
   componentDidMount() {
-    // const route = this.props.location.pathname;
-    // console.log("props",route);
-    // if(route === '/track-order'){
-    //   this.setState({
-    //     isShow:this.state.isShow = true
-    //   })
-    // } else {
-    //   this.setState({
-    //     isShow:this.state.isShow = false
-    //   })
-    // }
-  }
-  
-  render() {
-   
 
-    if(this.state.isShow === false) {
+  }
+
+  render() {
+    if (this.state.isShow === false) {
       return (
         <header className="header">
           <div className="container-fluid">
             <div className="dis-flx">
               <div className="left-content">
-                <Link to='/'>
-                <img src={header.logo} alt="logo" />
+                <Link to="/">
+                  <img src={header.logo} alt="logo" />
                 </Link>
                 {/* <a href="#">
                           <div className="search-box">
@@ -49,56 +41,56 @@ class Header extends React.Component {
                       </a> --> */}
               </div>
               <div className="right-content">
-                <Link className="btn-partnr c-btn" to = "/partners">
+                <Link className="btn-partnr c-btn" to="/partners">
                   Kartzo for Partners
                 </Link>
-                <Link className="btn-business c-btn"to = "/business">
+                <Link className="btn-business c-btn" to="/business">
                   Kartzo for Business
                 </Link>
                 <div className="cart-icon">
                   <img src={header.cart} alt="cart-icon" />
                 </div>
-                <a href="#" className="sign-tt">
-                  Sign in
-                </a>
+                <Link className="sign-tt" to = '/signin'>
+                Sign in
+                </Link>
               </div>
             </div>
           </div>
         </header>
       );
-    } else {
+    } else if(this.state.isShow === true) {
       return (
-        <header className="header">
-        <div className="container-fluid">
-          <div className="dis-flx">
-            <div className="left-content">
-              <img src={header.logo} alt="logo" />
-              <a href="#">
-                <div className="search-box">
-                  <img src={trackorder.location} alt="location" />
-                  <span className="search-text"> Pretoria</span>
-                </div>
-              </a>
-            </div>
-            <div className="right-content">
-            <Link className="btn-partnr c-btn" to = "/partners">
-                Kartzo for Partners
-              </Link>
-              <Link className="btn-business c-btn"to = "/business">
-                Kartzo for Business
-              </Link>
-              <div className="cart-icon">
-                <img src={trackorder.shopping} alt="cart-icon" />
-              </div>
-              <a href="#" className="sign-tt">
-                Sign in
-              </a>
-            </div>
-          </div>
-        </div>
-      </header>
-      )
-    }
+        <>
+        </>
+        // <div className="sticky-menu" id="fix-top">
+        // <header className="header">
+        //   <div className="container-fluid">
+        //     <div className="dis-flx">
+        //       <div className="left-content">
+        //         <Link to="/">
+        //           <img src={header.logo} alt="logo" />
+        //         </Link>
+        //         <a href="#">
+        //           <div className="search-box">
+        //             <img src={trackorder.location} alt="location" />
+        //             <span className="search-text"> Pretoria</span>
+        //           </div>
+        //         </a>
+        //       </div>
+        //       <div className="right-content">
+        //         <div className="cart-icon">
+        //           <img src={trackorder.shopping} alt="cart-icon" />
+        //         </div>
+        //         <a href="#" className="sign-tt">
+        //           Sign in
+        //         </a>
+        //       </div>
+        //     </div>
+        //   </div>
+        // </header>
+        // </div>
+      );
+    } 
   }
 }
 

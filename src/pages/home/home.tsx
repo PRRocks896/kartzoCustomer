@@ -6,11 +6,19 @@ import AppLink from "./app-link/app-link";
 import Features from "./features/feature";
 import Testimonials from "./testimonials/testimonials";
 import Information from "./information/information";
+import EventEmitter from "../../event";
 
 class Home extends React.Component {
   constructor(props: any) {
     super(props);
+ 
   }
+
+  componentDidMount() {
+    EventEmitter.dispatch('isShow', false);
+    EventEmitter.dispatch('isShowFooter', false);
+  }
+
 
   render() {
     return (

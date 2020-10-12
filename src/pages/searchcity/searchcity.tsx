@@ -5,6 +5,7 @@ import "./searchcity.css";
 import constant from "../constant/constant";
 import AppLink from "../home/app-link/app-link";
 import Information from "../home/information/information";
+import { Link } from "react-router-dom";
 
 class SearchCity extends React.Component {
   constructor(props: any) {
@@ -55,6 +56,7 @@ class SearchCity extends React.Component {
               <div className="row">
                 {constant.imagearray.map((img: any, index: number) => (
                   <div key={index} className="col-sm-6 col-md-4 col-lg-3">
+                     <Link to="/find-store">
                     <div
                       className="box-1"
                       style={{
@@ -70,6 +72,7 @@ class SearchCity extends React.Component {
                       <img src={img.src} alt={img.alt} />
                       <div className="tt-1">{img.name}</div>
                     </div>
+                    </Link>
                   </div>
                 ))}
               </div>

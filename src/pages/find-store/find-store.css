@@ -1,0 +1,251 @@
+.header {
+	background: #071828;
+	padding: 15px 0px;
+}
+.header .container-fluid {
+    max-width: 1170px;
+}
+.header .search-box {
+	padding-bottom: 1px;
+	border-bottom: 1px solid aliceblue;
+	width: 189px;
+	background: url('../../assets/images/bottom-arrow.svg') no-repeat;
+	background-position: center right 12px;
+	background-size: 6px;
+}
+.header .dis-flx {
+	display: flex;
+	 justify-content: space-between;
+}
+.header .left-content {
+	display: flex;
+	align-items: center;
+}
+.header .right-content {
+	display: flex;
+	align-items: center;
+}
+.header .c-btn {
+	height: 38px;
+	color: #fff;
+	background-image: linear-gradient(to bottom, #FBB034 , #ECCE09);
+	font-size: 16px;
+	line-height: 38px;
+	padding: 0px 25px;
+	border-radius: 38px;
+	margin-right: 15px;
+    font-weight: 500;
+    border: 1px solid  #FBB034 ;
+}
+.header .btn-partnr.c-btn {
+    background: #071828;
+    border: 1px solid  #FBB034 ;
+}
+.header .c-btn:hover {
+    color: #fff;
+}
+.header .cart-icon {
+	margin-left: 12px;
+	margin-right: 20px;
+}
+.header .sign-tt ,.header .sign-tt:hover ,.header .search-text{
+    color:#fff;
+    font-size: 16px;
+}
+/* curent page name */
+.page-name {
+	background: #FEECCB;
+	color: #929292;
+	font-size: 16px;
+	font-family: 'Poppins', sans-serif;
+	padding: 10px 0px;
+}
+.page-name .container-fluid {
+    max-width: 1170px;
+}
+.page-name .menu-item a{
+    color: #929292 !important;
+}
+.page-name span{
+    color: #071828;
+}
+/* curent page name end */
+
+/* Stores dtl */
+.store-dtl {
+	position: relative;
+	overflow: hidden;
+	padding-bottom: 100px;
+}
+.store-dtl::before {
+	position: absolute;
+	content: "";
+	width: 928px;
+	height: 928px;
+	border: 147px solid #FEF7EF;
+	border-radius: 928px;
+	left: -308px;
+	top: -193px;
+	z-index: -1;
+}
+.store-dtl .container-fluid {
+    max-width: 1170px;
+}
+.store-dtl .tt-bdr {
+    border-bottom:1px solid #E28424 ;
+    padding: 15px 0px;
+}
+.store-dtl .tt-bdr h3 {
+	font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 0px;
+    
+}
+
+.store-box {
+	padding: 50px;
+}
+.store-box .box-1 {
+	box-shadow: 0px 1px 5px #e8e0e0;
+	border-radius: 8px;
+	float: left;
+    width: 100%;
+    background: #fff;
+	border: 1px solid #fff;
+	padding: 18px 14px;
+}
+.store-box .col-md-6 {
+	margin-top: 65px;
+}
+
+.store-box .box-1:hover {
+	border: 1px solid #E28424;
+}
+.store-box .box-1 img {
+	float: left;
+	margin-top: -50px;
+	margin-right: 17px;
+}
+.store-box .box-text {
+	overflow: hidden;
+}
+.store-box .small-text {
+	font-size: 12px;
+	color: #707A86;
+	margin: 3px 0px;
+}
+.store-box .big-text {
+	font-size: 13px;
+	color: #5C6978;
+}
+.store-box h4 {
+	font-size: 16px;
+	margin: 0px;
+}
+/* pagination */
+.pagination {
+	display: -ms-flexbox;
+	display: flex;
+	padding-left: 0;
+	list-style: none;
+	border-radius: .25rem;
+	margin-top: 30px;
+}
+.pagination ul {
+	padding: 0px;
+	display: flex;
+	align-items: center;
+	justify-content: end;
+	width: 100%;
+	margin-top: 21px;
+}
+.pagination ul li{
+   list-style: none; 
+}
+.pagination ul .page-numbr a {
+	background-image: linear-gradient(to top, #FBB034 , #ECCE09);
+	margin: 0px 5px;
+	height: 36px;
+	display: block;
+	line-height: 36px;
+	width: 36px;
+	text-align: center;
+	border-radius: 36px;
+	color: #fff;
+	font-weight: 600;
+}
+
+/* Stores dtl end*/
+
+@media only screen and (max-width: 991px) {
+	.store-box .box-1 img {
+		margin-top: -35px;
+		margin-right: 17px;
+		width: 94px;
+	}
+	.store-box .col-md-6 {
+		margin-top: 40px;
+	}
+	.pagination ul {
+		justify-content: center;
+
+	}
+	.store-box {
+		padding: 0px;
+		padding-top: 30px;
+	}
+}
+@media only screen and (max-width: 768px) {
+	.pagination ul .page-numbr a {
+		height: 25px;
+		line-height: 25px;
+		width: 25px;
+		text-align: center;
+		font-size: 14px;
+	}
+	.page-name{
+		display: none;
+	}
+	.store-box .col-md-6 {
+		margin-top: 30px;
+	}
+	.store-dtl .prev a img, .store-dtl .next a img{
+		height: 14px;
+		margin-right: 5px;
+		margin-left:5px ;
+	}
+	/* title text */
+	.about-bnr .tt1,
+	.about-one-app .tt1 {
+		font-size: 25px;
+	}
+	.about-bnr,
+	.about-section-2,
+	.about-one-app,
+	.footer {
+		padding: 30px 0;
+	}
+	/* p all text */
+	.store-dtl .small-text{
+		font-size: 14px;
+	}
+	/* sub title */
+	.store-dtl .tt-bdr h3 {
+		font-size: 16px;
+		font-weight: 600;
+	}
+	.store-box .box-1 {
+		padding: 12px 12px;
+	}
+	.store-box h4 {
+		font-size: 12px;
+		font-weight: 600;
+	}
+	.store-box .box-1 img {
+		margin-top: -20px;
+		margin-right: 17px;
+		width: 77px;
+	}
+
+	
+}
