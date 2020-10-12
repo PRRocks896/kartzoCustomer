@@ -10,8 +10,14 @@ import {
 import "./store-item.css";
 
 class StoreItem extends React.Component<{ show: boolean }> {
+  state = {
+    activeLink: "1",
+    isShowCard: false,
+  };
   constructor(props: any) {
     super(props);
+    this.handleClick = this.handleClick.bind(this);
+    this.additem = this.additem.bind(this);
   }
 
   componentDidMount() {
@@ -19,7 +25,27 @@ class StoreItem extends React.Component<{ show: boolean }> {
     EventEmitter.dispatch("isShowFooter", true);
   }
 
+  handleClick = (id: any) => {
+    this.setState({ activeLink: id });
+  };
+
+  additem() {
+    this.setState({ isShowCard: true });
+  }
+
   render() {
+    const datacategory = [
+      { name: "Paan", id: "1", data1: "#paan" },
+      { name: "Breakfast & Dairy", id: "2", data1: "#breakfast" },
+      { name: "Provisions", id: "3", data1: "#provisions" },
+      { name: "Condiments", id: "4", data1: "#condiments" },
+      { name: "Instant foods & rea...", id: "5", data1: "#breakfast" },
+      { name: "Snacks & frozen food", id: "6", data1: "#breakfast" },
+      { name: "Chocolates & ice-cr...", id: "7", data1: "#breakfast" },
+      { name: "Personal care", id: "8", data1: "#breakfast" },
+      { name: "Cleaning & household", id: "9", data1: "#breakfast" },
+      { name: "Fresh fruits", id: "10", data1: "#breakfast" },
+    ];
     // console.log("TrackOrder",this.props)
     return (
       <>
@@ -28,9 +54,9 @@ class StoreItem extends React.Component<{ show: boolean }> {
             <div className="container-fluid">
               <div className="dis-flx">
                 <div className="left-content">
-                    <Link to = '/'>
-                  <img src={header.logo} alt="logo" />
-                    </Link>
+                  <Link to="/">
+                    <img src={header.logo} alt="logo" />
+                  </Link>
                   <a href="#">
                     <div className="search-box">
                       <img src={trackorder.location} alt="location" />
@@ -39,7 +65,6 @@ class StoreItem extends React.Component<{ show: boolean }> {
                   </a>
                 </div>
                 <div className="right-content">
-                  
                   <div className="cart-icon">
                     <img src={trackorder.shopping} alt="cart-icon" />
                   </div>
@@ -53,7 +78,7 @@ class StoreItem extends React.Component<{ show: boolean }> {
           <section className="page-name">
             <div className="container-fluid">
               <div className="menu-item">
-                <a href="#"> Home </a> / <a href="#"> Pretoria </a> /{" "}
+                <Link to="/"> Home </Link> / <a href="#"> Pretoria </a> /{" "}
                 <span>Groceries & Essentials</span>
               </div>
             </div>
@@ -82,13 +107,26 @@ class StoreItem extends React.Component<{ show: boolean }> {
                 <div className="main-flex">
                   <div className="item-menu">
                     <ul>
-                      <li className="icon-add">
-                        <a className="page-link" href="#paan">
+                      {datacategory.map((data: any, index: number) => (
+                        <li
+                          key={index}
+                          onClick={() => this.handleClick(data.id)}
+                          className={
+                            data.id === this.state.activeLink ? "icon-add" : ""
+                          }
+                        >
+                          <a className="page-link" href={data.data1}>
+                            {data.name}
+                          </a>
+                        </li>
+                      ))}
+                      {/* <li className="icon-add">
+                        <a className="page-link" href="">
                           Paan
                         </a>
                       </li>
                       <li>
-                        <a className="page-link" href="#breakfast">
+                        <a className="page-link" href="">
                           Breakfast & Dairy
                         </a>
                       </li>
@@ -115,7 +153,7 @@ class StoreItem extends React.Component<{ show: boolean }> {
                       </li>
                       <li>
                         <a href="#">Fresh fruits</a>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                   <div className="item-dtl">
@@ -156,7 +194,7 @@ class StoreItem extends React.Component<{ show: boolean }> {
                             </div>
                           </div>
                           <div className="btn-add-item">
-                            <a href="#">+ Add</a>
+                            <a href="#" onClick={this.additem}>+ Add</a>
                           </div>
                         </div>
 
@@ -184,7 +222,7 @@ class StoreItem extends React.Component<{ show: boolean }> {
                             </div>
                           </div>
                           <div className="btn-add-item">
-                            <a href="#">+ Add</a>
+                            <a href="#" onClick={this.additem}>+ Add</a>
                           </div>
                         </div>
                         {/* <!-- box-2 add end --> */}
@@ -245,6 +283,7 @@ class StoreItem extends React.Component<{ show: boolean }> {
                             <a href="#">+ Add</a>
                           </div>
                         </div>
+
                         {/* <!-- box-4 add end --> */}
                       </div>
 
@@ -277,7 +316,9 @@ class StoreItem extends React.Component<{ show: boolean }> {
                             </div>
                           </div>
                           <div className="btn-add-item">
-                            <a href="#">+ Add</a>
+                            <a href="" onClick={this.additem}>
+                              + Add
+                            </a>
                           </div>
                         </div>
 
@@ -372,18 +413,68 @@ class StoreItem extends React.Component<{ show: boolean }> {
                       {/* <!-- item-menu 2 end--> */}
                     </div>
                   </div>
-                  <div className="card-item">
-                    <div className="your-card">
-                      <h3>Your Cart </h3>
-                      <hr />
+                  {this.state.isShowCard === false ? (
+                    <div className="card-item">
+                      <div className="your-card">
+                        <h3>Your Cart </h3>
+                        <hr />
+                      </div>
+                      <div className="scroller-con">
+                        <img src={storeitem.Untitled} alt="" />
+                        <span className="card-text">
+                          Your cart is empty Add items to get started
+                        </span>
+                      </div>
                     </div>
-                    <div className="scroller-con">
-                      <img src={storeitem.Untitled} alt="" />
-                      <span className="card-text">
-                        Your cart is empty Add items to get started
-                      </span>
+                  ) : (
+                    <div className="card-item">
+                      <div className="your-card">
+                        <h3>Your Cart </h3>
+                        <hr />
+                      </div>
+                      <div className="card-price-item">
+                        <div className="itemcardlist">
+                          <div className="flex-box">
+                            <div className="bdr-roud"></div>
+                            <div className="item-title">
+                              <h4>Marlboro Gold Light</h4>
+                              <span className="pak">Pack of 20</span>
+                            </div>
+                            <div className="number">
+                              <span className="minus">-</span>
+                              <input type="text" value="1" />
+                              <span className="plus">+</span>
+                            </div>
+                            <span className="price">R28</span>
+                          </div>
+
+                          <div className="flex-box">
+                            <div className="bdr-roud"></div>
+                            <div className="item-title">
+                              <h4>Marlboro Gold Light</h4>
+                              <span className="pak">Pack of 20</span>
+                            </div>
+                            <div className="number">
+                              <span className="minus">-</span>
+                              <input type="text" value="1" />
+                              <span className="plus">+</span>
+                            </div>
+                            <span className="price">R28</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="check-out">
+                        <div className="total-price">
+                          <div className="total-item">Item total </div>
+                          <div className="total-item">R 1018 </div>
+                        </div>
+                        <Link className="pay-btn" to = "/placeorder">
+                        Proceed to checkout
+                        </Link>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>

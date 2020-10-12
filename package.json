@@ -13,8 +13,10 @@
     "@types/react-lazy-load-image-component": "^1.5.1",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.6",
+    "axios": "^0.20.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-google-autocomplete": "^1.2.6",
     "react-lazy-load-image-component": "^1.5.0",
     "react-redux": "^7.2.1",
     "react-redux-multilingual": "^2.0.4",
@@ -45,5 +47,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/googlemaps": "^3.40.0"
   }
 }

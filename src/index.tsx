@@ -92,7 +92,7 @@ ReactDOM.render(
                 <Route exact path="/forgot-password" render={() => (
                     localStorage.getItem('token') ? (<Redirect to="/" />) : (<ForgotPassword />)
                 )} /> */}
-          <PrivateRoute path="/" name="Home" component={Main} />
+          {/* <PrivateRoute path="/" name="Home" component={Main} /> */}
         </Switch>
       </Layout>
     </Router>

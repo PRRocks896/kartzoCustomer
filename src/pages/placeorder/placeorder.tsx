@@ -11,10 +11,17 @@ import {
 import "./placeorder.css";
 
 class PlaceOrder extends React.Component<{ show: boolean }> {
+  state = {
+    checkedvalue: false,
+    showSection: false,
+    checkedpaymentvalue: false,
+  };
   constructor(props: any) {
     super(props);
 
     this.change = this.change.bind(this);
+    this.showSection = this.showSection.bind(this);
+    this.changePayment = this.changePayment.bind(this);
   }
 
   componentDidMount() {
@@ -22,8 +29,22 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
     EventEmitter.dispatch("isShowFooter", true);
   }
 
-  change() {
-    console.log("checkd");
+  change(e: any) {
+    this.setState({
+      checkedvalue: !this.state.checkedvalue,
+    });
+  }
+
+  showSection() {
+    this.setState({
+      showSection: true,
+    });
+  }
+
+  changePayment(e: any) {
+    this.setState({
+      checkedpaymentvalue: !this.state.checkedpaymentvalue,
+    });
   }
 
   render() {
@@ -35,7 +56,7 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
             <div className="dis-flx">
               <div className="left-content">
                 <Link to="/">
-                <img src={header.logo} alt="logo" />
+                  <img src={header.logo} alt="logo" />
                 </Link>
                 {/* <!-- <a href="#">
                         <div className="search-box">
@@ -171,9 +192,15 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                   </span>
                                   <input
                                     type="radio"
-                                    checked={true}
+                                    id="1"
+                                    className="form-control"
+                                    checked={
+                                      this.state.checkedvalue === true
+                                        ? true
+                                        : false
+                                    }
                                     onChange={this.change}
-                                    name="radio"
+                                    name="radio1"
                                   />
                                   <span className="checkmark"></span>
                                 </label>
@@ -194,9 +221,10 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                   </span>
                                   <input
                                     type="radio"
-                                    checked={true}
+                                    id="2"
+                                    checked={false}
                                     onChange={this.change}
-                                    name="radio"
+                                    name="radio2"
                                   />
                                   <span className="checkmark"></span>
                                 </label>
@@ -214,9 +242,10 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                   </span>
                                   <input
                                     type="radio"
-                                    checked={true}
+                                    className="form-control"
+                                    checked={false}
                                     onChange={this.change}
-                                    name="radio"
+                                    name="radio3"
                                   />
                                   <span className="checkmark"></span>
                                 </label>
@@ -234,791 +263,866 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                   </span>
                                   <input
                                     type="radio"
-                                    checked={true}
+                                    checked={false}
                                     onChange={this.change}
-                                    name="radio"
+                                    name="radio4"
                                   />
                                   <span className="checkmark"></span>
                                 </label>
                               </div>
                             </div>
-                            <div className="add-new-adres">
+                            <div
+                              className="add-new-adres"
+                              onClick={this.showSection}
+                            >
                               <span className="add-icon">+</span>
                               <div>Add a new address</div>
                             </div>
-                            <div className="edit-dtle">
-                              <form className="form-1">
+                            {this.state.showSection === true ? (
+                              <div className="edit-dtle">
+                                <form className="form-1">
+                                  <label className="rdio-box1">
+                                    <span className="b-tt">
+                                      ADD A NEW ADDRESS
+                                    </span>
+                                    <input
+                                      type="radio"
+                                      checked={true}
+                                      onChange={this.change}
+                                      name="radio"
+                                    />
+                                    <span className="checkmark"></span>
+                                  </label>
+                                  <button className="add-location">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="16"
+                                      height="16"
+                                      className="-fgCFc"
+                                    >
+                                      <g fill="none" fillRule="evenodd">
+                                        <path d="M0 0h16v16H0z"></path>
+                                        <path
+                                          className=""
+                                          fill="#fff"
+                                          d="M8 5.3a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 1 0 0-5.4zm6 2A6 6 0 0 0 8.7 2V.7H7.3V2A6 6 0 0 0 2 7.3H.7v1.4H2A6 6 0 0 0 7.3 14v1.3h1.4V14A6 6 0 0 0 14 8.7h1.3V7.3H14zm-6 5.4A4.7 4.7 0 0 1 3.3 8 4.7 4.7 0 0 1 8 3.3 4.7 4.7 0 0 1 12.7 8 4.7 4.7 0 0 1 8 12.7z"
+                                        ></path>
+                                      </g>
+                                    </svg>
+                                    Use my current location
+                                  </button>
+                                  <div className="row">
+                                    <div className="col-md-6">
+                                      <div className="form-group">
+                                        <input
+                                          type="text"
+                                          id="from"
+                                          className="form-control"
+                                          required
+                                        />
+                                        <label
+                                          className="form-control-placeholder"
+                                          htmlFor="from"
+                                        >
+                                          Name
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <div className="form-group">
+                                        <input
+                                          type="text"
+                                          id="from"
+                                          className="form-control"
+                                          required
+                                        />
+                                        <label
+                                          className="form-control-placeholder"
+                                          htmlFor="from"
+                                        >
+                                          10-digit mobile number
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <div className="form-group">
+                                        <input
+                                          type="text"
+                                          id="from"
+                                          className="form-control"
+                                          required
+                                        />
+                                        <label
+                                          className="form-control-placeholder"
+                                          htmlFor="from"
+                                        >
+                                          Pincode
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <div className="form-group">
+                                        <input
+                                          type="text"
+                                          id="from"
+                                          className="form-control"
+                                          required
+                                        />
+                                        <label
+                                          className="form-control-placeholder"
+                                          htmlFor="from"
+                                        >
+                                          Locality
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <div className="form-group">
+                                        <textarea
+                                          id="from"
+                                          className="form-control"
+                                        ></textarea>
+                                        <label
+                                          className="form-control-placeholder"
+                                          htmlFor="from"
+                                        >
+                                          Address (Area and Street)
+                                        </label>
+                                      </div>
+                                    </div>
+
+                                    <div className="col-md-6">
+                                      <div className="form-group">
+                                        <input
+                                          type="text"
+                                          id="from"
+                                          className="form-control"
+                                          required
+                                        />
+                                        <label
+                                          className="form-control-placeholder"
+                                          htmlFor="from"
+                                        >
+                                          City/District/Town
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                      <label className="select-text">
+                                        Travelers
+                                      </label>
+                                      <select className="form-control">
+                                        <option value="" data-display-text="0">
+                                          State
+                                        </option>
+                                        <option value="1">Gujarat</option>
+                                        <option value="2">Goa</option>
+                                        <option value="3">Dilhi</option>
+                                        <option value="3">Bihar</option>
+                                        <option value="3">Assam</option>
+                                        <option value="3">Haryana</option>
+                                      </select>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <div className="address-type">
+                                        <span className="text-add">
+                                          Address Type
+                                        </span>
+                                        <div className="radio-dis">
+                                          <div className="adrss-1">
+                                            <label className="rdio-box1">
+                                              <span className="b-tt">
+                                                Home (All day delivery)
+                                              </span>
+                                              <input
+                                                type="radio"
+                                                checked={true}
+                                                onChange={this.change}
+                                                name="radio"
+                                              />
+                                              <span className="checkmark"></span>
+                                            </label>
+                                          </div>
+                                          <div className="adrss-1">
+                                            <label className="rdio-box1">
+                                              <span className="b-tt">
+                                                Work (Delivery between 10 AM - 5
+                                                PM)
+                                              </span>
+                                              <input
+                                                type="radio"
+                                                checked={true}
+                                                onChange={this.change}
+                                                name="radio"
+                                              />
+                                              <span className="checkmark"></span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-md-12">
+                                      <button className="save-delivry">
+                                        Save and Deliver Here
+                                      </button>
+                                      <button className="btb-text">
+                                        Cancel
+                                      </button>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                        <div className="dis-right">
+                          <button className="change1">CHANGE</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {this.state.checkedvalue === true ? (
+                      <div className="pro-box1 paymt-opton">
+                        <div className="dis-box">
+                          <div className="dis-left">
+                            <div className="tt-1">
+                              <span className="numbr">3</span>
+                              <h2 className="tt-l">Payment Options</h2>
+                            </div>
+                            <div className="nm-info  hidediv-1">
+                              <div className="adrss-1">
                                 <label className="rdio-box1">
-                                  <span className="b-tt">
-                                    ADD A NEW ADDRESS
-                                  </span>
                                   <input
                                     type="radio"
-                                    checked={true}
-                                    onChange={this.change}
-                                    name="radio"
+                                    checked={
+                                      this.state.checkedpaymentvalue === true
+                                        ? true
+                                        : false
+                                    }
+                                    onChange={this.changePayment}
+                                    name="radio9"
                                   />
                                   <span className="checkmark"></span>
                                 </label>
-                                <button className="add-location">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    className="-fgCFc"
-                                  >
-                                    <g fill="none" fillRule="evenodd">
-                                      <path d="M0 0h16v16H0z"></path>
-                                      <path
-                                        className=""
-                                        fill="#fff"
-                                        d="M8 5.3a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 1 0 0-5.4zm6 2A6 6 0 0 0 8.7 2V.7H7.3V2A6 6 0 0 0 2 7.3H.7v1.4H2A6 6 0 0 0 7.3 14v1.3h1.4V14A6 6 0 0 0 14 8.7h1.3V7.3H14zm-6 5.4A4.7 4.7 0 0 1 3.3 8 4.7 4.7 0 0 1 8 3.3 4.7 4.7 0 0 1 12.7 8 4.7 4.7 0 0 1 8 12.7z"
-                                      ></path>
-                                    </g>
-                                  </svg>
-                                  Use my current location
-                                </button>
-                                <div className="row">
-                                  <div className="col-md-6">
-                                    <div className="form-group">
-                                      <input
-                                        type="text"
-                                        id="from"
-                                        className="form-control"
-                                        required
-                                      />
-                                      <label
-                                        className="form-control-placeholder"
-                                        htmlFor="from"
-                                      >
-                                        Name
-                                      </label>
-                                    </div>
+                                <div className="upi-payment">
+                                  <div className="tt-line">
+                                    <img src={placeorder.upiLogo} alt="" />
+                                    <span className="tt-radio">
+                                      UPI (PhonePe / Paytm / Google Pay)
+                                    </span>
                                   </div>
-                                  <div className="col-md-6">
-                                    <div className="form-group">
-                                      <input
-                                        type="text"
-                                        id="from"
-                                        className="form-control"
-                                        required
-                                      />
-                                      <label
-                                        className="form-control-placeholder"
-                                        htmlFor="from"
-                                      >
-                                        10-digit mobile number
-                                      </label>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-6">
-                                    <div className="form-group">
-                                      <input
-                                        type="text"
-                                        id="from"
-                                        className="form-control"
-                                        required
-                                      />
-                                      <label
-                                        className="form-control-placeholder"
-                                        htmlFor="from"
-                                      >
-                                        Pincode
-                                      </label>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-6">
-                                    <div className="form-group">
-                                      <input
-                                        type="text"
-                                        id="from"
-                                        className="form-control"
-                                        required
-                                      />
-                                      <label
-                                        className="form-control-placeholder"
-                                        htmlFor="from"
-                                      >
-                                        Locality
-                                      </label>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-12">
-                                    <div className="form-group">
-                                      <textarea
-                                        id="from"
-                                        className="form-control"
-                                      ></textarea>
-                                      <label
-                                        className="form-control-placeholder"
-                                        htmlFor="from"
-                                      >
-                                        Address (Area and Street)
-                                      </label>
-                                    </div>
-                                  </div>
-
-                                  <div className="col-md-6">
-                                    <div className="form-group">
-                                      <input
-                                        type="text"
-                                        id="from"
-                                        className="form-control"
-                                        required
-                                      />
-                                      <label
-                                        className="form-control-placeholder"
-                                        htmlFor="from"
-                                      >
-                                        City/District/Town
-                                      </label>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-6">
-                                    <label className="select-text">
-                                      Travelers
-                                    </label>
-                                    <select className="form-control">
-                                      <option value="" data-display-text="0">
-                                        State
-                                      </option>
-                                      <option value="1">Gujarat</option>
-                                      <option value="2">Goa</option>
-                                      <option value="3">Dilhi</option>
-                                      <option value="3">Bihar</option>
-                                      <option value="3">Assam</option>
-                                      <option value="3">Haryana</option>
-                                    </select>
-                                  </div>
-                                  <div className="col-md-12">
-                                    <div className="address-type">
-                                      <span className="text-add">
-                                        Address Type
+                                  {this.state.checkedpaymentvalue === true ? (
+                                    <div className="pey-upi">
+                                      <span className="b-tt">
+                                        Choose an option
                                       </span>
-                                      <div className="radio-dis">
-                                        <div className="adrss-1">
-                                          <label className="rdio-box1">
-                                            <span className="b-tt">
-                                              Home (All day delivery)
-                                            </span>
-                                            <input
-                                              type="radio"
-                                              checked={true}
-                                              onChange={this.change}
-                                              name="radio"
-                                            />
-                                            <span className="checkmark"></span>
-                                          </label>
-                                        </div>
-                                        <div className="adrss-1">
-                                          <label className="rdio-box1">
-                                            <span className="b-tt">
-                                              Work (Delivery between 10 AM - 5
-                                              PM)
-                                            </span>
-                                            <input
-                                              type="radio"
-                                              checked={true}
-                                              onChange={this.change}
-                                              name="radio"
-                                            />
-                                            <span className="checkmark"></span>
-                                          </label>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="col-md-12">
-                                    <button className="save-delivry">
-                                      Save and Deliver Here
-                                    </button>
-                                    <button className="btb-text">Cancel</button>
-                                  </div>
-                                </div>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="dis-right">
-                          <button className="change1">CHANGE</button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="pro-box1 paymt-opton">
-                      <div className="dis-box">
-                        <div className="dis-left">
-                          <div className="tt-1">
-                            <span className="numbr">3</span>
-                            <h2 className="tt-l">Payment Options</h2>
-                          </div>
-                          <div className="nm-info  hidediv-1">
-                            <div className="adrss-1">
-                              <label className="rdio-box1">
-                                <input
-                                  type="radio"
-                                  checked={true}
-                                  onChange={this.change}
-                                  name="radio"
-                                />
-                                <span className="checkmark"></span>
-                              </label>
-                              <div className="upi-payment">
-                                <div className="tt-line">
-                                  <img src={placeorder.upiLogo} alt="" />
-                                  <span className="tt-radio">
-                                    UPI (PhonePe / Paytm / Google Pay)
-                                  </span>
-                                </div>
-                                <div className="pey-upi">
-                                  <span className="b-tt">Choose an option</span>
-                                  <div className="opti1">
-                                    <label className="rdio-box1">
-                                      <span className="tt-radio">PhonePe</span>
-                                      <input
-                                        type="radio"
-                                        checked={true}
-                                        onChange={this.change}
-                                        name="radio"
-                                      />
-                                      <span className="checkmark"></span>
-                                    </label>
-                                    <button className="continue-btn">
-                                      CONTINUE
-                                    </button>
-                                  </div>
-
-                                  <div className="opti1 opti2">
-                                    <label className="rdio-box1">
-                                      <span className="tt-radio">
-                                        Your UPI ID
-                                      </span>
-                                      <input
-                                        type="radio"
-                                        checked={true}
-                                        onChange={this.change}
-                                        name="radio"
-                                      />
-                                      <span className="checkmark"></span>
-                                    </label>
-                                    <div className="box-input1">
-                                      <div className="form-group">
-                                        <span className="verfy-tt">VERIFY</span>
-                                        <input
-                                          type="text"
-                                          id="from"
-                                          className="form-control"
-                                          required
-                                        />
-                                        <label
-                                          className="form-control-placeholder"
-                                          htmlFor="from"
-                                        >
-                                          Enter UPI ID
-                                        </label>
-                                      </div>
-                                      <button className="continue-btn">
-                                        PAY R400
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* <!-- wallet --> */}
-                            <div className="adrss-1">
-                              <label className="rdio-box1">
-                                <input
-                                  type="radio"
-                                  checked={true}
-                                  onChange={this.change}
-                                  name="radio"
-                                />
-                                <span className="checkmark"></span>
-                              </label>
-                              <div className="upi-payment">
-                                <div className="tt-line">
-                                  <img src={placeorder.paytm} alt="" />
-                                  <span className="tt-radio">Wallets</span>
-                                </div>
-                                <div className="pey-upi">
-                                  <div className="opti1 opti2">
-                                    <label className="rdio-box1">
-                                      <span className="tt-radio">Paytm</span>
-                                      <input
-                                        type="radio"
-                                        checked={true}
-                                        onChange={this.change}
-                                        name="radio"
-                                      />
-                                      <span className="checkmark"></span>
-                                    </label>
-                                    <div className="box-input1">
-                                      <div className="form-group">
-                                        <span className="verfy-tt">
-                                          Link Now
-                                        </span>
-                                        <input
-                                          type="text"
-                                          id="from"
-                                          className="form-control"
-                                          required
-                                        />
-                                        <label
-                                          className="form-control-placeholder"
-                                          htmlFor="from"
-                                        >
-                                          Enter Paytm linked no.
-                                        </label>
-                                      </div>
-                                      <button className="continue-btn">
-                                        PAY R400
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* <!-- Credit / Debit / ATM Card --> */}
-                            <div className="adrss-1 pay-credit">
-                              <label className="rdio-box1">
-                                <input
-                                  type="radio"
-                                  checked={true}
-                                  onChange={this.change}
-                                  name="radio"
-                                />
-                                <span className="checkmark"></span>
-                              </label>
-                              <div className="upi-payment">
-                                <div className="tt-line">
-                                  <img src={placeorder.paytm} alt="" />
-                                  <span className="tt-radio">
-                                    Credit / Debit / ATM Card
-                                  </span>
-                                </div>
-                                <div className="pey-upi">
-                                  <div className="opti1 opti2">
-                                    <div className="box-input1">
-                                      <div className="form-group card-nombr">
-                                        <span className="verfy-tt">
-                                          Link Now
-                                        </span>
-                                        <input
-                                          type="text"
-                                          id="from"
-                                          className="form-control"
-                                          required
-                                        />
-                                        <label
-                                          className="form-control-placeholder"
-                                          htmlFor="from"
-                                        >
-                                          Enter Card Number
-                                        </label>
-                                      </div>
-                                      <div className="flex-input">
-                                        <div className="valid-date">
-                                          <span className="vilid-tt">
-                                            Valid thru
+                                      <div className="opti1">
+                                        <label className="rdio-box1">
+                                          <span className="tt-radio">
+                                            PhonePe
                                           </span>
-                                          <select
-                                            className="monthnm"
-                                            name="month"
-                                            required
-                                            tabIndex={4}
-                                          >
-                                            <option disabled value="MM">
-                                              MM
-                                            </option>
-                                            <option value="01">01</option>
-                                            <option value="02">02</option>
-                                            <option value="03">03</option>
-                                            <option value="04">04</option>
-                                            <option value="05">05</option>
-                                            <option value="06">06</option>
-                                            <option value="07">07</option>
-                                            <option value="08">08</option>
-                                            <option value="09">09</option>
-                                            <option value="10">10</option>
-                                            <option value="11">11</option>
-                                            <option value="12">12</option>
-                                          </select>
-                                          <select
-                                            className="yearnm"
-                                            name="year"
-                                            required
-                                            tabIndex={5}
-                                          >
-                                            <option disabled value="YY">
-                                              YY
-                                            </option>
-                                            <option value="20">20</option>
-                                            <option value="21">21</option>
-                                            <option value="22">22</option>
-                                            <option value="23">23</option>
-                                            <option value="24">24</option>
-                                            <option value="25">25</option>
-                                            <option value="26">26</option>
-                                            <option value="27">27</option>
-                                            <option value="28">28</option>
-                                            <option value="29">29</option>
-                                            <option value="30">30</option>
-                                            <option value="31">31</option>
-                                            <option value="32">32</option>
-                                            <option value="33">33</option>
-                                            <option value="34">34</option>
-                                            <option value="35">35</option>
-                                            <option value="36">36</option>
-                                            <option value="37">37</option>
-                                            <option value="38">38</option>
-                                            <option value="39">39</option>
-                                            <option value="40">40</option>
-                                            <option value="41">41</option>
-                                            <option value="42">42</option>
-                                            <option value="43">43</option>
-                                            <option value="44">44</option>
-                                            <option value="45">45</option>
-                                            <option value="46">46</option>
-                                            <option value="47">47</option>
-                                            <option value="48">48</option>
-                                            <option value="49">49</option>
-                                            <option value="50">50</option>
-                                            <option value="51">51</option>
-                                            <option value="52">52</option>
-                                            <option value="53">53</option>
-                                            <option value="54">54</option>
-                                            <option value="55">55</option>
-                                            <option value="56">56</option>
-                                            <option value="57">57</option>
-                                            <option value="58">58</option>
-                                            <option value="59">59</option>
-                                          </select>
+                                          <input
+                                            type="radio"
+                                            checked={true}
+                                            onChange={this.change}
+                                            name="radio"
+                                          />
+                                          <span className="checkmark"></span>
+                                        </label>
+                                        <button className="continue-btn">
+                                          CONTINUE
+                                        </button>
+                                      </div>
+
+                                      <div className="opti1 opti2">
+                                        <label className="rdio-box1">
+                                          <span className="tt-radio">
+                                            Your UPI ID
+                                          </span>
+                                          <input
+                                            type="radio"
+                                            checked={true}
+                                            onChange={this.change}
+                                            name="radio"
+                                          />
+                                          <span className="checkmark"></span>
+                                        </label>
+                                        <div className="box-input1">
+                                          <div className="form-group">
+                                            <span className="verfy-tt">
+                                              VERIFY
+                                            </span>
+                                            <input
+                                              type="text"
+                                              id="from"
+                                              className="form-control"
+                                              required
+                                            />
+                                            <label
+                                              className="form-control-placeholder"
+                                              htmlFor="from"
+                                            >
+                                              Enter UPI ID
+                                            </label>
+                                          </div>
+                                          <button className="continue-btn">
+                                            PAY R400
+                                          </button>
                                         </div>
-                                        <div className="form-group enter-cvv">
-                                          <div className="verfy-tt">
-                                            ?
-                                            <div className="togle-box">
-                                              <img
-                                                src="images/cvv-card.png"
-                                                alt="cvv-card"
-                                              />
-                                              <h4 className="cvv-title">
-                                                What is CVV?
-                                              </h4>
-                                              <span className="small-tt">
-                                                The CVV number is the last three
-                                                digits on the back of your card
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* <!-- wallet --> */}
+                              <div className="adrss-1">
+                                <label className="rdio-box1">
+                                  <input
+                                    type="radio"
+                                    checked={
+                                      this.state.checkedpaymentvalue === true
+                                        ? true
+                                        : false
+                                    }
+                                    onChange={this.changePayment}
+                                    name="radio8"
+                                  />
+                                  <span className="checkmark"></span>
+                                </label>
+
+                                <div className="upi-payment">
+                                  <div className="tt-line">
+                                    <img src={placeorder.paytm} alt="" />
+                                    <span className="tt-radio">Wallets</span>
+                                  </div>
+                                  {this.state.checkedpaymentvalue === true ? (
+                                    <div className="pey-upi">
+                                      <div className="opti1 opti2">
+                                        <label className="rdio-box1">
+                                          <span className="tt-radio">
+                                            Paytm
+                                          </span>
+                                          <input
+                                            type="radio"
+                                            checked={true}
+                                            onChange={this.change}
+                                            name="radio"
+                                          />
+                                          <span className="checkmark"></span>
+                                        </label>
+                                        <div className="box-input1">
+                                          <div className="form-group">
+                                            <span className="verfy-tt">
+                                              Link Now
+                                            </span>
+                                            <input
+                                              type="text"
+                                              id="from"
+                                              className="form-control"
+                                              required
+                                            />
+                                            <label
+                                              className="form-control-placeholder"
+                                              htmlFor="from"
+                                            >
+                                              Enter Paytm linked no.
+                                            </label>
+                                          </div>
+                                          <button className="continue-btn">
+                                            PAY R400
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* <!-- Credit / Debit / ATM Card --> */}
+                              <div className="adrss-1 pay-credit">
+                                <label className="rdio-box1">
+                                  <input
+                                    type="radio"
+                                    checked={
+                                      this.state.checkedpaymentvalue === true
+                                        ? true
+                                        : false
+                                    }
+                                    onChange={this.changePayment}
+                                    name="radio12"
+                                  />
+                                  <span className="checkmark"></span>
+                                </label>
+                                <div className="upi-payment">
+                                  <div className="tt-line">
+                                    <img src={placeorder.paytm} alt="" />
+                                    <span className="tt-radio">
+                                      Credit / Debit / ATM Card
+                                    </span>
+                                  </div>
+                                  {this.state.checkedpaymentvalue === true ? (
+                                    <div className="pey-upi">
+                                      <div className="opti1 opti2">
+                                        <div className="box-input1">
+                                          <div className="form-group card-nombr">
+                                            <span className="verfy-tt">
+                                              Link Now
+                                            </span>
+                                            <input
+                                              type="text"
+                                              id="from"
+                                              className="form-control"
+                                              required
+                                            />
+                                            <label
+                                              className="form-control-placeholder"
+                                              htmlFor="from"
+                                            >
+                                              Enter Card Number
+                                            </label>
+                                          </div>
+                                          <div className="flex-input">
+                                            <div className="valid-date">
+                                              <span className="vilid-tt">
+                                                Valid thru
                                               </span>
-                                              <button className="close-btn">
-                                                Close
-                                              </button>
+                                              <select
+                                                className="monthnm"
+                                                name="month"
+                                                required
+                                                tabIndex={4}
+                                              >
+                                                <option disabled value="MM">
+                                                  MM
+                                                </option>
+                                                <option value="01">01</option>
+                                                <option value="02">02</option>
+                                                <option value="03">03</option>
+                                                <option value="04">04</option>
+                                                <option value="05">05</option>
+                                                <option value="06">06</option>
+                                                <option value="07">07</option>
+                                                <option value="08">08</option>
+                                                <option value="09">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                              </select>
+                                              <select
+                                                className="yearnm"
+                                                name="year"
+                                                required
+                                                tabIndex={5}
+                                              >
+                                                <option disabled value="YY">
+                                                  YY
+                                                </option>
+                                                <option value="20">20</option>
+                                                <option value="21">21</option>
+                                                <option value="22">22</option>
+                                                <option value="23">23</option>
+                                                <option value="24">24</option>
+                                                <option value="25">25</option>
+                                                <option value="26">26</option>
+                                                <option value="27">27</option>
+                                                <option value="28">28</option>
+                                                <option value="29">29</option>
+                                                <option value="30">30</option>
+                                                <option value="31">31</option>
+                                                <option value="32">32</option>
+                                                <option value="33">33</option>
+                                                <option value="34">34</option>
+                                                <option value="35">35</option>
+                                                <option value="36">36</option>
+                                                <option value="37">37</option>
+                                                <option value="38">38</option>
+                                                <option value="39">39</option>
+                                                <option value="40">40</option>
+                                                <option value="41">41</option>
+                                                <option value="42">42</option>
+                                                <option value="43">43</option>
+                                                <option value="44">44</option>
+                                                <option value="45">45</option>
+                                                <option value="46">46</option>
+                                                <option value="47">47</option>
+                                                <option value="48">48</option>
+                                                <option value="49">49</option>
+                                                <option value="50">50</option>
+                                                <option value="51">51</option>
+                                                <option value="52">52</option>
+                                                <option value="53">53</option>
+                                                <option value="54">54</option>
+                                                <option value="55">55</option>
+                                                <option value="56">56</option>
+                                                <option value="57">57</option>
+                                                <option value="58">58</option>
+                                                <option value="59">59</option>
+                                              </select>
+                                            </div>
+                                            <div className="form-group enter-cvv">
+                                              <div className="verfy-tt">
+                                                ?
+                                                <div className="togle-box">
+                                                  <img
+                                                    src="images/cvv-card.png"
+                                                    alt="cvv-card"
+                                                  />
+                                                  <h4 className="cvv-title">
+                                                    What is CVV?
+                                                  </h4>
+                                                  <span className="small-tt">
+                                                    The CVV number is the last
+                                                    three digits on the back of
+                                                    your card
+                                                  </span>
+                                                  <button className="close-btn">
+                                                    Close
+                                                  </button>
+                                                </div>
+                                              </div>
+                                              <input
+                                                type="text"
+                                                id="from"
+                                                className="form-control"
+                                                required
+                                              />
+                                              <label
+                                                className="form-control-placeholder"
+                                                htmlFor="from"
+                                              >
+                                                CVV
+                                              </label>
                                             </div>
                                           </div>
-                                          <input
-                                            type="text"
-                                            id="from"
-                                            className="form-control"
-                                            required
-                                          />
-                                          <label
-                                            className="form-control-placeholder"
-                                            htmlFor="from"
-                                          >
-                                            CVV
-                                          </label>
+                                          <button className="continue-btn">
+                                            PAY R400
+                                          </button>
                                         </div>
                                       </div>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                              </div>
+                              {/* <!-- Net Banking --> */}
+                              <div className="adrss-1 net-banking">
+                                <label className="rdio-box1">
+                                  <input
+                                    type="radio"
+                                    checked={
+                                      this.state.checkedpaymentvalue === true
+                                        ? true
+                                        : false
+                                    }
+                                    onChange={this.changePayment}
+                                    name="radio13"
+                                  />
+                                  <span className="checkmark"></span>
+                                </label>
+                                <div className="upi-payment">
+                                  <div className="tt-line">
+                                    <span className="tt-radio">
+                                      Net Banking
+                                    </span>
+                                  </div>
+                                  {this.state.checkedpaymentvalue === true ? (
+                                    <div className="pey-upi">
+                                      <span className="b-tt">
+                                        Popular Banks
+                                      </span>
+                                      <div className="opti1 opti2">
+                                        <label className="rdio-box1">
+                                          <span className="tt-radio">
+                                            <img
+                                              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTctN2g0MHY0MEgtN3oiLz48cGF0aCBmaWxsPSIjRUQyMzJBIiBkPSJNMCAwaDI2djI2SDAiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNNC42IDQuNmgxNi44djE2LjhINC42Ii8+PHBhdGggZmlsbD0iI0ZGRiIgZD0iTTExLjcgMGgyLjZ2MjZoLTIuNiIvPjxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0wIDExLjdoMjZ2Mi42SDAiLz48cGF0aCBmaWxsPSIjMDA0QzhGIiBkPSJNOSA5aDh2OEg5Ii8+PC9nPjwvc3ZnPg=="
+                                              className="_2PKwvL"
+                                            />
+                                            HDFC Bank
+                                          </span>
+                                          <input
+                                            type="radio"
+                                            checked={true}
+                                            onChange={this.change}
+                                            name="radio"
+                                          />
+                                          <span className="checkmark"></span>
+                                        </label>
+                                        <label className="rdio-box1">
+                                          <span className="tt-radio">
+                                            <img
+                                              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNiIgaGVpZ2h0PSIyOCI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTctNmg0MHY0MEgtN3oiLz48cGF0aCBmaWxsPSIjRjk5RDI3IiBkPSJNNy41IDZjNi4zLTYuMiAxNC04IDE3LTMuNiAzIDQuMy40IDEzLTYgMTkuMi02LjIgNi4zLTE0IDgtMTcgMy42LTMtNC4zLS4zLTEzIDYtMTkuMiIvPjxwYXRoIGZpbGw9IiNCMDJBMzAiIGQ9Ik0xMS43IDIuN2MtLjcuNS0xLjQgMS0yIDEuOC01LjYgNS41LTggMTMtNS4yIDE2LjcgMi44IDMuOCA5LjYgMi40IDE1LjMtMyAzLTMgNS02LjUgNi05LjcgMC0yLjQtLjItNC41LTEuMy02QzIyLTEgMTctLjUgMTEuNyAyLjUiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMTkuMyAyLjVjLjcuNy4zIDIuNC0xIDMuNi0xLjMgMS43LTMgMi0zLjYgMS0uOC0uMy0uMy0yIDEtMy4yIDEuMi0xLjMgMy0xLjcgMy42LTF6bS00LjUgMjIuMmMtMyAyLjItNiAzLjMtOSAzIDEuMyAwIDIuMy0xLjQgMy0zLjMgMS0yIDEuNS0zLjcgMi01LjQuNS0yLjYuNS00LjUuMi01LS41LS42LTEuNy0uNC0zIC40LS42LjMtMS40IDAtLjQtMSAxLTEuMyA1LTQuMiA2LjMtNC42IDEuMi0uNSAzIDAgMi4zIDEuOC0uNCAxLjMtNS44IDE1LjYtMS44IDE0eiIvPjwvZz48L3N2Zz4="
+                                              className="_2PKwvL"
+                                            />
+                                            ICICI Bank
+                                          </span>
+                                          <input
+                                            type="radio"
+                                            checked={true}
+                                            onChange={this.change}
+                                            name="radio"
+                                          />
+                                          <span className="checkmark"></span>
+                                        </label>
+                                        <label className="rdio-box1">
+                                          <span className="tt-radio">
+                                            <img
+                                              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNyIgaGVpZ2h0PSIyNyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTctN2g0MHY0MEgtN3oiLz48cGF0aCBmaWxsPSIjMTZEIiBkPSJNMTIuNiAyN0M1LjQgMjYuNS0uMiAyMC40IDAgMTMgLjIgNiA2LjIgMCAxMy41IDBTMjYuOCA1LjggMjcgMTNjLjIgNy40LTUuNCAxMy41LTEyLjYgMTRWMTZjMS0uNSAxLjctMS42IDEuNS0yLjgtLjQtMS4yLTEuNC0yLTIuNi0ycy0yLjIuOC0yLjQgMmMwIDEuMi41IDIuMyAxLjYgMi43Ii8+PC9nPjwvc3ZnPg=="
+                                              className="_2PKwvL"
+                                            />
+                                            State Bank of India
+                                          </span>
+                                          <input
+                                            type="radio"
+                                            checked={true}
+                                            onChange={this.change}
+                                            name="radio"
+                                          />
+                                          <span className="checkmark"></span>
+                                        </label>
+                                        <label className="rdio-box1">
+                                          <span className="tt-radio">
+                                            <img
+                                              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyNCI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTYtOGg0MHY0MEgtNnoiLz48cGF0aCBmaWxsPSIjQkM0MTcwIiBkPSJNMjggMjRoLTguN0wxNCAxNWg4LjdtLTQuNC03LjZMOC43IDI0SDBMMTQgMCIvPjwvZz48L3N2Zz4="
+                                              className="_2PKwvL"
+                                            />
+                                            Axis Bank
+                                          </span>
+                                          <input
+                                            type="radio"
+                                            checked={true}
+                                            onChange={this.change}
+                                            name="radio"
+                                          />
+                                          <span className="checkmark"></span>
+                                        </label>
+                                        <label className="rdio-box1">
+                                          <span className="tt-radio">
+                                            <img
+                                              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyNCIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxkZWZzPjxwYXRoIGlkPSJhIiBkPSJNMjggMEgwdjIzLjhoMjhWMHoiLz48L2RlZnM+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTYtOGg0MHY0MEgtNnoiLz48bWFzayBpZD0iYiIgZmlsbD0iI2ZmZiI+PHVzZSB4bGluazpocmVmPSIjYSIvPjwvbWFzaz48cGF0aCBmaWxsPSIjMDAzODc0IiBkPSJNMCAxMkMwIDUuMiA2LjMgMCAxNCAwczE0IDUuMyAxNCAxMmMwIDYuNS02LjMgMTEuOC0xNCAxMS44cy0xNC01LjMtMTQtMTIiIG1hc2s9InVybCgjYikiLz48cGF0aCBmaWxsPSIjRUQxQzI0IiBkPSJNMTIuMyAzLjhsMy4yLTFWMjBsLTMuMiAxLjIiIG1hc2s9InVybCgjYikiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMTQuMiAxNC43QzEyLjggMTYuMyAxMS40IDE4IDkgMThjLTMuNyAwLTUuNC0zLjQtNS40LTYuMyAwLTIuOCAxLjMtNiA0LjgtNiAxLjUgMCAzIDEgNCAyVjEwYy0xLS43LTIuNS0xLTMuNi0xLTIuMiAwLTQuMi43LTQgMyAwIDEuNCAxLjQgMi40IDMgMi40IDIuMiAwIDMuNi0yIDQuNy0zLjZMMTQgOWMxLTEuNiAyLjYtMy4yIDUtMy4yIDMgMCA0LjcgMi40IDUuMiA1SDIzYy0uNS0xLTEuNS0xLjQtMi42LTEuNC0yLjMgMC0zLjggMi01IDMuN2wtMS4yIDJ6TTI0LjUgMTNjLS4zIDIuNi0xLjcgNS00LjggNS0xLjggMC0zLjItMS00LjItMi42di0xLjdjMS4zLjYgMi40IDEuMiAzLjggMS4yIDEuNyAwIDMuMi0xIDMuOC0yaDJ6IiBtYXNrPSJ1cmwoI2IpIi8+PC9nPjwvc3ZnPg=="
+                                              className="_2PKwvL"
+                                            />
+                                            Kotak Bank
+                                          </span>
+                                          <input
+                                            type="radio"
+                                            checked={true}
+                                            onChange={this.change}
+                                            name="radio"
+                                          />
+                                          <span className="checkmark"></span>
+                                        </label>
+                                      </div>
+
+                                      <div className="select-bank">
+                                        <span className="b-tt">
+                                          Other Banks
+                                        </span>
+                                        <select className="_1CV081">
+                                          <option value="SELECT_BANK">
+                                            ---Select Bank---
+                                          </option>
+                                          <option value="AIRTELMONEY">
+                                            Airtel Payments Bank
+                                          </option>
+                                          <option value="ALLAHABAD">
+                                            Allahabad Bank
+                                          </option>
+                                          <option value="ANDHRA">
+                                            Andhra Bank
+                                          </option>
+                                          <option value="AUSMALLFINBANK">
+                                            AU Small Finance Bank
+                                          </option>
+                                          <option value="BANDHAN">
+                                            Bandhan Bank
+                                          </option>
+                                          <option value="BASSIENCATHOLICCOOPB">
+                                            Bassien Catholic Co-Operative Bank
+                                          </option>
+                                          <option value="BNPPARIBAS">
+                                            BNP Paribas
+                                          </option>
+                                          <option value="BOBAHRAIN">
+                                            Bank of Bahrain and Kuwait
+                                          </option>
+                                          <option value="BOBARODA">
+                                            Bank of Baroda
+                                          </option>
+                                          <option value="BOBARODAC">
+                                            Bank of Baroda Corporate
+                                          </option>
+                                          <option value="BOBARODAR">
+                                            Bank of Baroda Retail
+                                          </option>
+                                          <option value="BOI">
+                                            Bank of India
+                                          </option>
+                                          <option value="BOM">
+                                            Bank of Maharashtra
+                                          </option>
+                                          <option value="CANARA">
+                                            Canara Bank
+                                          </option>
+                                          <option value="CATHOLICSYRIAN">
+                                            Catholic Syrian Bank
+                                          </option>
+                                          <option value="CBI">
+                                            Central Bank
+                                          </option>
+                                          <option value="CITYUNION">
+                                            City Union Bank
+                                          </option>
+                                          <option value="CORPORATION">
+                                            Corporation Bank
+                                          </option>
+                                          <option value="COSMOS">
+                                            Cosmos Co-op Bank
+                                          </option>
+                                          <option value="DBS">
+                                            digibank by DBS
+                                          </option>
+                                          <option value="DCB">
+                                            DCB BANK LTD
+                                          </option>
+                                          <option value="DENA">
+                                            Dena Bank
+                                          </option>
+                                          <option value="DEUTSCHE">
+                                            Deutsche Bank
+                                          </option>
+                                          <option value="DHANBANK">
+                                            Dhanalakshmi Bank
+                                          </option>
+                                          <option value="FEDERALBANK">
+                                            Federal Bank
+                                          </option>
+                                          <option value="IDBI">
+                                            IDBI Bank
+                                          </option>
+                                          <option value="IDFC">
+                                            IDFC FIRST Bank
+                                          </option>
+                                          <option value="INDIANBANK">
+                                            Indian Bank
+                                          </option>
+                                          <option value="INDUSIND">
+                                            IndusInd Bank
+                                          </option>
+                                          <option value="IOB">
+                                            Indian Overseas Bank
+                                          </option>
+                                          <option value="JANATABANKPUNE">
+                                            JANATA SAHAKARI BANK LTD PUNE
+                                          </option>
+                                          <option value="JKBANK">
+                                            J&amp;K Bank
+                                          </option>
+                                          <option value="KARNATAKA">
+                                            Karnataka Bank
+                                          </option>
+                                          <option value="KARURVYSYA">
+                                            Karur Vysya Bank
+                                          </option>
+                                          <option value="LAKSHMIVILAS">
+                                            Lakshmi Vilas Bank - Retail
+                                          </option>
+                                          <option value="LAKSHMIVILASC">
+                                            Lakshmi Vilas Bank - Corporate
+                                          </option>
+                                          <option value="OBC">
+                                            Oriental Bank of Commerce
+                                          </option>
+                                          <option value="PNB">
+                                            Punjab National Bank
+                                          </option>
+                                          <option value="PNBC">
+                                            Punjab National Bank Corporate
+                                          </option>
+                                          <option value="PNSB">
+                                            Punjab &amp; Sind Bank
+                                          </option>
+                                          <option value="PUNJABMAHA">
+                                            Punjab &amp; Maharashtra Co-op Bank
+                                          </option>
+                                          <option value="RATNAKAR">
+                                            RBL Bank – Net Banking
+                                          </option>
+                                          <option value="RBS">RBS</option>
+                                          <option value="SARASWAT">
+                                            Saraswat Co-op Bank
+                                          </option>
+                                          <option value="SHAMRAOVITHAL">
+                                            Shamrao Vithal Co-op Bank
+                                          </option>
+                                          <option value="SHIVAMERCOOP">
+                                            Shivalik Mercantile Co-op Bank
+                                          </option>
+                                          <option value="SOUTHINDIAN">
+                                            The South Indian Bank
+                                          </option>
+                                          <option value="STANC">
+                                            Standard Chartered Bank
+                                          </option>
+                                          <option value="SYNDICATE">
+                                            Syndicate Bank
+                                          </option>
+                                          <option value="TMBANK">
+                                            Tamilnad Mercantile Bank Limited
+                                          </option>
+                                          <option value="TNMERCANTILE">
+                                            Tamil Nadu Merchantile Bank
+                                          </option>
+                                          <option value="TNSC">
+                                            TNSC Bank
+                                          </option>
+                                          <option value="UCO">UCO Bank</option>
+                                          <option value="UNIONBANK">
+                                            Union Bank of India
+                                          </option>
+                                          <option value="UNITEDBANK">
+                                            United Bank of India
+                                          </option>
+                                          <option value="VIJAYABANK">
+                                            Vijaya Bank
+                                          </option>
+                                          <option value="YESBANK">
+                                            Yes Bank
+                                          </option>
+                                          <option value="ZOROACOPBANK">
+                                            The Zoroastrian Co-Operative Bank
+                                          </option>
+                                        </select>
+                                      </div>
+
                                       <button className="continue-btn">
                                         PAY R400
                                       </button>
                                     </div>
-                                  </div>
+                                  ) : (
+                                    ""
+                                  )}
                                 </div>
                               </div>
+
+                              {/* <!-- Net Banking end--> */}
                             </div>
-                            {/* <!-- Net Banking --> */}
-                            <div className="adrss-1 net-banking">
-                              <label className="rdio-box1">
-                                <input
-                                  type="radio"
-                                  checked={true}
-                                  onChange={this.change}
-                                  name="radio"
-                                />
-                                <span className="checkmark"></span>
-                              </label>
-                              <div className="upi-payment">
-                                <div className="tt-line">
-                                  <span className="tt-radio">Net Banking</span>
-                                </div>
-                                <div className="pey-upi">
-                                  <span className="b-tt">Popular Banks</span>
-                                  <div className="opti1 opti2">
-                                    <label className="rdio-box1">
-                                      <span className="tt-radio">
-                                        <img
-                                          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTctN2g0MHY0MEgtN3oiLz48cGF0aCBmaWxsPSIjRUQyMzJBIiBkPSJNMCAwaDI2djI2SDAiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNNC42IDQuNmgxNi44djE2LjhINC42Ii8+PHBhdGggZmlsbD0iI0ZGRiIgZD0iTTExLjcgMGgyLjZ2MjZoLTIuNiIvPjxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0wIDExLjdoMjZ2Mi42SDAiLz48cGF0aCBmaWxsPSIjMDA0QzhGIiBkPSJNOSA5aDh2OEg5Ii8+PC9nPjwvc3ZnPg=="
-                                          className="_2PKwvL"
-                                        />
-                                        HDFC Bank
-                                      </span>
-                                      <input
-                                        type="radio"
-                                        checked={true}
-                                        onChange={this.change}
-                                        name="radio"
-                                      />
-                                      <span className="checkmark"></span>
-                                    </label>
-                                    <label className="rdio-box1">
-                                      <span className="tt-radio">
-                                        <img
-                                          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNiIgaGVpZ2h0PSIyOCI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTctNmg0MHY0MEgtN3oiLz48cGF0aCBmaWxsPSIjRjk5RDI3IiBkPSJNNy41IDZjNi4zLTYuMiAxNC04IDE3LTMuNiAzIDQuMy40IDEzLTYgMTkuMi02LjIgNi4zLTE0IDgtMTcgMy42LTMtNC4zLS4zLTEzIDYtMTkuMiIvPjxwYXRoIGZpbGw9IiNCMDJBMzAiIGQ9Ik0xMS43IDIuN2MtLjcuNS0xLjQgMS0yIDEuOC01LjYgNS41LTggMTMtNS4yIDE2LjcgMi44IDMuOCA5LjYgMi40IDE1LjMtMyAzLTMgNS02LjUgNi05LjcgMC0yLjQtLjItNC41LTEuMy02QzIyLTEgMTctLjUgMTEuNyAyLjUiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMTkuMyAyLjVjLjcuNy4zIDIuNC0xIDMuNi0xLjMgMS43LTMgMi0zLjYgMS0uOC0uMy0uMy0yIDEtMy4yIDEuMi0xLjMgMy0xLjcgMy42LTF6bS00LjUgMjIuMmMtMyAyLjItNiAzLjMtOSAzIDEuMyAwIDIuMy0xLjQgMy0zLjMgMS0yIDEuNS0zLjcgMi01LjQuNS0yLjYuNS00LjUuMi01LS41LS42LTEuNy0uNC0zIC40LS42LjMtMS40IDAtLjQtMSAxLTEuMyA1LTQuMiA2LjMtNC42IDEuMi0uNSAzIDAgMi4zIDEuOC0uNCAxLjMtNS44IDE1LjYtMS44IDE0eiIvPjwvZz48L3N2Zz4="
-                                          className="_2PKwvL"
-                                        />
-                                        ICICI Bank
-                                      </span>
-                                      <input
-                                        type="radio"
-                                        checked={true}
-                                        onChange={this.change}
-                                        name="radio"
-                                      />
-                                      <span className="checkmark"></span>
-                                    </label>
-                                    <label className="rdio-box1">
-                                      <span className="tt-radio">
-                                        <img
-                                          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNyIgaGVpZ2h0PSIyNyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTctN2g0MHY0MEgtN3oiLz48cGF0aCBmaWxsPSIjMTZEIiBkPSJNMTIuNiAyN0M1LjQgMjYuNS0uMiAyMC40IDAgMTMgLjIgNiA2LjIgMCAxMy41IDBTMjYuOCA1LjggMjcgMTNjLjIgNy40LTUuNCAxMy41LTEyLjYgMTRWMTZjMS0uNSAxLjctMS42IDEuNS0yLjgtLjQtMS4yLTEuNC0yLTIuNi0ycy0yLjIuOC0yLjQgMmMwIDEuMi41IDIuMyAxLjYgMi43Ii8+PC9nPjwvc3ZnPg=="
-                                          className="_2PKwvL"
-                                        />
-                                        State Bank of India
-                                      </span>
-                                      <input
-                                        type="radio"
-                                        checked={true}
-                                        onChange={this.change}
-                                        name="radio"
-                                      />
-                                      <span className="checkmark"></span>
-                                    </label>
-                                    <label className="rdio-box1">
-                                      <span className="tt-radio">
-                                        <img
-                                          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyNCI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTYtOGg0MHY0MEgtNnoiLz48cGF0aCBmaWxsPSIjQkM0MTcwIiBkPSJNMjggMjRoLTguN0wxNCAxNWg4LjdtLTQuNC03LjZMOC43IDI0SDBMMTQgMCIvPjwvZz48L3N2Zz4="
-                                          className="_2PKwvL"
-                                        />
-                                        Axis Bank
-                                      </span>
-                                      <input
-                                        type="radio"
-                                        checked={true}
-                                        onChange={this.change}
-                                        name="radio"
-                                      />
-                                      <span className="checkmark"></span>
-                                    </label>
-                                    <label className="rdio-box1">
-                                      <span className="tt-radio">
-                                        <img
-                                          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyNCIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxkZWZzPjxwYXRoIGlkPSJhIiBkPSJNMjggMEgwdjIzLjhoMjhWMHoiLz48L2RlZnM+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTYtOGg0MHY0MEgtNnoiLz48bWFzayBpZD0iYiIgZmlsbD0iI2ZmZiI+PHVzZSB4bGluazpocmVmPSIjYSIvPjwvbWFzaz48cGF0aCBmaWxsPSIjMDAzODc0IiBkPSJNMCAxMkMwIDUuMiA2LjMgMCAxNCAwczE0IDUuMyAxNCAxMmMwIDYuNS02LjMgMTEuOC0xNCAxMS44cy0xNC01LjMtMTQtMTIiIG1hc2s9InVybCgjYikiLz48cGF0aCBmaWxsPSIjRUQxQzI0IiBkPSJNMTIuMyAzLjhsMy4yLTFWMjBsLTMuMiAxLjIiIG1hc2s9InVybCgjYikiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMTQuMiAxNC43QzEyLjggMTYuMyAxMS40IDE4IDkgMThjLTMuNyAwLTUuNC0zLjQtNS40LTYuMyAwLTIuOCAxLjMtNiA0LjgtNiAxLjUgMCAzIDEgNCAyVjEwYy0xLS43LTIuNS0xLTMuNi0xLTIuMiAwLTQuMi43LTQgMyAwIDEuNCAxLjQgMi40IDMgMi40IDIuMiAwIDMuNi0yIDQuNy0zLjZMMTQgOWMxLTEuNiAyLjYtMy4yIDUtMy4yIDMgMCA0LjcgMi40IDUuMiA1SDIzYy0uNS0xLTEuNS0xLjQtMi42LTEuNC0yLjMgMC0zLjggMi01IDMuN2wtMS4yIDJ6TTI0LjUgMTNjLS4zIDIuNi0xLjcgNS00LjggNS0xLjggMC0zLjItMS00LjItMi42di0xLjdjMS4zLjYgMi40IDEuMiAzLjggMS4yIDEuNyAwIDMuMi0xIDMuOC0yaDJ6IiBtYXNrPSJ1cmwoI2IpIi8+PC9nPjwvc3ZnPg=="
-                                          className="_2PKwvL"
-                                        />
-                                        Kotak Bank
-                                      </span>
-                                      <input
-                                        type="radio"
-                                        checked={true}
-                                        onChange={this.change}
-                                        name="radio"
-                                      />
-                                      <span className="checkmark"></span>
-                                    </label>
-                                  </div>
-
-                                  <div className="select-bank">
-                                    <span className="b-tt">Other Banks</span>
-                                    <select className="_1CV081">
-                                      <option value="SELECT_BANK">
-                                        ---Select Bank---
-                                      </option>
-                                      <option value="AIRTELMONEY">
-                                        Airtel Payments Bank
-                                      </option>
-                                      <option value="ALLAHABAD">
-                                        Allahabad Bank
-                                      </option>
-                                      <option value="ANDHRA">
-                                        Andhra Bank
-                                      </option>
-                                      <option value="AUSMALLFINBANK">
-                                        AU Small Finance Bank
-                                      </option>
-                                      <option value="BANDHAN">
-                                        Bandhan Bank
-                                      </option>
-                                      <option value="BASSIENCATHOLICCOOPB">
-                                        Bassien Catholic Co-Operative Bank
-                                      </option>
-                                      <option value="BNPPARIBAS">
-                                        BNP Paribas
-                                      </option>
-                                      <option value="BOBAHRAIN">
-                                        Bank of Bahrain and Kuwait
-                                      </option>
-                                      <option value="BOBARODA">
-                                        Bank of Baroda
-                                      </option>
-                                      <option value="BOBARODAC">
-                                        Bank of Baroda Corporate
-                                      </option>
-                                      <option value="BOBARODAR">
-                                        Bank of Baroda Retail
-                                      </option>
-                                      <option value="BOI">Bank of India</option>
-                                      <option value="BOM">
-                                        Bank of Maharashtra
-                                      </option>
-                                      <option value="CANARA">
-                                        Canara Bank
-                                      </option>
-                                      <option value="CATHOLICSYRIAN">
-                                        Catholic Syrian Bank
-                                      </option>
-                                      <option value="CBI">Central Bank</option>
-                                      <option value="CITYUNION">
-                                        City Union Bank
-                                      </option>
-                                      <option value="CORPORATION">
-                                        Corporation Bank
-                                      </option>
-                                      <option value="COSMOS">
-                                        Cosmos Co-op Bank
-                                      </option>
-                                      <option value="DBS">
-                                        digibank by DBS
-                                      </option>
-                                      <option value="DCB">DCB BANK LTD</option>
-                                      <option value="DENA">Dena Bank</option>
-                                      <option value="DEUTSCHE">
-                                        Deutsche Bank
-                                      </option>
-                                      <option value="DHANBANK">
-                                        Dhanalakshmi Bank
-                                      </option>
-                                      <option value="FEDERALBANK">
-                                        Federal Bank
-                                      </option>
-                                      <option value="IDBI">IDBI Bank</option>
-                                      <option value="IDFC">
-                                        IDFC FIRST Bank
-                                      </option>
-                                      <option value="INDIANBANK">
-                                        Indian Bank
-                                      </option>
-                                      <option value="INDUSIND">
-                                        IndusInd Bank
-                                      </option>
-                                      <option value="IOB">
-                                        Indian Overseas Bank
-                                      </option>
-                                      <option value="JANATABANKPUNE">
-                                        JANATA SAHAKARI BANK LTD PUNE
-                                      </option>
-                                      <option value="JKBANK">
-                                        J&amp;K Bank
-                                      </option>
-                                      <option value="KARNATAKA">
-                                        Karnataka Bank
-                                      </option>
-                                      <option value="KARURVYSYA">
-                                        Karur Vysya Bank
-                                      </option>
-                                      <option value="LAKSHMIVILAS">
-                                        Lakshmi Vilas Bank - Retail
-                                      </option>
-                                      <option value="LAKSHMIVILASC">
-                                        Lakshmi Vilas Bank - Corporate
-                                      </option>
-                                      <option value="OBC">
-                                        Oriental Bank of Commerce
-                                      </option>
-                                      <option value="PNB">
-                                        Punjab National Bank
-                                      </option>
-                                      <option value="PNBC">
-                                        Punjab National Bank Corporate
-                                      </option>
-                                      <option value="PNSB">
-                                        Punjab &amp; Sind Bank
-                                      </option>
-                                      <option value="PUNJABMAHA">
-                                        Punjab &amp; Maharashtra Co-op Bank
-                                      </option>
-                                      <option value="RATNAKAR">
-                                        RBL Bank – Net Banking
-                                      </option>
-                                      <option value="RBS">RBS</option>
-                                      <option value="SARASWAT">
-                                        Saraswat Co-op Bank
-                                      </option>
-                                      <option value="SHAMRAOVITHAL">
-                                        Shamrao Vithal Co-op Bank
-                                      </option>
-                                      <option value="SHIVAMERCOOP">
-                                        Shivalik Mercantile Co-op Bank
-                                      </option>
-                                      <option value="SOUTHINDIAN">
-                                        The South Indian Bank
-                                      </option>
-                                      <option value="STANC">
-                                        Standard Chartered Bank
-                                      </option>
-                                      <option value="SYNDICATE">
-                                        Syndicate Bank
-                                      </option>
-                                      <option value="TMBANK">
-                                        Tamilnad Mercantile Bank Limited
-                                      </option>
-                                      <option value="TNMERCANTILE">
-                                        Tamil Nadu Merchantile Bank
-                                      </option>
-                                      <option value="TNSC">TNSC Bank</option>
-                                      <option value="UCO">UCO Bank</option>
-                                      <option value="UNIONBANK">
-                                        Union Bank of India
-                                      </option>
-                                      <option value="UNITEDBANK">
-                                        United Bank of India
-                                      </option>
-                                      <option value="VIJAYABANK">
-                                        Vijaya Bank
-                                      </option>
-                                      <option value="YESBANK">Yes Bank</option>
-                                      <option value="ZOROACOPBANK">
-                                        The Zoroastrian Co-Operative Bank
-                                      </option>
-                                    </select>
-                                  </div>
-
-                                  <button className="continue-btn">
-                                    PAY R400
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* <!-- Net Banking end--> */}
+                          </div>
+                          <div className="dis-right">
+                            <button className="change1">CHANGE</button>
                           </div>
                         </div>
-                        <div className="dis-right">
-                          <button className="change1">CHANGE</button>
-                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="right-box">
                     <div className="pay-box">
@@ -1047,8 +1151,8 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                       <div className="flex-box flex-box2">
                         <img src="images/edd-note.svg" alt="" />
                         <textarea
-                        value="Any instructions for the delivery partner?"
-                        onChange={this.change}
+                          value="Any instructions for the delivery partner?"
+                          onChange={this.change}
                         >
                           Any instructions for the delivery partner?
                         </textarea>

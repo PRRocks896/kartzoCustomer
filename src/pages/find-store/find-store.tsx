@@ -6,6 +6,7 @@ import {
   header,
   trackorder,
 } from "../../pages/components/helper/images";
+import { scrollToTop } from "../utils";
 import "./find-store.css";
 
 class FindStore extends React.Component<{ show: boolean }> {
@@ -14,18 +15,21 @@ class FindStore extends React.Component<{ show: boolean }> {
   }
 
   componentDidMount() {
+    scrollToTop();
     EventEmitter.dispatch("isShow", true);
+    EventEmitter.dispatch("isShowFooter", true);
   }
 
   render() {
     // console.log("TrackOrder",this.props)
     return (
       <>
+        <div className="sticky-menu" id="fix-top">
         <header className="header">
           <div className="container-fluid">
             <div className="dis-flx">
               <div className="left-content">
-                <Link to="/">
+                <Link to ="/">
                   <img src={header.logo} alt="logo" />
                 </Link>
                 <a href="#">
@@ -51,11 +55,12 @@ class FindStore extends React.Component<{ show: boolean }> {
         <section className="page-name">
           <div className="container-fluid">
             <div className="menu-item">
-              <a href="#"> Home </a> / <a href="#"> Pretoria </a> /{" "}
-              <span>Groceries & Essentials</span>
+            <Link to="/"> Home </Link> / <a href="#"> Pretoria </a> /{" "}
+                <span>Groceries & Essentials</span>
             </div>
           </div>
         </section>
+        </div>
         <section className="store-dtl">
           <div className="tt-bdr">
             <div className="container-fluid">
