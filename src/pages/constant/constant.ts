@@ -18,6 +18,21 @@ export default {
         {clr: '#7ACAA6', bclr: '#7ACAA6'},
         {clr: '#412816', bclr: '#412816'},
         {clr: '#FF5463', bclr: '#FF5463'}
-    ]
+    ],
+
+    apiUrl:"http://api-customer.kartzoapp.com/v1/api/user/",
+
+    loginpage:{
+        title:{
+            login:'Login'
+        },
+        state:{
+            mobile:'',
+            mobileerror:'',
+            otp:'',
+            otperror:'',
+            isDisplay:false
+        }
+    }
 
 }

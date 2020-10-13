@@ -74,6 +74,7 @@ input {
 	max-width: 540px;
 	margin: auto;
 	height: 50px;
+	position: relative;
 	border-radius: 50px;
 	display: flex;
 	justify-content: space-between;
@@ -83,7 +84,7 @@ input {
 }
 
 .banners-home .src-location input {
-    background: url("../../assets/images/track-location.svg") #fff no-repeat;
+    /* background: url("../../assets/images/track-location.svg") #fff no-repeat; */
 	border: none;
 	background-position: center left 18px;
 	background-size: 20px;
@@ -94,6 +95,13 @@ input {
 	color: #13253B;
 	/* opacity: 1 !important; */
 }
+.location-img {
+	position: absolute;
+	top: 12px;
+	left: 25px;
+	cursor: pointer;
+
+  }
 
 .banners-home .src-location button {
 	background: #071828;
@@ -447,6 +455,7 @@ input {
 
 .we-kart .blog-1 p {
 	text-align: left;
+	color: #5C6978;
 }
 
 .we-kart .blog-1 .btn-kartzo-b {
@@ -478,8 +487,18 @@ input {
 .we-kart .blog-1 .btn-kartzo-b i {
 	margin-left: 12px;
 }
-
+.we-kart span.lazy-load-image-background.blur.lazy-load-image-loaded {
+    width: 100%;
+}
 /* He said; She said */
+.he-said span.lazy-load-image-background.blur.lazy-load-image-loaded {
+    /* margin-top: -80px; */
+    float: left;
+    margin-left: 40px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
 .he-said {
 	position: relative;
 	overflow: hidden;
@@ -543,7 +562,7 @@ input {
 	width: 100%;
 	display: block;
 	color: #fff;
-
+	text-align: left;
 	clear: both;
 }
 
@@ -847,6 +866,16 @@ input {
 		-moz-border-radius: 40px;
 		-ms-border-radius: 40px;
 		-o-border-radius: 40px;
+}
+span.lazy-load-image-background.blur.lazy-load-image-loaded {
+    max-width: 100%;
+    float: left;
+    margin-right: 23px;
+    position: relative;
+    /* width: 25% !important; */
+}
+.location-img {
+    top: 7px;
 }
 .one-app .src-location button {
 	height: auto;

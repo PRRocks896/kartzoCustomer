@@ -47,9 +47,11 @@ class Header extends React.Component {
                 <Link className="btn-business c-btn" to="/business">
                   Kartzo for Business
                 </Link>
+                <Link className="cart-icon" to="/cart">
                 <div className="cart-icon">
                   <img src={header.cart} alt="cart-icon" />
                 </div>
+                </Link>
                 <Link className="sign-tt" to = '/signin'>
                 Sign in
                 </Link>

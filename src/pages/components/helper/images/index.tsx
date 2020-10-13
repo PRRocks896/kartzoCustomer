@@ -7,7 +7,7 @@ export const footer = {
   logo: require("../../../../assets/images/3.png"),
 };
 
-export const login = {
+export const loginimg = {
   backarrow: require("../../../../assets/images/back-arrow.svg"),
 };
 
@@ -133,6 +133,12 @@ export const search = {
     upiLogo: require("../../../../assets/images/upiLogo6.gif"),
     paytm: require("../../../../assets/images/paytm-icon.webp")
   };
+
+  export const cart = {
+    backarrow: require("../../../../assets/images/back-arrow.svg"),
+    eddnote: require("../../../../assets/images/edd-note.svg")
+  };
+
 
 
 

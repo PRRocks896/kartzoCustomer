@@ -15,13 +15,19 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
     checkedvalue: false,
     showSection: false,
     checkedpaymentvalue: false,
+    checkedpaymentvaluewallets: false,
+    checkedpaymentvaluecard: false,
+    checkedpaymentvaluenetbanking: false
   };
   constructor(props: any) {
     super(props);
 
     this.change = this.change.bind(this);
     this.showSection = this.showSection.bind(this);
-    this.changePayment = this.changePayment.bind(this);
+    this.changePaymentUPI = this.changePaymentUPI.bind(this);
+    this.changePaymentWallets = this.changePaymentWallets.bind(this);
+    this.changePaymentCard = this.changePaymentCard.bind(this);
+    this.changePaymentNetBanking = this.changePaymentNetBanking.bind(this);
   }
 
   componentDidMount() {
@@ -41,11 +47,35 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
     });
   }
 
-  changePayment(e: any) {
+  changePaymentUPI(e: any) {
     this.setState({
       checkedpaymentvalue: !this.state.checkedpaymentvalue,
     });
   }
+
+  changePaymentWallets(e: any) {
+    this.setState({
+      checkedpaymentvaluewallets: !this.state.checkedpaymentvaluewallets,
+    });
+  }
+
+  changePaymentCard(e: any) {
+    this.setState({
+      checkedpaymentvaluecard: !this.state.checkedpaymentvaluecard
+    });
+  }
+
+  changePaymentNetBanking(e: any) {
+    this.setState({
+      checkedpaymentvaluenetbanking: !this.state.checkedpaymentvaluenetbanking
+    });
+  }
+
+  
+
+  
+
+  
 
   render() {
     // console.log("TrackOrder",this.props)
@@ -200,7 +230,7 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                         : false
                                     }
                                     onChange={this.change}
-                                    name="radio1"
+                                    name="address"
                                   />
                                   <span className="checkmark"></span>
                                 </label>
@@ -222,9 +252,9 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                   <input
                                     type="radio"
                                     id="2"
-                                    checked={false}
-                                    onChange={this.change}
-                                    name="radio2"
+                                    checked={true}
+                                   
+                                    name="address"
                                   />
                                   <span className="checkmark"></span>
                                 </label>
@@ -501,8 +531,8 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                         ? true
                                         : false
                                     }
-                                    onChange={this.changePayment}
-                                    name="radio9"
+                                    onChange={this.changePaymentUPI}
+                                    name="payment"
                                   />
                                   <span className="checkmark"></span>
                                 </label>
@@ -585,12 +615,12 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                   <input
                                     type="radio"
                                     checked={
-                                      this.state.checkedpaymentvalue === true
+                                      this.state.checkedpaymentvaluewallets === true
                                         ? true
                                         : false
                                     }
-                                    onChange={this.changePayment}
-                                    name="radio8"
+                                    onChange={this.changePaymentWallets}
+                                    name="payment"
                                   />
                                   <span className="checkmark"></span>
                                 </label>
@@ -600,7 +630,7 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                     <img src={placeorder.paytm} alt="" />
                                     <span className="tt-radio">Wallets</span>
                                   </div>
-                                  {this.state.checkedpaymentvalue === true ? (
+                                  {this.state.checkedpaymentvaluewallets === true ? (
                                     <div className="pey-upi">
                                       <div className="opti1 opti2">
                                         <label className="rdio-box1">
@@ -651,12 +681,12 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                   <input
                                     type="radio"
                                     checked={
-                                      this.state.checkedpaymentvalue === true
+                                      this.state.checkedpaymentvaluecard === true
                                         ? true
                                         : false
                                     }
-                                    onChange={this.changePayment}
-                                    name="radio12"
+                                    onChange={this.changePaymentCard}
+                                    name="payment"
                                   />
                                   <span className="checkmark"></span>
                                 </label>
@@ -667,7 +697,7 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                       Credit / Debit / ATM Card
                                     </span>
                                   </div>
-                                  {this.state.checkedpaymentvalue === true ? (
+                                  {this.state.checkedpaymentvaluecard === true ? (
                                     <div className="pey-upi">
                                       <div className="opti1 opti2">
                                         <div className="box-input1">
@@ -818,12 +848,12 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                   <input
                                     type="radio"
                                     checked={
-                                      this.state.checkedpaymentvalue === true
+                                      this.state.checkedpaymentvaluenetbanking === true
                                         ? true
                                         : false
                                     }
-                                    onChange={this.changePayment}
-                                    name="radio13"
+                                    onChange={this.changePaymentNetBanking}
+                                    name="payment"
                                   />
                                   <span className="checkmark"></span>
                                 </label>
@@ -833,7 +863,7 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                       Net Banking
                                     </span>
                                   </div>
-                                  {this.state.checkedpaymentvalue === true ? (
+                                  {this.state.checkedpaymentvaluenetbanking === true ? (
                                     <div className="pey-upi">
                                       <span className="b-tt">
                                         Popular Banks

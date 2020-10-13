@@ -8,7 +8,7 @@ import Testimonials from "./testimonials/testimonials";
 import Information from "./information/information";
 import EventEmitter from "../../event";
 
-class Home extends React.Component {
+class Home extends React.Component<{history:any}> {
   constructor(props: any) {
     super(props);
  

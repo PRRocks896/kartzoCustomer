@@ -1,39 +1,52 @@
 import { CALL_API } from '../middleware/api';
 import * as ACTION from '../constant/constant';
+import userService from '../../service/user.service';
+import {showSuccess,showError} from '../../pages/utils/index';
 
-// export const login = (auth) => {
-//   return {
-//     [CALL_API]: {
-//       endpoint: 'User/getAuthTokens',
-//       init: {
-//         method: 'POST',
-//         body: JSON.stringify(auth),
-//       },
-//       types: [
-//         ACTION.LOGIN_REQUEST,
-//         ACTION.LOGIN_SUCCESS,
-//         ACTION.LOGIN_FAILURE,
-//       ],
-//     }
-//   };
+// export const login = (data:any) => {
+//   // return {
+//   //   [CALL_API]: {
+//   //     endpoint: 'User/getAuthTokens',
+//   //     init: {
+//   //       method: 'POST',
+//   //       body: JSON.stringify(data),
+//   //     },
+//   //     types: [
+//   //       ACTION.LOGIN_REQUEST,
+//   //       ACTION.LOGIN_SUCCESS,
+//   //       ACTION.LOGIN_FAILURE,
+//   //     ],
+//   //   }
+//   // };
 // };
 
-export const register = (info:any) => {
-  return {
-    [CALL_API]: {
-      endpoint: 'AP/registerUsers',
-      init: {
-        method: 'POST',
-        body: JSON.stringify(info),
-      },
-      types: [
-        ACTION.REGISTER_REQUEST,
-        ACTION.REGISTER_SUCCESS,
-        ACTION.REGISTER_FAILURE,
-      ],
-    }
-  };
+export const loginService = {
+  login
 };
+  function login(data:any) {
+    return (dispatch:any) => {
+        dispatch(request({ data }));
+
+        userService.loginUser(data)
+            .then(
+                userdata => { 
+                  console.log("user",userdata)
+                    if(userdata.status === 200) {
+                      const msg = userdata.data.message
+                      showSuccess(msg);
+                      dispatch(success(userdata));
+                    }
+                }
+            ).catch(err => {
+                dispatch(failure(err.toString()));
+            });
+    };
+
+    function request(userdata:any) { return { type: ACTION.login.LOGIN_REQUEST, userdata } }
+    function success(userdata:any) { return { type: ACTION.login.LOGIN_SUCCESS, userdata } }
+    function failure(error:any) { return { type: ACTION.login.LOGIN_FAILURE, error } }
+  }
+
 
 
 // export const ForgotPassword = (data) => {

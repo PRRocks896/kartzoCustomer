@@ -26,7 +26,7 @@ class Features extends React.Component {
               <div className="col-lg-6 col-md-12 col-sm-6">
                 <div className="box-1 clr1">
                   <div className="bdr-bottom bclr1"></div>
-                  <LazyLoadImage alt="" effect="blur" src={features.order} />
+                  <LazyLoadImage className="lazy-order"   alt="" effect="blur" src={features.order} />
                   <h3 className="tt-1">No minimum order</h3>
                   <p>Deliveries with no minimum order value</p>
                 </div>
@@ -34,7 +34,7 @@ class Features extends React.Component {
               <div className="col-lg-6 col-md-12 col-sm-6">
                 <div className="box-1 clr2">
                   <div className="bdr-bottom bclr2"></div>
-                  <LazyLoadImage alt="" effect="blur" src={features.clock} />
+                  <LazyLoadImage  className="lazy-order" alt="" effect="blur" src={features.clock} />
 
                   <h3 className="tt-1">Delivered in Quick Time</h3>
                   <p>The quickest way to get things delivered</p>
@@ -43,7 +43,7 @@ class Features extends React.Component {
               <div className="col-lg-6 col-md-12 col-sm-6">
                 <div className="box-1 clr3">
                   <div className="bdr-bottom bclr3"></div>
-                  <LazyLoadImage alt="" effect="blur" src={features.delivery} />
+                  <LazyLoadImage  className="lazy-order" alt="" effect="blur" src={features.delivery} />
 
                   <h3 className="tt-1">Free delivery for new users</h3>
                   <p>Avail free delivery for a limited time</p>
@@ -52,7 +52,7 @@ class Features extends React.Component {
               <div className="col-lg-6 col-md-12 col-sm-6">
                 <div className="box-1 clr4">
                   <div className="bdr-bottom bclr4"></div>
-                  <LazyLoadImage alt="" effect="blur" src={features.map} />
+                  <LazyLoadImage  className="lazy-order" alt="" effect="blur" src={features.map} />
 
                   <h3 className="tt-1">Available flexible hours</h3>
                   <p>Day or night, get it delivered</p>

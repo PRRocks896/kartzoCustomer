@@ -125,8 +125,9 @@
 	font-weight: 500;
 	border: 1px solid #FBB034;
 	display: block;
+	outline: none;
 }
-.m-verify .otp-box {
+.m-verify .otp-box input {
 	border: 1px solid #dbdbdb;
 	display: inline-block;
 	width: 60px;
