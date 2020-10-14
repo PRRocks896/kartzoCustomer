@@ -29,7 +29,7 @@ const auth = (state = initialState, action: any) => {
       // Auth.setAuth(action.response.data);
       return {
         ...state,
-        user: action.userdata.data,
+        user: action.userdata,
       };
     case ACTION.login.LOGIN_FAILURE:
       // Auth.removeAuth();
@@ -37,6 +37,24 @@ const auth = (state = initialState, action: any) => {
       return {
         ...state,
         user: {},
+        error: action.error,
+      };
+
+      case ACTION.login.VERIFY_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.login.VERIFY_SUCCESS:
+      // Auth.setAuth(action.response.data);
+      return {
+        ...state,
+        // user: action.userdata.data,
+      };
+    case ACTION.login.VERIFY_FAILURE:
+      // Auth.removeAuth();
+      // Auth.removeAuthenticateUser();
+      return {
+        ...state,
         error: action.error,
       };
 

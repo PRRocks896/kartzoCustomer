@@ -1,9 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
-import {
-  cart
-} from "../../pages/components/helper/images";
+import { cart } from "../../pages/components/helper/images";
 import "./cart.css";
 
 class Cart extends React.Component<{ show: boolean }> {
@@ -27,7 +25,7 @@ class Cart extends React.Component<{ show: boolean }> {
   };
 
   handleChange() {
-   console.log("e")
+    console.log("e");
   }
 
   render() {
@@ -36,18 +34,16 @@ class Cart extends React.Component<{ show: boolean }> {
         <header className="header">
           <div className="container-fluid">
             <div className="dis-flx">
-               
               <div className="left-content">
-              <Link className="back-arrow" to="/">
+                <Link className="back-arrow" to="/">
                   <img src={cart.backarrow} alt="logo" />
                 </Link>
                 <h4 className="res-tt1">Confirm order</h4>
               </div>
               <div className="right-content">
-                  
-                <a href="#" className="sign-tt">
+                <Link className="sign-tt" to="/signin">
                   Sign in
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -78,7 +74,11 @@ class Cart extends React.Component<{ show: boolean }> {
                         <div className="r-flex">
                           <div className="number">
                             <span className="minus">-</span>
-                            <input type="text" value="1"   onChange={this.handleChange}/>
+                            <input
+                              type="text"
+                              value="1"
+                              onChange={this.handleChange}
+                            />
                             <span className="plus">+</span>
                           </div>
                           <span className="price">R28</span>
@@ -96,7 +96,11 @@ class Cart extends React.Component<{ show: boolean }> {
                         <div className="r-flex">
                           <div className="number">
                             <span className="minus">-</span>
-                            <input type="text" value="1"   onChange={this.handleChange}/>
+                            <input
+                              type="text"
+                              value="1"
+                              onChange={this.handleChange}
+                            />
                             <span className="plus">+</span>
                           </div>
                           <span className="price">R28</span>
@@ -114,7 +118,11 @@ class Cart extends React.Component<{ show: boolean }> {
                         <div className="r-flex">
                           <div className="number">
                             <span className="minus">-</span>
-                            <input type="text" value="1"   onChange={this.handleChange} />
+                            <input
+                              type="text"
+                              value="1"
+                              onChange={this.handleChange}
+                            />
                             <span className="plus">+</span>
                           </div>
                           <span className="price">R28</span>
@@ -132,7 +140,11 @@ class Cart extends React.Component<{ show: boolean }> {
                         <div className="r-flex">
                           <div className="number">
                             <span className="minus">-</span>
-                            <input type="text" value="1"  onChange={this.handleChange}/>
+                            <input
+                              type="text"
+                              value="1"
+                              onChange={this.handleChange}
+                            />
                             <span className="plus">+</span>
                           </div>
                           <span className="price">R28</span>
@@ -150,7 +162,11 @@ class Cart extends React.Component<{ show: boolean }> {
                         <div className="r-flex">
                           <div className="number">
                             <span className="minus">-</span>
-                            <input type="text" value="1"  onChange={this.handleChange}/>
+                            <input
+                              type="text"
+                              value="1"
+                              onChange={this.handleChange}
+                            />
                             <span className="plus">+</span>
                           </div>
                           <span className="price">R28</span>
@@ -168,7 +184,11 @@ class Cart extends React.Component<{ show: boolean }> {
                         <div className="r-flex">
                           <div className="number">
                             <span className="minus">-</span>
-                            <input type="text" value="1"  onChange={this.handleChange}/>
+                            <input
+                              type="text"
+                              value="1"
+                              onChange={this.handleChange}
+                            />
                             <span className="plus">+</span>
                           </div>
                           <span className="price">R28</span>
@@ -186,7 +206,11 @@ class Cart extends React.Component<{ show: boolean }> {
                         <div className="r-flex">
                           <div className="number">
                             <span className="minus">-</span>
-                            <input type="text" value="1"   onChange={this.handleChange}/>
+                            <input
+                              type="text"
+                              value="1"
+                              onChange={this.handleChange}
+                            />
                             <span className="plus">+</span>
                           </div>
                           <span className="price">R28</span>

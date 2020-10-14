@@ -1,6 +1,7 @@
 const apiUrl = {
     userController: {
-        createData:'otp-send'
+        createData:'otp-send',
+        verifyotp:'otp-verified'
     }
 }
 

@@ -40,14 +40,16 @@ class FindStore extends React.Component<{ show: boolean }> {
                 </a>
               </div>
               <div className="right-content">
-                {/* <!-- <a class="btn-partnr c-btn" href="#">Kartzo for Partners</a>
-                    <a class="btn-business c-btn" href="#">Kartzo for Partners</a> --> */}
                 <div className="cart-icon">
+                <Link to ="/cart">
                   <img src={trackorder.shopping} alt="cart-icon" />
+                  </Link>
                 </div>
-                <a href="#" className="sign-tt">
+
+                <Link className="sign-tt" to ="/signin">
                   Sign in
-                </a>
+                </Link>
+              
               </div>
             </div>
           </div>

@@ -18,6 +18,7 @@ class StoreItem extends React.Component<{ show: boolean }> {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.additem = this.additem.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
@@ -31,6 +32,10 @@ class StoreItem extends React.Component<{ show: boolean }> {
 
   additem() {
     this.setState({ isShowCard: true });
+  }
+
+  onChange() {
+
   }
 
   render() {
@@ -65,13 +70,17 @@ class StoreItem extends React.Component<{ show: boolean }> {
                   </a>
                 </div>
                 <div className="right-content">
-                  <div className="cart-icon">
-                    <img src={trackorder.shopping} alt="cart-icon" />
-                  </div>
-                  <a href="#" className="sign-tt">
-                    Sign in
-                  </a>
+                <div className="cart-icon">
+                <Link to ="/cart">
+                  <img src={trackorder.shopping} alt="cart-icon" />
+                  </Link>
                 </div>
+
+                <Link className="sign-tt" to ="/signin">
+                  Sign in
+                </Link>
+              
+              </div>
               </div>
             </div>
           </header>
@@ -442,7 +451,7 @@ class StoreItem extends React.Component<{ show: boolean }> {
                             </div>
                             <div className="number">
                               <span className="minus">-</span>
-                              <input type="text" value="1" />
+                              <input type="text" value="1" onChange={this.onChange}/>
                               <span className="plus">+</span>
                             </div>
                             <span className="price">R28</span>
@@ -456,7 +465,7 @@ class StoreItem extends React.Component<{ show: boolean }> {
                             </div>
                             <div className="number">
                               <span className="minus">-</span>
-                              <input type="text" value="1" />
+                              <input type="text" value="1" onChange={this.onChange}/>
                               <span className="plus">+</span>
                             </div>
                             <span className="price">R28</span>

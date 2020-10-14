@@ -1,194 +1,197 @@
 .header {
-	background: #071828;
-	padding: 15px 0px;
+  background: #071828;
+  padding: 15px 0px;
 }
 
 .header .container-fluid {
-	max-width: 1170px;
+  max-width: 1170px;
 }
 
 .header .search-box {
-	padding-bottom: 1px;
-	border-bottom: 1px solid aliceblue;
-	width: 189px;
-	margin-left: 50px;
-	background: url('../../assets/images/bottom-arrow.svg') no-repeat;
-	background-position: center right 12px;
-	background-size: 6px;
+  padding-bottom: 1px;
+  border-bottom: 1px solid aliceblue;
+  width: 189px;
+  margin-left: 50px;
+  background: url("../../assets/images/bottom-arrow.svg") no-repeat;
+  background-position: center right 12px;
+  background-size: 6px;
 }
 
 .header .dis-flx {
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .header .left-content {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .header .right-content {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .header .c-btn {
-	height: 38px;
-	color: #fff;
-	background-image: linear-gradient(to bottom, #FBB034, #ECCE09);
-	font-size: 16px;
-	line-height: 38px;
-	padding: 0px 25px;
-	border-radius: 38px;
-	margin-right: 15px;
-	font-weight: 500;
-	border: 1px solid #FBB034;
+  height: 38px;
+  color: #fff;
+  background-image: linear-gradient(to bottom, #fbb034, #ecce09);
+  font-size: 16px;
+  line-height: 38px;
+  padding: 0px 25px;
+  border-radius: 38px;
+  margin-right: 15px;
+  font-weight: 500;
+  border: 1px solid #fbb034;
 }
 
 .header .btn-partnr.c-btn {
-	background: #071828;
-	border: 1px solid #FBB034;
+  background: #071828;
+  border: 1px solid #fbb034;
 }
 
 .header .c-btn:hover {
-	color: #fff;
+  color: #fff;
 }
 
 .header .cart-icon {
-	margin-left: 12px;
-	margin-right: 20px;
+  margin-left: 12px;
+  margin-right: 20px;
 }
 
 /* header back arrow code here */
 .header .sign-tt,
-.header .sign-tt:hover
- {
-	color: #fff;
-	font-size: 14px;
+.header .sign-tt:hover {
+  color: #fff;
+  font-size: 14px;
 }
 .header .back-arrow {
-	width: 16px;
+  width: 16px;
 }
 .res-tt1 {
-	font-size: 16px;
-	margin-bottom: 0px;
-	color: #fff;
-	margin-left: 12px;
+  font-size: 16px;
+  margin-bottom: 0px;
+  color: #fff;
+  margin-left: 12px;
 }
 /* content section-start */
 
-.m-verify .box1{
-	width: 290px;
-	margin:auto;
+.m-verify .box1 {
+  width: 290px;
+  margin: auto;
 }
 .m-verify {
-	padding: 30px 0px;
-	padding-top: 80px;
+  padding: 30px 0px;
+  padding-top: 80px;
 }
 .m-verify .numr-1 {
-	float: left;
+  float: left;
 }
 .m-verify .input-box1 {
-	display: inline-block;
-	width: 140px;
-	border: none;
-	margin-left: 12px;
+  display: inline-block;
+  width: 140px;
+  border: none;
+  margin-left: 12px;
 }
 .m-verify .innr-flex {
-	display: flex;
-	align-items: end;
+  display: flex;
+  align-items: end;
 }
 .m-verify .innr-box {
-	display: flex;
-	align-items: end;
-	justify-content: space-between;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
 }
 .m-verify .text-1 {
-	position: absolute;
-	font-size: 14px;
-	top: -28px;
-	font-weight: 600;
+  position: absolute;
+  font-size: 14px;
+  top: -28px;
+  font-weight: 600;
 }
 .m-verify .bdr-bottom {
-	width: 100%;
-	height: 2px;
-	background: #f7b62b;
-	margin-top: 10px;
+  width: 100%;
+  height: 2px;
+  background: #f7b62b;
+  margin-top: 10px;
 }
 .m-verify .btn-box .otp-btn {
-	color: #fff;
-	background-image: linear-gradient(to bottom, #FBB034, #ECCE09);
-	font-size: 12px;
-	line-height: 25px;
-	padding: 0px 15px;
-	border-radius: 38px;
-	font-weight: 500;
-	border: 1px solid #FBB034;
-	display: block;
-	outline: none;
+  color: #fff;
+  background-image: linear-gradient(to bottom, #fbb034, #ecce09);
+  font-size: 12px;
+  line-height: 25px;
+  padding: 0px 15px;
+  border-radius: 38px;
+  font-weight: 500;
+  border: 1px solid #fbb034;
+  display: block;
+  outline: none;
 }
 .m-verify .otp-box input {
-	border: 1px solid #dbdbdb;
-	display: inline-block;
-	width: 60px;
-	border-radius: 6px;
-	overflow: hidden;
-	padding: 10px 6px;
-	margin-right: 10px;
+  border: 1px solid #dbdbdb;
+  display: inline-block;
+  width: 60px;
+  border-radius: 6px;
+  overflow: hidden;
+  padding: 10px 6px;
+  margin-right: 10px;
 }
 .m-verify .input-otp {
-	width: 100%;
-	border: none;
-	text-align: center;
+  width: 100%;
+  border: none;
+  text-align: center;
 }
 .m-verify .main-box-otp {
-	display: flex;
+  display: flex;
 }
 .m-verify .main-box-otp .otp-box:last-child {
-	margin-right: 0px;
+  margin-right: 0px;
 }
 .m-verify .box2 {
-	max-width: 432px;
-	margin: auto;
-	padding-top: 40px;
+  max-width: 432px;
+  margin: auto;
+  padding-top: 40px;
 }
 .m-verify .resend-tt {
-	text-align: center;
-	margin-top: 25px;
-	color: #f8b42d;
-	font-weight: 600;
-	font-size: 18px;
+  text-align: center;
+  margin-top: 25px;
+  color: #f8b42d;
+  font-weight: 600;
+  font-size: 18px;
 }
 
 .bottom-fix-box {
-	display: flex;
-	position: fixed;
-	bottom: 0px;
-	justify-content: space-between;
-	width: 100%;
-	align-items: center;
-	padding: 15px 15px;
-	background: #fff;
-	box-shadow: 0px 0px 3px #d7d5d5;
-	flex-direction: column;
+  display: flex;
+  position: fixed;
+  bottom: 0px;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  padding: 15px 15px;
+  background: #fff;
+  box-shadow: 0px 0px 3px #d7d5d5;
+  flex-direction: column;
 }
 
-.bottom-fix-box .right-btn a {
-	color: #fff;
-	background-image: linear-gradient(to bottom, #FBB034, #ECCE09);
-	font-size: 14px;
-	line-height: 33px;
-	padding: 0px 50px;
-	border-radius: 38px;
-	font-weight: 500;
-	border: 1px solid #FBB034;
-	display: block;
+.bottom-fix-box .right-btn button {
+  color: #fff;
+  background-image: linear-gradient(to bottom, #fbb034, #ecce09);
+  font-size: 14px;
+  line-height: 33px;
+  padding: 0px 50px;
+  border-radius: 38px;
+  font-weight: 500;
+  border: 1px solid #fbb034;
+  display: block;
+  outline: none;
+}
+.bottom-fix-box .right-btn {
+  margin: auto;
 }
 .main-item {
-	padding-bottom: 70px;
+  padding-bottom: 70px;
 }
 .bottom-fix-box .price {
-	font-size: 14px;
-	color: #db9f32;
-	font-weight: 600;
+  font-size: 14px;
+  color: #db9f32;
+  font-weight: 600;
 }

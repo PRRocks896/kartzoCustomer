@@ -29,6 +29,7 @@ import StoreItem from "./pages/store-item/store-item";
 import PlaceOrder from "./pages/placeorder/placeorder";
 import Login from "./pages/login/login";
 import Cart from "./pages/cart/cart";
+import Page404 from "./pages/pagenotfound/pagenotfound";
 const middleware = [thunk, api];
 const store = createStore(reducers, applyMiddleware(...middleware));
 
@@ -61,13 +62,9 @@ const PrivateRoute = ({ component: Component, ...rest }: any) => (
   />
 );
 
-
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-      {
-        
-      }
     <Layout>
         <Switch>
           <Route exact path="/" component={Home} />
@@ -78,12 +75,16 @@ ReactDOM.render(
           <Route exact path="/partners" component={Partners} />
           <Route exact path="/business" component={Business} />
           <Route exact path="/:slug1/:slug2" component={SearchCity} />
+          <Route exact path="/search-city" component={SearchCity} />
           <Route exact path="/track-order" component={TrackOrder}  />
           <Route exact path="/find-store" component={FindStore}  />
           <Route exact path="/store-item" component={StoreItem}  />
           <Route exact path="/placeorder" component={PlaceOrder}  />
           <Route exact path="/signin" component={Login}  />
           <Route exact path="/cart" component={Cart}  />
+  
+                      <Route path="*" component={Page404}/>
+                  
          
           {/* <Route exact path="/admin/" render={(props) => (
                     localStorage.getItem('token') ? (<Redirect to="/" />) : (<AdminLogin {...props}/>)

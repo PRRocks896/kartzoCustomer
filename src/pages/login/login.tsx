@@ -1,18 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
-import {
-  loginimg
-} from "../../pages/components/helper/images";
+import { loginimg } from "../../pages/components/helper/images";
 import constant from "../constant/constant";
 import OtpInput from "react-otp-input";
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import {loginService} from '../../redux/actions/login';
+import { connect } from "react-redux";
+// import { withRouter } from 'react-router-dom';
+import { loginService } from "../../redux/actions/index";
 import "./login.css";
 
-class Login extends React.Component<{login:any}> {
-
+class Login extends React.Component<{ login: any; verifyOtp: any }> {
   /** loginstate = state define in login page */
   loginState = constant.loginpage.state;
 
@@ -22,13 +19,14 @@ class Login extends React.Component<{login:any}> {
    * otp = otp verification
    * otperror = otp error
    * isDisplay = otp section show and hide with conditionally
-  */
+   */
   state = {
     mobile: this.loginState.mobile,
     mobileerror: this.loginState.mobileerror,
     otp: this.loginState.otp,
     otperror: this.loginState.otperror,
     isDisplay: this.loginState.isDisplay,
+    disabled: this.loginState.disabled
   };
 
   constructor(props: any) {
@@ -43,11 +41,20 @@ class Login extends React.Component<{login:any}> {
   componentDidMount() {
     /** Login Page Header  */
     EventEmitter.dispatch("isShow", true);
-     /** Login Page In Fotter Hide  */
+    /** Login Page In Fotter Hide  */
     EventEmitter.dispatch("isShowFooter", true);
+  }
 
-    console.log("login",this.props)
-  
+  componentWillReceiveProps(nextProps: any, newState: any) {
+    console.log("props",nextProps)
+    const data: any = nextProps;
+    if (data.userDetail) {
+      if (data.userDetail.status === 200) {
+        this.setState({
+          isDisplay: true,
+        });
+      }
+    }
   }
 
   handleChangeEvent(event: any) {
@@ -61,7 +68,6 @@ class Login extends React.Component<{login:any}> {
     this.setState({
       otp: otp,
     });
-    console.log("otp",this.state.otp);
   }
 
   validate() {
@@ -83,7 +89,29 @@ class Login extends React.Component<{login:any}> {
     return true;
   }
 
+  validateOtp() {
+    let otperror = "";
+
+    const otpRegex: any = /^[0-9]{4,6}$/;
+    if (!this.state.otp) {
+      otperror = "please enter otp";
+    } else if (!otpRegex.test(this.state.otp)) {
+      otperror = "please enter valid otp";
+    }
+
+    if (otperror) {
+      this.setState({
+        otperror,
+      });
+      return false;
+    }
+    return true;
+  }
+
   async login() {
+    this.setState({
+      disabled:true
+    });
     const isValid = this.validate();
     if (isValid) {
       this.setState({
@@ -91,10 +119,14 @@ class Login extends React.Component<{login:any}> {
       });
       if (this.state.mobile) {
         const obj = {
-          phone:this.state.mobile
-        }
+          phone: this.state.mobile,
+        };
         this.props.login(obj);
       }
+    } else {
+      this.setState({
+        disabled:false
+      });
     }
   }
 
@@ -105,18 +137,25 @@ class Login extends React.Component<{login:any}> {
     }
   }
 
-  verifyotp(){
-    this.setState({
-      isDisplay:true
-    })
+  verifyotp() {
+    console.log("otp", this.state.otp);
+    console.log("otp", this.state.mobile);
+    const isValid = this.validateOtp();
+    if (isValid) {
+      this.setState({
+        otperror: "",
+      });
+      if (this.state.otp && this.state.mobile) {
+        const obj = {
+          otp: this.state.otp,
+          mobile: this.state.mobile,
+        };
+        this.props.verifyOtp(obj);
+      }
+    }
   }
 
   render() {
-    console.log('userDetail: ', this.props)
-    const data:any = this.props;
-    if(data.userDetail && data.userDetail.status === 200) {
-      this.verifyotp();
-    }
     return (
       <>
         <header className="header">
@@ -157,7 +196,7 @@ class Login extends React.Component<{login:any}> {
                       />
                     </div>
                     <div className="btn-box">
-                      <button className="otp-btn" onClick={this.login}>
+                      <button className="otp-btn" onClick={this.login} disabled={this.state.disabled}>
                         Send OTP
                       </button>
                     </div>
@@ -190,69 +229,10 @@ class Login extends React.Component<{login:any}> {
                               // separator={<span>-</span>}
                             />
                           </div>
+                          <div className="mb-4 text-danger">
+                            {this.state.otperror}
+                          </div>
                         </div>
-                        {/* <div className="main-box-otp">
-                          <div className="otp-box">
-                            <input
-                              name="otp-input-0"
-                              type="text"
-                              autoComplete="off"
-                              // pattern="\d*"
-                              className="input-otp"
-                              onChange={this.handleChangeEvent}
-                            />
-                          </div>
-                          <div className="otp-box">
-                            <input
-                              name="otp-input-0"
-                              type="text"
-                              autoComplete="off"
-                              pattern="\d*"
-                              className="input-otp"
-                              value=""
-                            />
-                          </div>
-                          <div className="otp-box">
-                            <input
-                              name="otp-input-0"
-                              type="text"
-                              autoComplete="off"
-                              pattern="\d*"
-                              className="input-otp"
-                              value=""
-                            />
-                          </div>
-                          <div className="otp-box">
-                            <input
-                              name="otp-input-0"
-                              type="text"
-                              autoComplete="off"
-                              pattern="\d*"
-                              className="input-otp"
-                              value=""
-                            />
-                          </div>
-                          <div className="otp-box">
-                            <input
-                              name="otp-input-0"
-                              type="text"
-                              autoComplete="off"
-                              pattern="\d*"
-                              className="input-otp"
-                              value=""
-                            />
-                          </div>
-                          <div className="otp-box">
-                            <input
-                              name="otp-input-0"
-                              type="text"
-                              autoComplete="off"
-                              pattern="\d*"
-                              className="input-otp"
-                              value=""
-                            />
-                          </div>
-                        </div> */}
                       </div>
                     </div>
                     <p className="resend-tt">Resend</p>
@@ -267,7 +247,7 @@ class Login extends React.Component<{login:any}> {
         {this.state.isDisplay === true ? (
           <div className="bottom-fix-box">
             <div className="right-btn">
-              <a href="#">Verify and continue</a>
+              <button onClick={this.verifyotp}>Verify and continue</button>
             </div>
           </div>
         ) : (
@@ -278,11 +258,12 @@ class Login extends React.Component<{login:any}> {
   }
 }
 
-const mapStateToProps = (state:any) => ({
+const mapStateToProps = (state: any) => ({
   userDetail: state.auth.user
 });
-const mapDispatchToProps = (dispatch:any) => ({
-  login:(data:any) => dispatch(loginService.login(data))
+const mapDispatchToProps = (dispatch: any) => ({
+  login: (data: any) => dispatch(loginService.login(data)),
+  verifyOtp: (data: any) => dispatch(loginService.verifyOtp(data)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps) (Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

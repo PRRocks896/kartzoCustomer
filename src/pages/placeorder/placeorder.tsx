@@ -28,6 +28,7 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
     this.changePaymentWallets = this.changePaymentWallets.bind(this);
     this.changePaymentCard = this.changePaymentCard.bind(this);
     this.changePaymentNetBanking = this.changePaymentNetBanking.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -71,6 +72,9 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
     });
   }
 
+  handleChange() {
+
+  }
   
 
   
@@ -96,14 +100,16 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                     </a> --> */}
               </div>
               <div className="right-content">
-                {/* <!-- <a className="btn-partnr c-btn" href="#">Kartzo for Partners</a>
-                    <a className="btn-business c-btn" href="#">Kartzo for Partners</a> --> */}
                 <div className="cart-icon">
+                <Link to ="/cart">
                   <img src={trackorder.shopping} alt="cart-icon" />
+                  </Link>
                 </div>
-                <a href="#" className="sign-tt">
+
+                <Link className="sign-tt" to ="/signin">
                   Sign in
-                </a>
+                </Link>
+              
               </div>
             </div>
           </div>
@@ -252,8 +258,8 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                                   <input
                                     type="radio"
                                     id="2"
-                                    checked={true}
-                                   
+                                    checked={false}
+                                   onChange={this.handleChange}
                                     name="address"
                                   />
                                   <span className="checkmark"></span>

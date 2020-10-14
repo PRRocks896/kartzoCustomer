@@ -15,8 +15,19 @@ export const showSuccess = (msg: string) => {
 
 export const showError = (msg: string) => {
   Swal.fire({
-    // title: "Cancelled",
     text: msg,
     icon: "error",
   });
 };
+
+export const getAppName = () => {
+  return " | Kartzoo App";
+}
+
+export const getHeaderDetail =  () => {
+  return {
+    // Authorization: `Bearer ${localStorage.getItem("token")}`,
+    "Access-Control-Allow-Origin": "*",
+    crossdomain: true,
+  };
+}

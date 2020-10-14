@@ -31,7 +31,8 @@ export default {
             mobileerror:'',
             otp:'',
             otperror:'',
-            isDisplay:false
+            isDisplay:false,
+            disabled:false
         }
     }
 
