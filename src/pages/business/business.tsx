@@ -1,9 +1,10 @@
 import React from "react";
 import { partners, business } from "../components/helper/images";
-import { scrollToTop } from "../utils";
+import { getAppName, scrollToTop } from "../utils";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "./business.css";
+import constant from "../constant/constant";
 
 class Business extends React.Component {
   constructor(props: any) {
@@ -11,6 +12,7 @@ class Business extends React.Component {
   }
 
   componentDidMount() {
+    document.title = constant.business + getAppName();
     scrollToTop();
   }
 

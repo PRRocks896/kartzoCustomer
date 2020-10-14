@@ -30,6 +30,8 @@ import PlaceOrder from "./pages/placeorder/placeorder";
 import Login from "./pages/login/login";
 import Cart from "./pages/cart/cart";
 import Page404 from "./pages/pagenotfound/pagenotfound";
+import Profile from "./pages/profile/profile";
+const interceptor = require("./intercepter");
 const middleware = [thunk, api];
 const store = createStore(reducers, applyMiddleware(...middleware));
 
@@ -82,8 +84,8 @@ ReactDOM.render(
           <Route exact path="/placeorder" component={PlaceOrder}  />
           <Route exact path="/signin" component={Login}  />
           <Route exact path="/cart" component={Cart}  />
-  
-                      <Route path="*" component={Page404}/>
+          <Route exact path="/profile" component={Profile}  />
+          <Route path="*" component={Page404}/>
                   
          
           {/* <Route exact path="/admin/" render={(props) => (

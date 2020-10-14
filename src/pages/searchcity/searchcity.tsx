@@ -1,6 +1,6 @@
 import React from "react";
 import { search } from "../components/helper/images";
-import { scrollToTop } from "../utils";
+import { getAppName, scrollToTop } from "../utils";
 import "./searchcity.css";
 import constant from "../constant/constant";
 import AppLink from "../home/app-link/app-link";
@@ -8,11 +8,13 @@ import Information from "../home/information/information";
 import { Link } from "react-router-dom";
 
 class SearchCity extends React.Component {
+  
   constructor(props: any) {
     super(props);
   }
 
   componentDidMount() {
+    document.title = constant.searchcity + getAppName();
     scrollToTop();
   }
 

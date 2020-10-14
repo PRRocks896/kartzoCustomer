@@ -1,9 +1,10 @@
 import React from "react";
 import { about, applink, contact } from "../components/helper/images";
-import {scrollToTop} from '../utils';
+import {getAppName, scrollToTop} from '../utils';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "./contact.css";
+import constant from "../constant/constant";
 
 class ContactUs extends React.Component {
   constructor(props: any) {
@@ -11,6 +12,7 @@ class ContactUs extends React.Component {
   }
 
   componentDidMount() {
+    document.title = constant.contact + getAppName();
     scrollToTop();
   }
 

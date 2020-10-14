@@ -16,8 +16,8 @@ function login(data: any) {
       .then((userdata) => {
         console.log("user", userdata);
         if (userdata.status === 200) {
-          const msg = userdata.message;
-          showSuccess(msg);
+          // const msg = userdata.message;
+          // showSuccess(msg);
           dispatch(success(userdata));
         }
       })
@@ -46,9 +46,12 @@ function verifyOtp(data: any) {
       .then((otpdata) => {
         console.log("otpdata", otpdata);
         if (otpdata.status === 200) {
-          const msg = otpdata.message;
-          showSuccess(msg);
+          localStorage.setItem('mobile',otpdata.resultObject)
+          // const msg = otpdata.message;
+          // showSuccess(msg);
           dispatch(success(otpdata));
+        } else {
+          dispatch(failure(otpdata));
         }
       })
       .catch((err) => {

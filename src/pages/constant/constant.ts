@@ -21,6 +21,19 @@ export default {
     ],
 
     apiUrl:"http://api-customer.kartzoapp.com/v1/api/user/",
+    home:'Home',
+    about:'About',
+    contact:'Contact-Us',
+    findstore:'Find-Store',
+    store:"Store",
+    profile:"Profile",
+    cart:"Cart",
+    job:"Job-Opening",
+    placeorder:"Place Order",
+    searchcity:'Search City',
+    trackorder:'Track Order',
+    business:"Business",
+    partners:"Partners",
 
     loginpage:{
         title:{
@@ -32,7 +45,10 @@ export default {
             otp:'',
             otperror:'',
             isDisplay:false,
-            disabled:false
+            disabled:false,
+            isButton:false,
+            disabled1:false,
+            isButtonVerify:false
         }
     }
 

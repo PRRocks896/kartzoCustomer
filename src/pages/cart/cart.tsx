@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
 import { cart } from "../../pages/components/helper/images";
+import constant from "../constant/constant";
+import { getAppName } from "../utils";
 import "./cart.css";
 
 class Cart extends React.Component<{ show: boolean }> {
@@ -16,6 +18,7 @@ class Cart extends React.Component<{ show: boolean }> {
   }
 
   componentDidMount() {
+    document.title = constant.cart + getAppName();
     EventEmitter.dispatch("isShow", true);
     EventEmitter.dispatch("isShowFooter", true);
   }
@@ -264,8 +267,8 @@ class Cart extends React.Component<{ show: boolean }> {
             <span className="dot-m">•</span>
             <span className="price">R 1230</span>
           </div>
-          <div className="right-btn">
-            <a href="#">Sign in</a>
+          <div className="right-btn1">
+            <Link to="/signin">Sign in</Link>
           </div>
         </div>
       </>

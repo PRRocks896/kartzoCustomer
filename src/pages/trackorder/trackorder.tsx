@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
 import { header, trackorder } from "../../pages/components/helper/images";
 import Layout from "../components/layout/layout";
+import constant from "../constant/constant";
+import { getAppName } from "../utils";
 import './trackorder.css';
 
 class TrackOrder extends React.Component<{show: boolean}> {
@@ -11,6 +13,7 @@ class TrackOrder extends React.Component<{show: boolean}> {
   }
 
   componentDidMount() {
+    document.title = constant.trackorder + getAppName();
     EventEmitter.dispatch('isShow', true);
   }
 

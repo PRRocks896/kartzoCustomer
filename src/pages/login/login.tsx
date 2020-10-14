@@ -8,8 +8,14 @@ import { connect } from "react-redux";
 // import { withRouter } from 'react-router-dom';
 import { loginService } from "../../redux/actions/index";
 import "./login.css";
+import { getAppName } from "../utils";
+const interceptor = require("../../intercepter");
 
-class Login extends React.Component<{ login: any; verifyOtp: any }> {
+class Login extends React.Component<{
+  login: any;
+  verifyOtp: any;
+  history: any;
+}> {
   /** loginstate = state define in login page */
   loginState = constant.loginpage.state;
 
@@ -26,7 +32,10 @@ class Login extends React.Component<{ login: any; verifyOtp: any }> {
     otp: this.loginState.otp,
     otperror: this.loginState.otperror,
     isDisplay: this.loginState.isDisplay,
-    disabled: this.loginState.disabled
+    disabled: this.loginState.disabled,
+    disabled1: this.loginState.disabled1,
+    isButton: this.loginState.isButton,
+    isButtonVerify: this.loginState.isButtonVerify,
   };
 
   constructor(props: any) {
@@ -39,21 +48,57 @@ class Login extends React.Component<{ login: any; verifyOtp: any }> {
   }
 
   componentDidMount() {
-    /** Login Page Header  */
+    document.title = constant.loginpage.title.login + getAppName();
+    /** Login Page Header  */ 
     EventEmitter.dispatch("isShow", true);
     /** Login Page In Fotter Hide  */
     EventEmitter.dispatch("isShowFooter", true);
   }
 
   componentWillReceiveProps(nextProps: any, newState: any) {
-    console.log("props",nextProps)
+    console.log("props", nextProps);
     const data: any = nextProps;
+
+    /** otp get success response */
     if (data.userDetail) {
       if (data.userDetail.status === 200) {
         this.setState({
+          isButton: false,
           isDisplay: true,
         });
+      } else {
+        this.setState({
+          disabled: false,
+          isButton: false,
+          isDisplay: false,
+        });
       }
+    } else {
+      this.setState({
+        isButton: false,
+        disabled: false,
+        isDisplay: false,
+      });
+    }
+
+    /** otp verify success response */
+    if (data.otpverify) {
+      if (data.otpverify.status === 200) {
+        this.setState({
+          isButtonVerify: false,
+        });
+        this.props.history.push("/");
+      } else {
+        this.setState({
+          isButtonVerify: false,
+          disabled1: false,
+        });
+      }
+    } else {
+      this.setState({
+        isButtonVerify: false,
+        disabled1: false,
+      });
     }
   }
 
@@ -92,7 +137,7 @@ class Login extends React.Component<{ login: any; verifyOtp: any }> {
   validateOtp() {
     let otperror = "";
 
-    const otpRegex: any = /^[0-9]{4,6}$/;
+    const otpRegex: any = /^[0-9]{6}$/;
     if (!this.state.otp) {
       otperror = "please enter otp";
     } else if (!otpRegex.test(this.state.otp)) {
@@ -110,7 +155,8 @@ class Login extends React.Component<{ login: any; verifyOtp: any }> {
 
   async login() {
     this.setState({
-      disabled:true
+      isButton: true,
+      disabled: true,
     });
     const isValid = this.validate();
     if (isValid) {
@@ -125,7 +171,8 @@ class Login extends React.Component<{ login: any; verifyOtp: any }> {
       }
     } else {
       this.setState({
-        disabled:false
+        isButton: false,
+        disabled: false,
       });
     }
   }
@@ -138,8 +185,10 @@ class Login extends React.Component<{ login: any; verifyOtp: any }> {
   }
 
   verifyotp() {
-    console.log("otp", this.state.otp);
-    console.log("otp", this.state.mobile);
+    this.setState({
+      isButtonVerify: true,
+      disabled1: true,
+    });
     const isValid = this.validateOtp();
     if (isValid) {
       this.setState({
@@ -152,6 +201,11 @@ class Login extends React.Component<{ login: any; verifyOtp: any }> {
         };
         this.props.verifyOtp(obj);
       }
+    } else {
+      this.setState({
+        isButtonVerify: false,
+        disabled1: false,
+      });
     }
   }
 
@@ -195,11 +249,30 @@ class Login extends React.Component<{ login: any; verifyOtp: any }> {
                         onChange={this.handleChangeEvent}
                       />
                     </div>
-                    <div className="btn-box">
-                      <button className="otp-btn" onClick={this.login} disabled={this.state.disabled}>
-                        Send OTP
-                      </button>
-                    </div>
+                    {this.state.isButton === false ? (
+                      <div className="btn-box">
+                        <button
+                          className="otp-btn"
+                          onClick={this.login}
+                          disabled={this.state.disabled}
+                        >
+                          Send OTP
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="spinerButton">
+                        <div className="btn-box">
+                          <button
+                            className="otp-btn"
+                            disabled={this.state.disabled}
+                          >
+                            Send OTP
+                          </button>
+                        </div>
+                        <div className="spinners"></div>
+                      </div>
+                    )}
+
                     <p className="text-1">
                       Your 10 digit mobile number
                       <span className="clr-1">*</span>
@@ -216,7 +289,7 @@ class Login extends React.Component<{ login: any; verifyOtp: any }> {
                     <div className="box2">
                       <div className="hide-div">
                         <p className="text-2">
-                          Your 10 digit mobile number
+                          Enter Your OTP
                           <span className="clr-1">*</span>
                         </p>
                         <div className="main-box-otp">
@@ -229,13 +302,15 @@ class Login extends React.Component<{ login: any; verifyOtp: any }> {
                               // separator={<span>-</span>}
                             />
                           </div>
-                          <div className="mb-4 text-danger">
-                            {this.state.otperror}
-                          </div>
                         </div>
                       </div>
+                      <div className="mb-4 text-danger">
+                        {this.state.otperror}
+                      </div>
                     </div>
-                    <p className="resend-tt">Resend</p>
+                    <p className="resend-tt" onClick={this.login}>
+                      Resend
+                    </p>
                   </>
                 ) : (
                   ""
@@ -244,12 +319,29 @@ class Login extends React.Component<{ login: any; verifyOtp: any }> {
             </div>
           </div>
         </section>
+
         {this.state.isDisplay === true ? (
-          <div className="bottom-fix-box">
-            <div className="right-btn">
-              <button onClick={this.verifyotp}>Verify and continue</button>
+          this.state.isButtonVerify === false ? (
+            <div className="bottom-fix-box">
+              <div className="right-btn">
+                <button
+                  onClick={this.verifyotp}
+                  disabled={this.state.disabled1}
+                >
+                  Verify and continue
+                </button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="bottom-fix-box">
+              <div className="spinerButton1">
+                <div className="right-btn">
+                  <button>Verify and continue</button>
+                </div>
+                <div className="spinners1"></div>
+              </div>
+            </div>
+          )
         ) : (
           ""
         )}
@@ -259,7 +351,8 @@ class Login extends React.Component<{ login: any; verifyOtp: any }> {
 }
 
 const mapStateToProps = (state: any) => ({
-  userDetail: state.auth.user
+  userDetail: state.auth.user,
+  otpverify: state.auth.otpdetail,
 });
 const mapDispatchToProps = (dispatch: any) => ({
   login: (data: any) => dispatch(loginService.login(data)),

@@ -1,0 +1,12 @@
+.btn-box .otp-btn {
+	color: #fff;
+    background-image: linear-gradient(to bottom, #fbb034, #ecce09);
+    font-size: 11px;
+    line-height: 25px;
+    padding: 0px 26px;
+    border-radius: 38px;
+    font-weight: 500;
+    border: 1px solid #fbb034;
+    display: block;
+    outline: none;
+}

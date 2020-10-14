@@ -1,4 +1,6 @@
 import React from "react";
+import constant from "../constant/constant";
+import { getAppName } from "../utils";
 
 class JobOpening extends React.Component {
   constructor(props: any) {
@@ -6,6 +8,7 @@ class JobOpening extends React.Component {
   }
 
   componentDidMount() {
+    document.title = constant.job + getAppName();
   }
 
   render() {

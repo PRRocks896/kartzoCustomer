@@ -2,6 +2,7 @@ import * as ACTION from "../constant/constant";
 
 const initialState = {
   user: "",
+  otpdetail:""
   // user: {},
   // avatar: {},
   // auth_data: {},
@@ -48,7 +49,7 @@ const auth = (state = initialState, action: any) => {
       // Auth.setAuth(action.response.data);
       return {
         ...state,
-        // user: action.userdata.data,
+        otpdetail: action.otpdata,
       };
     case ACTION.login.VERIFY_FAILURE:
       // Auth.removeAuth();

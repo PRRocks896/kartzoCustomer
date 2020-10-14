@@ -7,6 +7,8 @@ import {
   trackorder,
   storeitem,
 } from "../../pages/components/helper/images";
+import constant from "../constant/constant";
+import { getAppName } from "../utils";
 import "./store-item.css";
 
 class StoreItem extends React.Component<{ show: boolean }> {
@@ -22,6 +24,7 @@ class StoreItem extends React.Component<{ show: boolean }> {
   }
 
   componentDidMount() {
+    document.title = constant.store + getAppName();
     EventEmitter.dispatch("isShow", true);
     EventEmitter.dispatch("isShowFooter", true);
   }
@@ -76,9 +79,19 @@ class StoreItem extends React.Component<{ show: boolean }> {
                   </Link>
                 </div>
 
-                <Link className="sign-tt" to ="/signin">
-                  Sign in
-                </Link>
+                {
+                  localStorage.getItem('mobile') ? (
+                    <div className="cart-icon m-0">
+                    <Link className="cart-icon" to="/profile">
+                    <i className="fas fa-user-circle user_icon1"></i>
+                    </Link>
+                    </div>
+                  ) : (
+                    <Link className="sign-tt" to = '/signin'>
+                    Sign in
+                    </Link>
+                  )
+                }
               
               </div>
               </div>

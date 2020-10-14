@@ -289,7 +289,7 @@
 .bottom-fix-box .left-box {
 	font-size: 12px;
 }
-.bottom-fix-box .right-btn a {
+.bottom-fix-box .right-btn1 a {
 	color: #fff;
 	background-image: linear-gradient(to bottom, #FBB034, #ECCE09);
 	font-size: 14px;
@@ -299,6 +299,10 @@
 	font-weight: 500;
 	border: 1px solid #FBB034;
 	display: block;
+	text-align: end;
+}
+.bottom-fix-box .right-btn1 {
+	margin: 0px;
 }
 .main-item {
 	padding-bottom: 70px;

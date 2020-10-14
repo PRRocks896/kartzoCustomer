@@ -115,16 +115,16 @@
   margin-top: 10px;
 }
 .m-verify .btn-box .otp-btn {
-  color: #fff;
-  background-image: linear-gradient(to bottom, #fbb034, #ecce09);
-  font-size: 12px;
-  line-height: 25px;
-  padding: 0px 15px;
-  border-radius: 38px;
-  font-weight: 500;
-  border: 1px solid #fbb034;
-  display: block;
-  outline: none;
+	color: #fff;
+    background-image: linear-gradient(to bottom, #fbb034, #ecce09);
+    font-size: 11px;
+    line-height: 25px;
+    padding: 0px 26px;
+    border-radius: 38px;
+    font-weight: 500;
+    border: 1px solid #fbb034;
+    display: block;
+    outline: none;
 }
 .m-verify .otp-box input {
   border: 1px solid #dbdbdb;
@@ -195,3 +195,75 @@
   color: #db9f32;
   font-weight: 600;
 }
+
+@keyframes spinners {
+	to {transform: rotate(360deg);}
+  }
+   
+  .spinners:before {
+	  content: '';
+	  box-sizing: border-box;
+	  position: absolute;
+	  top: 50%;
+	  left: 97px;
+	  width: 12px;
+	  height: 12px;
+	  margin-top: -7px;
+	  margin-left: -10px;
+	  border-radius: 50%;
+	  border: 2px solid #ffffff;
+	  border-top-color: #000000;
+	  animation: spinners .8s linear infinite;
+	  filter: blur(0px);
+  }
+
+  .spinners {
+	background: rgb(238, 162, 24) !important;
+  }
+
+  .spinerButton {
+	text-align: center;
+    position: relative;
+	background: rgb(238, 162, 24) !important;
+    
+  }
+
+  .spinerButton:focus {
+	outline: none;
+  }
+
+  @keyframes spinners1 {
+	to {transform: rotate(360deg);}
+  }
+   
+  .spinners1:before {
+	  content: '';
+	  box-sizing: border-box;
+	  position: absolute;
+	  top: 50%;
+	  left: 213px;
+	  width: 12px;
+	  height: 12px;
+	  margin-top: -7px;
+	  margin-left: -10px;
+	  border-radius: 50%;
+	  border: 2px solid #ffffff;
+	  border-top-color: #000000;
+	  animation: spinners .8s linear infinite;
+	  filter: blur(0px);
+  }
+
+  .spinners1 {
+	background: rgb(238, 162, 24) !important;
+  }
+
+  .spinerButton1 {
+	text-align: center;
+    position: relative;
+	background: rgb(238, 162, 24) !important;
+	margin: auto;
+  }
+
+  .spinerButton1:focus {
+	outline: none;
+  }

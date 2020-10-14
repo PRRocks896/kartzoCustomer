@@ -7,6 +7,8 @@ import Features from "./features/feature";
 import Testimonials from "./testimonials/testimonials";
 import Information from "./information/information";
 import EventEmitter from "../../event";
+import constant from "../constant/constant";
+import { getAppName } from "../utils";
 
 class Home extends React.Component<{history:any}> {
   constructor(props: any) {
@@ -15,6 +17,7 @@ class Home extends React.Component<{history:any}> {
   }
 
   componentDidMount() {
+    document.title = constant.home + getAppName();
     EventEmitter.dispatch('isShow', false);
     EventEmitter.dispatch('isShowFooter', false);
   }
