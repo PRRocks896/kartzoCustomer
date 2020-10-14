@@ -21,7 +21,7 @@ export default {
     ],
 
     apiUrl:"http://api-customer.kartzoapp.com/v1/api/user/",
-    home:'Home',
+    home:'Kartzoo App get all foods....',
     about:'About',
     contact:'Contact-Us',
     findstore:'Find-Store',
@@ -48,7 +48,8 @@ export default {
             disabled:false,
             isButton:false,
             disabled1:false,
-            isButtonVerify:false
+            isButtonVerify:false,
+            disabledInput:false
         }
     }
 

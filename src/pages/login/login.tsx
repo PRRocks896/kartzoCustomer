@@ -36,6 +36,7 @@ class Login extends React.Component<{
     disabled1: this.loginState.disabled1,
     isButton: this.loginState.isButton,
     isButtonVerify: this.loginState.isButtonVerify,
+    disabledInput: this.loginState.disabledInput,
   };
 
   constructor(props: any) {
@@ -49,7 +50,7 @@ class Login extends React.Component<{
 
   componentDidMount() {
     document.title = constant.loginpage.title.login + getAppName();
-    /** Login Page Header  */ 
+    /** Login Page Header  */
     EventEmitter.dispatch("isShow", true);
     /** Login Page In Fotter Hide  */
     EventEmitter.dispatch("isShowFooter", true);
@@ -63,11 +64,13 @@ class Login extends React.Component<{
     if (data.userDetail) {
       if (data.userDetail.status === 200) {
         this.setState({
+          disabledInput: true,
           isButton: false,
           isDisplay: true,
         });
       } else {
         this.setState({
+          disabledInput: false,
           disabled: false,
           isButton: false,
           isDisplay: false,
@@ -75,6 +78,7 @@ class Login extends React.Component<{
       }
     } else {
       this.setState({
+        disabledInput: false,
         isButton: false,
         disabled: false,
         isDisplay: false,
@@ -185,10 +189,10 @@ class Login extends React.Component<{
   }
 
   verifyotp() {
-    this.setState({
-      isButtonVerify: true,
-      disabled1: true,
-    });
+    // this.setState({
+    //   isButtonVerify: true,
+    //   disabled1: true,
+    // });
     const isValid = this.validateOtp();
     if (isValid) {
       this.setState({
@@ -202,10 +206,10 @@ class Login extends React.Component<{
         this.props.verifyOtp(obj);
       }
     } else {
-      this.setState({
-        isButtonVerify: false,
-        disabled1: false,
-      });
+      // this.setState({
+      //   isButtonVerify: false,
+      //   disabled1: false,
+      // });
     }
   }
 
@@ -247,6 +251,7 @@ class Login extends React.Component<{
                         maxLength={10}
                         onKeyPress={this.enterPressed.bind(this)}
                         onChange={this.handleChangeEvent}
+                        disabled={this.state.disabledInput}
                       />
                     </div>
                     {this.state.isButton === false ? (
@@ -319,8 +324,19 @@ class Login extends React.Component<{
             </div>
           </div>
         </section>
-
         {this.state.isDisplay === true ? (
+          <div className="bottom-fix-box">
+            <div className="right-btn">
+              <button onClick={this.verifyotp}>
+                Verify and continue
+              </button>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
+        {/* {this.state.isDisplay === true ? (
           this.state.isButtonVerify === false ? (
             <div className="bottom-fix-box">
               <div className="right-btn">
@@ -344,7 +360,7 @@ class Login extends React.Component<{
           )
         ) : (
           ""
-        )}
+        )} */}
       </>
     );
   }
