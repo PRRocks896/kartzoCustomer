@@ -267,9 +267,15 @@ class Cart extends React.Component<{ show: boolean }> {
             <span className="dot-m">•</span>
             <span className="price">R 1230</span>
           </div>
-          <div className="right-btn1">
-            <Link to="/signin">Sign in</Link>
-          </div>
+          {localStorage.getItem("mobile") ? (
+            <div className="right-btn1">
+              <Link to="/">Add</Link>
+            </div>
+          ) : (
+            <div className="right-btn1">
+              <Link to="/signin">Sign in</Link>
+            </div>
+          )}
         </div>
       </>
     );

@@ -17,7 +17,6 @@ class Home extends React.Component<{history:any}> {
   }
 
   componentDidMount() {
-    document.title = constant.home + getAppName();
     EventEmitter.dispatch('isShow', false);
     EventEmitter.dispatch('isShowFooter', false);
   }
