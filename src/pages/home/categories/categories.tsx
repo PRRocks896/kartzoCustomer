@@ -1,10 +1,49 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import constant from "../../constant/constant";
+import { connect } from "react-redux";
+import { categoryService } from "../../../redux/actions/index";
+import './categories.css';
 
-class Categories extends React.Component {
+class Categories extends React.Component<{getCategoryData:any}> {
+
+  state =  {
+    categorydata:[]
+  }
+
   constructor(props: any) {
     super(props);
+    this.getCategory = this.getCategory.bind(this);
+  }
+
+  componentDidMount() {
+    this.getCategory();
+  }
+
+  componentWillReceiveProps(nextProps: any, newState: any) {
+    // console.log("componentWillReceiveProps category", nextProps);
+    if(nextProps.categoryDetail && nextProps.categoryDetail.length > 0) {
+      this.getCategoryResponse(nextProps.categoryDetail);
+    }
+  }
+
+  getCategory(
+    searchText: string = "",
+    page: number = 1,
+    size: number = 10
+  ) {
+    const obj = {
+      searchText: searchText,
+      page: page,
+      size: size,
+    };
+    this.props.getCategoryData(obj);
+  }
+
+  getCategoryResponse(data:any) {
+    this.setState({
+      categorydata:this.state.categorydata = data
+    })
   }
 
   render() {
@@ -22,28 +61,62 @@ class Categories extends React.Component {
           </div>
           <div className="main-div">
             <div className="row">
-              {constant.imagearray.map((img: any, index: number) => (
-                <div key={index} className="col-sm-6 col-md-4 col-lg-3">
-                  <Link to="/find-store">
-                  <div
-                    className="box-1"
-                    style={{
-                      border: `1px solid ${constant.categoryColor[index].clr}`,
-                    }}
-                  >
+              {/* {
+                constant.imagearray.map((img: any, index: number) => (
+                  <div key={index} className="col-sm-6 col-md-4 col-lg-3">
+                     <Link to="/find-store">
                     <div
-                      className="bdr-bottom"
+                      className="box-1"
                       style={{
-                        background: `${constant.categoryColor[index].bclr}`,
+                        border: `1px solid ${constant.categoryColor[index].clr}`,
                       }}
-                    ></div>
-                    <img src={img.src} alt={img.alt} />
-                    <div className="tt-1">{img.name}</div>
+                    >
+                      <div
+                        className="bdr-bottom"
+                        style={{
+                          background: `${constant.categoryColor[index].bclr}`,
+                        }}
+                      ></div>
+                      <img src={img.src} alt={img.alt} />
+                      <div className="tt-1">{img.name}</div>
+                    </div>
+                    </Link>
                   </div>
-                </Link>
-                </div>
-              ))}
-
+                ))
+              
+              } */}
+              {
+                this.state.categorydata ? (
+                  this.state.categorydata.length > 0 &&  this.state.categorydata.map((c: any, index: number) => (
+                    <div key={index} className="col-sm-6 col-md-4 col-lg-3">
+                      <Link to = {`/${c.slug}`}>
+                        <div
+                          className="box-1"
+                          style={{
+                            border: `1px solid ${constant.categoryColor[index].clr}`,
+                          }}
+                        >
+                          <div
+                            className="bdr-bottom"
+                            style={{
+                              background: `${constant.categoryColor[index].bclr}`,
+                            }}
+                          ></div>
+                          {
+                            c.imagePath ? (
+                              <img className="category_img"  src={constant.filepath + c.imagePath} alt={c.category} />
+                            ) : (
+                              ''
+                            )
+                          }
+                          <div className="tt-1">{c.category}</div>
+                        </div>
+                      </Link>
+                    </div>
+                  ))
+                ) : (
+                '' )
+              }
               {/* <div className="col-sm-6 col-md-4 col-lg-3">
                 <div className="box-1 clr2">
                   <div className="bdr-bottom bclr2"></div>
@@ -94,4 +167,12 @@ class Categories extends React.Component {
   }
 }
 
-export default Categories;
+const mapStateToProps = (state: any) => ({
+  categoryDetail: state.category.category
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  getCategoryData: (data: any) => dispatch(categoryService.getCategoryData(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Categories);

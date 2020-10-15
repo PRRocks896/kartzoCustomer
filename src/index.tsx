@@ -70,21 +70,22 @@ ReactDOM.render(
     <Layout>
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route exact path="/signin" component={Login}  />
+          <Route exact path="/profile" component={Profile}  />
           <Route exact path="/about" component={About} />
           <Route exact path="/contact-us" component={ContactUs} />
           <Route exact path="/carrers" component={Careers} />
           <Route exact path="/carrers-job" component={JobOpening} />
           <Route exact path="/partners" component={Partners} />
           <Route exact path="/business" component={Business} />
-          <Route exact path="/:slug1/:slug2" component={SearchCity} />
           <Route exact path="/search-city" component={SearchCity} />
           <Route exact path="/track-order" component={TrackOrder}  />
           <Route exact path="/find-store" component={FindStore}  />
           <Route exact path="/store-item" component={StoreItem}  />
           <Route exact path="/placeorder" component={PlaceOrder}  />
-          <Route exact path="/signin" component={Login}  />
           <Route exact path="/cart" component={Cart}  />
-          <Route exact path="/profile" component={Profile}  />
+          <Route exact path="/:slug" component={FindStore}  />
+          <Route exact path="/:slug1/:slug2" component={SearchCity} />
           <Route path="*" component={Page404}/>
                   
          

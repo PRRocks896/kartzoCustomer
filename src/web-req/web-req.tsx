@@ -1,15 +1,15 @@
 import axios from 'axios';
-// import Constant from '../pages/constant/constant';
-// // import {utils} from '../pages/utils/index';
+// import Constant from '../constant/constant';
+import { getAdminDetail, getHeaderDetail } from '../pages/utils/index';
 
 const WebReqUrl = {
-    get: async function (url: string,isMerchant:boolean) {
+    get: async function (url: string,isAdmin:boolean) {
         try {
             let response;
-            if(isMerchant === true){
-                response = await axios.get(url)
+            if(isAdmin === true){
+                response = await axios.get(url,{headers: getAdminDetail()})
             } else {
-                response = await axios.get(url)
+                response = await axios.get(url,{headers: getHeaderDetail()})
             }
            
             // console.log("response",response);
@@ -32,13 +32,13 @@ const WebReqUrl = {
             console.error(err);
         }
     },
-    delete: async function (url: string,isMerchant:boolean) {
+    delete: async function (url: string,isAdmin:boolean) {
         try {
             let response;
-            if(isMerchant === true){
-                response = await axios.delete(url)
+            if(isAdmin === true){
+                response = await axios.delete(url, {headers: getAdminDetail()})
             } else {
-                response = await axios.delete(url)
+                response = await axios.delete(url, {headers: getHeaderDetail()})
             }
            
             // console.log("response",response);
@@ -61,13 +61,13 @@ const WebReqUrl = {
             console.error(err);
         }
     },
-    put: async function (url: string, body: any,isMerchant:boolean) {
+    put: async function (url: string, body: any,isAdmin:boolean) {
         try {
             let response;
-            if(isMerchant === true){
-                response = await axios.put(url, body)
+            if(isAdmin === true){
+                response = await axios.put(url, body, {headers: getAdminDetail()})
             } else {
-                response = await axios.put(url, body)
+                response = await axios.put(url, body, {headers: getHeaderDetail()})
             }
             // console.log("response",response);
             if(response) {
@@ -89,13 +89,13 @@ const WebReqUrl = {
             console.error(err);
         }
     },
-    post: async function (url: string, body: any,isMerchant:boolean) {
+    post: async function (url: string, body: any,isAdmin:boolean) {
         try {
             let response;
-            if(isMerchant === true){
-                response = await axios.post(url, body)
+            if(isAdmin === true){
+                response = await axios.post(url, body, {headers: getAdminDetail()})
             } else {
-                response = await axios.post(url, body)
+                response = await axios.post(url, body, {headers: getHeaderDetail()})
             }
             // console.log("response",response);
             if(response) {

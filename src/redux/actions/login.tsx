@@ -1,20 +1,21 @@
-import { CALL_API } from "../middleware/api";
 import * as ACTION from "../constant/constant";
-import userService from "../../service/user.service";
-import { showSuccess, showError } from "../../pages/utils/index";
+import {UserAPI} from "../../service/index";
 
 export const loginService = {
   login,
-  verifyOtp
+  verifyOtp,
+  getAdminToken
 };
+
+/** Get Otp Request */
 function login(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
 
-    userService
+    UserAPI
       .loginUser(data)
       .then((userdata) => {
-        console.log("user", userdata);
+        // console.log("user", userdata);
         if (userdata.status === 200) {
           // const msg = userdata.message;
           // showSuccess(msg);
@@ -37,16 +38,18 @@ function login(data: any) {
   }
 }
 
+/** Otp Verification Request */
 function verifyOtp(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
 
-    userService
+    UserAPI
       .verifyotp(data)
-      .then((otpdata) => {
-        console.log("otpdata", otpdata);
+      .then((otpdata:any) => {
+        // console.log("otpdata", otpdata);
         if (otpdata.status === 200) {
-          localStorage.setItem('mobile',otpdata.resultObject)
+          localStorage.setItem('user',JSON.stringify(otpdata.data.resultObject));
+          localStorage.setItem('token',otpdata.data.resultObject.token);
           // const msg = otpdata.message;
           // showSuccess(msg);
           dispatch(success(otpdata));
@@ -67,5 +70,39 @@ function verifyOtp(data: any) {
   }
   function failure(error: any) {
     return { type: ACTION.login.VERIFY_FAILURE, error };
+  }
+}
+
+/** Get Admin Token Request */
+function getAdminToken(data:any) {
+  return (dispatch: any) => {
+    dispatch(request({data}));
+
+    UserAPI
+      .getAdminToken(data)
+      .then((token:any) => {
+        // console.log("token", token);
+        if (token.status === 200) {
+          localStorage.setItem('adminToken',token.token);
+          // const msg = otpdata.message;
+          // showSuccess(msg);
+          dispatch(success(token));
+        } else {
+          dispatch(failure(token));
+        }
+      })
+      .catch((err:any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(token: any) {
+    return { type: ACTION.login.ADMIN_TOKEN_REQUEST, token };
+  }
+  function success(token: any) {
+    return { type: ACTION.login.ADMIN_TOKEN_SUCCESS, token };
+  }
+  function failure(error: any) {
+    return { type: ACTION.login.ADMIN_TOKEN_FAILURE, error };
   }
 }

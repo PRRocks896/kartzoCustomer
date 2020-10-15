@@ -108,7 +108,7 @@ class PlaceOrder extends React.Component<{ show: boolean }> {
                 </div>
 
                 {
-                  localStorage.getItem('mobile') ? (
+                  localStorage.getItem('token') ? (
                     <div className="cart-icon m-0">
                     <Link className="cart-icon" to="/profile">
                     <i className="fas fa-user-circle user_icon1"></i>

@@ -26,8 +26,31 @@ export const getAppName = () => {
 
 export const getHeaderDetail =  () => {
   return {
-    // Authorization: `Bearer ${localStorage.getItem("token")}`,
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
     "Access-Control-Allow-Origin": "*",
     crossdomain: true,
   };
+}
+
+export const getAdminDetail =  () => {
+  return {
+    Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+    "Access-Control-Allow-Origin": "*",
+    crossdomain: true,
+  };
+}
+
+export const pageNumber = (count:string,perpage:string) => {
+  var pageNumbers = [];
+  for (
+    let i = 1;
+    i <=
+    Math.ceil(
+      parseInt(count) / parseInt(perpage)
+    );
+    i++
+  ) {
+    pageNumbers.push(i);
+  }
+  return pageNumbers;
 }

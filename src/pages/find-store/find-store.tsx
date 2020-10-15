@@ -7,73 +7,231 @@ import {
   trackorder,
 } from "../../pages/components/helper/images";
 import constant from "../constant/constant";
-import { getAppName, scrollToTop } from "../utils";
+import { getAppName, scrollToTop,pageNumber } from "../utils";
 import "./find-store.css";
+import { connect } from "react-redux";
 
-class FindStore extends React.Component<{ show: boolean }> {
+class FindStore extends React.Component<{getMerchantData:any,location:any}> {
+
+  /** Find Store State */
+  findstoreState = constant.findStorePage.state;
+  state = {
+    count: this.findstoreState.count,
+    currentPage: this.findstoreState.currentPage,
+    items_per_page: this.findstoreState.items_per_page,
+    upperPageBound: this.findstoreState.upperPageBound,
+    lowerPageBound: this.findstoreState.lowerPageBound,
+    pageBound: this.findstoreState.pageBound,
+    onItemSelect: this.findstoreState.onItemSelect,
+    switchSort: this.findstoreState.switchSort,
+    isStatus: this.findstoreState.isStatus,
+    slugname: this.findstoreState.slugname
+  };
   constructor(props: any) {
     super(props);
+    this.btnIncrementClick = this.btnIncrementClick.bind(this);
+    this.btnDecrementClick = this.btnDecrementClick.bind(this);
+    this.pagination = this.pagination.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
     document.title = constant.findstore + getAppName();
+    const slug = this.props.location.pathname.split("/")[1];
+  if(slug) {
+    this.setState({
+      slugname:slug
+    })
+  }
     scrollToTop();
     EventEmitter.dispatch("isShow", true);
     EventEmitter.dispatch("isShowFooter", true);
+    this.getMerchantData();
+  }
+
+  getMerchantData(
+    searchText: string = "",
+    page: number = 1,
+    size: number = 10
+  ) {
+    const obj = {
+      searchText: searchText,
+      page: page,
+      size: size
+    };
+    // this.props.getMerchantData(obj);
+  }
+  
+  btnIncrementClick() {
+    this.setState({
+      upperPageBound: this.state.upperPageBound + this.state.pageBound,
+    });
+    this.setState({
+      lowerPageBound: this.state.lowerPageBound + this.state.pageBound,
+    });
+    let listid = this.state.upperPageBound + 1;
+    this.setState({ currentPage: listid });
+  }
+
+  btnDecrementClick() {
+    this.setState({
+      upperPageBound: this.state.upperPageBound - this.state.pageBound,
+    });
+    this.setState({
+      lowerPageBound: this.state.lowerPageBound - this.state.pageBound,
+    });
+    let listid = this.state.upperPageBound - this.state.pageBound;
+    this.setState({ currentPage: listid });
+  }
+
+  async handleClick(event: any) {
+    this.setState({
+      currentPage: this.state.currentPage = event.target.id,
+    });
+    const obj = {
+      searchText: "",
+      page: parseInt(event.target.id),
+      size: parseInt(this.state.items_per_page),
+    };
+
+    // this.getMerchantData(obj.searchText, obj.page, obj.size);
+  }
+
+  pagination(pageNumbers: any) {
+    var res = pageNumbers.map((number: any) => {
+      if (number === 1 && parseInt(this.state.currentPage) === 1) {
+        return (
+          <li
+            key={number}
+            id={number}
+            className={
+              parseInt(this.state.currentPage) === number
+                ? "active"
+                : "page-item"
+            }
+          >
+            <a className="page-link" onClick={this.handleClick}>
+              {number}
+            </a>
+          </li>
+        );
+      } else if (
+        number < this.state.upperPageBound + 1 &&
+        number > this.state.lowerPageBound
+      ) {
+        return (
+          <li
+            key={number}
+            id={number}
+            className={
+              parseInt(this.state.currentPage) === number
+                ? "active"
+                : "page-item"
+            }
+          >
+            <a className="page-link" id={number} onClick={this.handleClick}>
+              {number}
+            </a>
+          </li>
+        );
+      }
+    });
+    return res;
+  }
+
+  getPageData(
+    pageDecrementBtn: any,
+    renderPageNumbers: any,
+    pageIncrementBtn: any
+  ) {
+    return (
+      <div className="filter">
+        <div>
+          <ul className="pagination" id="page-numbers">
+            {pageDecrementBtn}
+            {renderPageNumbers}
+            {pageIncrementBtn}
+          </ul>
+        </div>
+      </div>
+    );
   }
 
   render() {
-    // console.log("TrackOrder",this.props)
+    var pageNumbers = pageNumber(
+      this.state.count,
+      this.state.items_per_page
+    );
+    var renderPageNumbers = this.pagination(pageNumbers);
+
+    let pageIncrementBtn = null;
+    if (pageNumbers.length > this.state.upperPageBound) {
+      pageIncrementBtn = (
+        <li className="page-item">
+          <a className="page-link" onClick={this.btnIncrementClick}>
+            &hellip;
+          </a>
+        </li>
+      );
+    }
+
+    let pageDecrementBtn = null;
+    if (this.state.lowerPageBound >= 1) {
+      pageDecrementBtn = (
+        <li className="page-item">
+          <a className="page-link" onClick={this.btnDecrementClick}>
+            &hellip;
+          </a>
+        </li>
+      );
+    }
+
     return (
       <>
         <div className="sticky-menu" id="fix-top">
-        <header className="header">
-          <div className="container-fluid">
-            <div className="dis-flx">
-              <div className="left-content">
-                <Link to ="/">
-                  <img src={header.logo} alt="logo" />
-                </Link>
-                <a href="#">
-                  <div className="search-box">
-                    <img src={trackorder.location} alt="location" />
-                    <span className="search-text"> Pretoria</span>
-                  </div>
-                </a>
-              </div>
-              <div className="right-content">
-                <div className="cart-icon">
-                <Link to ="/cart">
-                  <img src={trackorder.shopping} alt="cart-icon" />
+          <header className="header">
+            <div className="container-fluid">
+              <div className="dis-flx">
+                <div className="left-content">
+                  <Link to="/">
+                    <img src={header.logo} alt="logo" />
                   </Link>
+                  <a href="#">
+                    <div className="search-box">
+                      <img src={trackorder.location} alt="location" />
+                      <span className="search-text"> Rajkot</span>
+                    </div>
+                  </a>
                 </div>
-
-                {
-                  localStorage.getItem('mobile') ? (
-                    <div className="cart-icon m-0">
-                    <Link className="cart-icon" to="/profile">
-                    <i className="fas fa-user-circle user_icon1"></i>
+                <div className="right-content">
+                  <div className="cart-icon">
+                    <Link to="/cart">
+                      <img src={trackorder.shopping} alt="cart-icon" />
                     </Link>
+                  </div>
+
+                  {localStorage.getItem("token") ? (
+                    <div className="cart-icon m-0">
+                      <Link className="cart-icon" to="/profile">
+                        <i className="fas fa-user-circle user_icon1"></i>
+                      </Link>
                     </div>
                   ) : (
-                    <Link className="sign-tt" to = '/signin'>
-                    Sign in
+                    <Link className="sign-tt" to="/signin">
+                      Sign in
                     </Link>
-                  )
-                }
-              
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </header>
-        <section className="page-name">
-          <div className="container-fluid">
-            <div className="menu-item">
-            <Link to="/"> Home </Link> / <a href="#"> Pretoria </a> /{" "}
-                <span>Groceries & Essentials</span>
+          </header>
+          <section className="page-name">
+            <div className="container-fluid">
+              <div className="menu-item">
+                  <Link to="/"> Home </Link> / <span>Rajkot</span> / <span>{this.state.slugname}</span>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
         </div>
         <section className="store-dtl">
           <div className="tt-bdr">
@@ -143,7 +301,14 @@ class FindStore extends React.Component<{ show: boolean }> {
                 </div>
                 <div className="col-md-12">
                   <div className="pagination">
-                    <ul>
+                {
+                  this.getPageData(
+                    pageIncrementBtn,
+                    renderPageNumbers,
+                    pageDecrementBtn
+                  )
+                }
+                    {/* <ul>
                       <li className="prev">
                         <a href="#">
                           <img src={findstore.left} alt="prev-img" />
@@ -166,7 +331,7 @@ class FindStore extends React.Component<{ show: boolean }> {
                           <img src={findstore.right} alt="next-img" />
                         </a>
                       </li>
-                    </ul>
+                    </ul> */}
                   </div>
                 </div>
               </div>
@@ -178,4 +343,14 @@ class FindStore extends React.Component<{ show: boolean }> {
   }
 }
 
-export default FindStore;
+
+const mapStateToProps = (state: any) => ({
+  // merchantDetail: state.merchant.merchant
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  // getMerchantData: (data: any) => dispatch(categoryService.getMerchantData(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FindStore);
+

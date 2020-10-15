@@ -5,16 +5,15 @@ import axios from 'axios';
 import WebReqUrl from '../web-req/web-req';
 // import { loginCreateRequest, forgotPasswordRequest, profileGetRequest, resetPasswordRequest, changePasswordRequest, getAllTableDataListRequest, getDataByIdRequest, deleteByIdRequest } from "../modelController";
 
-const config = {     
-    headers: { 
-        'Access-Control-Allow-Origin': true
-    }
-}
 export default {
     loginUser: async function (data:any) {
-        return WebReqUrl.post(Constant.apiUrl + apiUrl.userController.createData + `?phone=${data.phone}`,{},false);
+        return axios.post(Constant.apiUrl + apiUrl.userController.createData + `?phone=${data.phone}`);
     },
     verifyotp: async function (data:any) {
-        return WebReqUrl.post(Constant.apiUrl + apiUrl.userController.verifyotp + `?phone=${data.mobile}&OTP=${data.otp}`,{},false);
-    }
+        return axios.post(Constant.apiUrl + apiUrl.userController.verifyotp + `?phone=${data.mobile}&OTP=${data.otp}`);
+    },
+    getAdminToken: async function (data:any) {
+        return axios.post(Constant.apiUrl + apiUrl.userController.adminToken,data);
+    },
+    
 }
