@@ -1,5 +1,4 @@
 export default {
-
     imagearray:[
         {src:'../assets/images/Groceries-Essentials.png',alt:"Groceries",name:"Groceries & Essentials"},
         {src:'../assets/images/Fruits-Vegetables.png',alt:"Fruits",name:"Fruits & Vegetables"},
@@ -20,15 +19,18 @@ export default {
         {clr: '#FF5463', bclr: '#FF5463'}
     ],
 
-    apiUrl:"http://api-customer.kartzoapp.com/v1/api/user/",
-    home:'Kartzoo App get all foods....',
+    apiUrl:"http://api-customer.kartzoapp.com/v1/api/",
+    filepath: "http://api.kartzoapp.com/",
+    apiUrlAdmin:"http://api.kartzoapp.com/v1/api/",
+    apiUrlMerchant:"http://api-merchant.kartzoapp.com/v1/api/",
+    home:'Get free online delivery for food,medicines,groceries and more | ...',
     about:'About',
     contact:'Contact-Us',
-    findstore:'Find-Store',
+    findstore:'Groceries & Essentials',
     store:"Store",
     profile:"Profile",
     cart:"Cart",
-    job:"Job-Opening",
+    job:"Carrers",
     placeorder:"Place Order",
     searchcity:'Search City',
     trackorder:'Track Order',
@@ -37,7 +39,7 @@ export default {
 
     loginpage:{
         title:{
-            login:'Login'
+            login:'Signin'
         },
         state:{
             mobile:'',
@@ -50,6 +52,23 @@ export default {
             disabled1:false,
             isButtonVerify:false,
             disabledInput:false
+        }
+    },
+    findStorePage:{
+        title:{
+            
+        },
+        state:{
+            count: "10",
+            currentPage: "1",
+            items_per_page: "10",
+            upperPageBound: 6,
+            lowerPageBound: 0,
+            pageBound: 3,
+            onItemSelect: "",
+            switchSort: false,
+            isStatus: false,
+            slugname:''
         }
     }
 

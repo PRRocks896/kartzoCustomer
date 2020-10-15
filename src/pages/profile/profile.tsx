@@ -6,6 +6,9 @@ import { getAppName } from "../utils";
 import "./profile.css";
 
 class Profile extends React.Component<{ show: boolean,history:any }> {
+  state = {
+    mobile:''
+  }
   constructor(props: any) {
     super(props);
     this.logout = this.logout.bind(this);
@@ -13,12 +16,18 @@ class Profile extends React.Component<{ show: boolean,history:any }> {
 
   componentDidMount() {
     document.title = constant.profile + getAppName();
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    this.setState({
+      mobile:user.phone
+    })
     // EventEmitter.dispatch("isShow", true);
     // EventEmitter.dispatch("isShowFooter", true);
   }
 
   logout() {
-    localStorage.removeItem("mobile");
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     this.props.history.push('/');
     // window.location.href = "/";
   }
@@ -29,7 +38,7 @@ class Profile extends React.Component<{ show: boolean,history:any }> {
         <div className="row">
           <div className="col-md-11">
             <h5>Update-Profile</h5>
-            <h1>{localStorage.getItem("mobile")}</h1>
+            <h1>{this.state.mobile}</h1>
           </div>
           <div className="col-md-1 mt-4">
             <div className="btn-box">

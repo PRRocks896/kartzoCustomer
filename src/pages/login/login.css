@@ -225,7 +225,7 @@
   .spinerButton {
 	text-align: center;
     position: relative;
-	background: rgb(238, 162, 24) !important;
+	/* background: rgb(238, 162, 24) !important; */
     
   }
 
@@ -261,7 +261,7 @@
   .spinerButton1 {
 	text-align: center;
     position: relative;
-	background: rgb(238, 162, 24) !important;
+	/* background: rgb(238, 162, 24) !important; */
 	margin: auto;
   }
 

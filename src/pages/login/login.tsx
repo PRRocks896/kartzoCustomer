@@ -15,6 +15,7 @@ class Login extends React.Component<{
   login: any;
   verifyOtp: any;
   history: any;
+  getAdminToken: any;
 }> {
   /** loginstate = state define in login page */
   loginState = constant.loginpage.state;
@@ -62,20 +63,7 @@ class Login extends React.Component<{
 
     /** otp get success response */
     if (data.userDetail) {
-      if (data.userDetail.status === 200) {
-        this.setState({
-          disabledInput: true,
-          isButton: false,
-          isDisplay: true,
-        });
-      } else {
-        this.setState({
-          disabledInput: false,
-          disabled: false,
-          isButton: false,
-          isDisplay: false,
-        });
-      }
+      this.otpSentRequestSuccess(data);
     } else {
       this.setState({
         disabledInput: false,
@@ -87,17 +75,50 @@ class Login extends React.Component<{
 
     /** otp verify success response */
     if (data.otpverify) {
-      if (data.otpverify.status === 200) {
-        this.setState({
-          isButtonVerify: false,
-        });
-        this.props.history.push("/");
-      } else {
-        this.setState({
-          isButtonVerify: false,
-          disabled1: false,
-        });
+      this.verifySucess(data);
+    } else {
+      this.setState({
+        isButtonVerify: false,
+        disabled1: false,
+      });
+    }
+  }
+
+  otpSentRequestSuccess(data: any) {
+    if (data.userDetail.status === 200) {
+      this.setState({
+        disabledInput: true,
+        isButton: false,
+        isDisplay: true,
+      });
+    } else {
+      this.setState({
+        disabledInput: false,
+        disabled: false,
+        isButton: false,
+        isDisplay: false,
+      });
+    }
+  }
+
+  async verifySucess(data: any) {
+    if (data.otpverify.status === 200) {
+      this.setState({
+        isButtonVerify: false,
+      });
+      if (localStorage.getItem("token")) {
+        const users: any = localStorage.getItem("user");
+        let user = JSON.parse(users);
+        const obj = {
+          deviceType: 1,
+          deviceId: "deviceId",
+          ipAddress: "156.32.3.32",
+          loginToken: user.token,
+          refreshToken: user.refreshToken,
+        };
+        this.props.getAdminToken(obj);
       }
+      this.props.history.push("/");
     } else {
       this.setState({
         isButtonVerify: false,
@@ -327,9 +348,7 @@ class Login extends React.Component<{
         {this.state.isDisplay === true ? (
           <div className="bottom-fix-box">
             <div className="right-btn">
-              <button onClick={this.verifyotp}>
-                Verify and continue
-              </button>
+              <button onClick={this.verifyotp}>Verify and continue</button>
             </div>
           </div>
         ) : (
@@ -373,6 +392,7 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   login: (data: any) => dispatch(loginService.login(data)),
   verifyOtp: (data: any) => dispatch(loginService.verifyOtp(data)),
+  getAdminToken: (data: any) => dispatch(loginService.getAdminToken(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

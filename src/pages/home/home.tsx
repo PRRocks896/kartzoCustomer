@@ -27,7 +27,7 @@ class Home extends React.Component<{history:any}> {
     return (
       <>
         <Banner {...this.props}/>
-        <Categories {...this.props}/>
+        <Categories/>
         <AppLink {...this.props}/>
         <Features {...this.props}/>
         <Testimonials {...this.props}/>

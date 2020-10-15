@@ -175,6 +175,23 @@
 	font-weight: 600;
 }
 
+.pagination .active .page-link {
+	background-color: #ffb637 !important;
+	color: #000 !important;
+}
+.pagination .page-item .page-link{
+	color: #000 !important;
+}
+.pagination .page-item .page-link:hover{
+	background-color: #f8bc53 !important;
+	color: #fff !important;
+}
+.pagination .active .page-link:hover {
+	background-color: #f8bc53 !important;
+	color: #fff !important;
+  }
+
+
 /* Stores dtl end*/
 
 @media only screen and (max-width: 991px) {

@@ -5,6 +5,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "./business.css";
 import constant from "../constant/constant";
+import { Link } from "react-router-dom";
 
 class Business extends React.Component {
   constructor(props: any) {
@@ -38,9 +39,11 @@ class Business extends React.Component {
                     <a href="#">
                       Sign up for free<i className="fas fa-angle-right"></i>
                     </a>
-                    <a href="#" className="login">
+                    <Link className="login" to="/signin">
                       Login<i className="fas fa-angle-right"></i>
-                    </a>
+                    </Link>
+                    {/* <a href="#" className="login">
+                    </a> */}
                   </div>
                 </div>
               </div>

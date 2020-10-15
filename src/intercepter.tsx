@@ -9,7 +9,7 @@ interface axios {
 
 axios.interceptors.request.use(
   (req: any) => {
-    // const users:any = localStorage.getItem('user');
+    // const users:any = localStorage.getItem('token');
     // let auth =  JSON.parse(users);
     // req.headers['Authorization'] = 'Barier ' + (auth ? auth.token : '');
     //config.data['end_user_key'] = auth ? auth.secret_key : '';
