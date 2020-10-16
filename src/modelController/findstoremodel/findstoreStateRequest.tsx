@@ -9,5 +9,7 @@ export interface findstoreStateRequest {
     switchSort: boolean,
     isStatus: boolean,
     slugname:string,
-    location:string
+    location:string,
+    merchantdata:any,
+    isLoading:boolean
 }

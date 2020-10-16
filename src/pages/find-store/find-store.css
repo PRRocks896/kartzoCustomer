@@ -176,11 +176,26 @@
 }
 
 .pagination .active .page-link {
-	background-color: #ffb637 !important;
-	color: #000 !important;
+	background-color: #FBB034 !important;
+    color: #fff !important;
+    cursor: pointer;
+    border-radius: 36px;
+    font-weight: 600;
+    width: 36px;
+    height: 36px;
+	margin: 0px 5px;
+	text-align: center;
+	display: block;
 }
 .pagination .page-item .page-link{
 	color: #000 !important;
+	cursor: pointer;
+	border-radius: 36px;
+	width: 36px;
+	height: 36px;
+	margin: 0px 5px;
+	text-align: center;
+	display: block;
 }
 .pagination .page-item .page-link:hover{
 	background-color: #f8bc53 !important;
@@ -522,4 +537,16 @@
 {
     padding: 10px !important;
     font-size: 13px !important;
+}
+
+.merchant_img{
+    height: 100px;
+	width: 100px;
+	border-radius: 8px;
+}
+
+
+.css-1qtlriq-SkeletonTheme .react-loading-skeleton {
+    background-color: #eee !important;
+    background-image: linear-gradient( 90deg,#eee,#eee,#eee ) !important;
 }

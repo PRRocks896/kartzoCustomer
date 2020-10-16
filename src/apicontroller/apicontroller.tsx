@@ -8,7 +8,7 @@ const apiUrl = {
         category:'category/get-category-list'
     },
     findStoreController: {
-        getStore:'merchant/get-merchant-list'
+        getStore:'user/get-merchant-list'
     }
 }
 

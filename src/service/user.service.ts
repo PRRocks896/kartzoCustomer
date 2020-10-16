@@ -3,10 +3,10 @@ import Constant from '../pages/constant/constant';
 import apiUrl from  '../apicontroller/apicontroller';
 import axios from 'axios';
 import WebReqUrl from '../web-req/web-req';
-// import { loginCreateRequest, forgotPasswordRequest, profileGetRequest, resetPasswordRequest, changePasswordRequest, getAllTableDataListRequest, getDataByIdRequest, deleteByIdRequest } from "../modelController";
+import { loginCreateRequest } from '../modelController';
 
 export default {
-    loginUser: async function (data:any) {
+    loginUser: async function (data:loginCreateRequest) {
         return axios.post(Constant.apiUrl + apiUrl.userController.createData + `?phone=${data.phone}`);
     },
     verifyotp: async function (data:any) {

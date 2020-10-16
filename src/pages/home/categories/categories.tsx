@@ -70,7 +70,8 @@ class Categories extends React.Component<{ getCategoryData: any }> {
                 {this.state.categorydata
                   ? this.state.categorydata.length > 0 &&
                     this.state.categorydata.map((c: any, index: number) => (
-                      <div key={index} className="col-sm-6 col-md-4 col-lg-3">
+                      c.parentCategoryId === 0 ? (
+                        <div key={index} className="col-sm-6 col-md-4 col-lg-3">
                         <Link to={`/order/${c.slug}`}>
                           <div
                             className="box-1"
@@ -97,6 +98,9 @@ class Categories extends React.Component<{ getCategoryData: any }> {
                           </div>
                         </Link>
                       </div>
+                      ) : (
+                        ''
+                      )
                     ))
                   : ""}
               </div>

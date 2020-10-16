@@ -45,6 +45,7 @@ export default {
 
   apiUrl: "http://api-customer.kartzoapp.com/v1/api/",
   filepath: "http://api.kartzoapp.com/",
+  filemerchantpath: "http://api-merchant.kartzoapp.com/",
   apiUrlAdmin: "http://api.kartzoapp.com/v1/api/",
   apiUrlMerchant: "http://api-merchant.kartzoapp.com/v1/api/",
   home: "Get free online delivery for food,medicines,groceries and more | ...",
@@ -112,9 +113,9 @@ export default {
   findStorePage: {
     title: {},
     state: {
-      count: "10",
+      count: "0",
       currentPage: "1",
-      items_per_page: "10",
+      items_per_page: "4",
       upperPageBound: 6,
       lowerPageBound: 0,
       pageBound: 3,
@@ -123,6 +124,8 @@ export default {
       isStatus: false,
       slugname: "",
       location: "rajkot",
+      merchantdata:[],
+      isLoading:true
     },
   },
   bannerPage: {
@@ -144,4 +147,15 @@ export default {
       location: "rajkot",
     },
   },
+  placeorderPage: {
+    title: {},
+    state: {
+        checkedvalue: false,
+        showSection: false,
+        checkedpaymentvalue: false,
+        checkedpaymentvaluewallets: false,
+        checkedpaymentvaluecard: false,
+        checkedpaymentvaluenetbanking: false
+    },
+  }
 };

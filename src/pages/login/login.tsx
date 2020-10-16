@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { loginService } from "../../redux/actions/index";
 import "./login.css";
 import { getAppName } from "../utils";
-import { loginStateRequest } from "../../modelController";
+import { loginCreateRequest, loginStateRequest } from "../../modelController";
 const interceptor = require("../../intercepter");
 
 class Login extends React.Component<{
@@ -189,7 +189,7 @@ class Login extends React.Component<{
         mobileerror: "",
       });
       if (this.state.mobile) {
-        const obj = {
+        const obj : loginCreateRequest = {
           phone: this.state.mobile,
         };
         this.props.login(obj);

@@ -16,9 +16,7 @@ function getMerchantData(data: any) {
       .then((merchantdata:any) => {
         // console.log("merchantdata", merchantdata);
         if (merchantdata.status === 200) {
-          // const msg = merchantdata.message;
-          // showSuccess(msg);
-          dispatch(success(merchantdata.resultObject.data));
+          dispatch(success(merchantdata.data.resultObject));
         }
       })
       .catch((err:any) => {
@@ -27,12 +25,12 @@ function getMerchantData(data: any) {
   };
 
   function request(merchantdata: any) {
-    return { type: ACTION.category.GET_CATEGORY_REQUEST, merchantdata };
+    return { type: ACTION.merchant.GET_MERCHANT_REQUEST, merchantdata };
   }
   function success(merchantdata: any) {
-    return { type: ACTION.category.GET_CATEGORY_SUCCESS, merchantdata };
+    return { type: ACTION.merchant.GET_MERCHANT_SUCCESS, merchantdata };
   }
   function failure(error: any) {
-    return { type: ACTION.category.GET_CATEGORY_FAILURE, error };
+    return { type: ACTION.merchant.GET_MERCHANT_FAILURE, error };
   }
 }

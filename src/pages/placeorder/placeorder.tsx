@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
+import { placeorderStateRequest } from "../../modelController";
 import {
   header,
   trackorder,
@@ -11,14 +12,18 @@ import { getAppName } from "../utils";
 import "./placeorder.css";
 
 class PlaceOrder extends React.Component<{ show: boolean }> {
+
+  /** place order state */
+  placeOrderState : placeorderStateRequest = constant.placeorderPage.state;
   state = {
-    checkedvalue: false,
-    showSection: false,
-    checkedpaymentvalue: false,
-    checkedpaymentvaluewallets: false,
-    checkedpaymentvaluecard: false,
-    checkedpaymentvaluenetbanking: false
+    checkedvalue: this.placeOrderState.checkedvalue,
+    showSection: this.placeOrderState.showSection,
+    checkedpaymentvalue: this.placeOrderState.checkedpaymentvalue,
+    checkedpaymentvaluewallets: this.placeOrderState.checkedpaymentvaluewallets,
+    checkedpaymentvaluecard: this.placeOrderState.checkedpaymentvaluecard,
+    checkedpaymentvaluenetbanking: this.placeOrderState.checkedpaymentvaluenetbanking
   };
+
   constructor(props: any) {
     super(props);
 

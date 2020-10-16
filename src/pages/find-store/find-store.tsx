@@ -12,13 +12,15 @@ import "./find-store.css";
 import { connect } from "react-redux";
 import SelectSearch from "react-select-search";
 import { findstoreStateRequest } from "../../modelController";
+import { merchantService } from "../../redux/actions";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 class FindStore extends React.Component<{
   getMerchantData: any;
   location: any;
 }> {
   /** Find Store State */
-  findstoreState : findstoreStateRequest = constant.findStorePage.state;
+  findstoreState: findstoreStateRequest = constant.findStorePage.state;
   state = {
     count: this.findstoreState.count,
     currentPage: this.findstoreState.currentPage,
@@ -31,6 +33,8 @@ class FindStore extends React.Component<{
     isStatus: this.findstoreState.isStatus,
     slugname: this.findstoreState.slugname,
     location: this.findstoreState.location,
+    merchantdata: this.findstoreState.merchantdata,
+    isLoading: this.findstoreState.isLoading,
   };
   constructor(props: any) {
     super(props);
@@ -45,7 +49,7 @@ class FindStore extends React.Component<{
     const slug = this.props.location.pathname.split("/")[2];
     if (slug) {
       this.setState({
-        slugname: slug,
+        slugname: this.state.slugname = slug,
       });
     }
     scrollToTop();
@@ -54,17 +58,31 @@ class FindStore extends React.Component<{
     this.getMerchantData();
   }
 
-  getMerchantData(
-    searchText: string = "",
-    page: number = 1,
-    size: number = 10
-  ) {
+  getMerchantData(searchText: string = "", page: number = 1, size: number = 4) {
     const obj = {
       searchText: searchText,
+      slug: this.state.slugname,
       page: page,
       size: size,
     };
-    // this.props.getMerchantData(obj);
+    this.props.getMerchantData(obj);
+  }
+
+  componentWillReceiveProps(nextProps: any, newState: any) {
+    // console.log("props", nextProps);
+    if (nextProps.merchantDetail) {
+      this.setState({
+        isLoading: false,
+      });
+      this.getMerchantList(nextProps.merchantDetail);
+    }
+  }
+
+  getMerchantList(data: any) {
+    this.setState({
+      count: this.state.count = data.totalcount,
+      merchantdata: this.state.merchantdata = data.data,
+    });
   }
 
   btnIncrementClick() {
@@ -95,11 +113,11 @@ class FindStore extends React.Component<{
     });
     const obj = {
       searchText: "",
+      slug: this.state.slugname,
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
     };
-
-    // this.getMerchantData(obj.searchText, obj.page, obj.size);
+    this.getMerchantData(obj.searchText, obj.page, obj.size);
   }
 
   pagination(pageNumbers: any) {
@@ -272,62 +290,60 @@ class FindStore extends React.Component<{
           <div className="store-box">
             <div className="container-fluid">
               <div className="row">
-                <div className="col-lg-6 col-md-6 col-sm-12">
-                  <Link to="/store-item">
-                    <div className="box-1">
-                      <img src={findstore.store} alt="" />
-                      <div className="box-text">
-                        <h4>Godrej Nature's Basket Powai</h4>
-                        <div className="small-text">Mango Drink, Kulfi</div>
-                        <div className="big-text">
-                          Veera Desai Area, Andheri West
-                        </div>
+                {this.state.isLoading === false
+                  ? this.state.merchantdata
+                    ? this.state.merchantdata.length > 0 &&
+                      this.state.merchantdata.map(
+                        (data: any, index: number) => (
+                          <div
+                            key={index}
+                            className="col-lg-6 col-md-6 col-sm-12"
+                          >
+                            <Link to="/store-item">
+                              <div className="box-1">
+                                <img
+                                  className="merchant_img"
+                                  src={
+                                    constant.filemerchantpath + data.logoPath
+                                  }
+                                  alt={data.shopName}
+                                />
+                                <div className="box-text">
+                                  <h4>{data.shopName}</h4>
+                                  <div className="small-text">
+                                    Mango Drink, Kulfi
+                                  </div>
+                                  <div className="big-text">{data.address}</div>
+                                </div>
+                              </div>
+                            </Link>
+                          </div>
+                        )
+                      )
+                    : ""
+                  : [1, 2, 3, 4].map((data: any, index: number) => (
+                      <div key={index} className="col-lg-6 col-md-6 col-sm-12">
+                        <SkeletonTheme color="#202020" highlightColor="#444">
+                          <div className="box-1">
+                          <Skeleton className="merchant_img" count={1} />
+                            <div className="box-text">
+                              <Skeleton count={1} />
+                              <div className="small-text">
+                                <Skeleton count={1} />
+                              </div>
+                              <div className="big-text">
+                                {" "}
+                                <Skeleton count={1} />
+                              </div>
+                            </div>
+                            {/* <img alt="img"className="category_img">
+                            <Skeleton count={1} />
+                          </img> */}
+                          </div>
+                        </SkeletonTheme>
                       </div>
-                    </div>
-                  </Link>
-                </div>
-                <div className="col-lg-6 col-md-6 col-sm-12">
-                  <Link to="/store-item">
-                    <div className="box-1">
-                      <img src={findstore.store} alt="" />
-                      <div className="box-text">
-                        <h4>Godrej Nature's Basket Powai</h4>
-                        <div className="small-text">Mango Drink, Kulfi</div>
-                        <div className="big-text">
-                          Veera Desai Area, Andheri West
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-                <div className="col-lg-6 col-md-6 col-sm-12">
-                  <Link to="/store-item">
-                    <div className="box-1">
-                      <img src={findstore.store} alt="" />
-                      <div className="box-text">
-                        <h4>Godrej Nature's Basket Powai</h4>
-                        <div className="small-text">Mango Drink, Kulfi</div>
-                        <div className="big-text">
-                          Veera Desai Area, Andheri West
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-                <div className="col-lg-6 col-md-6 col-sm-12">
-                  <a href="#">
-                    <div className="box-1">
-                      <img src={findstore.store} alt="" />
-                      <div className="box-text">
-                        <h4>Godrej Nature's Basket Powai</h4>
-                        <div className="small-text">Mango Drink, Kulfi</div>
-                        <div className="big-text">
-                          Veera Desai Area, Andheri West
-                        </div>
-                      </div>
-                    </div>
-                  </a>
-                </div>
+                    ))}
+
                 <div className="col-md-12">
                   <div className="pagination">
                     {this.getPageData(
@@ -335,30 +351,6 @@ class FindStore extends React.Component<{
                       renderPageNumbers,
                       pageDecrementBtn
                     )}
-                    {/* <ul>
-                      <li className="prev">
-                        <a href="#">
-                          <img src={findstore.left} alt="prev-img" />
-                        </a>
-                      </li>
-                      <li className="page-numbr">
-                        <a href="#">1</a>
-                      </li>
-                      <li className="page-numbr">
-                        <a href="#">2</a>
-                      </li>
-                      <li className="page-numbr">
-                        <a href="#">3</a>
-                      </li>
-                      <li className="page-numbr">
-                        <a href="#">4</a>
-                      </li>
-                      <li className="next">
-                        <a href="#">
-                          <img src={findstore.right} alt="next-img" />
-                        </a>
-                      </li>
-                    </ul> */}
                   </div>
                 </div>
               </div>
@@ -371,11 +363,12 @@ class FindStore extends React.Component<{
 }
 
 const mapStateToProps = (state: any) => ({
-  // merchantDetail: state.merchant.merchant
+  merchantDetail: state.merchant.merchant,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  // getMerchantData: (data: any) => dispatch(categoryService.getMerchantData(data))
+  getMerchantData: (data: any) =>
+    dispatch(merchantService.getMerchantData(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FindStore);
