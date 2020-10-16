@@ -6,15 +6,28 @@ import constant from "../constant/constant";
 import AppLink from "../home/app-link/app-link";
 import Information from "../home/information/information";
 import { Link } from "react-router-dom";
+import EventEmitter from "../../event";
+import { searchcityStateRequest } from "../../modelController";
 
-class SearchCity extends React.Component {
-  
+class SearchCity extends React.Component<{ location: any }> {
+  searchcityState: searchcityStateRequest = constant.searchCityPage.state;
+  state = {
+    slugname: this.searchcityState.slugname,
+  };
+
   constructor(props: any) {
     super(props);
   }
 
   componentDidMount() {
+    EventEmitter.dispatch("isShow", false);
     document.title = constant.searchcity + getAppName();
+    const slug = this.props.location.pathname.split("/")[1];
+    if (slug) {
+      this.setState({
+        slugname: slug,
+      });
+    }
     scrollToTop();
   }
 
@@ -24,7 +37,7 @@ class SearchCity extends React.Component {
         <section className="banners-src-city">
           <div className="container-fluid">
             <div className="slider-box">
-              <h1>Welcome to Pretoria </h1>
+              <h1>Welcome to {this.state.slugname.toLocaleUpperCase()} </h1>
               <div className="bdr-tt">
                 <span className="big"></span>
                 <span className="small"></span>
@@ -58,22 +71,22 @@ class SearchCity extends React.Component {
               <div className="row">
                 {constant.imagearray.map((img: any, index: number) => (
                   <div key={index} className="col-sm-6 col-md-4 col-lg-3">
-                     <Link to="/find-store">
-                    <div
-                      className="box-1"
-                      style={{
-                        border: `1px solid ${constant.categoryColor[index].clr}`,
-                      }}
-                    >
+                    <Link to="/find-store">
                       <div
-                        className="bdr-bottom"
+                        className="box-1"
                         style={{
-                          background: `${constant.categoryColor[index].bclr}`,
+                          border: `1px solid ${constant.categoryColor[index].clr}`,
                         }}
-                      ></div>
-                      <img src={img.src} alt={img.alt} />
-                      <div className="tt-1">{img.name}</div>
-                    </div>
+                      >
+                        <div
+                          className="bdr-bottom"
+                          style={{
+                            background: `${constant.categoryColor[index].bclr}`,
+                          }}
+                        ></div>
+                        <img src={img.src} alt={img.alt} />
+                        <div className="tt-1">{img.name}</div>
+                      </div>
                     </Link>
                   </div>
                 ))}

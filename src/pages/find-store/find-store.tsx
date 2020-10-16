@@ -7,14 +7,18 @@ import {
   trackorder,
 } from "../../pages/components/helper/images";
 import constant from "../constant/constant";
-import { getAppName, scrollToTop,pageNumber } from "../utils";
+import { getAppName, scrollToTop, pageNumber } from "../utils";
 import "./find-store.css";
 import { connect } from "react-redux";
+import SelectSearch from "react-select-search";
+import { findstoreStateRequest } from "../../modelController";
 
-class FindStore extends React.Component<{getMerchantData:any,location:any}> {
-
+class FindStore extends React.Component<{
+  getMerchantData: any;
+  location: any;
+}> {
   /** Find Store State */
-  findstoreState = constant.findStorePage.state;
+  findstoreState : findstoreStateRequest = constant.findStorePage.state;
   state = {
     count: this.findstoreState.count,
     currentPage: this.findstoreState.currentPage,
@@ -25,7 +29,8 @@ class FindStore extends React.Component<{getMerchantData:any,location:any}> {
     onItemSelect: this.findstoreState.onItemSelect,
     switchSort: this.findstoreState.switchSort,
     isStatus: this.findstoreState.isStatus,
-    slugname: this.findstoreState.slugname
+    slugname: this.findstoreState.slugname,
+    location: this.findstoreState.location,
   };
   constructor(props: any) {
     super(props);
@@ -37,12 +42,12 @@ class FindStore extends React.Component<{getMerchantData:any,location:any}> {
 
   componentDidMount() {
     document.title = constant.findstore + getAppName();
-    const slug = this.props.location.pathname.split("/")[1];
-  if(slug) {
-    this.setState({
-      slugname:slug
-    })
-  }
+    const slug = this.props.location.pathname.split("/")[2];
+    if (slug) {
+      this.setState({
+        slugname: slug,
+      });
+    }
     scrollToTop();
     EventEmitter.dispatch("isShow", true);
     EventEmitter.dispatch("isShowFooter", true);
@@ -57,11 +62,11 @@ class FindStore extends React.Component<{getMerchantData:any,location:any}> {
     const obj = {
       searchText: searchText,
       page: page,
-      size: size
+      size: size,
     };
     // this.props.getMerchantData(obj);
   }
-  
+
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -158,10 +163,7 @@ class FindStore extends React.Component<{getMerchantData:any,location:any}> {
   }
 
   render() {
-    var pageNumbers = pageNumber(
-      this.state.count,
-      this.state.items_per_page
-    );
+    var pageNumbers = pageNumber(this.state.count, this.state.items_per_page);
     var renderPageNumbers = this.pagination(pageNumbers);
 
     let pageIncrementBtn = null;
@@ -186,6 +188,13 @@ class FindStore extends React.Component<{getMerchantData:any,location:any}> {
       );
     }
 
+    const options = [
+      { name: "Rajkot", value: "sv" },
+      { name: "Ahmedabad", value: "en" },
+      { name: "Surat", value: "en" },
+      { name: "Baroda", value: "en" },
+    ];
+
     return (
       <>
         <div className="sticky-menu" id="fix-top">
@@ -196,12 +205,25 @@ class FindStore extends React.Component<{getMerchantData:any,location:any}> {
                   <Link to="/">
                     <img src={header.logo} alt="logo" />
                   </Link>
-                  <a href="#">
+                  <div className="position-relative d-none d-sm-block">
+                    <SelectSearch
+                      options={options.length > 0 ? options : []}
+                      search
+                      value="Rajkot"
+                      // placeholder="Select Delivery Boy"
+                      // onChange={this.onItemSelectId}
+                    />
+                    <span className="find-map-icon">
+                      <i className="fas fa-map-marker-alt map-icon"></i>
+                    </span>
+                  </div>
+
+                  {/* <a href="#">
                     <div className="search-box">
                       <img src={trackorder.location} alt="location" />
                       <span className="search-text"> Rajkot</span>
                     </div>
-                  </a>
+                  </a> */}
                 </div>
                 <div className="right-content">
                   <div className="cart-icon">
@@ -228,7 +250,12 @@ class FindStore extends React.Component<{getMerchantData:any,location:any}> {
           <section className="page-name">
             <div className="container-fluid">
               <div className="menu-item">
-                  <Link to="/"> Home </Link> / <span>Rajkot</span> / <span>{this.state.slugname}</span>
+                <Link to="/"> Home </Link> /{" "}
+                <Link to={`/${this.state.location}`}>
+                  {" "}
+                  <span>{this.state.location}</span>
+                </Link>{" "}
+                / <span>{this.state.slugname}</span>
               </div>
             </div>
           </section>
@@ -236,7 +263,9 @@ class FindStore extends React.Component<{getMerchantData:any,location:any}> {
         <section className="store-dtl">
           <div className="tt-bdr">
             <div className="container-fluid">
-              <h3>Grocery Stores in Pretoria </h3>
+              <h3>
+                {this.state.slugname} in {this.state.location}{" "}
+              </h3>
               <div className="small-text">4 outlets</div>
             </div>
           </div>
@@ -301,13 +330,11 @@ class FindStore extends React.Component<{getMerchantData:any,location:any}> {
                 </div>
                 <div className="col-md-12">
                   <div className="pagination">
-                {
-                  this.getPageData(
-                    pageIncrementBtn,
-                    renderPageNumbers,
-                    pageDecrementBtn
-                  )
-                }
+                    {this.getPageData(
+                      pageIncrementBtn,
+                      renderPageNumbers,
+                      pageDecrementBtn
+                    )}
                     {/* <ul>
                       <li className="prev">
                         <a href="#">
@@ -343,7 +370,6 @@ class FindStore extends React.Component<{getMerchantData:any,location:any}> {
   }
 }
 
-
 const mapStateToProps = (state: any) => ({
   // merchantDetail: state.merchant.merchant
 });
@@ -353,4 +379,3 @@ const mapDispatchToProps = (dispatch: any) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FindStore);
-

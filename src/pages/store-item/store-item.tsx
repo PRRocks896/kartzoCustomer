@@ -10,17 +10,25 @@ import {
 import constant from "../constant/constant";
 import { getAppName } from "../utils";
 import "./store-item.css";
+import SelectSearch from 'react-select-search';
+import { storeitemStateRequest } from "../../modelController";
 
 class StoreItem extends React.Component<{ show: boolean }> {
+
+  /** Store Item State */
+  storeItemState : storeitemStateRequest = constant.storeItemPage.state;
   state = {
-    activeLink: "1",
-    isShowCard: false,
+    activeLink: this.storeItemState.activeLink,
+    isShowCard: this.storeItemState.isShowCard,
+    location: this.storeItemState.location
   };
+
   constructor(props: any) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.additem = this.additem.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.searchItemDataKeyUp = this.searchItemDataKeyUp.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +49,10 @@ class StoreItem extends React.Component<{ show: boolean }> {
 
   }
 
+  searchItemDataKeyUp(e:any) {
+    console.log("e",e);
+  }
+
   render() {
     const datacategory = [
       { name: "Paan", id: "1", data1: "#paan" },
@@ -54,6 +66,11 @@ class StoreItem extends React.Component<{ show: boolean }> {
       { name: "Cleaning & household", id: "9", data1: "#breakfast" },
       { name: "Fresh fruits", id: "10", data1: "#breakfast" },
     ];
+
+    const options = [
+      {name: 'Rajkot', value: 'sv'},
+      {name: 'Ahmedabad', value: 'en'}
+  ];
     // console.log("TrackOrder",this.props)
     return (
       <>
@@ -65,12 +82,17 @@ class StoreItem extends React.Component<{ show: boolean }> {
                   <Link to="/">
                     <img src={header.logo} alt="logo" />
                   </Link>
-                  <a href="#">
-                    <div className="search-box">
-                      <img src={trackorder.location} alt="location" />
-                      <span className="search-text"> Pretoria</span>
-                    </div>
-                  </a>
+                  <div className="position-relative d-none d-sm-block">
+                  <SelectSearch
+                      options={options.length > 0 ? options : []}
+                      search
+                      value="Rajkot"
+                      // placeholder="Select Delivery Boy"
+                      // onChange={this.onItemSelectId}
+                    />
+                    <span className="find-map-icon"><i className="fas fa-map-marker-alt map-icon"></i></span>
+                  </div>
+
                 </div>
                 <div className="right-content">
                 <div className="cart-icon">
@@ -100,7 +122,11 @@ class StoreItem extends React.Component<{ show: boolean }> {
           <section className="page-name">
             <div className="container-fluid">
               <div className="menu-item">
-                <Link to="/"> Home </Link> / <a href="#"> Pretoria </a> /{" "}
+                <Link to="/"> Home </Link> /   
+                <Link to={`/${this.state.location}`}>
+                  {" "}
+                  <span>{this.state.location}</span>
+                </Link>{" "} /{" "}
                 <span>Groceries & Essentials</span>
               </div>
             </div>
@@ -184,6 +210,7 @@ class StoreItem extends React.Component<{ show: boolean }> {
                         type="search"
                         name="search"
                         placeholder="Search for an item"
+                        onKeyUp={this.searchItemDataKeyUp}
                       />
                     </div>
 

@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { loginService } from "../../redux/actions/index";
 import "./login.css";
 import { getAppName } from "../utils";
+import { loginStateRequest } from "../../modelController";
 const interceptor = require("../../intercepter");
 
 class Login extends React.Component<{
@@ -18,8 +19,7 @@ class Login extends React.Component<{
   getAdminToken: any;
 }> {
   /** loginstate = state define in login page */
-  loginState = constant.loginpage.state;
-
+  loginState : loginStateRequest = constant.loginpage.state;
   /** state
    * mobile = mobile number register
    * mobileerror = mobile number register error

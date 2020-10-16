@@ -3,11 +3,14 @@ import "./footer.css";
 import { footer } from "../helper/images";
 import { Link } from "react-router-dom";
 import EventEmitter from "../../../event";
+import constant from "../../constant/constant";
+import { layoutStateRequest } from "../../../modelController";
 // import ProtectedRoute from 'react-protected-route-component'
 
 class Footer extends React.Component {
+  footerState : layoutStateRequest = constant.footerPage.state;
   state = {
-    isShow: false
+    isShow: this.footerState.isShow,
   };
 
   constructor(props: any) {
@@ -20,7 +23,7 @@ class Footer extends React.Component {
   }
 
   render() {
-    if(this.state.isShow === false) {
+    if (this.state.isShow === false) {
       return (
         <footer className="footer">
           <div className="container-fluid">
@@ -59,7 +62,7 @@ class Footer extends React.Component {
                   </li>
                 </ul>
               </div>
-  
+
               <div className="col-md-3">
                 <h3 className="tt-1">Serviceable Cities</h3>
                 <ul>
@@ -77,7 +80,7 @@ class Footer extends React.Component {
                   </li>
                 </ul>
               </div>
-  
+
               <div className="col-md-3">
                 <h3 className="tt-1">Get in touch</h3>
                 <ul>
@@ -103,12 +106,8 @@ class Footer extends React.Component {
         </footer>
       );
     } else {
-      return(
-        <>
-        </>
-      )
+      return <></>;
     }
- 
   }
 }
 

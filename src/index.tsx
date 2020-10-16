@@ -84,7 +84,8 @@ ReactDOM.render(
           <Route exact path="/store-item" component={StoreItem}  />
           <Route exact path="/placeorder" component={PlaceOrder}  />
           <Route exact path="/cart" component={Cart}  />
-          <Route exact path="/:slug" component={FindStore}  />
+          <Route exact path="/order/:slug" component={FindStore}  />
+          <Route exact path="/:slug1" component={SearchCity} />
           <Route exact path="/:slug1/:slug2" component={SearchCity} />
           <Route path="*" component={Page404}/>
                   

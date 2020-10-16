@@ -67,18 +67,18 @@ app.get('/:city/:area', function(req, res) {
 // });
 
 
-app.get('/placeorder', function(req, res) {
-    res.sendFile(path.join(__dirname  + '/build/index.html'));
-});
+// app.get('/placeorder', function(req, res) {
+//     res.sendFile(path.join(__dirname  + '/build/index.html'));
+// });
 
 
-app.get('/cart', function(req, res) {
-    res.sendFile(path.join(__dirname  + '/build/index.html'));
-});
+// app.get('/cart', function(req, res) {
+//     res.sendFile(path.join(__dirname  + '/build/index.html'));
+// });
 
-app.get('/profile', function(req, res) {
-    res.sendFile(path.join(__dirname  + '/build/index.html'));
-});
+// app.get('/profile', function(req, res) {
+//     res.sendFile(path.join(__dirname  + '/build/index.html'));
+// });
 
 
 
