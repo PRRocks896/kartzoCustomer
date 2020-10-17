@@ -61,9 +61,10 @@
     <!-- <script type="text/javascript">
      var sections = $('.item-details-1')
         , nav = $('.item-menu')
-        , nav_height = nav.outerHeight() - 200;
+        , nav_height = nav.outerHeight() - 350;
 
     $(window).on('scroll', function () {
+      console.log(nav.outerHeight())
         var cur_pos = $(this).scrollTop();
 
         sections.each(function() {
@@ -79,18 +80,18 @@
             }
         });
     });
-// $(document).ready(function(){
-//     nav.find('a.page-link').on('click', function () {
-//         var $el = $(this)
-//             , id = $el.attr('href');
+$(document).ready(function(){
+    nav.find('a.page-link').on('click', function () {
+        var $el = $(this)
+            , id = $el.attr('href');
 
-//         $('html, body').animate({
-//             scrollTop: $(id).offset().top - nav_height
-//         }, 500);
+        $('html, body').animate({
+            scrollTop: $(id).offset().top - nav_height
+        }, 500);
 
-//         return false;
-//     });
-// });
+        return false;
+    });
+});
 </script> -->
     <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script

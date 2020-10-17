@@ -9,6 +9,9 @@ const apiUrl = {
     },
     findStoreController: {
         getStore:'user/get-merchant-list'
+    },
+    storeProductController: {
+        getProduct:'user/get-product-list'
     }
 }
 

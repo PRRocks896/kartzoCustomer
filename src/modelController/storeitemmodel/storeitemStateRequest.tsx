@@ -1,5 +1,8 @@
 export interface storeitemStateRequest {
-    activeLink: string,
+    activeLink: number,
     isShowCard: boolean,
     location: string,
+    slugname:string,
+    categorydata:any,
+    productdata:any
 }

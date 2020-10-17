@@ -33,11 +33,12 @@ input {
 
 /* home banner */
 .banners-home {
-	position: relative;
-	background-image: linear-gradient(to top, #FBB034, #ECCE09);
-	padding: 130px 0px;
-	text-align: center;
-	overflow: hidden;
+    position: relative;
+    background-image: linear-gradient(to top, #FBB034, #ECCE09);
+    padding: 130px 0px;
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
 }
 
 .banners-home::before {
@@ -479,15 +480,18 @@ input {
 }
 
 .we-kart .blog-1 .buttom-text {
-	padding: 30px 23px;
-	padding-bottom: 32px;
-	text-align: center;
+    padding: 30px 23px;
+    padding-bottom: 32px;
+    text-align: center;
+    display: grid;
 }
-
 .we-kart .blog-1 .btn-kartzo-b i {
 	margin-left: 12px;
 }
 .we-kart span.lazy-load-image-background.blur.lazy-load-image-loaded {
+    float: left;
+}
+.we-kart .blog-1 span.lazy-load-image-background.blur.lazy-load-image-loaded {
     width: 100%;
 }
 /* He said; She said */
@@ -867,13 +871,13 @@ input {
 		-ms-border-radius: 40px;
 		-o-border-radius: 40px;
 }
-span.lazy-load-image-background.blur.lazy-load-image-loaded {
+/* span.lazy-load-image-background.blur.lazy-load-image-loaded {
     max-width: 100%;
     float: left;
     margin-right: 23px;
     position: relative;
-    /* width: 25% !important; */
-}
+    /* width: 25% !important; 
+} */
 .location-img {
     top: 7px;
 }

@@ -299,7 +299,7 @@ class FindStore extends React.Component<{
                             key={index}
                             className="col-lg-6 col-md-6 col-sm-12"
                           >
-                            <Link to="/store-item">
+                            <Link to={`/store/${data.slug}`}>
                               <div className="box-1">
                                 <img
                                   className="merchant_img"

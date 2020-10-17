@@ -142,9 +142,12 @@ export default {
   storeItemPage: {
     title: {},
     state: {
-      activeLink: "1",
+      activeLink: 1,
       isShowCard: false,
       location: "rajkot",
+      slugname:"",
+      categorydata:[],
+      productdata:[]
     },
   },
   placeorderPage: {

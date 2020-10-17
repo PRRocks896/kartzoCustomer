@@ -195,7 +195,7 @@
 	font-size: 14px;
 	text-align: right;
 	padding: 0px 6px;
-	text-transform: capitalize;
+	/* text-transform: capitalize; */
 	display: inline-block;
 	max-width: 100%;
 	color: #071828;
@@ -555,6 +555,11 @@
 }
 .bottom-fix-box {
 	display: none;
+}
+
+.product_img_size{
+	width: 100px;
+	border-radius: 25%;
 }
 /* responsive code start here */
 

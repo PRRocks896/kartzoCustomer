@@ -19,6 +19,14 @@ app.get('/:city/:area', function(req, res) {
     res.sendFile(path.join(__dirname  + '/build/index.html'));
 });
 
+app.get('/order/:slug', function(req, res) {
+    res.sendFile(path.join(__dirname  + '/build/index.html'));
+});
+
+app.get('/store/:slug', function(req, res) {
+    res.sendFile(path.join(__dirname  + '/build/index.html'));
+});
+
 // app.get('/signin', function(req, res) {
 //     res.sendFile(path.join(__dirname  + '/build/index.html'));
 // });

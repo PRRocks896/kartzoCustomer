@@ -82,6 +82,7 @@ ReactDOM.render(
           <Route exact path="/track-order" component={TrackOrder}  />
           <Route exact path="/find-store" component={FindStore}  />
           <Route exact path="/store-item" component={StoreItem}  />
+          <Route exact path="/store/:slug" component={StoreItem}  />
           <Route exact path="/placeorder" component={PlaceOrder}  />
           <Route exact path="/cart" component={Cart}  />
           <Route exact path="/order/:slug" component={FindStore}  />
