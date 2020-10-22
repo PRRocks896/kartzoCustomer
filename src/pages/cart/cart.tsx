@@ -9,7 +9,7 @@ import {
 } from "../../pages/components/helper/images";
 import { productService } from "../../redux/actions";
 import constant from "../constant/constant";
-import { getAppName } from "../utils";
+import { alertMessage, getAppName } from "../utils";
 import "./cart.css";
 import { connect } from "react-redux";
 
@@ -17,7 +17,8 @@ class Cart extends React.Component<{
   show: boolean;
   history: any;
   getcartData: any;
-  updateToCart: any
+  updateToCart: any;
+  removeProductFromCart: any;
 }> {
   state = {
     activeLink: "1",
@@ -35,6 +36,7 @@ class Cart extends React.Component<{
     this.decrementQty = this.decrementQty.bind(this);
     this.open = this.open.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.removeItemFromCart = this.removeItemFromCart.bind(this);
   }
 
   componentDidMount() {
@@ -137,6 +139,21 @@ class Cart extends React.Component<{
     });
   }
 
+  async removeItemFromCart(id: any, text: string, btext: string) {
+    if (await alertMessage(text, btext)) {
+      let idArray = [];
+      idArray.push(id);
+      const obj = {
+        moduleName: "OrderCart",
+        id: idArray,
+      };
+      this.props.removeProductFromCart(obj);
+      setTimeout(() => {
+        this.getCartData();
+      }, 200);
+    }
+  }
+
   render() {
     return (
       <>
@@ -147,9 +164,9 @@ class Cart extends React.Component<{
           <div className="container-fluid">
             <div className="dis-flx">
               <div className="left-content">
-              <Link to="/">
-                    <img src={header.logo} alt="logo" />
-                  </Link>
+                <Link to="/">
+                  <img src={header.logo} alt="logo" />
+                </Link>
               </div>
               <div className="right-content">
                 <div className="cart-icon">
@@ -194,18 +211,24 @@ class Cart extends React.Component<{
                               <div className="card-item-1">
                                 <div className="content-box1">
                                   <div className="img-box">
-                                    <img src={findstore.store} alt="" />
+                                    {
+                                      cartdata.productImages && cartdata.productImages[0].imagePath ? (
+                                        <img src={constant.filemerchantpath + cartdata.productImages[0].imagePath} alt="" />
+                                      ) : (
+                                        <img src={findstore.store} alt="" />
+                                      )
+                                    }
                                   </div>
                                   <div className="right-content">
                                     <div className="list-tt">
                                       {cartdata.productName}{" "}
                                     </div>
                                     <div className="dicrip-1">
-                                      Number of Shelves - {cartdata.quantity}
+                                      Number of quantity - {cartdata.quantity}
                                     </div>
-                                    <div className="saller-nm">
+                                    {/* <div className="saller-nm">
                                       Seller: DIGIONICS
-                                    </div>
+                                    </div> */}
                                     <div className="price">
                                       R{cartdata.sellingPrice}
                                     </div>
@@ -243,7 +266,17 @@ class Cart extends React.Component<{
                                     </span>
                                   </div>
                                   <button>Save for later</button>
-                                  <button>Remove</button>
+                                  <button
+                                    onClick={() =>
+                                      this.removeItemFromCart(
+                                        cartdata.orderCartID,
+                                        "You should be Remove product from cart",
+                                        "Yes, Remove it"
+                                      )
+                                    }
+                                  >
+                                    Remove
+                                  </button>
                                 </div>
                               </div>
                             </div>
@@ -377,8 +410,10 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   updateToCart: (data: any, id: any) =>
-  dispatch(productService.updateToCart(data, id)),
+    dispatch(productService.updateToCart(data, id)),
   getcartData: (data: any) => dispatch(productService.getcartData(data)),
+  removeProductFromCart: (data: any) =>
+    dispatch(productService.removeProductFromCart(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

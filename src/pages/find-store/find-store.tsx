@@ -18,6 +18,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 class FindStore extends React.Component<{
   getMerchantData: any;
   location: any;
+  searchLocationResponse: any;
 }> {
   /** Find Store State */
   findstoreState: findstoreStateRequest = constant.findStorePage.state;
@@ -35,6 +36,7 @@ class FindStore extends React.Component<{
     location: this.findstoreState.location,
     merchantdata: this.findstoreState.merchantdata,
     isLoading: this.findstoreState.isLoading,
+    locationData: this.findstoreState.locationData
   };
   constructor(props: any) {
     super(props);
@@ -42,6 +44,8 @@ class FindStore extends React.Component<{
     this.btnDecrementClick = this.btnDecrementClick.bind(this);
     this.pagination = this.pagination.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.onItemSelectId = this.onItemSelectId.bind(this);
+    this.searchLocationKeyUp = this.searchLocationKeyUp.bind(this);
   }
 
   componentDidMount() {
@@ -58,9 +62,10 @@ class FindStore extends React.Component<{
     this.getMerchantData();
   }
 
-  getMerchantData(searchText: string = "", page: number = 1, size: number = 4) {
+  getMerchantData(searchText: string = "",cityId: number = 3, page: number = 1, size: number = 4) {
     const obj = {
       searchText: searchText,
+      cityId:cityId,
       slug: this.state.slugname,
       page: page,
       size: size,
@@ -69,12 +74,19 @@ class FindStore extends React.Component<{
   }
 
   componentWillReceiveProps(nextProps: any, newState: any) {
-    // console.log("props", nextProps);
+    console.log("props", nextProps);
     if (nextProps.merchantDetail) {
       this.setState({
         isLoading: false,
       });
       this.getMerchantList(nextProps.merchantDetail);
+    }
+    if (nextProps.locationDetail) {
+      this.locationdetails(nextProps.locationDetail);
+    } else {
+      this.setState({
+        locationData:this.state.locationData = []
+      })
     }
   }
 
@@ -118,6 +130,39 @@ class FindStore extends React.Component<{
       size: parseInt(this.state.items_per_page),
     };
     this.getMerchantData(obj.searchText, obj.page, obj.size);
+  }
+
+  onItemSelectId(event: any) {
+    // console.log("eveent",event);
+    this.state.locationData.map((city:any,index:number) =>(
+      city.value === event ? (
+        this.setState({
+          location:this.state.location = city.name
+        })
+      ) : ('')
+    ))
+    if(this.state.location) {
+      localStorage.setItem('city',this.state.location);
+    }
+    this.getMerchantData('',event,1,4)
+  }
+
+  searchLocationKeyUp(e:any) {
+    // console.log("e",e.target.value)
+    const obj = {
+      value:e.target.value
+    }
+    if(obj.value) {
+      this.props.searchLocationResponse(obj);
+    }
+  }
+
+  locationdetails(data:any) {
+    console.log("data",data);
+    this.setState({
+      locationData:this.state.locationData = data
+    })
+    
   }
 
   pagination(pageNumbers: any) {
@@ -180,6 +225,7 @@ class FindStore extends React.Component<{
     );
   }
 
+
   render() {
     var pageNumbers = pageNumber(this.state.count, this.state.items_per_page);
     var renderPageNumbers = this.pagination(pageNumbers);
@@ -207,10 +253,7 @@ class FindStore extends React.Component<{
     }
 
     const options = [
-      { name: "Rajkot", value: "sv" },
-      { name: "Ahmedabad", value: "en" },
-      { name: "Surat", value: "en" },
-      { name: "Baroda", value: "en" },
+      { name: "Rajkot", value: "sv" }
     ];
 
     return (
@@ -223,18 +266,33 @@ class FindStore extends React.Component<{
                   <Link to="/">
                     <img src={header.logo} alt="logo" />
                   </Link>
-                  <div className="position-relative d-none d-sm-block">
-                    <SelectSearch
-                      options={options.length > 0 ? options : []}
-                      search
-                      value="Rajkot"
-                      // placeholder="Select Delivery Boy"
-                      // onChange={this.onItemSelectId}
-                    />
-                    <span className="find-map-icon">
-                      <i className="fas fa-map-marker-alt map-icon"></i>
-                    </span>
-                  </div>
+                    {
+                      this.state.locationData.length > 0 ? (
+                        <div className="position-relative d-none d-sm-block"  onKeyUp={this.searchLocationKeyUp}>
+                        <SelectSearch
+                          options={ this.state.locationData && this.state.locationData.length > 0 ? this.state.locationData : []}
+                          search
+                          onChange={this.onItemSelectId}
+                        />
+                        <span className="find-map-icon">
+                          <i className="fas fa-map-marker-alt map-icon"></i>
+                        </span>
+                      </div>
+                      ) : (
+                        <div className="position-relative d-none d-sm-block"  onKeyUp={this.searchLocationKeyUp}>
+                        <SelectSearch
+                          options={ options.length > 0 ? options : []}
+                          search
+                          value="Rajkot"
+                          onChange={this.onItemSelectId}
+                        />
+                        <span className="find-map-icon">
+                          <i className="fas fa-map-marker-alt map-icon"></i>
+                        </span>
+                      </div>
+                      )
+                    }
+                 
 
                   {/* <a href="#">
                     <div className="search-box">
@@ -245,7 +303,7 @@ class FindStore extends React.Component<{
                 </div>
                 <div className="right-content">
                   <div className="cart-icon">
-                  <div className="quty-icon">
+                    <div className="quty-icon">
                       {localStorage.getItem("cartcount")
                         ? localStorage.getItem("cartcount")
                         : 0}
@@ -304,15 +362,29 @@ class FindStore extends React.Component<{
                             key={index}
                             className="col-lg-6 col-md-6 col-sm-12"
                           >
-                            <Link to={{pathname: `/store/${data.slug}`, state: {data}}}>
+                            <Link
+                              to={{
+                                pathname: `/store/${data.slug}`,
+                                state: { data }
+                              }}
+                            >
                               <div className="box-1">
-                                <img
-                                  className="merchant_img"
-                                  src={
-                                    constant.filemerchantpath + data.logoPath
-                                  }
-                                  alt={data.shopName}
-                                />
+                                {data.logoPath ? (
+                                  <img
+                                    className="merchant_img"
+                                    src={
+                                      constant.filemerchantpath + data.logoPath
+                                    }
+                                    alt={data.shopName}
+                                  />
+                                ) : (
+                                  <img
+                                    className="merchant_img"
+                                    src={findstore.store}
+                                    alt={data.shopName}
+                                  />
+                                )}
+
                                 <div className="box-text">
                                   <h4>{data.shopName}</h4>
                                   <div className="small-text">
@@ -330,7 +402,7 @@ class FindStore extends React.Component<{
                       <div key={index} className="col-lg-6 col-md-6 col-sm-12">
                         <SkeletonTheme color="#202020" highlightColor="#444">
                           <div className="box-1">
-                          <Skeleton className="merchant_img" count={1} />
+                            <Skeleton className="merchant_img" count={1} />
                             <div className="box-text">
                               <Skeleton count={1} />
                               <div className="small-text">
@@ -369,11 +441,15 @@ class FindStore extends React.Component<{
 
 const mapStateToProps = (state: any) => ({
   merchantDetail: state.merchant.merchant,
+  locationDetail: state.merchant.locationdata
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   getMerchantData: (data: any) =>
     dispatch(merchantService.getMerchantData(data)),
+    searchLocationResponse: (data: any) =>
+    dispatch(merchantService.searchLocationResponse(data)),
+    
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FindStore);

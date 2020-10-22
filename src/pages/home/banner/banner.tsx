@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import constant from "../../constant/constant";
+import SelectSearch from "react-select-search";
+import './banner.css';
+import { merchantService } from "../../../redux/actions";
+import { connect } from "react-redux";
 
-class Banner extends React.Component<{ history: any }> {
+class Banner extends React.Component<{ history: any,searchLocationResponse:any }> {
   /** Banner Page State */
   bannerState = constant.bannerPage.state;
   state = {
@@ -12,6 +16,8 @@ class Banner extends React.Component<{ history: any }> {
     area: this.bannerState.area,
     isSearch: this.bannerState.isSearch,
     location: this.bannerState.location,
+    locationData:[],
+    cityid:''
   };
 
   constructor(props: any) {
@@ -20,19 +26,42 @@ class Banner extends React.Component<{ history: any }> {
     this.getAddress = this.getAddress.bind(this);
     this.getCurrentLocation = this.getCurrentLocation.bind(this);
     this.getLocationData = this.getLocationData.bind(this);
-  }
-
-  async searchLocationDataKeyUp(e: any) {
-    //   axios
-    //   .get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${e.target.value}&key=AIzaSyAAyBoIK3-3psCrVDMpZCKj5zaMmDAPp0I`,{headers:{'Access-Control-Allow-Origin': '*'}})
-    //   .then((res: any) => {
-    //     console.log("searchLocationDataKeyUp", res);
-    // }).catch((err:any) => {
-    //   console.log("error", err);
-    // })
+    this.onlocationSelectId = this.onlocationSelectId.bind(this);
   }
 
   componentDidMount() {}
+
+  async searchLocationDataKeyUp(e: any) {
+    console.log("e",e.target.value)
+    const obj = {
+      value:e.target.value
+    }
+    if(obj.value) {
+      this.props.searchLocationResponse(obj);
+    }
+  }
+
+  componentWillReceiveProps(nextProps: any, newState: any) {
+    console.log("props", nextProps);
+    if (nextProps.locationDetail) {
+      this.locationdetails(nextProps.locationDetail);
+    }
+  }
+
+  
+  locationdetails(data:any) {
+    console.log("data",data);
+    this.setState({
+      locationData:this.state.locationData = data
+    })
+  }
+
+  onlocationSelectId(data:any) {
+    console.log("data",data);
+   this.setState({
+     cityid:this.state.cityid = data
+   })
+  }
 
   async getCurrentLocation() {
     navigator.geolocation.getCurrentPosition((position: any) => {
@@ -45,7 +74,15 @@ class Banner extends React.Component<{ history: any }> {
   }
 
   getLocationData() {
-    this.props.history.push(`/${this.state.location}`);
+    if(this.state.cityid) {
+      this.state.locationData.map((city:any,index:number) => (
+        city.value === this.state.cityid ? (
+          this.props.history.push(`/${city.name}`)
+        ) : ('')
+      ))
+    } else {
+      this.props.history.push(`/${this.state.location}`);
+    }
   }
 
   async getAddress(latitude: any, longitude: any) {
@@ -98,18 +135,24 @@ class Banner extends React.Component<{ history: any }> {
           <h1>Many needs, one app</h1>
           <p>Need groceries, food or pet supplies delivered? Get it Dun!</p>
 
-          <div className="src-location">
+          <div className="src-location" onKeyUp={this.searchLocationDataKeyUp}>
             <span className="location-img" onClick={this.getCurrentLocation}>
               <img src={require("../../../assets/images/track-location.svg")} />
             </span>
-            <input
+            <SelectSearch
+            options={ this.state.locationData && this.state.locationData.length > 0 ? this.state.locationData : []}
+            placeholder="Search for a location"
+            search
+            onChange={this.onlocationSelectId}
+          />
+            {/* <input
               type="search"
               name="search"
               className="src-input"
               placeholder="Search for a location"
               onKeyUp={this.searchLocationDataKeyUp}
-            />
-            <button onClick={this.getLocationData}>Proceed</button>
+            /> */}
+            <button className="search-btn" onClick={this.getLocationData}>Proceed</button>
           </div>
         </div>
       </section>
@@ -117,4 +160,13 @@ class Banner extends React.Component<{ history: any }> {
   }
 }
 
-export default Banner;
+const mapStateToProps = (state: any) => ({
+  locationDetail: state.merchant.locationdata
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+    searchLocationResponse: (data: any) =>
+    dispatch(merchantService.searchLocationResponse(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Banner);

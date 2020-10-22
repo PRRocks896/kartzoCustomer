@@ -262,13 +262,13 @@
 	padding: 40px 80px;
 	border-bottom: 1px solid #d07403;
 	box-sizing: border-box;
-	display: flex;
+	/* display: flex; */
 	flex-direction: column;
 	align-items: flex-end;
 	height: 128px;
 	position: sticky;
 	top: 256px !important;
-	overflow: auto;
+	overflow: unset;
 	background: #fff;
 	z-index: 2;
 }
@@ -276,7 +276,7 @@
 	background: url('../../assets/images/search.svg') no-repeat;
 	height: 45px;
 	width: 100%;
-	border-radius: 45px;
+	border-radius: 4px;
 	border: 1px solid #DEA82D;
 	font-size: 14px;
 	font-weight: 500;
@@ -761,4 +761,16 @@
   
   .element.no-padding {
 	padding-top: 0;
+  } 
+
+  .serch-box .select-search__select {
+	  margin-top:5px ;
+	  border: 1px solid #DEA82D;
+	  border-radius: 8px;
+	  /* height: 100px; */
+	  overflow: scroll;
   }
+
+  .serch-box .select-search__input {
+	color:black !important;
+}

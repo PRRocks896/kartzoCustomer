@@ -54,3 +54,21 @@ export const pageNumber = (count:string,perpage:string) => {
   }
   return pageNumbers;
 }
+
+export const alertMessage =  async (text:string,btext:string) => {
+  let response = false;
+  let result = await Swal.fire({
+      title: "Are you sure?",
+      text: text,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: btext,
+      cancelButtonText: "No, keep it",
+  });
+  if(result.value) {
+      response = true
+  } else if (result.dismiss === Swal.DismissReason.cancel) {
+      response = false;
+  }
+  return response;
+}

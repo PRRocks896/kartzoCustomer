@@ -125,6 +125,7 @@ export default {
       slugname: "",
       location: "rajkot",
       merchantdata:[],
+      locationData:[],
       isLoading:true
     },
   },

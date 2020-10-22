@@ -1,7 +1,8 @@
 import * as ACTION from "../constant/constant";
 
 const initialState = {
-  merchant: ""
+  merchant: "",
+  locationdata: "",
 };
 
 const merchant = (state = initialState, action: any) => {
@@ -19,6 +20,22 @@ const merchant = (state = initialState, action: any) => {
       return {
         ...state,
         merchant: {},
+        error: action.error,
+      };
+
+    case ACTION.location.GET_LOCATION_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.location.GET_LOCATION_SUCCESS:
+      return {
+        ...state,
+        locationdata: action.locationdata,
+      };
+    case ACTION.location.GET_LOCATION_FAILURE:
+      return {
+        ...state,
+        locationdata: {},
         error: action.error,
       };
 

@@ -8,13 +8,16 @@ const apiUrl = {
         category:'category/get-category-list'
     },
     findStoreController: {
-        getStore:'user/get-merchant-list'
+        getStore:'user/get-merchant-list',
+        getLocation:'address/get-city-list'
     },
     storeProductController: {
         getProduct:'user/get-product-list',
         addtocart:'ordercart',
         getcartdata:'ordercart/get-card-list',
-        updatecart:'ordercart/'
+        updatecart:'ordercart/',
+        deleteData:'delete',
+        getsearchproduct:'address/get-product-list'
     }
 }
 

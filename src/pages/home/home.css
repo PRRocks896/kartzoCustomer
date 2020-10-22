@@ -37,7 +37,7 @@ input {
     background-image: linear-gradient(to top, #FBB034, #ECCE09);
     padding: 130px 0px;
     text-align: center;
-    overflow: hidden;
+    overflow: unset;
     width: 100%;
 }
 
@@ -45,10 +45,10 @@ input {
 	position: absolute;
 	content: "";
     background: url("../../assets/images/home-banner.png") no-repeat;
-	width: 1140px;
+	width: 100%;
 	background-size: 1140px 430px !important;
 	width: 11;
-	height: 430px;
+	height: 100%;
 	overflow: hidden;
 	left: 50%;
 	transform: translate(-50%, 0%);
@@ -76,11 +76,11 @@ input {
 	margin: auto;
 	height: 50px;
 	position: relative;
-	border-radius: 50px;
+	border-radius: 4px;
 	display: flex;
 	justify-content: space-between;
 	margin-top: 40px;
-	overflow: hidden;
+	overflow: unset;
 	box-shadow: 0px 1px 5px #919191;
 }
 
@@ -89,11 +89,11 @@ input {
 	border: none;
 	background-position: center left 18px;
 	background-size: 20px;
-	text-indent: 52px;
+	text-indent: 0px;
 	width: 100%;
 	font-size: 12px;
 	font-weight: 500;
-	color: #13253B;
+	color: #13253B !important;
 	/* opacity: 1 !important; */
 }
 .location-img {
@@ -104,11 +104,11 @@ input {
 
   }
 
-.banners-home .src-location button {
+.banners-home .src-location .search-btn {
 	background: #071828;
 	color: #fff;
 	border: none;
-	border-radius: 50px;
+	border-radius: 4px;
 	padding: 0px 30px;
 }
 
@@ -854,12 +854,14 @@ input {
 		height: 40px;
 		box-shadow: 0px 1px 5px #919191;
 		border-radius: 40px;
-		-webkit-border-radius: 40px;
-		-moz-border-radius: 40px;
-		-ms-border-radius: 40px;
-		-o-border-radius: 40px;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		background: #fff !important;
+		-ms-border-radius: 4px;
+		text-indent: 20px !important;
+		-o-border-radius: 4px;
 	}
-	.banners-home .src-location button, .one-app .src-location button {
+	.banners-home .src-location .search-btn, .one-app .src-location button {
 		background: #071828;
 		color: #fff;
 		border: none;
@@ -878,8 +880,9 @@ input {
     position: relative;
     /* width: 25% !important; 
 } */
-.location-img {
-    top: 7px;
+.banners-home .location-img {
+	top: 7px;
+	left: 13px;
 }
 .one-app .src-location button {
 	height: auto;
@@ -918,6 +921,14 @@ input {
 	display: inline-block;
 	margin: auto;
 	width: auto;
+}
+.banners-home .src-location .select-search {
+   margin-left: 0px;
+   
+
+}
+.src-location .select-search__select {
+    margin-top:3px !important;
 }
 }
 /* responsive end */

@@ -5,6 +5,7 @@ import {
   header,
   trackorder,
   storeitem,
+  findstore,
 } from "../../pages/components/helper/images";
 import { connect } from "react-redux";
 import constant from "../constant/constant";
@@ -15,12 +16,15 @@ import { storeitemStateRequest } from "../../modelController";
 import { productService } from "../../redux/actions";
 
 class StoreItem extends React.Component<{
+  history:any;
   getProductsData: any;
   location: any;
   myDivToFocus: any;
   addToCart: any;
   getcartData: any;
   updateToCart: any;
+  getSearchProduct: any;
+  getProductDataWithSearching: any;
 }> {
   prevRef = null;
   ref: any = {};
@@ -36,6 +40,8 @@ class StoreItem extends React.Component<{
     cartarray: this.storeItemState.cartarray,
     maindata: this.storeItemState.maindata,
     qty: this.storeItemState.qty,
+    searchproductdata: [],
+    searchproductdatadetails: [],
   };
 
   constructor(props: any) {
@@ -48,6 +54,9 @@ class StoreItem extends React.Component<{
     this.incrementQty = this.incrementQty.bind(this);
     this.decrementQty = this.decrementQty.bind(this);
     this.cardItem = this.cardItem.bind(this);
+    this.onProductSelectId = this.onProductSelectId.bind(this);
+    this.handleClickStoreItemEvent = this.handleClickStoreItemEvent.bind(this);
+    this.goBack = this.goBack.bind(this);
   }
 
   componentDidMount() {
@@ -73,6 +82,7 @@ class StoreItem extends React.Component<{
         maindata: this.state.maindata = maindata,
       });
     }
+    console.log("maindata", this.state.maindata);
     if (localStorage.getItem("token")) {
       this.getCartData();
     }
@@ -122,9 +132,10 @@ class StoreItem extends React.Component<{
     }, 200);
   }
 
-  getProductData(searchText: string = "") {
+  getProductData(searchText: string = "", productId: number = 0) {
     const obj = {
       searchText: searchText,
+      productId: productId,
       slug: this.state.slugname,
     };
     this.props.getProductsData(obj);
@@ -149,10 +160,41 @@ class StoreItem extends React.Component<{
     if (nextProps.getCartDetail) {
       this.getCartAllProductData(nextProps.getCartDetail);
     }
+    if (nextProps.searchDetail) {
+      this.getProductListingData(nextProps.searchDetail);
+    }
+    if (nextProps.searchableProduct) {
+      this.searchableDataProduct(nextProps.searchableProduct.data);
+    } else {
+      this.setState({
+        searchproductdatadetails: this.state.searchproductdatadetails = [],
+      });
+    }
   }
 
   searchItemDataKeyUp(e: any) {
-    console.log("e", e);
+    const data: any = this.state.maindata;
+    const obj = {
+      name: e.target.value,
+      merchantid: data.merchantID,
+    };
+    this.props.getSearchProduct(obj);
+  }
+
+  getProductListingData(data: any) {
+    this.setState({
+      searchproductdata: this.state.searchproductdata = data,
+    });
+  }
+
+  onProductSelectId(id: any) {
+    console.log("e", id);
+    const obj = {
+      searchText: "",
+      productId: id,
+      slug: this.state.slugname,
+    };
+    this.props.getProductDataWithSearching(obj);
   }
 
   getSubCategory(data: any) {
@@ -188,12 +230,20 @@ class StoreItem extends React.Component<{
     });
   }
 
+  searchableDataProduct(data: any) {
+    this.setState({
+      searchproductdatadetails: this.state.searchproductdatadetails = data,
+      activeLink: null,
+    });
+    console.log("searchableDataProduct", this.state.searchproductdatadetails);
+  }
+
   additem(data: any) {
-    console.log(
-      this.state.cartarray
-        .map((cart: any) => cart.productID === data.productId)
-        .includes(false)
-    );
+    // console.log(
+    //   this.state.cartarray
+    //     .map((cart: any) => cart.productID === data.productId)
+    //     .includes(false)
+    // );
     if (this.state.cartarray && this.state.cartarray.length > 0) {
       if (
         this.state.cartarray
@@ -206,15 +256,15 @@ class StoreItem extends React.Component<{
           (cart: any) => cart.productID === data.productId
         )[0];
         let index = this.state.cartarray.indexOf(selectedItem);
-        console.log("selectedItem: ", selectedItem);
-        console.log("Index: ", index);
+        // console.log("selectedItem: ", selectedItem);
+        // console.log("Index: ", index);
         const obj = {
           userID: user.userID,
           productID: selectedItem.productID,
           quantity: selectedItem.quantity + 1,
           discountApplied: selectedItem.discountApplied,
         };
-        console.log("increment object: ", obj);
+        // console.log("increment object: ", obj);
         this.props.updateToCart(obj, this.state.cartarray[index].orderCartID);
         setTimeout(() => {
           this.getCartData();
@@ -251,15 +301,23 @@ class StoreItem extends React.Component<{
     }
   }
 
+  goBack(){
+    this.props.history.goBack();
+  }
+
   handleClickEvent(id: any) {
     console.log("id", id, this.ref[id]);
     this.setState({ activeLink: parseInt(id) });
-    console.log("ref", this.ref);
-    // this.ref[id].scrollIntoView();
-    this.ref[id].scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    console.log("ref", this.ref[id]);
+    this.ref[id].scrollIntoView();
+    // this.ref.id.scrollIntoView({
+    //   behavior: "smooth",
+    //   block: "start",
+    // });
+  }
+
+  handleClickStoreItemEvent() {
+    this.setState({ activeLink: null });
   }
 
   cardItem(data: boolean) {
@@ -348,30 +406,37 @@ class StoreItem extends React.Component<{
   getProductItem(categorydata: any, productdata: any) {
     return (
       <div className="item-dtl">
-        <div className="serch-box">
-          <input
-            type="search"
-            name="search"
+        <div className="serch-box" onKeyUp={this.searchItemDataKeyUp}>
+          <SelectSearch
+            options={
+              this.state.searchproductdata &&
+              this.state.searchproductdata.length > 0
+                ? this.state.searchproductdata
+                : []
+            }
             placeholder="Search for an item"
-            onKeyUp={this.searchItemDataKeyUp}
+            search
+            onChange={this.onProductSelectId}
           />
         </div>
+
         <div className="all-item">
-          {categorydata &&
-            categorydata.map((cat: any, index: number) => (
-              <div
-                ref={(node: any) => (this.ref[cat.value] = node)}
-                key={"item-" + index}
-                className="item-details-1"
-              >
-                <div className="item-nm-tt">{cat.name}</div>
-                {productdata &&
-                  productdata.map((product: any, index: number) =>
-                    product.subCategoryId === cat.value ? (
-                      <div key={index}>
-                        <h3 className="tt-1"></h3>
-                        <div className="box-1">
-                          <div className="product-img">
+          {this.state.searchproductdatadetails ? (
+            <div className="item-details-1">
+              {this.state.searchproductdatadetails.length > 0 ? (
+                <div className="item-nm-tt">Other</div>
+              ) : (
+                ""
+              )}
+              {this.state.searchproductdatadetails.length > 0 &&
+                this.state.searchproductdatadetails.map(
+                  (product: any, index: number) => (
+                    <div key={index}>
+                      <h3 className="tt-1"></h3>
+                      <div className="box-1">
+                        <div className="product-img">
+                          {product.productImages &&
+                          product.productImages[0].imagePath ? (
                             <img
                               className="product_img_size"
                               src={
@@ -380,6 +445,82 @@ class StoreItem extends React.Component<{
                               }
                               alt=""
                             />
+                          ) : (
+                            <img
+                              className="product_img_size"
+                              src={findstore.store}
+                              alt=""
+                            />
+                          )}
+                        </div>
+                        <div className="right-tt">
+                          <h4 className="tt-2">{product.productName}</h4>
+                          <span className="price">R {product.price}</span>
+                          <p
+                            dangerouslySetInnerHTML={{
+                              __html: product.productDesc,
+                            }}
+                          ></p>
+                        </div>
+                        <div className="btn-add-item">
+                          {localStorage.getItem("token") ? (
+                            <button
+                              className="addproduct"
+                              onClick={() => this.additem(product)}
+                            >
+                              + Add
+                            </button>
+                          ) : (
+                            <Link to="/signin">
+                              <button className="addproduct">+ Add</button>
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                )}
+            </div>
+          ) : (
+            ""
+          )}
+          {categorydata &&
+            categorydata.map((cat: any, index: number) => (
+              <div
+                ref={(node: any) => (this.ref[cat.value] = node)}
+                key={"item-" + index}
+                className="item-details-1"
+              >
+                <div className="item-nm-tt">{cat.name}</div>
+                {
+                  productdata.length === 0 ? (
+                    <p className="text-center mt-4">No Product Avaliable</p>
+                  ) : ('')
+                }
+                {productdata &&
+                  productdata.map((product: any, index: number) =>
+                    product.subCategoryId === cat.value ? (
+                      <div key={index}>
+                        <h3 className="tt-1"></h3>
+                        <div className="box-1">
+                          <div className="product-img">
+                            {product.productImages &&
+                            product.productImages[0].imagePath ? (
+                              <img
+                                className="product_img_size"
+                                src={
+                                  constant.filemerchantpath +
+                                  product.productImages[0].imagePath
+                                }
+                                alt=""
+                              />
+                            ) : (
+                              <img
+                                className="product_img_size"
+                                src={findstore.store}
+                                alt=""
+                              />
+                            )}
                           </div>
                           <div className="right-tt">
                             <h4 className="tt-2">{product.productName}</h4>
@@ -407,9 +548,10 @@ class StoreItem extends React.Component<{
                         </div>
                       </div>
                     ) : (
-                      ""
+                     ''
                     )
-                  )}
+                  )
+                  }
               </div>
             ))}
         </div>
@@ -434,7 +576,7 @@ class StoreItem extends React.Component<{
                   <Link to="/">
                     <img src={header.logo} alt="logo" />
                   </Link>
-                  <div className="position-relative d-none d-sm-block">
+                  {/* <div className="position-relative d-none d-sm-block">
                     <SelectSearch
                       options={options.length > 0 ? options : []}
                       search
@@ -445,7 +587,7 @@ class StoreItem extends React.Component<{
                     <span className="find-map-icon">
                       <i className="fas fa-map-marker-alt map-icon"></i>
                     </span>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="right-content">
                   <div className="cart-icon">
@@ -479,10 +621,12 @@ class StoreItem extends React.Component<{
             <div className="container-fluid">
               <div className="menu-item">
                 <Link to="/"> Home </Link> /
-                <Link to={`/${this.state.location}`}>
-                  {" "}
-                  <span>{this.state.location}</span>
-                </Link>{" "}
+              
+                    {" "}
+                    <span onClick={this.goBack} style={{cursor:'pointer'}}>store</span>
+                    {/* <span>{this.state.location}</span> */}
+                 
+                {" "}
                 / <span>{this.state.slugname}</span>
               </div>
             </div>
@@ -518,6 +662,20 @@ class StoreItem extends React.Component<{
                 <div className="main-flex">
                   <div className="item-menu">
                     <ul>
+                      {this.state.searchproductdatadetails &&
+                      this.state.searchproductdatadetails.length > 0 ? (
+                        <li
+                          className={
+                            this.state.activeLink === null ? "icon-add" : ""
+                          }
+                        >
+                          <a onClick={() => this.handleClickStoreItemEvent()}>
+                            Search Results
+                          </a>
+                        </li>
+                      ) : (
+                        ""
+                      )}
                       {this.state.categorydata
                         ? this.state.categorydata.length > 0 &&
                           this.state.categorydata.map(
@@ -567,6 +725,8 @@ const mapStateToProps = (state: any) => ({
   productDetail: state.product.product,
   addToCartDetail: state.product.addcartdata,
   getCartDetail: state.product.getcartdetails,
+  searchDetail: state.product.searchdata,
+  searchableProduct: state.product.searchproduct,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -576,6 +736,10 @@ const mapDispatchToProps = (dispatch: any) => ({
   updateToCart: (data: any, id: any) =>
     dispatch(productService.updateToCart(data, id)),
   getcartData: (data: any) => dispatch(productService.getcartData(data)),
+  getSearchProduct: (data: any) =>
+    dispatch(productService.getSearchProduct(data)),
+  getProductDataWithSearching: (data: any) =>
+    dispatch(productService.getProductDataWithSearching(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoreItem);

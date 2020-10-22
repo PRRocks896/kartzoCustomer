@@ -3,7 +3,9 @@ import * as ACTION from "../constant/constant";
 const initialState = {
   product: "",
   addcartdata: "",
-  getcartdetails: ""
+  getcartdetails: "",
+  searchdata: "",
+  searchproduct:""
 };
 
 const product = (state = initialState, action: any) => {
@@ -71,6 +73,38 @@ const product = (state = initialState, action: any) => {
         addcartdata: {},
         error: action.error,
       };
+
+    case ACTION.product.SEARCH_PRODUCT_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.product.SEARCH_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        searchdata: action.searchdata,
+      };
+    case ACTION.product.SEARCH_PRODUCT_FAILURE:
+      return {
+        ...state,
+        searchdata: {},
+        error: action.error,
+      };
+
+      case ACTION.product.SEARCH_PRODUCT_DETAILS_REQUEST:
+        return {
+          ...state,
+        };
+      case ACTION.product.SEARCH_PRODUCT_DETAILS_SUCCESS:
+        return {
+          ...state,
+          searchproduct: action.searchdatadetail,
+        };
+      case ACTION.product.SEARCH_PRODUCT_DETAILS_FAILURE:
+        return {
+          ...state,
+          searchproduct: {},
+          error: action.error,
+        };
 
     default:
       return state;

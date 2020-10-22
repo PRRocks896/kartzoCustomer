@@ -7,5 +7,9 @@ import axios from 'axios';
 export default {
     getMerchantData: async function (data:any) {
         return axios.post(Constant.apiUrl + apiUrl.findStoreController.getStore,data);
-    }
+    },
+    getlocationData: async function (data:any) {
+        return axios.get(Constant.apiUrl + apiUrl.findStoreController.getLocation + `?name=${data.value}`);
+    },
+    
 }

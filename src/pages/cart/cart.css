@@ -370,7 +370,13 @@
 }
 .place-btn {
 	padding: 20px;
-	text-align: center;
+    text-align: right;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0px 0px 1px #666;
+    left: 0px;
 }
 /* card item start end*/
 
