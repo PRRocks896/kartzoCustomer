@@ -245,6 +245,11 @@ class FindStore extends React.Component<{
                 </div>
                 <div className="right-content">
                   <div className="cart-icon">
+                  <div className="quty-icon">
+                      {localStorage.getItem("cartcount")
+                        ? localStorage.getItem("cartcount")
+                        : 0}
+                    </div>
                     <Link to="/cart">
                       <img src={trackorder.shopping} alt="cart-icon" />
                     </Link>
@@ -299,7 +304,7 @@ class FindStore extends React.Component<{
                             key={index}
                             className="col-lg-6 col-md-6 col-sm-12"
                           >
-                            <Link to={`/store/${data.slug}`}>
+                            <Link to={{pathname: `/store/${data.slug}`, state: {data}}}>
                               <div className="box-1">
                                 <img
                                   className="merchant_img"

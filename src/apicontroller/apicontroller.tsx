@@ -11,7 +11,10 @@ const apiUrl = {
         getStore:'user/get-merchant-list'
     },
     storeProductController: {
-        getProduct:'user/get-product-list'
+        getProduct:'user/get-product-list',
+        addtocart:'ordercart',
+        getcartdata:'ordercart/get-card-list',
+        updatecart:'ordercart/'
     }
 }
 

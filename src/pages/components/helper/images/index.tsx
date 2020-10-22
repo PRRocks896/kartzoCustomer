@@ -136,7 +136,22 @@ export const search = {
 
   export const cart = {
     backarrow: require("../../../../assets/images/back-arrow.svg"),
-    eddnote: require("../../../../assets/images/edd-note.svg")
+    eddnote: require("../../../../assets/images/edd-note.svg"),
+    address: require("../../../../assets/images/address.svg")
+  };
+
+  export const profile = {
+    profilepic: require("../../../../assets/images/profile-icon.png"),
+    food: require("../../../../assets/images/food-img.jpg"),
+    bag: require("../../../../assets/images/bag-icon.png"),
+    home: require("../../../../assets/images/home-icon.png"),
+    other: require("../../../../assets/images/other.png"),
+    paytm: require("../../../../assets/images/PayTM.webp"),
+    simple: require("../../../../assets/images/Simpl.png"),
+    lazypay: require("../../../../assets/images/Lazy_Pay.png"),
+    eligible: require("../../../../assets/images/eligible-icon.png"),
+    friends: require("../../../../assets/images/friends.svg"),
+    wallet: require("../../../../assets/images/wallet.svg")
   };
 
 

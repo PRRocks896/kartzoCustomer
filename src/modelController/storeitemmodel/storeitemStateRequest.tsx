@@ -4,5 +4,8 @@ export interface storeitemStateRequest {
     location: string,
     slugname:string,
     categorydata:any,
-    productdata:any
+    productdata:any,
+    cartarray:any,
+    maindata:string,
+    qty:number
 }

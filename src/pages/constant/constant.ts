@@ -147,7 +147,10 @@ export default {
       location: "rajkot",
       slugname:"",
       categorydata:[],
-      productdata:[]
+      productdata:[],
+      cartarray:[],
+      maindata:'',
+      qty:1
     },
   },
   placeorderPage: {

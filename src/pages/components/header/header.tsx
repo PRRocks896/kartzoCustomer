@@ -50,6 +50,11 @@ class Header extends React.Component {
                 </Link>
                 <Link className="cart-icon" to="/cart">
                   <div className="cart-icon m-0">
+                  <div className="quty-icon">
+                      {localStorage.getItem("cartcount")
+                        ? localStorage.getItem("cartcount")
+                        : 0}
+                    </div>
                     <img src={header.cart} alt="cart-icon" />
                     {/* <i className="fas fa-shopping-cart user_icon"></i> */}
                   </div>

@@ -118,7 +118,7 @@ class Login extends React.Component<{
         };
         this.props.getAdminToken(obj);
       }
-      this.props.history.push("/");
+      this.props.history.goBack();
     } else {
       this.setState({
         isButtonVerify: false,

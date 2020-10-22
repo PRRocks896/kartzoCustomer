@@ -1,26 +1,78 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
-import { cart } from "../../pages/components/helper/images";
+import {
+  cart,
+  findstore,
+  header,
+  trackorder,
+} from "../../pages/components/helper/images";
+import { productService } from "../../redux/actions";
 import constant from "../constant/constant";
 import { getAppName } from "../utils";
 import "./cart.css";
+import { connect } from "react-redux";
 
-class Cart extends React.Component<{ show: boolean }> {
+class Cart extends React.Component<{
+  show: boolean;
+  history: any;
+  getcartData: any;
+  updateToCart: any
+}> {
   state = {
     activeLink: "1",
     isShowCard: false,
+    cartarray: [],
+    isOpen: false,
   };
   constructor(props: any) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onChangeEvent = this.onChangeEvent.bind(this);
+    this.goBack = this.goBack.bind(this);
+    this.incrementQty = this.incrementQty.bind(this);
+    this.decrementQty = this.decrementQty.bind(this);
+    this.open = this.open.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
     document.title = constant.cart + getAppName();
     EventEmitter.dispatch("isShow", true);
     EventEmitter.dispatch("isShowFooter", true);
+    if (localStorage.getItem("token")) {
+      this.getCartData();
+    }
+  }
+
+  getCartData(searchText: string = "", page: number = 1, size: number = 20) {
+    const obj = {
+      searchText: searchText,
+      isActive: true,
+      page: page,
+      size: size,
+    };
+    this.props.getcartData(obj);
+  }
+
+  componentWillReceiveProps(nextProps: any, newState: any) {
+    console.log("props", nextProps);
+    if (nextProps.getCartDetail) {
+      this.getCartAllProductData(nextProps.getCartDetail);
+    }
+  }
+
+  getCartAllProductData(data: any) {
+    this.setState({
+      cartarray: this.state.cartarray = data.data,
+    });
+    if (this.state.cartarray && this.state.cartarray.length > 0) {
+      this.setState({
+        cartarray: this.state.cartarray = data.data,
+      });
+    }
+    console.log("cartarray", this.state.cartarray);
   }
 
   handleClick = (id: any) => {
@@ -31,206 +83,243 @@ class Cart extends React.Component<{ show: boolean }> {
     console.log("e");
   }
 
+  onChange() {
+    console.log("e");
+  }
+
+  goBack() {
+    this.props.history.goBack();
+  }
+
+  onChangeEvent(event: any, index: any) {
+    event.preventDefault();
+    const state: any = this.state;
+    state[event.target.name] = event.target.value;
+    this.setState(state);
+  }
+
+  incrementQty(data: any) {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const obj = {
+      userID: user.userID,
+      productID: data.productID,
+      quantity: data.quantity + 1,
+      discountApplied: data.discountApplied,
+    };
+    this.props.updateToCart(obj, data.orderCartID);
+    setTimeout(() => {
+      this.getCartData();
+    }, 200);
+    // let tempCart = this.state.cartarray;
+    // tempCart[index].qty = parseInt(tempCart[index].qty) + 1;
+    // this.setState({ cartarray: tempCart });
+  }
+
+  decrementQty(data: any) {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const obj = {
+      userID: user.userID,
+      productID: data.productID,
+      quantity: data.quantity - 1,
+      discountApplied: data.discountApplied,
+    };
+    this.props.updateToCart(obj, data.orderCartID);
+    setTimeout(() => {
+      this.getCartData();
+    }, 200);
+  }
+
+  open() {
+    this.setState({
+      isOpen: this.state.isOpen = true,
+    });
+  }
+
   render() {
     return (
       <>
-        <header className="header">
+        <header
+          className="header"
+          style={{ position: "fixed", width: "100%", zIndex: 12 }}
+        >
           <div className="container-fluid">
             <div className="dis-flx">
               <div className="left-content">
-                <Link className="back-arrow" to="/">
-                  <img src={cart.backarrow} alt="logo" />
-                </Link>
-                <h4 className="res-tt1">Confirm order</h4>
+              <Link to="/">
+                    <img src={header.logo} alt="logo" />
+                  </Link>
               </div>
               <div className="right-content">
-                <Link className="sign-tt" to="/signin">
-                  Sign in
-                </Link>
+                <div className="cart-icon">
+                  <div className="quty-icon">
+                    {localStorage.getItem("cartcount")
+                      ? localStorage.getItem("cartcount")
+                      : 0}
+                  </div>
+                  <Link to="/cart">
+                    <img src={trackorder.shopping} alt="cart-icon" />
+                  </Link>
+                </div>
+                {!localStorage.getItem("token") ? (
+                  <div className="right-content">
+                    <Link className="sign-tt" to="/signin">
+                      Sign in
+                    </Link>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </div>
         </header>
-        <section className="place-order">
+        <section className="place-order ">
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-12">
                 <div className="main-flex">
-                  <div className="right-box1">
-                    <div className="pay-box">
+                  <div className="left-box">
+                    <div className="mycard-item">
+                      <h1 className="my-cart-item">
+                        My Cart ({localStorage.getItem("cartcount")})
+                      </h1>
+                    </div>
+                    {this.state.cartarray
+                      ? this.state.cartarray.length > 0 &&
+                        this.state.cartarray.map(
+                          (cartdata: any, index: any) => (
+                            <div className="card-list" key={index}>
+                              <div className="card-item-1">
+                                <div className="content-box1">
+                                  <div className="img-box">
+                                    <img src={findstore.store} alt="" />
+                                  </div>
+                                  <div className="right-content">
+                                    <div className="list-tt">
+                                      {cartdata.productName}{" "}
+                                    </div>
+                                    <div className="dicrip-1">
+                                      Number of Shelves - {cartdata.quantity}
+                                    </div>
+                                    <div className="saller-nm">
+                                      Seller: DIGIONICS
+                                    </div>
+                                    <div className="price">
+                                      R{cartdata.sellingPrice}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="btm-content">
+                                  <div className="number">
+                                    <span
+                                      className="minus"
+                                      onClick={() =>
+                                        this.decrementQty(cartdata)
+                                      }
+                                    >
+                                      -
+                                    </span>
+                                    <input
+                                      type="text"
+                                      name="qty"
+                                      value={
+                                        cartdata.quantity
+                                          ? cartdata.quantity
+                                          : ""
+                                      }
+                                      onChange={(e: any) =>
+                                        this.onChangeEvent(e, index)
+                                      }
+                                    />
+                                    <span
+                                      className="plus"
+                                      onClick={() =>
+                                        this.incrementQty(cartdata)
+                                      }
+                                    >
+                                      +
+                                    </span>
+                                  </div>
+                                  <button>Save for later</button>
+                                  <button>Remove</button>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        )
+                      : ""}
+
+                    <div className="place-btn">
+                      <Link to="/placeorder">
+                        <button>Place Order</button>
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="right-box">
+                    {/* <div className="pay-box">
                       <div className="your-card">
-                        <h3>Your Cart ( 5 Items )</h3>
+                        <h3>
+                          Your Cart ({localStorage.getItem("cartcount")} Items)
+                        </h3>
                         <hr />
                       </div>
                       <div className="market-name">
                         From <a href="#">Bhatia Super Market</a>
                       </div>
-                      <div className="flex-box">
-                        <div className="l-flex">
-                          <div className="bdr-roud"></div>
-                          <div className="item-title">
-                            <h4>Marlboro Gold Light</h4>
-                            <span className="pak">Pack of 20</span>
-                          </div>
-                        </div>
+                      {this.state.cartarray
+                        ? this.state.cartarray.length > 0 &&
+                          this.state.cartarray.map(
+                            (cartdata: any, index: number) => (
+                              <div className="flex-box" key={index}>
+                                <div className="bdr-roud"></div>
+                                <div className="item-title">
+                                  <h4>{cartdata.productName} </h4>
+                                </div>
 
-                        <div className="r-flex">
-                          <div className="number">
-                            <span className="minus">-</span>
-                            <input
-                              type="text"
-                              value="1"
-                              onChange={this.handleChange}
-                            />
-                            <span className="plus">+</span>
-                          </div>
-                          <span className="price">R28</span>
-                        </div>
-                      </div>
-                      <div className="flex-box">
-                        <div className="l-flex">
-                          <div className="bdr-roud"></div>
-                          <div className="item-title">
-                            <h4>Marlboro Gold Light</h4>
-                            <span className="pak">Pack of 20</span>
-                          </div>
-                        </div>
+                                <div className="number">
+                                  <span
+                                    className="minus"
+                                    onClick={() => this.decrementQty(cartdata)}
+                                  >
+                                    -
+                                  </span>
+                                  <input
+                                    type="text"
+                                    name="qty"
+                                    value={
+                                      cartdata.quantity ? cartdata.quantity : ""
+                                    }
+                                    onChange={(e: any) =>
+                                      this.onChangeEvent(e, index)
+                                    }
+                                  />
+                                  <span
+                                    className="plus"
+                                    onClick={() => this.incrementQty(cartdata)}
+                                  >
+                                    +
+                                  </span>
+                                </div>
 
-                        <div className="r-flex">
-                          <div className="number">
-                            <span className="minus">-</span>
-                            <input
-                              type="text"
-                              value="1"
-                              onChange={this.handleChange}
-                            />
-                            <span className="plus">+</span>
-                          </div>
-                          <span className="price">R28</span>
-                        </div>
-                      </div>
-                      <div className="flex-box">
-                        <div className="l-flex">
-                          <div className="bdr-roud"></div>
-                          <div className="item-title">
-                            <h4>Marlboro Gold Light</h4>
-                            <span className="pak">Pack of 20</span>
-                          </div>
-                        </div>
-
-                        <div className="r-flex">
-                          <div className="number">
-                            <span className="minus">-</span>
-                            <input
-                              type="text"
-                              value="1"
-                              onChange={this.handleChange}
-                            />
-                            <span className="plus">+</span>
-                          </div>
-                          <span className="price">R28</span>
-                        </div>
-                      </div>{" "}
-                      <div className="flex-box">
-                        <div className="l-flex">
-                          <div className="bdr-roud"></div>
-                          <div className="item-title">
-                            <h4>Marlboro Gold Light</h4>
-                            <span className="pak">Pack of 20</span>
-                          </div>
-                        </div>
-
-                        <div className="r-flex">
-                          <div className="number">
-                            <span className="minus">-</span>
-                            <input
-                              type="text"
-                              value="1"
-                              onChange={this.handleChange}
-                            />
-                            <span className="plus">+</span>
-                          </div>
-                          <span className="price">R28</span>
-                        </div>
-                      </div>{" "}
-                      <div className="flex-box">
-                        <div className="l-flex">
-                          <div className="bdr-roud"></div>
-                          <div className="item-title">
-                            <h4>Marlboro Gold Light</h4>
-                            <span className="pak">Pack of 20</span>
-                          </div>
-                        </div>
-
-                        <div className="r-flex">
-                          <div className="number">
-                            <span className="minus">-</span>
-                            <input
-                              type="text"
-                              value="1"
-                              onChange={this.handleChange}
-                            />
-                            <span className="plus">+</span>
-                          </div>
-                          <span className="price">R28</span>
-                        </div>
-                      </div>{" "}
-                      <div className="flex-box">
-                        <div className="l-flex">
-                          <div className="bdr-roud"></div>
-                          <div className="item-title">
-                            <h4>Marlboro Gold Light</h4>
-                            <span className="pak">Pack of 20</span>
-                          </div>
-                        </div>
-
-                        <div className="r-flex">
-                          <div className="number">
-                            <span className="minus">-</span>
-                            <input
-                              type="text"
-                              value="1"
-                              onChange={this.handleChange}
-                            />
-                            <span className="plus">+</span>
-                          </div>
-                          <span className="price">R28</span>
-                        </div>
-                      </div>{" "}
-                      <div className="flex-box">
-                        <div className="l-flex">
-                          <div className="bdr-roud"></div>
-                          <div className="item-title">
-                            <h4>Marlboro Gold Light</h4>
-                            <span className="pak">Pack of 20</span>
-                          </div>
-                        </div>
-
-                        <div className="r-flex">
-                          <div className="number">
-                            <span className="minus">-</span>
-                            <input
-                              type="text"
-                              value="1"
-                              onChange={this.handleChange}
-                            />
-                            <span className="plus">+</span>
-                          </div>
-                          <span className="price">R28</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="pay-box">
+                                <span className="price">
+                                  R{cartdata.sellingPrice}
+                                </span>
+                              </div>
+                            )
+                          )
+                        : ""}
+                    </div> */}
+                    {/* <div className="pay-box">
                       <div className="flex-box flex-box2">
-                        <img src={cart.eddnote} alt="" />
-                        <textarea
-                          value=" Any instructions for the delivery partner?"
-                          onChange={this.handleChange}
-                        >
+                        <img src={findstore.store} alt="" />
+                        <textarea value="Any instructions for the delivery partner?" onChange={this.handleChange}>
                           Any instructions for the delivery partner?
                         </textarea>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="pay-box">
                       <div className="your-card">
                         <h3>Invoice</h3>
@@ -240,8 +329,17 @@ class Cart extends React.Component<{ show: boolean }> {
                         </span>
                       </div>
                       <div className="invoice-box">
-                        <div className="tilte">Item total</div>
-                        <div className="price">R 1304</div>
+                        <div className="tilte">Item total price</div>
+                        <div className="price">
+                          R{" "}
+                          {this.state.cartarray
+                            ? this.state.cartarray.reduce(
+                                (sum: number, i: any) =>
+                                  (sum += i.sellingPrice),
+                                0
+                              )
+                            : 0}
+                        </div>
                       </div>
                       <div className="invoice-box">
                         <div className="tilte">Item total</div>
@@ -249,7 +347,16 @@ class Cart extends React.Component<{ show: boolean }> {
                       </div>
                       <div className="invoice-box total-pay ">
                         <div className="tilte">To pay</div>
-                        <div className="price">R 140</div>
+                        <div className="price">
+                          R{" "}
+                          {this.state.cartarray
+                            ? this.state.cartarray.reduce(
+                                (sum: number, i: any) =>
+                                  (sum += i.sellingPrice),
+                                0
+                              )
+                            : 0}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -258,28 +365,20 @@ class Cart extends React.Component<{ show: boolean }> {
             </div>
           </div>
         </section>
-        <div className="bottom-fix-box">
-          <div className="left-box">
-            <span>
-              <i className="fas fa-shopping-cart"></i>
-            </span>
-            <span className="totle-item">6 Items</span>
-            <span className="dot-m">•</span>
-            <span className="price">R 1230</span>
-          </div>
-          {localStorage.getItem("mobile") ? (
-            <div className="right-btn1">
-              <Link to="/">Add</Link>
-            </div>
-          ) : (
-            <div className="right-btn1">
-              <Link to="/signin">Sign in</Link>
-            </div>
-          )}
-        </div>
       </>
     );
   }
 }
 
-export default Cart;
+const mapStateToProps = (state: any) => ({
+  addToCartDetail: state.product.addcartdata,
+  getCartDetail: state.product.getcartdetails,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  updateToCart: (data: any, id: any) =>
+  dispatch(productService.updateToCart(data, id)),
+  getcartData: (data: any) => dispatch(productService.getcartData(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
