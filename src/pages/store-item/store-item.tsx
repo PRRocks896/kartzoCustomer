@@ -195,6 +195,9 @@ class StoreItem extends React.Component<{
       slug: this.state.slugname,
     };
     this.props.getProductDataWithSearching(obj);
+    setTimeout(() => {
+      this.getProductData();
+    }, 12);
   }
 
   getSubCategory(data: any) {
@@ -235,7 +238,7 @@ class StoreItem extends React.Component<{
       searchproductdatadetails: this.state.searchproductdatadetails = data,
       activeLink: null,
     });
-    console.log("searchableDataProduct", this.state.searchproductdatadetails);
+   
   }
 
   additem(data: any) {

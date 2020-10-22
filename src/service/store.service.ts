@@ -50,8 +50,8 @@ export default {
   },
   getSearchProductData: async function (data: any) {
     console.log("data",data);
-    return WebReqUrl.get(
-      Constant.apiUrl + apiUrl.storeProductController.getsearchproduct + `?name=${data.name}&merchantid=${data.merchantid}` ,false
+    return axios.get(
+      Constant.apiUrl + apiUrl.storeProductController.getsearchproduct + `?name=${data.name}&merchantid=${data.merchantid}`
     );
   },
   

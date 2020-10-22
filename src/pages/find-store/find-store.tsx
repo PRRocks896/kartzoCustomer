@@ -74,7 +74,7 @@ class FindStore extends React.Component<{
   }
 
   componentWillReceiveProps(nextProps: any, newState: any) {
-    console.log("props", nextProps);
+    // console.log("props", nextProps);
     if (nextProps.merchantDetail) {
       this.setState({
         isLoading: false,
@@ -141,9 +141,6 @@ class FindStore extends React.Component<{
         })
       ) : ('')
     ))
-    if(this.state.location) {
-      localStorage.setItem('city',this.state.location);
-    }
     this.getMerchantData('',event,1,4)
   }
 
@@ -158,7 +155,7 @@ class FindStore extends React.Component<{
   }
 
   locationdetails(data:any) {
-    console.log("data",data);
+    // console.log("data",data);
     this.setState({
       locationData:this.state.locationData = data
     })

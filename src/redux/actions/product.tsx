@@ -157,7 +157,7 @@ function getSearchProduct(data: any) {
       .then((searchdata: any) => {
         // console.log("searchdata", searchdata);
         if (searchdata.status === 200) {
-          dispatch(success(searchdata.resultObject));
+          dispatch(success(searchdata.data.resultObject));
         }
       })
       .catch((err: any) => {
