@@ -83,7 +83,7 @@ function getAdminToken(data:any) {
       .then((token:any) => {
         // console.log("token", token);
         if (token.status === 200) {
-          localStorage.setItem('adminToken',token.token);
+          localStorage.setItem('adminToken',token.data.token);
           // const msg = otpdata.message;
           // showSuccess(msg);
           dispatch(success(token));

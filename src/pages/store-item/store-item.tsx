@@ -16,7 +16,7 @@ import { storeitemStateRequest } from "../../modelController";
 import { productService } from "../../redux/actions";
 
 class StoreItem extends React.Component<{
-  history:any;
+  history: any;
   getProductsData: any;
   location: any;
   myDivToFocus: any;
@@ -42,6 +42,8 @@ class StoreItem extends React.Component<{
     qty: this.storeItemState.qty,
     searchproductdata: [],
     searchproductdatadetails: [],
+    isButton: false,
+    loadingid: "",
   };
 
   constructor(props: any) {
@@ -60,6 +62,7 @@ class StoreItem extends React.Component<{
   }
 
   componentDidMount() {
+    console.log("isbutton", this.state.isButton);
     document.title = constant.store + getAppName();
     const slug = this.props.location.pathname.split("/")[2];
     if (slug) {
@@ -214,6 +217,7 @@ class StoreItem extends React.Component<{
 
   getCartAllProductData(data: any) {
     this.setState({
+      isButton: this.state.isButton = false,
       cartarray: this.state.cartarray = data.data,
     });
     localStorage.setItem("cartcount", data.totalcount);
@@ -238,15 +242,13 @@ class StoreItem extends React.Component<{
       searchproductdatadetails: this.state.searchproductdatadetails = data,
       activeLink: null,
     });
-   
   }
 
   additem(data: any) {
-    // console.log(
-    //   this.state.cartarray
-    //     .map((cart: any) => cart.productID === data.productId)
-    //     .includes(false)
-    // );
+    this.setState({
+      isButton: this.state.isButton = true,
+      loadingid: this.state.loadingid = data.productId,
+    });
     if (this.state.cartarray && this.state.cartarray.length > 0) {
       if (
         this.state.cartarray
@@ -269,6 +271,7 @@ class StoreItem extends React.Component<{
         };
         // console.log("increment object: ", obj);
         this.props.updateToCart(obj, this.state.cartarray[index].orderCartID);
+
         setTimeout(() => {
           this.getCartData();
         }, 200);
@@ -283,6 +286,7 @@ class StoreItem extends React.Component<{
           discountApplied: data.discountPrice,
         };
         this.props.addToCart(obj);
+
         setTimeout(() => {
           this.getCartData();
         }, 200);
@@ -298,13 +302,14 @@ class StoreItem extends React.Component<{
         discountApplied: data.discountPrice,
       };
       this.props.addToCart(obj);
+
       setTimeout(() => {
         this.getCartData();
       }, 200);
     }
   }
 
-  goBack(){
+  goBack() {
     this.props.history.goBack();
   }
 
@@ -467,12 +472,25 @@ class StoreItem extends React.Component<{
                         </div>
                         <div className="btn-add-item">
                           {localStorage.getItem("token") ? (
-                            <button
-                              className="addproduct"
-                              onClick={() => this.additem(product)}
-                            >
-                              + Add
-                            </button>
+                            this.state.isButton === false ? (
+                              <button
+                                className="addproduct"
+                                onClick={() => this.additem(product)}
+                              >
+                                + Add
+                              </button>
+                            ) : (
+                              <div className="spinerButton2">
+                                <button className="addproduct" disabled>
+                                  + Add
+                                </button>
+                                {this.state.loadingid === product.productId ? (
+                                  <div className="spinners2"></div>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                            )
                           ) : (
                             <Link to="/signin">
                               <button className="addproduct">+ Add</button>
@@ -495,11 +513,23 @@ class StoreItem extends React.Component<{
                 className="item-details-1"
               >
                 <div className="item-nm-tt">{cat.name}</div>
-                {
-                  productdata.length === 0 ? (
-                    <p className="text-center mt-4">No Product Avaliable</p>
-                  ) : ('')
-                }
+                {productdata.length === 0 ? (
+                  <p className="text-center mt-4">No Product Avaliable</p>
+                ) : (
+                  //   productdata &&
+                  //   productdata.map((product: any, index: number) =>
+                  //     product.subCategoryId !== cat.value ? (
+                  //       <p className="text-center mt-4" key={index}>
+                  //         No Product Avaliable
+                  //       </p>
+                  //     ) : (
+                  //       ""
+                  //     )
+                  //   )
+                  // )
+                  ""
+                )}
+
                 {productdata &&
                   productdata.map((product: any, index: number) =>
                     product.subCategoryId === cat.value ? (
@@ -536,12 +566,26 @@ class StoreItem extends React.Component<{
                           </div>
                           <div className="btn-add-item">
                             {localStorage.getItem("token") ? (
-                              <button
-                                className="addproduct"
-                                onClick={() => this.additem(product)}
-                              >
-                                + Add
-                              </button>
+                              this.state.isButton === false ? (
+                                <button
+                                  className="addproduct"
+                                  onClick={() => this.additem(product)}
+                                >
+                                  + Add
+                                </button>
+                              ) : (
+                                <div className="spinerButton2">
+                                  <button className="addproduct" disabled>
+                                    + Add
+                                  </button>
+                                  {this.state.loadingid ===
+                                  product.productId ? (
+                                    <div className="spinners2"></div>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
+                              )
                             ) : (
                               <Link to="/signin">
                                 <button className="addproduct">+ Add</button>
@@ -551,10 +595,9 @@ class StoreItem extends React.Component<{
                         </div>
                       </div>
                     ) : (
-                     ''
+                      ""
                     )
-                  )
-                  }
+                  )}
               </div>
             ))}
         </div>
@@ -623,14 +666,12 @@ class StoreItem extends React.Component<{
           <section className="page-name">
             <div className="container-fluid">
               <div className="menu-item">
-                <Link to="/"> Home </Link> /
-              
-                    {" "}
-                    <span onClick={this.goBack} style={{cursor:'pointer'}}>store</span>
-                    {/* <span>{this.state.location}</span> */}
-                 
-                {" "}
-                / <span>{this.state.slugname}</span>
+                <Link to="/"> Home </Link> /{" "}
+                <span onClick={this.goBack} style={{ cursor: "pointer" }}>
+                  store
+                </span>
+                {/* <span>{this.state.location}</span> */} /{" "}
+                <span>{this.state.slugname}</span>
               </div>
             </div>
           </section>

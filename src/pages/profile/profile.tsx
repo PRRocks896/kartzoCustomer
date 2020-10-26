@@ -35,6 +35,7 @@ class Profile extends React.Component<{ show: boolean; history: any }> {
     localStorage.removeItem("token");
     localStorage.removeItem("cart");
     localStorage.removeItem("cartcount");
+    localStorage.removeItem("adminToken");
     this.props.history.push("/");
     // window.location.href = "/";
   }

@@ -386,7 +386,7 @@
 	background-image: linear-gradient(to bottom, #FBB034, #ECCE09);
 	font-size: 14px;
 	line-height: 28px;
-	padding: 0px 16px;
+	padding: 0px 20px;
 	border-radius: 38px;
 	font-weight: 500;
 	border: 1px solid #FBB034;
@@ -774,3 +774,39 @@
   .serch-box .select-search__input {
 	color:black !important;
 }
+
+@keyframes spinners2 {
+	to {transform: rotate(360deg);}
+  }
+   
+  .spinners2:before {
+	  content: '';
+	  box-sizing: border-box;
+	  position: absolute;
+	  top: 56%;
+	  left: 78px;
+	  width: 12px;
+	  height: 12px;
+	  margin-top: -7px;
+	  margin-left: -10px;
+	  border-radius: 50%;
+	  border: 2px solid #ffffff;
+	  border-top-color: #000000;
+	  animation: spinners .8s linear infinite;
+	  filter: blur(0px);
+  }
+
+  .spinners2 {
+	background: rgb(238, 162, 24) !important;
+  }
+
+  .spinerButton2 {
+	text-align: center;
+    position: relative;
+	/* background: rgb(238, 162, 24) !important; */
+	margin: auto;
+  }
+
+  .spinerButton2:focus {
+	outline: none;
+  }

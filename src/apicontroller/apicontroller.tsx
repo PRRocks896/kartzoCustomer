@@ -11,6 +11,10 @@ const apiUrl = {
         getStore:'user/get-merchant-list',
         getLocation:'address/get-city-list'
     },
+    addressController: {
+        getaddress:'address/get-Card-list',
+        addaddress:'address'
+    },
     storeProductController: {
         getProduct:'user/get-product-list',
         addtocart:'ordercart',

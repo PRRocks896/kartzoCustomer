@@ -4,14 +4,16 @@ import { combineReducers } from 'redux';
 import auth from './auth';
 import category from './category';
 import merchant from './merchant';
-import product from './product'
+import product from './product';
+import placeOrder from './placeorder'
 
 
 const rootReducer = combineReducers({
     auth: auth,
     category: category,
     merchant: merchant,
-    product:product
+    product:product,
+    placeOrder:placeOrder
 });
 
 export default rootReducer;
