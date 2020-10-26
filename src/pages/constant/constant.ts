@@ -83,6 +83,7 @@ export default {
     title: {},
     state: {
       isShow: false,
+      count:0
     },
   },
   footerPage: {

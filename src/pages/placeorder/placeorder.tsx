@@ -8,10 +8,13 @@ import {
   placeorder,
 } from "../../pages/components/helper/images";
 import constant from "../constant/constant";
-import { getAppName } from "../utils";
+import { getAppName,alertMessage } from "../utils";
 import { connect } from "react-redux";
 import "./placeorder.css";
 import { placeOrderService, productService } from "../../redux/actions";
+import Cards from 'react-credit-cards';
+import 'react-credit-cards/es/styles-compiled.css';
+
 
 class PlaceOrder extends React.Component<{
   show: boolean;
@@ -19,6 +22,7 @@ class PlaceOrder extends React.Component<{
   addAddress: any;
   getcartData: any;
   updateToCart: any;
+  history:any
 }> {
   /** place order state */
   placeOrderState: placeorderStateRequest = constant.placeorderPage.state;
@@ -58,6 +62,11 @@ class PlaceOrder extends React.Component<{
     landmarkerror: this.placeOrderState.landmarkerror,
     landmark: this.placeOrderState.landmark,
     cartarray: this.placeOrderState.cartarray,
+    cvc: '',
+    expiry: '',
+    focus: '',
+    name1: '',
+    number: '',
   };
 
   constructor(props: any) {
@@ -76,7 +85,7 @@ class PlaceOrder extends React.Component<{
     this.incrementQty = this.incrementQty.bind(this);
     this.decrementQty = this.decrementQty.bind(this);
     this.onChangeEvent = this.onChangeEvent.bind(this);
-    
+    this.changeLogin = this.changeLogin.bind(this);
   }
 
   componentDidMount() {
@@ -869,6 +878,7 @@ class PlaceOrder extends React.Component<{
           {this.state.paymenttype === 3 ? (
             <div className="pey-upi">
               <div className="opti1 opti2">
+             
                 <div className="box-input1">
                   <div className="form-group card-nombr">
                     <span className="verfy-tt">Link Now</span>
@@ -1131,7 +1141,7 @@ class PlaceOrder extends React.Component<{
 
   cardItemsBlock() {
     return (
-      <div className="right-box">
+      <div className="right-box order">
         <div className="pay-box">
           <div className="your-card">
             <h3>Your Cart ({localStorage.getItem("cartcount")} Items)</h3>
@@ -1145,7 +1155,7 @@ class PlaceOrder extends React.Component<{
               this.state.cartarray.map((cartdata: any, index: any) => (
                 <div className="flex-box" key={index}>
                   <div className="bdr-roud"></div>
-                  <div className="item-title">
+                  <div className="item-title ">
                     <h4>{cartdata.productName}</h4>
                     {/* <span className="pak">Pack of 20</span> */}
                   </div>
@@ -1226,6 +1236,17 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  async changeLogin(text:any,btext:any) {
+    if (await alertMessage(text, btext)) {
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("cart");
+      localStorage.removeItem("cartcount");
+      localStorage.removeItem("adminToken");
+      this.props.history.push('/signin')
+    }
+  }
+
   render() {
     // console.log("TrackOrder",this.props)
     return (
@@ -1276,7 +1297,7 @@ class PlaceOrder extends React.Component<{
             <div className="row">
               <div className="col-md-12">
                 <div className="main-flex">
-                  <div className="left-box">
+                  <div className="left-box l">
                     <div className="pro-box1 login-box">
                       <div className="dis-box">
                         <div className="dis-left">
@@ -1359,7 +1380,7 @@ class PlaceOrder extends React.Component<{
                           </div>
                         </div>
                         <div className="dis-right">
-                          <button className="change1">CHANGE</button>
+                          <button className="change1" onClick={() => this.changeLogin("You should be login into another account","Yes, confirm it")} >CHANGE</button>
                         </div>
                       </div>
                     </div>

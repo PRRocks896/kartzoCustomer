@@ -1,3 +1,4 @@
 export interface layoutStateRequest {
-    isShow:boolean
+    isShow:boolean,
+    count?:any
 }

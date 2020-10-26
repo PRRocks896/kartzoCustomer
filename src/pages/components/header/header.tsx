@@ -11,6 +11,7 @@ class Header extends React.Component {
   headerState : layoutStateRequest = constant.headerPage.state;
   state = {
     isShow: this.headerState.isShow,
+    count: this.headerState.count
   };
 
   constructor(props: any) {
@@ -18,6 +19,12 @@ class Header extends React.Component {
     EventEmitter.subscribe("isShow", (data: any) => {
       this.setState({
         isShow: this.state.isShow = data,
+      });
+    });
+
+    EventEmitter.subscribe("count", (data: any) => {
+      this.setState({
+        count: this.state.count = data,
       });
     });
   }
@@ -51,8 +58,8 @@ class Header extends React.Component {
                 <Link className="cart-icon" to="/cart">
                   <div className="cart-icon m-0">
                   <div className="quty-icon">
-                      {localStorage.getItem("cartcount")
-                        ? localStorage.getItem("cartcount")
+                      {this.state.count
+                        ? this.state.count
                         : 0}
                     </div>
                     <img src={header.cart} alt="cart-icon" />
@@ -79,33 +86,6 @@ class Header extends React.Component {
     } else if (this.state.isShow === true) {
       return (
         <></>
-        // <div className="sticky-menu" id="fix-top">
-        // <header className="header">
-        //   <div className="container-fluid">
-        //     <div className="dis-flx">
-        //       <div className="left-content">
-        //         <Link to="/">
-        //           <img src={header.logo} alt="logo" />
-        //         </Link>
-        //         <a href="#">
-        //           <div className="search-box">
-        //             <img src={trackorder.location} alt="location" />
-        //             <span className="search-text"> Pretoria</span>
-        //           </div>
-        //         </a>
-        //       </div>
-        //       <div className="right-content">
-        //         <div className="cart-icon">
-        //           <img src={trackorder.shopping} alt="cart-icon" />
-        //         </div>
-        //         <a href="#" className="sign-tt">
-        //           Sign in
-        //         </a>
-        //       </div>
-        //     </div>
-        //   </div>
-        // </header>
-        // </div>
       );
     }
   }

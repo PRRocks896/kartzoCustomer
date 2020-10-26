@@ -98,8 +98,10 @@
 }
 
 /* left box */
-.place-order .left-box {
+.place-order .left-box.l {
 	width: 100%;
+	border: none !important;
+	box-shadow: none !important;
 }
 
 .left-box {
@@ -409,6 +411,11 @@
 	background: #f7b62b;
 }
 
+.order .flex-box .item-title {
+    width: 158px !important;
+    overflow: hidden;
+}
+
 /* check box */
 
 /* Delivery Address end */
@@ -449,11 +456,11 @@
 .place-order .right-box .market-name a:hover {
 	color: #fab033;
 }
-
-.place-order .flex-box {
+ .place-order .order .flex-box {
 	display: flex;
 	align-items: self-start;
-	width: 316px;
+	width: 100% !important;
+	margin-bottom: 12px;
 }
 
 .place-order .flex-box .bdr-roud {
