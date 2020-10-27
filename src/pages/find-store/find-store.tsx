@@ -11,7 +11,11 @@ import { getAppName, scrollToTop, pageNumber } from "../utils";
 import "./find-store.css";
 import { connect } from "react-redux";
 import SelectSearch from "react-select-search";
-import { findstoreStateRequest } from "../../modelController";
+import {
+  findstoreStateRequest,
+  getMerchantListRequest,
+  searchCityListRequest,
+} from "../../modelController";
 import { merchantService } from "../../redux/actions";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
@@ -36,7 +40,8 @@ class FindStore extends React.Component<{
     location: this.findstoreState.location,
     merchantdata: this.findstoreState.merchantdata,
     isLoading: this.findstoreState.isLoading,
-    locationData: this.findstoreState.locationData
+    locationData: this.findstoreState.locationData,
+    cityid:  this.findstoreState.cityid,
   };
   constructor(props: any) {
     super(props);
@@ -62,10 +67,15 @@ class FindStore extends React.Component<{
     this.getMerchantData();
   }
 
-  getMerchantData(searchText: string = "",cityId: number = 3, page: number = 1, size: number = 4) {
-    const obj = {
+  getMerchantData(
+    searchText: string = "",
+    cityId: number = 3,
+    page: number = 1,
+    size: number = 4
+  ) {
+    const obj: getMerchantListRequest = {
       searchText: searchText,
-      cityId:cityId,
+      cityId: cityId,
       slug: this.state.slugname,
       page: page,
       size: size,
@@ -85,8 +95,8 @@ class FindStore extends React.Component<{
       this.locationdetails(nextProps.locationDetail);
     } else {
       this.setState({
-        locationData:this.state.locationData = []
-      })
+        locationData: this.state.locationData = [],
+      });
     }
   }
 
@@ -123,43 +133,45 @@ class FindStore extends React.Component<{
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
     });
-    const obj = {
+    const obj: getMerchantListRequest = {
       searchText: "",
+      cityId: this.state.cityid,
       slug: this.state.slugname,
       page: parseInt(event.target.id),
       size: parseInt(this.state.items_per_page),
     };
-    this.getMerchantData(obj.searchText, obj.page, obj.size);
+    this.getMerchantData(obj.searchText, obj.cityId, obj.page, obj.size);
   }
 
   onItemSelectId(event: any) {
-    // console.log("eveent",event);
-    this.state.locationData.map((city:any,index:number) =>(
-      city.value === event ? (
-        this.setState({
-          location:this.state.location = city.name
-        })
-      ) : ('')
-    ))
-    this.getMerchantData('',event,1,4)
+    this.setState({
+      cityid: this.state.cityid = event,
+    });
+    this.state.locationData.map((city: any, index: number) =>
+      city.value === event
+        ? this.setState({
+            location: this.state.location = city.name,
+          })
+        : ""
+    );
+    this.getMerchantData("", event, 1, 4);
   }
 
-  searchLocationKeyUp(e:any) {
+  searchLocationKeyUp(e: any) {
     // console.log("e",e.target.value)
-    const obj = {
-      value:e.target.value
-    }
-    if(obj.value) {
+    const obj: searchCityListRequest = {
+      value: e.target.value,
+    };
+    if (obj.value) {
       this.props.searchLocationResponse(obj);
     }
   }
 
-  locationdetails(data:any) {
+  locationdetails(data: any) {
     // console.log("data",data);
     this.setState({
-      locationData:this.state.locationData = data
-    })
-    
+      locationData: this.state.locationData = data,
+    });
   }
 
   pagination(pageNumbers: any) {
@@ -222,7 +234,6 @@ class FindStore extends React.Component<{
     );
   }
 
-
   render() {
     var pageNumbers = pageNumber(this.state.count, this.state.items_per_page);
     var renderPageNumbers = this.pagination(pageNumbers);
@@ -249,9 +260,7 @@ class FindStore extends React.Component<{
       );
     }
 
-    const options = [
-      { name: "Rajkot", value: "sv" }
-    ];
+    const options = [{ name: "Rajkot", value: "sv" }];
 
     return (
       <>
@@ -263,33 +272,41 @@ class FindStore extends React.Component<{
                   <Link to="/">
                     <img src={header.logo} alt="logo" />
                   </Link>
-                    {
-                      this.state.locationData.length > 0 ? (
-                        <div className="position-relative d-none d-sm-block"  onKeyUp={this.searchLocationKeyUp}>
-                        <SelectSearch
-                          options={ this.state.locationData && this.state.locationData.length > 0 ? this.state.locationData : []}
-                          search
-                          onChange={this.onItemSelectId}
-                        />
-                        <span className="find-map-icon">
-                          <i className="fas fa-map-marker-alt map-icon"></i>
-                        </span>
-                      </div>
-                      ) : (
-                        <div className="position-relative d-none d-sm-block"  onKeyUp={this.searchLocationKeyUp}>
-                        <SelectSearch
-                          options={ options.length > 0 ? options : []}
-                          search
-                          value="Rajkot"
-                          onChange={this.onItemSelectId}
-                        />
-                        <span className="find-map-icon">
-                          <i className="fas fa-map-marker-alt map-icon"></i>
-                        </span>
-                      </div>
-                      )
-                    }
-                 
+                  {this.state.locationData.length > 0 ? (
+                    <div
+                      className="position-relative d-none d-sm-block"
+                      onKeyUp={this.searchLocationKeyUp}
+                    >
+                      <SelectSearch
+                        options={
+                          this.state.locationData &&
+                          this.state.locationData.length > 0
+                            ? this.state.locationData
+                            : []
+                        }
+                        search
+                        onChange={this.onItemSelectId}
+                      />
+                      <span className="find-map-icon">
+                        <i className="fas fa-map-marker-alt map-icon"></i>
+                      </span>
+                    </div>
+                  ) : (
+                    <div
+                      className="position-relative d-none d-sm-block"
+                      onKeyUp={this.searchLocationKeyUp}
+                    >
+                      <SelectSearch
+                        options={options.length > 0 ? options : []}
+                        search
+                        value="Rajkot"
+                        onChange={this.onItemSelectId}
+                      />
+                      <span className="find-map-icon">
+                        <i className="fas fa-map-marker-alt map-icon"></i>
+                      </span>
+                    </div>
+                  )}
 
                   {/* <a href="#">
                     <div className="search-box">
@@ -362,7 +379,7 @@ class FindStore extends React.Component<{
                             <Link
                               to={{
                                 pathname: `/store/${data.slug}`,
-                                state: { data }
+                                state: { data },
                               }}
                             >
                               <div className="box-1">
@@ -438,15 +455,14 @@ class FindStore extends React.Component<{
 
 const mapStateToProps = (state: any) => ({
   merchantDetail: state.merchant.merchant,
-  locationDetail: state.merchant.locationdata
+  locationDetail: state.merchant.locationdata,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   getMerchantData: (data: any) =>
     dispatch(merchantService.getMerchantData(data)),
-    searchLocationResponse: (data: any) =>
+  searchLocationResponse: (data: any) =>
     dispatch(merchantService.searchLocationResponse(data)),
-    
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FindStore);

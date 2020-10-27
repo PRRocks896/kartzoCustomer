@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { categoryService } from "../../../redux/actions/index";
 import "./categories.css";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { categoryStateRequest } from "../../../modelController";
+import { categoryStateRequest, getCategoryListRequest } from "../../../modelController";
 
 class Categories extends React.Component<{ getCategoryData: any }> {
 
@@ -37,7 +37,7 @@ class Categories extends React.Component<{ getCategoryData: any }> {
   }
 
   getCategory(searchText: string = "", page: number = 1, size: number = 10) {
-    const obj = {
+    const obj : getCategoryListRequest = {
       searchText: searchText,
       page: page,
       size: size,

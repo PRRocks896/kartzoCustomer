@@ -7,5 +7,9 @@ export interface storeitemStateRequest {
     productdata:any,
     cartarray:any,
     maindata:string,
-    qty:number
+    qty:number,
+    searchproductdata:any,
+    searchproductdatadetails:any,
+    isButton:boolean,
+    loadingid:string
 }

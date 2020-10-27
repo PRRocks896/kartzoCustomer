@@ -12,6 +12,8 @@ import constant from "../constant/constant";
 import { alertMessage, getAppName } from "../utils";
 import "./cart.css";
 import { connect } from "react-redux";
+import { addCartRequest, getCartListRequest, removeCartItemRequest } from "../../modelController";
+import { cartStateRequest } from "../../modelController/c artModel";
 
 class Cart extends React.Component<{
   show: boolean;
@@ -20,11 +22,12 @@ class Cart extends React.Component<{
   updateToCart: any;
   removeProductFromCart: any;
 }> {
+  cartState : cartStateRequest = constant.cartPage.state;
   state = {
-    activeLink: "1",
-    isShowCard: false,
-    cartarray: [],
-    isOpen: false,
+    activeLink: this.cartState.activeLink,
+    isShowCard: this.cartState.isShowCard,
+    cartarray: this.cartState.cartarray,
+    isOpen: this.cartState.isOpen,
   };
   constructor(props: any) {
     super(props);
@@ -49,11 +52,14 @@ class Cart extends React.Component<{
   }
 
   getCartData(searchText: string = "", page: number = 1, size: number = 20) {
-    const obj = {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const obj : getCartListRequest = {
       searchText: searchText,
       isActive: true,
       page: page,
       size: size,
+      userId:user.userID
     };
     this.props.getcartData(obj);
   }
@@ -103,7 +109,7 @@ class Cart extends React.Component<{
   incrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj = {
+    const obj : addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity + 1,
@@ -121,7 +127,7 @@ class Cart extends React.Component<{
   decrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj = {
+    const obj : addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity - 1,
@@ -143,7 +149,7 @@ class Cart extends React.Component<{
     if (await alertMessage(text, btext)) {
       let idArray = [];
       idArray.push(id);
-      const obj = {
+      const obj : removeCartItemRequest = {
         moduleName: "OrderCart",
         id: idArray,
       };

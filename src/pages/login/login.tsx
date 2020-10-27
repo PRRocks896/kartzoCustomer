@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { loginService } from "../../redux/actions/index";
 import "./login.css";
 import { getAppName } from "../utils";
-import { loginCreateRequest, loginStateRequest } from "../../modelController";
+import { getAdminTokenRequest, loginCreateRequest, loginStateRequest, verifyOtpRequest } from "../../modelController";
 const interceptor = require("../../intercepter");
 
 class Login extends React.Component<{
@@ -109,7 +109,7 @@ class Login extends React.Component<{
       if (localStorage.getItem("token")) {
         const users: any = localStorage.getItem("user");
         let user = JSON.parse(users);
-        const obj = {
+        const obj : getAdminTokenRequest = {
           deviceType: 1,
           deviceId: "deviceId",
           ipAddress: "156.32.3.32",
@@ -220,7 +220,7 @@ class Login extends React.Component<{
         otperror: "",
       });
       if (this.state.otp && this.state.mobile) {
-        const obj = {
+        const obj : verifyOtpRequest = {
           otp: this.state.otp,
           mobile: this.state.mobile,
         };

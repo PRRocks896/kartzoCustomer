@@ -12,5 +12,6 @@ export interface findstoreStateRequest {
     location:string,
     merchantdata:any,
     isLoading:boolean,
-    locationData:any
+    locationData:any,
+    cityid:string
 }

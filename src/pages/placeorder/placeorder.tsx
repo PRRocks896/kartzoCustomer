@@ -1,20 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
-import { placeorderStateRequest } from "../../modelController";
+import { addAddressRequest, addCartRequest, getAddressListRequest, getCartListRequest, placeorderStateRequest } from "../../modelController";
 import {
   header,
   trackorder,
   placeorder,
 } from "../../pages/components/helper/images";
 import constant from "../constant/constant";
-import { getAppName,alertMessage } from "../utils";
+import { getAppName, alertMessage } from "../utils";
 import { connect } from "react-redux";
 import "./placeorder.css";
 import { placeOrderService, productService } from "../../redux/actions";
-import Cards from 'react-credit-cards';
-import 'react-credit-cards/es/styles-compiled.css';
-
+import Cards from "react-credit-cards";
+import "react-credit-cards/es/styles-compiled.css";
 
 class PlaceOrder extends React.Component<{
   show: boolean;
@@ -22,7 +21,7 @@ class PlaceOrder extends React.Component<{
   addAddress: any;
   getcartData: any;
   updateToCart: any;
-  history:any
+  history: any;
 }> {
   /** place order state */
   placeOrderState: placeorderStateRequest = constant.placeorderPage.state;
@@ -62,11 +61,11 @@ class PlaceOrder extends React.Component<{
     landmarkerror: this.placeOrderState.landmarkerror,
     landmark: this.placeOrderState.landmark,
     cartarray: this.placeOrderState.cartarray,
-    cvc: '',
-    expiry: '',
-    focus: '',
-    name1: '',
-    number: '',
+    // cvc: "",
+    // expiry: "",
+    // focus: "",
+    // name1: "",
+    // number: "",
   };
 
   constructor(props: any) {
@@ -107,16 +106,20 @@ class PlaceOrder extends React.Component<{
   }
 
   getCartData(searchText: string = "", page: number = 1, size: number = 20) {
-    const obj = {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const obj : getCartListRequest = {
       searchText: searchText,
       isActive: true,
       page: page,
       size: size,
+      userId: user.userID,
     };
     this.props.getcartData(obj);
   }
 
   change(e: any) {
+    console.log("e", e.target.checked);
     this.setState({
       checkedvalue: !this.state.checkedvalue,
     });
@@ -141,11 +144,14 @@ class PlaceOrder extends React.Component<{
     page: number = 1,
     size: number = 20
   ) {
-    const obj = {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const obj : getAddressListRequest = {
       searchText: searchText,
       isActive: true,
       page: page,
       size: size,
+      userId: user.userID,
     };
     this.props.getAddressList(obj);
   }
@@ -236,19 +242,19 @@ class PlaceOrder extends React.Component<{
             console.log("address", address);
             if (address && address.address_components.length > 0) {
               _this.setState({
-                area: address.address_components[0].long_name
+                area: address.address_components[1].long_name
                   .toString()
                   .toLowerCase(),
-                city: address.address_components[3].long_name
+                city: address.address_components[2].long_name
                   .toString()
                   .toLowerCase(),
-                state: address.address_components[4].long_name
+                state: address.address_components[3].long_name
                   .toString()
                   .toLowerCase(),
-                country: address.address_components[5].long_name
+                country: address.address_components[4].long_name
                   .toString()
                   .toLowerCase(),
-                pincode: address.address_components[6].long_name,
+                pincode: address.address_components[5].long_name,
                 address: address.formatted_address,
               });
             }
@@ -345,7 +351,7 @@ class PlaceOrder extends React.Component<{
   incrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj = {
+    const obj : addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity + 1,
@@ -360,7 +366,7 @@ class PlaceOrder extends React.Component<{
   decrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj = {
+    const obj : addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity - 1,
@@ -385,8 +391,20 @@ class PlaceOrder extends React.Component<{
         pincodeerror: "",
         landmarkerror: "",
       });
-      const obj = {};
-
+      const users: any = localStorage.getItem("user");
+      let user = JSON.parse(users);
+      const obj : addAddressRequest = {
+        userID: user.userID,
+        name: this.state.name,
+        mobile: this.state.mobile,
+        address: this.state.address,
+        city: this.state.city,
+        state: this.state.state,
+        country: this.state.country,
+        pincode: this.state.pincode,
+        landmark: this.state.landmark,
+        addressType: this.state.addresstype,
+      };
       // this.props.addAddress(obj);
     }
   }
@@ -878,7 +896,6 @@ class PlaceOrder extends React.Component<{
           {this.state.paymenttype === 3 ? (
             <div className="pey-upi">
               <div className="opti1 opti2">
-             
                 <div className="box-input1">
                   <div className="form-group card-nombr">
                     <span className="verfy-tt">Link Now</span>
@@ -1236,19 +1253,18 @@ class PlaceOrder extends React.Component<{
     );
   }
 
-  async changeLogin(text:any,btext:any) {
+  async changeLogin(text: any, btext: any) {
     if (await alertMessage(text, btext)) {
       localStorage.removeItem("user");
       localStorage.removeItem("token");
       localStorage.removeItem("cart");
       localStorage.removeItem("cartcount");
       localStorage.removeItem("adminToken");
-      this.props.history.push('/signin')
+      this.props.history.push("/signin");
     }
   }
 
   render() {
-    // console.log("TrackOrder",this.props)
     return (
       <>
         <header className="header">
@@ -1380,7 +1396,17 @@ class PlaceOrder extends React.Component<{
                           </div>
                         </div>
                         <div className="dis-right">
-                          <button className="change1" onClick={() => this.changeLogin("You should be login into another account","Yes, confirm it")} >CHANGE</button>
+                          <button
+                            className="change1"
+                            onClick={() =>
+                              this.changeLogin(
+                                "You should be login into another account",
+                                "Yes, confirm it"
+                              )
+                            }
+                          >
+                            CHANGE
+                          </button>
                         </div>
                       </div>
                     </div>

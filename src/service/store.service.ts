@@ -2,23 +2,23 @@ import Constant from "../pages/constant/constant";
 import apiUrl from "../apicontroller/apicontroller";
 import WebReqUrl from "../web-req/web-req";
 import axios from "axios";
-// import { loginCreateRequest, forgotPasswordRequest, profileGetRequest, resetPasswordRequest, changePasswordRequest, getAllTableDataListRequest, getDataByIdRequest, deleteByIdRequest } from "../modelController";
+import { addCartRequest, getCartListRequest, getProductListRequest, removeCartItemRequest, searchProductListRequest } from "../modelController";
 
 export default {
-  getProductData: async function (data: any) {
+  getProductData: async function (data: getProductListRequest) {
     return axios.post(
       Constant.apiUrl + apiUrl.storeProductController.getProduct,
       data
     );
   },
-  addtocart: async function (data: any) {
+  addtocart: async function (data: addCartRequest) {
     return WebReqUrl.post(
       Constant.apiUrl + apiUrl.storeProductController.addtocart,
       data,
       false
     );
   },
-  getCartAllData: async function (data: any) {
+  getCartAllData: async function (data: getCartListRequest) {
     return WebReqUrl.post(
       Constant.apiUrl + apiUrl.storeProductController.getcartdata,
       data,
@@ -32,7 +32,7 @@ export default {
       false
     );
   },
-  removeProductFromCart: async function (data: any) {
+  removeProductFromCart: async function (data: removeCartItemRequest) {
     let queryString = "";
     data.id.map((id: any, index: number) => {
       queryString = queryString + `&id=${id}`;
@@ -48,7 +48,7 @@ export default {
       }
     );
   },
-  getSearchProductData: async function (data: any) {
+  getSearchProductData: async function (data: searchProductListRequest) {
     console.log("data",data);
     return axios.get(
       Constant.apiUrl + apiUrl.storeProductController.getsearchproduct + `?name=${data.name}&merchantid=${data.merchantid}`

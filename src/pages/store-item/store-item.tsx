@@ -12,7 +12,7 @@ import constant from "../constant/constant";
 import { getAppName } from "../utils";
 import "./store-item.css";
 import SelectSearch from "react-select-search";
-import { storeitemStateRequest } from "../../modelController";
+import { addCartRequest, getCartListRequest, getProductListRequest, searchProductListRequest, storeitemStateRequest } from "../../modelController";
 import { productService } from "../../redux/actions";
 
 class StoreItem extends React.Component<{
@@ -40,10 +40,10 @@ class StoreItem extends React.Component<{
     cartarray: this.storeItemState.cartarray,
     maindata: this.storeItemState.maindata,
     qty: this.storeItemState.qty,
-    searchproductdata: [],
-    searchproductdatadetails: [],
-    isButton: false,
-    loadingid: "",
+    searchproductdata: this.storeItemState.searchproductdata,
+    searchproductdatadetails: this.storeItemState.searchproductdatadetails,
+    isButton: this.storeItemState.isButton,
+    loadingid: this.storeItemState.loadingid
   };
 
   constructor(props: any) {
@@ -105,7 +105,7 @@ class StoreItem extends React.Component<{
   incrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj = {
+    const obj : addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity + 1,
@@ -123,7 +123,7 @@ class StoreItem extends React.Component<{
   decrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj = {
+    const obj : addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity - 1,
@@ -136,7 +136,7 @@ class StoreItem extends React.Component<{
   }
 
   getProductData(searchText: string = "", productId: number = 0) {
-    const obj = {
+    const obj : getProductListRequest = {
       searchText: searchText,
       productId: productId,
       slug: this.state.slugname,
@@ -145,11 +145,14 @@ class StoreItem extends React.Component<{
   }
 
   getCartData(searchText: string = "", page: number = 1, size: number = 20) {
-    const obj = {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const obj : getCartListRequest = {
       searchText: searchText,
       isActive: true,
       page: page,
       size: size,
+      userId:user.userID
     };
     this.props.getcartData(obj);
   }
@@ -177,7 +180,7 @@ class StoreItem extends React.Component<{
 
   searchItemDataKeyUp(e: any) {
     const data: any = this.state.maindata;
-    const obj = {
+    const obj : searchProductListRequest = {
       name: e.target.value,
       merchantid: data.merchantID,
     };
@@ -192,7 +195,7 @@ class StoreItem extends React.Component<{
 
   onProductSelectId(id: any) {
     console.log("e", id);
-    const obj = {
+    const obj : getProductListRequest = {
       searchText: "",
       productId: id,
       slug: this.state.slugname,
@@ -263,7 +266,7 @@ class StoreItem extends React.Component<{
         let index = this.state.cartarray.indexOf(selectedItem);
         // console.log("selectedItem: ", selectedItem);
         // console.log("Index: ", index);
-        const obj = {
+        const obj : addCartRequest = {
           userID: user.userID,
           productID: selectedItem.productID,
           quantity: selectedItem.quantity + 1,
@@ -278,7 +281,7 @@ class StoreItem extends React.Component<{
       } else {
         const users: any = localStorage.getItem("user");
         let user = JSON.parse(users);
-        const obj = {
+        const obj : addCartRequest = {
           userID: user.userID,
           productID: data.productId,
           quantity: this.state.qty,
@@ -294,7 +297,7 @@ class StoreItem extends React.Component<{
     } else {
       const users: any = localStorage.getItem("user");
       let user = JSON.parse(users);
-      const obj = {
+      const obj  : addCartRequest = {
         userID: user.userID,
         productID: data.productId,
         quantity: this.state.qty,

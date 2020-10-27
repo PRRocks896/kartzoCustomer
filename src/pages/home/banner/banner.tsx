@@ -5,6 +5,7 @@ import SelectSearch from "react-select-search";
 import './banner.css';
 import { merchantService } from "../../../redux/actions";
 import { connect } from "react-redux";
+import { searchCityListRequest } from "../../../modelController";
 
 class Banner extends React.Component<{ history: any,searchLocationResponse:any }> {
   /** Banner Page State */
@@ -33,7 +34,7 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
 
   async searchLocationDataKeyUp(e: any) {
     console.log("e",e.target.value)
-    const obj = {
+    const obj : searchCityListRequest= {
       value:e.target.value
     }
     if(obj.value) {

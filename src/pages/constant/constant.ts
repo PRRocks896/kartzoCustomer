@@ -128,6 +128,7 @@ export default {
       merchantdata: [],
       locationData: [],
       isLoading: true,
+      cityid:''
     },
   },
   bannerPage: {
@@ -153,6 +154,19 @@ export default {
       cartarray: [],
       maindata: "",
       qty: 1,
+      searchproductdata: [],
+      searchproductdatadetails: [],
+      isButton: false,
+      loadingid: "",
+    },
+  },
+  cartPage: {
+    title: {},
+    state: {
+      activeLink: "1",
+      isShowCard: false,
+      cartarray: [],
+      isOpen: false,
     },
   },
   placeorderPage: {
