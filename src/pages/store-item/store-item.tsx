@@ -430,7 +430,6 @@ class StoreItem extends React.Component<{
             onChange={this.onProductSelectId}
           />
         </div>
-
         <div className="all-item">
           {this.state.searchproductdatadetails ? (
             <div className="item-details-1">
@@ -610,10 +609,6 @@ class StoreItem extends React.Component<{
 
   render() {
     const { categorydata, productdata, maindata }: any = this.state;
-    const options = [
-      { name: "Rajkot", value: "sv" },
-      { name: "Ahmedabad", value: "en" },
-    ];
     // console.log("TrackOrder",this.props)
     return (
       <>

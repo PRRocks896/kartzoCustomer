@@ -1,7 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
-import { addAddressRequest, addCartRequest, getAddressListRequest, getCartListRequest, placeorderStateRequest } from "../../modelController";
+import {
+  addAddressRequest,
+  addCartRequest,
+  getAddressListRequest,
+  getCartListRequest,
+  placeorderStateRequest,
+} from "../../modelController";
 import {
   header,
   trackorder,
@@ -22,6 +28,8 @@ class PlaceOrder extends React.Component<{
   getcartData: any;
   updateToCart: any;
   history: any;
+  deleteAddress:any
+  updateAddress:any
 }> {
   /** place order state */
   placeOrderState: placeorderStateRequest = constant.placeorderPage.state;
@@ -61,6 +69,11 @@ class PlaceOrder extends React.Component<{
     landmarkerror: this.placeOrderState.landmarkerror,
     landmark: this.placeOrderState.landmark,
     cartarray: this.placeOrderState.cartarray,
+    addressarray: this.placeOrderState.addressarray,
+    mainaddress: 0,
+    addressid:0,
+    updateTrue:false,
+    
     // cvc: "",
     // expiry: "",
     // focus: "",
@@ -85,6 +98,9 @@ class PlaceOrder extends React.Component<{
     this.decrementQty = this.decrementQty.bind(this);
     this.onChangeEvent = this.onChangeEvent.bind(this);
     this.changeLogin = this.changeLogin.bind(this);
+    this.editAddress = this.editAddress.bind(this);
+    this.getAddressData = this.getAddressData.bind(this);
+    this.deleteAddressData = this.deleteAddressData.bind(this);
   }
 
   componentDidMount() {
@@ -108,7 +124,7 @@ class PlaceOrder extends React.Component<{
   getCartData(searchText: string = "", page: number = 1, size: number = 20) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj : getCartListRequest = {
+    const obj: getCartListRequest = {
       searchText: searchText,
       isActive: true,
       page: page,
@@ -119,9 +135,8 @@ class PlaceOrder extends React.Component<{
   }
 
   change(e: any) {
-    console.log("e", e.target.checked);
     this.setState({
-      checkedvalue: !this.state.checkedvalue,
+      mainaddress: this.state.mainaddress = parseInt(e.target.id),
     });
   }
 
@@ -146,7 +161,7 @@ class PlaceOrder extends React.Component<{
   ) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj : getAddressListRequest = {
+    const obj: getAddressListRequest = {
       searchText: searchText,
       isActive: true,
       page: page,
@@ -187,6 +202,15 @@ class PlaceOrder extends React.Component<{
     if (nextProps.getCartDetail) {
       this.getCartAllProductData(nextProps.getCartDetail);
     }
+    if (nextProps.addressDetails) {
+      this.getAddressDetailsData(nextProps.addressDetails);
+    }
+  }
+
+  getAddressDetailsData(data: any) {
+    this.setState({
+      addressarray: this.state.addressarray = data.data,
+    });
   }
 
   onChangeEvent(event: any, index: any) {
@@ -206,7 +230,6 @@ class PlaceOrder extends React.Component<{
         cartarray: this.state.cartarray = data.data,
       });
     }
-    console.log("cartarray", this.state.cartarray);
   }
 
   async getCurrentLocation() {
@@ -351,7 +374,7 @@ class PlaceOrder extends React.Component<{
   incrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj : addCartRequest = {
+    const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity + 1,
@@ -366,7 +389,7 @@ class PlaceOrder extends React.Component<{
   decrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj : addCartRequest = {
+    const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity - 1,
@@ -393,7 +416,7 @@ class PlaceOrder extends React.Component<{
       });
       const users: any = localStorage.getItem("user");
       let user = JSON.parse(users);
-      const obj : addAddressRequest = {
+      const obj: addAddressRequest = {
         userID: user.userID,
         name: this.state.name,
         mobile: this.state.mobile,
@@ -401,11 +424,85 @@ class PlaceOrder extends React.Component<{
         city: this.state.city,
         state: this.state.state,
         country: this.state.country,
-        pincode: this.state.pincode,
+        pincode: parseInt(this.state.pincode),
         landmark: this.state.landmark,
-        addressType: this.state.addresstype,
+        addressType: this.state.addresstype === 1 ? "1" : "2",
       };
-      // this.props.addAddress(obj);
+      this.props.addAddress(obj);
+
+      setTimeout(() => {
+        this.getAddressDetails();
+      }, 200);
+    }
+  }
+
+  getAddressData(data: any) {
+    console.log("data",data);
+    this.setState({
+      showSection: this.state.showSection = true,
+      updateTrue:this.state.updateTrue = true,
+      addressid:data.addressID,
+      name: data.name,
+      mobile: data.mobile,
+      pincode: data.pincode,
+      landmark: data.landmark,
+      address: data.address,
+      city: data.city,
+      state: data.state,
+      country: data.country,
+      addressType: data.addressType === "Home" ? "1" : "2"
+    });
+  }
+
+  editAddress() {
+    const isValid = this.validate();
+    if (isValid) {
+      this.setState({
+        nameerror: "",
+        mobileerror: "",
+        addresserror: "",
+        cityerror: "",
+        stateerror: "",
+        countryerror: "",
+        pincodeerror: "",
+        landmarkerror: "",
+      });
+      const users: any = localStorage.getItem("user");
+      let user = JSON.parse(users);
+    const obj : addAddressRequest = {
+      addressID:this.state.addressid,
+      userID: user.userID,
+      name: this.state.name,
+      mobile: this.state.mobile,
+      address: this.state.address,
+      city: this.state.city,
+      state: this.state.state,
+      country: this.state.country,
+      pincode: parseInt(this.state.pincode),
+      landmark: this.state.landmark,
+      addressType: this.state.addresstype === "1" ? "1" : "2",
+    }
+    this.props.updateAddress(obj);
+
+    setTimeout(() => {
+      this.getAddressDetails();
+    }, 200);
+  }
+  }
+
+  async deleteAddressData(id:any,text:any,btext:any) {
+    if (await alertMessage(text, btext)) {
+    let deleteArray = [];
+    deleteArray.push(id);
+    const obj = {
+      moduleName:'Address',
+      id:deleteArray
+    }
+    this.props.deleteAddress(obj);
+
+      setTimeout(() => {
+        this.getAddressDetails();
+      }, 200);
     }
   }
 
@@ -423,33 +520,50 @@ class PlaceOrder extends React.Component<{
                     </div> --> */}
             <div className="nm-info">
               <div className="main0adress">
-                <div className="adrss-1">
-                  <div className="edit-adres">EDIT</div>
-                  <label className="rdio-box1">
-                    <span className="b-tt">Rayjada Jayvir</span>{" "}
-                    <span className="add-type">HOME</span>{" "}
-                    <span className="b-tt">9726883005</span>
-                    <span className="adress-rdio">
-                      shreerangnagar block no 59 , nanamava road, opp om
-                      residansy rajkot, Rajkot, Gujarat
-                      <span className="b-tt"> - 360005</span>
-                    </span>
-                    <input
-                      type="radio"
-                      id="1"
-                      className="form-control"
-                      checked={this.state.checkedvalue === true ? true : false}
-                      onChange={this.change}
-                      name="address"
-                    />
-                    <span className="checkmark"></span>
-                  </label>
-                  <a href="#" className="chk-outbtn">
-                    CONTINUE CHECKOUT
-                  </a>
-                </div>
+                {this.state.addressarray
+                  ? this.state.addressarray.length > 0 &&
+                    this.state.addressarray.map(
+                      (address: any, index: number) => (
+                        <div className="adrss-1" key={index}>
+                         <div className="row" style={{justifyContent:'flex-end'}}>
+                         <i className="fas fa-edit edit-adres"  onClick={() => this.getAddressData(address)}></i>
+                         <i className="fas fa-trash edit-adres ml-4" onClick={() => this.deleteAddressData(address.addressID,"You should be Remove address?","Yes, Remove it")}></i>
+                           </div>
+                          <label className="rdio-box1">
+                            <span className="b-tt">{address.name}</span>{" "}
+                            <span className="add-type">
+                              {address.addressType}
+                            </span>{" "}
+                            <span className="b-tt">{address.mobile}</span>
+                            <span className="adress-rdio">
+                              {address.address}
+                              <span className="b-tt"> - {address.pincode}</span>
+                            </span>
+                           
+                            <input
+                              type="radio"
+                              id={address.addressID}
+                              className="form-control"
+                              checked={
+                                this.state.mainaddress === address.addressID
+                                  ? true
+                                  : false
+                              }
+                              onChange={this.change}
+                              name="main"
+                            />
+                         
+                            <span className="checkmark"></span>
+                          </label>
+                          <a href="#" className="chk-outbtn">
+                            CONTINUE CHECKOUT
+                          </a>
+                        </div>
+                      )
+                    )
+                  : ""}
               </div>
-              <div className="add-new-adres" onClick={this.showSection}>
+              <div className="add-new-adres"  onClick={this.showSection}>
                 <span className="add-icon">+</span>
                 <div>Add a new address</div>
               </div>
@@ -495,6 +609,7 @@ class PlaceOrder extends React.Component<{
                             id="from1"
                             name="name"
                             className="form-control"
+                            value={this.state.name ? this.state.name : ""}
                             onChange={this.addressChange}
                             required
                           />
@@ -515,9 +630,8 @@ class PlaceOrder extends React.Component<{
                             type="text"
                             id="from2"
                             name="mobile"
-                            value={
-                              this.state.usermobile ? this.state.usermobile : ""
-                            }
+                            maxLength={10}
+                            value={this.state.mobile ? this.state.mobile : ""}
                             className="form-control"
                             onChange={this.addressChange}
                             required
@@ -542,6 +656,7 @@ class PlaceOrder extends React.Component<{
                             value={this.state.pincode ? this.state.pincode : ""}
                             className="form-control"
                             onChange={this.addressChange}
+                            maxLength={6}
                             required
                           />
                           <label
@@ -561,6 +676,7 @@ class PlaceOrder extends React.Component<{
                             type="text"
                             id="from4"
                             name="landmark"
+                            value={this.state.landmark ? this.state.landmark : ""}
                             onChange={this.addressChange}
                             className="form-control"
                             required
@@ -701,12 +817,24 @@ class PlaceOrder extends React.Component<{
                         </div>
                       </div>
                       <div className="col-md-12">
-                        <button
-                          className="save-delivry"
-                          onClick={this.addAddress}
-                        >
-                          Save and Deliver Here
-                        </button>
+                        {
+                          this.state.updateTrue === false ? (
+                            <button
+                            className="save-delivry"
+                            onClick={this.addAddress}
+                          >
+                            Save and Deliver Here
+                          </button>
+                          ) : (
+                            <button
+                            className="save-delivry"
+                            onClick={this.editAddress}
+                          >
+                            Save and Deliver Here
+                          </button>
+                          ) 
+                        }
+                      
                         <button
                           className="btb-text"
                           onClick={() =>
@@ -1400,8 +1528,8 @@ class PlaceOrder extends React.Component<{
                             className="change1"
                             onClick={() =>
                               this.changeLogin(
-                                "You should be login into another account",
-                                "Yes, confirm it"
+                                "You should be login into another account?",
+                                "Yes, change it"
                               )
                             }
                           >
@@ -1414,7 +1542,7 @@ class PlaceOrder extends React.Component<{
                     {/** Add Address form block */}
                     {this.addressBlock()}
 
-                    {this.state.checkedvalue === true ? (
+                    {this.state.mainaddress ? (
                       <div className="pro-box1 paymt-opton">
                         <div className="dis-box">
                           <div className="dis-left">
@@ -1461,6 +1589,7 @@ class PlaceOrder extends React.Component<{
 const mapStateToProps = (state: any) => ({
   addressDetails: state.placeOrder.addressdata,
   getCartDetail: state.product.getcartdetails,
+  getaddressDetail: state.placeOrder.getaddressdata,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -1470,6 +1599,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   getcartData: (data: any) => dispatch(productService.getcartData(data)),
   updateToCart: (data: any, id: any) =>
     dispatch(productService.updateToCart(data, id)),
+    updateAddress: (data: any) => dispatch(placeOrderService.updateAddress(data)),
+    deleteAddress: (data: any) => dispatch(placeOrderService.deleteAddress(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrder);

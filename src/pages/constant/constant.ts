@@ -205,7 +205,8 @@ export default {
       mobile:'',
       landmark:'',
       landmarkerror:'',
-      cartarray:[]
+      cartarray:[],
+      addressarray:[]
 
     },
     bankarray: [

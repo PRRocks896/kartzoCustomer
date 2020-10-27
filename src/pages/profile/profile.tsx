@@ -1,17 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
-import { profileStateRequest } from "../../modelController";
+import {
+  getAddressListRequest,
+  profileStateRequest,
+} from "../../modelController";
 import { profile } from "../../pages/components/helper/images";
+import { placeOrderService } from "../../redux/actions";
 import constant from "../constant/constant";
 import { getAppName } from "../utils";
 import "./profile.css";
+import { connect } from "react-redux";
 
-class Profile extends React.Component<{ show: boolean; history: any }> {
+class Profile extends React.Component<{
+  show: boolean;
+  history: any;
+  getAddressList: any;
+}> {
   /** Profile Page State */
   profileState: profileStateRequest = constant.profilePage.state;
   state = {
     mobile: this.profileState.mobile,
+    addressarray: [],
   };
 
   constructor(props: any) {
@@ -28,6 +38,37 @@ class Profile extends React.Component<{ show: boolean; history: any }> {
     });
     EventEmitter.dispatch("isShow", false);
     EventEmitter.dispatch("isShowFooter", false);
+    this.getAddressDetails();
+  }
+
+  getAddressDetails(
+    searchText: string = "",
+    page: number = 1,
+    size: number = 20
+  ) {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const obj: getAddressListRequest = {
+      searchText: searchText,
+      isActive: true,
+      page: page,
+      size: size,
+      userId: user.userID,
+    };
+    this.props.getAddressList(obj);
+  }
+
+  componentWillReceiveProps(nextProps: any, newState: any) {
+    console.log("props", nextProps);
+    if (nextProps.addressDetails) {
+      this.getAddressDetailsData(nextProps.addressDetails);
+    }
+  }
+
+  getAddressDetailsData(data: any) {
+    this.setState({
+      addressarray: this.state.addressarray = data.data,
+    });
   }
 
   logout() {
@@ -253,65 +294,34 @@ class Profile extends React.Component<{ show: boolean; history: any }> {
                           <div className="col-md-12">
                             <h3 className="dlt-tt">Manage Addresses</h3>
                           </div>
-                          <div className="col-md-6">
-                            <div className="addresses">
-                              <img src={profile.bag} alt="" />
-                              <div className="addresses-list">
-                                <h4 className="sub-tt">OFFICE</h4>
-                                <div className="address-nm">
-                                  Cubbon Park Rd, Nunegundlapalli, Ambedkar
-                                  Veedh, Cubbon Park Rd, Nunegundlapalli,
-                                  Ambedkar Veedhi, Sampangi Rama Nagar,
-                                  Bengaluru, Karnataka 560001, India
-                                </div>
-
-                                <div className="edit-delt-btn">
-                                  <button className="edit-btn">EDIT</button>
-                                  <button className="edit-btn">DELETE</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col-md-6">
-                            <div className="addresses">
-                              <img src={profile.home} alt="" />
-                              <div className="addresses-list">
-                                <h4 className="sub-tt">HOME</h4>
-                                <div className="address-nm">
-                                  Cubbon Park Rd, Nunegundlapalli, Ambedkar
-                                  Veedh, Cubbon Park Rd, Nunegundlapalli,
-                                  Ambedkar Veedhi, Sampangi Rama Nagar,
-                                  Bengaluru, Karnataka 560001, India
-                                </div>
-
-                                <div className="edit-delt-btn">
-                                  <button className="edit-btn">EDIT</button>
-                                  <button className="edit-btn">DELETE</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col-md-6">
-                            <div className="addresses">
-                              <img src={profile.other} alt="" />
-                              <div className="addresses-list">
-                                <h4 className="sub-tt">NEW</h4>
-                                <div className="address-nm">
-                                  Cubbon Park Rd, Nunegundlapalli, Ambedkar
-                                  Veedh, Cubbon Park Rd, Nunegundlapalli,
-                                  Ambedkar Veedhi, Sampangi Rama Nagar,
-                                  Bengaluru, Karnataka 560001, India
-                                </div>
-
-                                <div className="edit-delt-btn">
-                                  <button className="edit-btn">EDIT</button>
-                                  <button className="edit-btn">DELETE</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                          {this.state.addressarray
+                            ? this.state.addressarray.length > 0 &&
+                              this.state.addressarray.map(
+                                (address: any, index: number) => (
+                                  <div className="col-md-6" key={index}>
+                                    <div className="addresses">
+                                      <img src={profile.bag} alt="" />
+                                      <div className="addresses-list">
+                                        <h4 className="sub-tt">
+                                          {address.addressType}
+                                        </h4>
+                                        <div className="address-nm">
+                                          {address.address}
+                                        </div>
+                                        <div className="edit-delt-btn">
+                                          <button className="edit-btn">
+                                            EDIT
+                                          </button>
+                                          <button className="edit-btn">
+                                            DELETE
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )
+                              )
+                            : ""}
                         </div>
                       </div>
                     </div>
@@ -517,4 +527,13 @@ class Profile extends React.Component<{ show: boolean; history: any }> {
   }
 }
 
-export default Profile;
+const mapStateToProps = (state: any) => ({
+  addressDetails: state.placeOrder.addressdata,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  getAddressList: (data: any) =>
+    dispatch(placeOrderService.getAddressList(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

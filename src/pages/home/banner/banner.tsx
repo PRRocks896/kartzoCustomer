@@ -108,10 +108,10 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
             var address = data.results[0];
             if (address && address.address_components.length > 0) {
               _this.setState({
-                area: address.address_components[0].long_name
+                area: address.address_components[1].long_name
                   .toString()
                   .toLowerCase(),
-                city: address.address_components[3].long_name
+                city: address.address_components[2].long_name
                   .toString()
                   .toLowerCase(),
               });

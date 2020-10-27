@@ -32,5 +32,6 @@ export interface placeorderStateRequest {
     mobile:any,
     landmark:any,
     landmarkerror:string,
-    cartarray:any
+    cartarray:any,
+    addressarray:any
 }

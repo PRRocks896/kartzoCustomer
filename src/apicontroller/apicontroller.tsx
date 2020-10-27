@@ -12,8 +12,11 @@ const apiUrl = {
         getLocation:'address/get-city-list'
     },
     addressController: {
-        getaddress:'address/get-Card-list',
-        addaddress:'address'
+        getaddress:'address/get-address-list',
+        addaddress:'address',
+        getaddressbyid:'address/',
+        updateAddress:'address/',
+        deleteData:'delete'
     },
     storeProductController: {
         getProduct:'user/get-product-list',

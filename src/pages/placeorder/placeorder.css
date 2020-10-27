@@ -321,11 +321,14 @@
 }
 
 .left-box .delvy-adres .edit-adres {
-	position: absolute;
+	/* position: absolute; */
 	top: 21px;
 	right: 21px;
 	font-weight: 600;
 	color: #f7b62b;
+	text-align: end;
+	cursor: pointer;
+	
 }
 
 .left-box .delvy-adres .add-icon {

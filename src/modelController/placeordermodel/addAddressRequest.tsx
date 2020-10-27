@@ -8,5 +8,6 @@ export interface addAddressRequest {
   country: string;
   pincode: number;
   landmark: string;
-  addressType: number;
+  addressType: string;
+  addressID?:number
 }

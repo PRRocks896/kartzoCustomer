@@ -2,7 +2,9 @@ import * as ACTION from "../constant/constant";
 
 const initialState = {
   addressdata: "",
-  addaddress:""
+  addaddress: "",
+  getaddressdata: "",
+  deletedata: "",
 };
 
 const placeOrder = (state = initialState, action: any) => {
@@ -23,7 +25,7 @@ const placeOrder = (state = initialState, action: any) => {
         error: action.error,
       };
 
-      case ACTION.placeOrder.ADD_ADDRESS_REQUEST:
+    case ACTION.placeOrder.ADD_ADDRESS_REQUEST:
       return {
         ...state,
       };
@@ -36,6 +38,38 @@ const placeOrder = (state = initialState, action: any) => {
       return {
         ...state,
         addaddress: {},
+        error: action.error,
+      };
+
+    case ACTION.placeOrder.EDIT_ADDRESS_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.placeOrder.EDIT_ADDRESS_SUCCESS:
+      return {
+        ...state,
+        getaddressdata: action.getaddressbyid,
+      };
+    case ACTION.placeOrder.EDIT_ADDRESS_FAILURE:
+      return {
+        ...state,
+        getaddressdata: {},
+        error: action.error,
+      };
+
+    case ACTION.placeOrder.DELETE_ADDRESS_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.placeOrder.DELETE_ADDRESS_SUCCESS:
+      return {
+        ...state,
+        deletedata: action.deleteaddress,
+      };
+    case ACTION.placeOrder.DELETE_ADDRESS_FAILURE:
+      return {
+        ...state,
+        deletedata: {},
         error: action.error,
       };
 
