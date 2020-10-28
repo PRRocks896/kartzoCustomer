@@ -21,6 +21,7 @@
     "axios": "^0.20.0",
     "bootstrap": "^3.4.1",
     "bootstrap-less": "^3.3.8",
+    "credit-card-type": "^9.1.0",
     "path": "^0.12.7",
     "public-ip": "^4.0.2",
     "react": "^16.13.1",

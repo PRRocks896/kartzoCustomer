@@ -18,8 +18,7 @@ import { getAppName, alertMessage } from "../utils";
 import { connect } from "react-redux";
 import "./placeorder.css";
 import { placeOrderService, productService } from "../../redux/actions";
-import Cards from "react-credit-cards";
-import "react-credit-cards/es/styles-compiled.css";
+var creditCardType = require("credit-card-type");
 
 class PlaceOrder extends React.Component<{
   show: boolean;
@@ -28,8 +27,10 @@ class PlaceOrder extends React.Component<{
   getcartData: any;
   updateToCart: any;
   history: any;
-  deleteAddress:any
-  updateAddress:any
+  deleteAddress: any;
+  updateAddress: any;
+  addCard: any;
+  getcard: any;
 }> {
   /** place order state */
   placeOrderState: placeorderStateRequest = constant.placeorderPage.state;
@@ -39,7 +40,8 @@ class PlaceOrder extends React.Component<{
     checkedpaymentvalue: this.placeOrderState.checkedpaymentvalue,
     checkedpaymentvaluewallets: this.placeOrderState.checkedpaymentvaluewallets,
     checkedpaymentvaluecard: this.placeOrderState.checkedpaymentvaluecard,
-    checkedpaymentvaluenetbanking: this.placeOrderState.checkedpaymentvaluenetbanking,
+    checkedpaymentvaluenetbanking: this.placeOrderState
+      .checkedpaymentvaluenetbanking,
     usermobile: this.placeOrderState.usermobile,
     addresstype: this.placeOrderState.addresstype,
     paymenttype: this.placeOrderState.paymenttype,
@@ -70,14 +72,17 @@ class PlaceOrder extends React.Component<{
     cartarray: this.placeOrderState.cartarray,
     addressarray: this.placeOrderState.addressarray,
     mainaddress: 0,
-    addressid:0,
-    updateTrue:false,
-    
-    // cvc: "",
-    // expiry: "",
-    // focus: "",
-    // name1: "",
-    // number: "",
+    addressid: 0,
+    updateTrue: false,
+    month: 1,
+    year: 20,
+    cardnumber: "",
+    cardnumbererror: "",
+    cardholder: "",
+    cardholdererror: "",
+    cardtype: "",
+    carddata: [],
+    isCard: false,
   };
 
   constructor(props: any) {
@@ -99,6 +104,11 @@ class PlaceOrder extends React.Component<{
     this.editAddress = this.editAddress.bind(this);
     this.getAddressData = this.getAddressData.bind(this);
     this.deleteAddressData = this.deleteAddressData.bind(this);
+    this.onMonthChange = this.onMonthChange.bind(this);
+    this.onYearChange = this.onYearChange.bind(this);
+    this.addCard = this.addCard.bind(this);
+    this.onPaymentChange = this.onPaymentChange.bind(this);
+    this.showCardSection = this.showCardSection.bind(this);
   }
 
   /** Page Render Call */
@@ -117,11 +127,12 @@ class PlaceOrder extends React.Component<{
     this.getAddressDetails();
     if (localStorage.getItem("token")) {
       this.getCartData();
+      this.getCard();
     }
   }
 
   /**
-   * 
+   *
    * @param searchText : search value
    * @param page : page number
    * @param size : per page size value
@@ -140,8 +151,27 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
-   * @param e : get address id 
+   *
+   * @param searchText : search value
+   * @param page : page number
+   * @param size : per page display data
+   */
+  getCard(searchText: string = "", page: number = 1, size: number = 20) {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const obj: getCartListRequest = {
+      searchText: searchText,
+      isActive: true,
+      page: page,
+      size: size,
+      userId: user.userID,
+    };
+    this.props.getcard(obj);
+  }
+
+  /**
+   *
+   * @param e : get address id
    */
   change(e: any) {
     this.setState({
@@ -157,8 +187,8 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
-   * @param e : payment type 
+   *
+   * @param e : payment type
    */
   changePaymentUPI(e: any) {
     this.setState({
@@ -189,7 +219,7 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param e : address type select
    */
   changeAddress(e: any) {
@@ -199,7 +229,7 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param e : phonepay with payment
    */
   changePhonePay(e: any) {
@@ -209,7 +239,7 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param e : bank with payment
    */
   changeBankType(e: any) {
@@ -220,7 +250,7 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param e : select bank for payment
    */
   selectBank(e: any) {
@@ -231,7 +261,7 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param nextProps : get updated props value
    */
   componentWillReceiveProps(nextProps: any, newState: any) {
@@ -241,14 +271,26 @@ class PlaceOrder extends React.Component<{
     }
     if (nextProps.addressDetails) {
       this.setState({
-        showSection:this.state.showSection = false
-      })
+        showSection: this.state.showSection = false,
+      });
       this.getAddressDetailsData(nextProps.addressDetails);
+    }
+    if (nextProps.getCardDetail) {
+      this.setState({
+        isCard: this.state.isCard = false,
+      });
+      this.getCardDetails(nextProps.getCardDetail);
     }
   }
 
+  getCardDetails(data: any) {
+    this.setState({
+      carddata: this.state.carddata = data,
+    });
+  }
+
   /**
-   * 
+   *
    * @param data : get address details
    */
   getAddressDetailsData(data: any) {
@@ -258,7 +300,7 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param event : update state value
    * @param index : index number
    */
@@ -270,7 +312,7 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : get cart all items
    */
   getCartAllProductData(data: any) {
@@ -285,7 +327,7 @@ class PlaceOrder extends React.Component<{
     }
   }
 
-/** Get current location */
+  /** Get current location */
   async getCurrentLocation() {
     navigator.geolocation.getCurrentPosition((position: any) => {
       this.setState({
@@ -297,7 +339,7 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param latitude : get current latitude value
    * @param longitude : get current longitude value
    */
@@ -351,7 +393,7 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param event : change state when update address
    */
   addressChange(event: any) {
@@ -436,7 +478,7 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : increment quantity in cart product
    */
   incrementQty(data: any) {
@@ -454,8 +496,8 @@ class PlaceOrder extends React.Component<{
     }, 200);
   }
 
-    /**
-   * 
+  /**
+   *
    * @param data : decrement quantity in cart product
    */
   decrementQty(data: any) {
@@ -510,15 +552,15 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : get address data
    */
   getAddressData(data: any) {
-    console.log("data",data);
+    console.log("data", data);
     this.setState({
       showSection: this.state.showSection = true,
-      updateTrue:this.state.updateTrue = true,
-      addressid:data.addressID,
+      updateTrue: this.state.updateTrue = true,
+      addressid: data.addressID,
       name: data.name,
       mobile: data.mobile,
       pincode: data.pincode,
@@ -527,7 +569,7 @@ class PlaceOrder extends React.Component<{
       city: data.city,
       state: data.state,
       country: data.country,
-      addresstype: data.addressType === "Home" ? "1" : "2"
+      addresstype: data.addressType === "Home" ? "1" : "2",
     });
   }
 
@@ -547,47 +589,53 @@ class PlaceOrder extends React.Component<{
       });
       const users: any = localStorage.getItem("user");
       let user = JSON.parse(users);
-    const obj : addAddressRequest = {
-      addressID:this.state.addressid,
-      userID: user.userID,
-      name: this.state.name,
-      mobile: this.state.mobile,
-      address: this.state.address,
-      city: this.state.city,
-      state: this.state.state,
-      country: this.state.country,
-      pincode: parseInt(this.state.pincode),
-      landmark: this.state.landmark,
-      addressType: this.state.addresstype === "1" ? "1" : "2",
-    }
-    this.props.updateAddress(obj);
-
-    setTimeout(() => {
-      this.getAddressDetails();
-    }, 200);
-  }
-  }
-
-  /**
-   * 
-   * @param id : delete address id
-   * @param text : message text
-   * @param btext : button message text
-   */
-  async deleteAddressData(id:any,text:any,btext:any) {
-    if (await alertMessage(text, btext)) {
-    let deleteArray = [];
-    deleteArray.push(id);
-    const obj = {
-      moduleName:'Address',
-      id:deleteArray
-    }
-    this.props.deleteAddress(obj);
+      const obj: addAddressRequest = {
+        addressID: this.state.addressid,
+        userID: user.userID,
+        name: this.state.name,
+        mobile: this.state.mobile,
+        address: this.state.address,
+        city: this.state.city,
+        state: this.state.state,
+        country: this.state.country,
+        pincode: parseInt(this.state.pincode),
+        landmark: this.state.landmark,
+        addressType: this.state.addresstype === "1" ? "1" : "2",
+      };
+      this.props.updateAddress(obj);
 
       setTimeout(() => {
         this.getAddressDetails();
       }, 200);
     }
+  }
+
+  /**
+   *
+   * @param id : delete address id
+   * @param text : message text
+   * @param btext : button message text
+   */
+  async deleteAddressData(id: any, text: any, btext: any) {
+    if (await alertMessage(text, btext)) {
+      let deleteArray = [];
+      deleteArray.push(id);
+      const obj = {
+        moduleName: "Address",
+        id: deleteArray,
+      };
+      this.props.deleteAddress(obj);
+
+      setTimeout(() => {
+        this.getAddressDetails();
+      }, 200);
+    }
+  }
+
+  showCardSection() {
+    this.setState({
+      isCard: this.state.isCard = true,
+    });
   }
 
   /** Add Address Block */
@@ -610,10 +658,25 @@ class PlaceOrder extends React.Component<{
                     this.state.addressarray.map(
                       (address: any, index: number) => (
                         <div className="adrss-1" key={index}>
-                         <div className="row" style={{justifyContent:'flex-end'}}>
-                         <i className="fas fa-edit edit-adres"  onClick={() => this.getAddressData(address)}></i>
-                         <i className="fas fa-trash edit-adres ml-4" onClick={() => this.deleteAddressData(address.addressID,"You should be Remove address?","Yes, Remove it")}></i>
-                           </div>
+                          <div
+                            className="row"
+                            style={{ justifyContent: "flex-end" }}
+                          >
+                            <i
+                              className="fas fa-edit edit-adres"
+                              onClick={() => this.getAddressData(address)}
+                            ></i>
+                            <i
+                              className="fas fa-trash edit-adres ml-4"
+                              onClick={() =>
+                                this.deleteAddressData(
+                                  address.addressID,
+                                  "You should be Remove address?",
+                                  "Yes, Remove it"
+                                )
+                              }
+                            ></i>
+                          </div>
                           <label className="rdio-box1">
                             <span className="b-tt">{address.name}</span>{" "}
                             <span className="add-type">
@@ -624,7 +687,6 @@ class PlaceOrder extends React.Component<{
                               {address.address}
                               <span className="b-tt"> - {address.pincode}</span>
                             </span>
-                           
                             <input
                               type="radio"
                               id={address.addressID}
@@ -637,7 +699,6 @@ class PlaceOrder extends React.Component<{
                               onChange={this.change}
                               name="main"
                             />
-                         
                             <span className="checkmark"></span>
                           </label>
                           <a href="#" className="chk-outbtn">
@@ -648,7 +709,7 @@ class PlaceOrder extends React.Component<{
                     )
                   : ""}
               </div>
-              <div className="add-new-adres"  onClick={this.showSection}>
+              <div className="add-new-adres" onClick={this.showSection}>
                 <span className="add-icon">+</span>
                 <div>Add a new address</div>
               </div>
@@ -761,7 +822,9 @@ class PlaceOrder extends React.Component<{
                             type="text"
                             id="from4"
                             name="landmark"
-                            value={this.state.landmark ? this.state.landmark : ""}
+                            value={
+                              this.state.landmark ? this.state.landmark : ""
+                            }
                             onChange={this.addressChange}
                             className="form-control"
                             required
@@ -875,7 +938,9 @@ class PlaceOrder extends React.Component<{
                                   type="radio"
                                   id="1"
                                   checked={
-                                    this.state.addresstype === "1" ? true : false
+                                    this.state.addresstype === "1"
+                                      ? true
+                                      : false
                                   }
                                   onChange={this.changeAddress}
                                   name="radio"
@@ -890,7 +955,9 @@ class PlaceOrder extends React.Component<{
                                   type="radio"
                                   id="2"
                                   checked={
-                                    this.state.addresstype === "2" ? true : false
+                                    this.state.addresstype === "2"
+                                      ? true
+                                      : false
                                   }
                                   onChange={this.changeAddress}
                                   name="radio"
@@ -902,26 +969,24 @@ class PlaceOrder extends React.Component<{
                         </div>
                       </div>
                       <div className="col-md-12">
-                        {
-                          this.state.updateTrue === false ? (
-                            <button
+                        {this.state.updateTrue === false ? (
+                          <button
                             type="button"
                             className="save-delivry"
                             onClick={this.addAddress}
                           >
                             Save and Deliver Here
                           </button>
-                          ) : (
-                            <button
-                             type="button"
+                        ) : (
+                          <button
+                            type="button"
                             className="save-delivry"
                             onClick={this.editAddress}
                           >
                             Save and Deliver Here
                           </button>
-                          ) 
-                        }
-                      
+                        )}
+
                         <button
                           className="btb-text"
                           onClick={() =>
@@ -1092,10 +1157,102 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  /**
+   *
+   * @param e : month value
+   */
+  onMonthChange(e: any) {
+    this.setState({
+      month: this.state.month = parseInt(e.target.value),
+    });
+    console.log("month", this.state.month);
+  }
+
+  /**
+   *
+   * @param e : year value
+   */
+  onYearChange(e: any) {
+    console.log("year", e.target.value, this.state.year);
+    this.setState({
+      year: this.state.year = parseInt(e.target.value),
+    });
+  }
+
+  /**
+   *
+   * @param event : update state
+   */
+  onPaymentChange(event: any) {
+    event.preventDefault();
+    const state: any = this.state;
+    state[event.target.name] = event.target.value;
+    this.setState(state);
+  }
+
+  /** Check card validation using regex */
+  validateCard() {
+    let cardnumbererror = "";
+    let cardholdererror = "";
+
+    var regex = /^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/;
+    if (!this.state.cardnumber) {
+      cardnumbererror = "please enter card number";
+    } else if (!regex.test(this.state.cardnumber)) {
+      cardnumbererror = "please enter valid card number";
+    }
+
+    if (!this.state.cardholder) {
+      cardholdererror = "please enter card holder name";
+    }
+
+    if (cardnumbererror || cardholdererror) {
+      this.setState({
+        cardnumbererror,
+        cardholdererror,
+      });
+      return false;
+    }
+    return true;
+  }
+
+  /** Add Card (credit/debit) */
+  addCard() {
+    const isValid = this.validateCard();
+    if (isValid) {
+      this.setState({
+        cardnumbererror: "",
+        cardholdererror: "",
+      });
+      const users: any = localStorage.getItem("user");
+      let user = JSON.parse(users);
+      if (this.state.cardnumber) {
+        var visaCards = creditCardType(this.state.cardnumber);
+        console.log("card type", visaCards[0].type);
+        this.setState({
+          cardtype: this.state.cardtype = visaCards[0].type,
+        });
+      }
+      const obj = {
+        id: user.userID,
+        cardNumber: this.state.cardnumber,
+        cardName: this.state.cardholder,
+        cardType: this.state.cardtype,
+        expiryMonth: this.state.month,
+        expiryYear: this.state.year,
+        isActive: true,
+      };
+      this.props.addCard(obj);
+      setTimeout(() => {
+        this.getCard();
+      }, 250);
+    }
+  }
+
   /** Card payment block */
   cardBlock() {
     return (
-      <div className="adrss-1 pay-credit">
+      <div className="adrss-1 pay-credit order-placed">
         <label className="rdio-box1">
           <input
             type="radio"
@@ -1111,129 +1268,180 @@ class PlaceOrder extends React.Component<{
             <img src={placeorder.paytm} alt="" />
             <span className="tt-radio">Credit / Debit / ATM Card</span>
           </div>
+
           {this.state.paymenttype === 3 ? (
-            <div className="pey-upi">
-              <div className="opti1 opti2">
-                <div className="box-input1">
-                  <div className="form-group card-nombr">
-                    <span className="verfy-tt">Link Now</span>
-                    <input
-                      type="text"
-                      id="from"
-                      className="form-control"
-                      required
-                    />
-                    <label className="form-control-placeholder" htmlFor="from">
-                      Enter Card Number
-                    </label>
-                  </div>
-                  <div className="flex-input">
-                    <div className="valid-date">
-                      <span className="vilid-tt">Valid thru</span>
-                      <select
-                        className="monthnm"
-                        name="month"
-                        required
-                        tabIndex={4}
-                      >
-                        <option disabled value="MM">
-                          MM
-                        </option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                      </select>
-                      <select
-                        className="yearnm"
-                        name="year"
-                        required
-                        tabIndex={5}
-                      >
-                        <option disabled value="YY">
-                          YY
-                        </option>
-                        <option value="20">20</option>
-                        <option value="21">21</option>
-                        <option value="22">22</option>
-                        <option value="23">23</option>
-                        <option value="24">24</option>
-                        <option value="25">25</option>
-                        <option value="26">26</option>
-                        <option value="27">27</option>
-                        <option value="28">28</option>
-                        <option value="29">29</option>
-                        <option value="30">30</option>
-                        <option value="31">31</option>
-                        <option value="32">32</option>
-                        <option value="33">33</option>
-                        <option value="34">34</option>
-                        <option value="35">35</option>
-                        <option value="36">36</option>
-                        <option value="37">37</option>
-                        <option value="38">38</option>
-                        <option value="39">39</option>
-                        <option value="40">40</option>
-                        <option value="41">41</option>
-                        <option value="42">42</option>
-                        <option value="43">43</option>
-                        <option value="44">44</option>
-                        <option value="45">45</option>
-                        <option value="46">46</option>
-                        <option value="47">47</option>
-                        <option value="48">48</option>
-                        <option value="49">49</option>
-                        <option value="50">50</option>
-                        <option value="51">51</option>
-                        <option value="52">52</option>
-                        <option value="53">53</option>
-                        <option value="54">54</option>
-                        <option value="55">55</option>
-                        <option value="56">56</option>
-                        <option value="57">57</option>
-                        <option value="58">58</option>
-                        <option value="59">59</option>
-                      </select>
-                    </div>
-                    <div className="form-group enter-cvv">
-                      <div className="verfy-tt">
-                        ?
-                        <div className="togle-box">
-                          <img src="images/cvv-card.png" alt="cvv-card" />
-                          <h4 className="cvv-title">What is CVV?</h4>
-                          <span className="small-tt">
-                            The CVV number is the last three digits on the back
-                            of your card
-                          </span>
-                          <button className="close-btn">Close</button>
+            <>
+              <div className="main0adress">
+                {this.state.carddata
+                  ? this.state.carddata.length > 0 &&
+                    this.state.carddata.map((card: any, index: any) => (
+                      <div className="adrss-1" key={index}>
+                        <div
+                          className="row"
+                          style={{ justifyContent: "flex-end" }}
+                        ></div>
+
+                        <label className="rdio-box1">
+                          <span className="b-tt">{card.cardNumber}</span>{" "}
+                          <span className="add-type">{card.cardName}</span>{" "}
+                          <div></div>
+                          <input
+                            type="radio"
+                            id="12"
+                            className="form-control"
+                            // checked={
+                            //   this.state.mainaddress === address.addressID
+                            //     ? true
+                            //     : false
+                            // }
+                            onChange={this.change}
+                            name="main"
+                          />
+                          <span className="checkmark"></span>
+                        </label>
+                        <div>
+                          <div className="form-group enter-cvv">
+                            <div className="verfy-tt">
+                              ?
+                              <div className="togle-box">
+                                <img src="images/cvv-card.png" alt="cvv-card" />
+                                <h4 className="cvv-title">What is CVV?</h4>
+                                <span className="small-tt">
+                                  The CVV number is the last three digits on the
+                                  back of your card
+                                </span>
+                                <button className="close-btn">Close</button>
+                              </div>
+                            </div>
+                            <input
+                              type="text"
+                              id="from"
+                              className="form-control"
+                              required
+                            />
+                            <label
+                              className="form-control-placeholder"
+                              htmlFor="from"
+                            >
+                              CVV
+                            </label>
+                          </div>
                         </div>
                       </div>
-                      <input
-                        type="text"
-                        id="from"
-                        className="form-control"
-                        required
-                      />
-                      <label
-                        className="form-control-placeholder"
-                        htmlFor="from"
-                      >
-                        CVV
-                      </label>
+                    ))
+                  : ""}
+              </div>
+              <div
+                className="add-new-adres text-left"
+                onClick={this.showCardSection}
+              >
+                <button type="button" className="chk-outbtn">
+                  Add New Card
+                </button>
+              </div>
+              {this.state.isCard === true ? (
+                <div className="pey-upi">
+                  <div className="opti1 opti2">
+                    <div className="box-input1">
+                      <div className="form-group card-nombr">
+                        {/* <span className="verfy-tt">Link Now</span> */}
+                        <input
+                          type="text"
+                          id="from"
+                          name="cardnumber"
+                          className="form-control"
+                          value={
+                            this.state.cardnumber ? this.state.cardnumber : ""
+                          }
+                          onChange={this.onPaymentChange}
+                          required
+                        />
+                        <label
+                          className="form-control-placeholder"
+                          htmlFor="from"
+                        >
+                          Enter Card Number
+                        </label>
+                        <div className="text-danger">
+                          {this.state.cardnumbererror}
+                        </div>
+                      </div>
+                      <div className="form-group card-nombr">
+                        <input
+                          type="text"
+                          id="from"
+                          name="cardholder"
+                          className="form-control"
+                          value={
+                            this.state.cardholder ? this.state.cardholder : ""
+                          }
+                          onChange={this.onPaymentChange}
+                          required
+                        />
+                        <label
+                          className="form-control-placeholder"
+                          htmlFor="from"
+                        >
+                          Enter Card Holder Name
+                        </label>
+                        <div className="text-danger">
+                          {this.state.cardholdererror}
+                        </div>
+                      </div>
+                      <div className="flex-input">
+                        <div className="valid-date">
+                          <select
+                            className="monthnm"
+                            value={this.state.month ? this.state.month : ""}
+                            onChange={this.onMonthChange}
+                          >
+                            {constant.placeorderPage.montharray.map(
+                              (month: any, index: number) => (
+                                <option value={month.value} key={index}>
+                                  {month.title}
+                                </option>
+                              )
+                            )}
+                          </select>
+                          <select
+                            className="yearnm"
+                            value={this.state.year ? this.state.year : ""}
+                            onChange={this.onYearChange}
+                          >
+                            {constant.placeorderPage.yeararray.map(
+                              (year: any, index: number) => (
+                                <option value={year.value} key={index}>
+                                  {year.title}
+                                </option>
+                              )
+                            )}
+                          </select>
+                        </div>
+                      </div>
+                      <div>
+                        <button className="continue-btn" onClick={this.addCard}>
+                          Add && Pay
+                        </button>
+                        <button
+                          className="continue-btn"
+                          onClick={() =>
+                            this.setState({
+                              cardholdererror: "",
+                              cardnumbererror: "",
+                              isCard: this.state.isCard = false,
+                            })
+                          }
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <button className="continue-btn">PAY R400</button>
                 </div>
-              </div>
-            </div>
+              ) : (
+                ""
+              )}
+            </>
           ) : (
             ""
           )}
@@ -1658,9 +1866,9 @@ class PlaceOrder extends React.Component<{
                               {this.netBankingBlock()}
                             </div>
                           </div>
-                          <div className="dis-right">
+                          {/* <div className="dis-right">
                             <button className="change1">CHANGE</button>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     ) : (
@@ -1684,6 +1892,7 @@ const mapStateToProps = (state: any) => ({
   addressDetails: state.placeOrder.addressdata,
   getCartDetail: state.product.getcartdetails,
   getaddressDetail: state.placeOrder.getaddressdata,
+  getCardDetail: state.placeOrder.getcarddata,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -1693,8 +1902,10 @@ const mapDispatchToProps = (dispatch: any) => ({
   getcartData: (data: any) => dispatch(productService.getcartData(data)),
   updateToCart: (data: any, id: any) =>
     dispatch(productService.updateToCart(data, id)),
-    updateAddress: (data: any) => dispatch(placeOrderService.updateAddress(data)),
-    deleteAddress: (data: any) => dispatch(placeOrderService.deleteAddress(data))
+  updateAddress: (data: any) => dispatch(placeOrderService.updateAddress(data)),
+  deleteAddress: (data: any) => dispatch(placeOrderService.deleteAddress(data)),
+  addCard: (data: any) => dispatch(placeOrderService.addCard(data)),
+  getcard: (data: any) => dispatch(placeOrderService.getcard(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrder);

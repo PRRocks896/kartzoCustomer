@@ -6,6 +6,8 @@ export const placeOrderService = {
   addAddress,
   updateAddress,
   deleteAddress,
+  addCard,
+  getcard
 };
 
 /**
@@ -129,5 +131,67 @@ function deleteAddress(data: any) {
   }
   function failure(error: any) {
     return { type: ACTION.placeOrder.DELETE_ADDRESS_FAILURE, error };
+  }
+}
+
+/**
+ * 
+ * @param data : add card 
+ */
+function addCard(data: any) {
+  return (dispatch: any) => {
+    dispatch(request({ data }));
+
+    PlaceOrderAPI.addCardData(data)
+      .then((addcard: any) => {
+        console.log("addcard", addcard);
+        if (addcard.status === 200) {
+          dispatch(success(addcard.data.resultObject));
+        }
+      })
+      .catch((err: any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(addcard: any) {
+    return { type: ACTION.card.ADD_CARD_REQUEST, addcard };
+  }
+  function success(addcard: any) {
+    return { type: ACTION.card.ADD_CARD_SUCCESS, addcard };
+  }
+  function failure(error: any) {
+    return { type: ACTION.card.ADD_CARD_FAILURE, error };
+  }
+}
+
+/**
+ * 
+ * @param data : get card details
+ */
+function getcard(data: any) {
+  return (dispatch: any) => {
+    dispatch(request({ data }));
+
+    PlaceOrderAPI.getcarddata(data)
+      .then((getcard: any) => {
+        console.log("getcard", getcard);
+        if (getcard.status === 200) {
+          dispatch(success(getcard.resultObject.data));
+        }
+      })
+      .catch((err: any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(getcard: any) {
+    return { type: ACTION.card.GET_CARD_REQUEST, getcard };
+  }
+  function success(getcard: any) {
+    return { type: ACTION.card.GET_CARD_SUCCESS, getcard };
+  }
+  function failure(error: any) {
+    return { type: ACTION.card.GET_CARD_FAILURE, error };
   }
 }

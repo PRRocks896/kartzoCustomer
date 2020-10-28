@@ -787,7 +787,7 @@
  
 .paymt-opton .adrss-1 {
 	padding-left: 55px;
-	border-bottom: 1px solid #e6e6e6;
+	/* border-bottom: 1px solid #e6e6e6; */
 	padding-bottom: 15px;
 	padding-top: 15px;
 }
@@ -814,7 +814,7 @@
 	line-height: 40px;
 	padding: 0px 11px;
 	border-radius: 40px;
-	padding: 0px 32px;
+	padding: 0px 16px;
 }
 .pay-credit .valid-date select {
 	border: none;
@@ -825,7 +825,7 @@
 }
 .pay-credit .form-group.enter-cvv {
 	width: 130px !important;
-	margin-left: 12px;
+	margin-left: 0;
 }
 .pay-credit .enter-cvv .verfy-tt {
 	color: #fff !important;
@@ -912,3 +912,45 @@
 		display: block;
 	}
 }
+
+.order-placed span.add-type {
+    float: right;
+    font-weight: 600;
+}
+.enter-cvv {
+
+}
+.enter-cvv .verfy-tt {
+	color: #fff !important;
+    background: #808080 !important;
+    width: 20px;
+    text-align: center;
+	border-radius: 15px;
+	position: absolute;
+    right: 21px;
+    font-size: 14px;
+	top: 9px;
+	cursor: pointer;
+	font-weight: 600;}
+	.edit-dtle .form-control-placeholder, .paymt-opton .form-control-placeholder {
+		position: absolute;
+		top: 8px;
+		padding: 7px 0 0 13px;
+		transition: all 200ms;
+		opacity: 1;
+		font-size: 14px;
+		padding: 0px;
+		left: 20px;
+		padding-left: 10px;
+		color: #5C6978;
+	}
+	.paymt-opton .continue-btn {
+		margin-top: 25px;
+	}
+	.opti1 {
+		padding-left: 0px;
+	}
+	.pey-upi {
+		padding-left: 0px;
+		
+	}

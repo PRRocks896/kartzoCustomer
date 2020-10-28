@@ -73,4 +73,28 @@ export default {
       false
     );
   },
+
+  /**
+   * 
+   * @param data : add card
+   */
+  addCardData: async function (data: any) {
+    return WebReqUrl.post(
+      Constant.apiUrl + apiUrl.cardController.addcard,
+      data,
+      false
+    );
+  },
+
+  /**
+   * 
+   * @param data : get card details
+   */
+  getcarddata: async function (data: any) {
+    return WebReqUrl.post(
+      Constant.apiUrl + apiUrl.cardController.getcard,
+      data,
+      false
+    );
+  },
 };

@@ -5,6 +5,7 @@ const initialState = {
   addaddress: "",
   getaddressdata: "",
   deletedata: "",
+  getcarddata:""
 };
 
 /**
@@ -77,6 +78,36 @@ const placeOrder = (state = initialState, action: any) => {
         deletedata: {},
         error: action.error,
       };
+
+      case ACTION.card.ADD_CARD_REQUEST:
+        return {
+          ...state,
+        };
+      case ACTION.card.ADD_CARD_SUCCESS:
+        return {
+          ...state
+        };
+      case ACTION.card.ADD_CARD_FAILURE:
+        return {
+          ...state,
+          error: action.error,
+        };
+
+        case ACTION.card.GET_CARD_REQUEST:
+          return {
+            ...state,
+          };
+        case ACTION.card.GET_CARD_SUCCESS:
+          return {
+            ...state,
+            getcarddata: action.getcard
+          };
+        case ACTION.card.GET_CARD_FAILURE:
+          return {
+            ...state,
+            getcarddata: {},
+            error: action.error,
+          };
 
     default:
       return state;

@@ -25,7 +25,14 @@ const apiUrl = {
         updatecart:'ordercart/',
         deleteData:'delete',
         getsearchproduct:'address/get-product-list'
-    }
+    },
+    cardController: {
+        getcard:'card/get-card-list',
+        addcard:'card',
+        getaddressbyid:'address/',
+        updateAddress:'address/',
+        deleteData:'delete'
+    },
 }
 
 export default apiUrl;
