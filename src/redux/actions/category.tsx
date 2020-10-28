@@ -1,12 +1,14 @@
 import * as ACTION from "../constant/constant";
 import {CategoryAPI} from "../../service/index";
-// import { showSuccess, showError } from "../../pages/utils/index";
 
 export const categoryService = {
     getCategoryData
 };
 
-/** Get Category Request */
+/**
+ * 
+ * @param data : get category data
+ */
 function getCategoryData(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));

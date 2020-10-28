@@ -1,6 +1,5 @@
 import * as ACTION from "../constant/constant";
 import { PlaceOrderAPI } from "../../service/index";
-// import { showSuccess, showError } from "../../pages/utils/index";
 
 export const placeOrderService = {
   getAddressList,
@@ -9,7 +8,10 @@ export const placeOrderService = {
   deleteAddress,
 };
 
-/** Get Category Request */
+/**
+ * 
+ * @param data : get address data response
+ */
 function getAddressList(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
@@ -37,6 +39,10 @@ function getAddressList(data: any) {
   }
 }
 
+/**
+ * 
+ * @param data : add address
+ */
 function addAddress(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
@@ -64,6 +70,10 @@ function addAddress(data: any) {
   }
 }
 
+/**
+ * 
+ * @param data : update address
+ */
 function updateAddress(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
@@ -91,6 +101,10 @@ function updateAddress(data: any) {
   }
 }
 
+/**
+ * 
+ * @param data : delete address
+ */
 function deleteAddress(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));

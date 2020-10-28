@@ -5,6 +5,11 @@ const initialState = {
   locationdata: "",
 };
 
+/**
+ * 
+ * @param state : intial state
+ * @param action : action response
+ */
 const merchant = (state = initialState, action: any) => {
   switch (action.type) {
     case ACTION.merchant.GET_MERCHANT_REQUEST:

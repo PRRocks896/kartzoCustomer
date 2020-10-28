@@ -3,6 +3,11 @@ import axios from 'axios';
 import { getAdminDetail, getHeaderDetail } from '../pages/utils/index';
 
 const WebReqUrl = {
+    /**
+     * 
+     * @param url : URL
+     * @param isAdmin : Admin token falg
+     */
     get: async function (url: string,isAdmin:boolean) {
         try {
             let response;
@@ -32,6 +37,12 @@ const WebReqUrl = {
             console.error(err);
         }
     },
+
+    /**
+     * 
+     * @param url : URL
+     * @param isAdmin : Admin token falg
+     */
     delete: async function (url: string,isAdmin:boolean) {
         try {
             let response;
@@ -61,6 +72,13 @@ const WebReqUrl = {
             console.error(err);
         }
     },
+
+   /**
+    * 
+    * @param url : URL
+    * @param body : Body data pass in api
+    * @param isAdmin : Admin token flag
+    */
     put: async function (url: string, body: any,isAdmin:boolean) {
         try {
             let response;
@@ -89,6 +107,13 @@ const WebReqUrl = {
             console.error(err);
         }
     },
+
+    /**
+    * 
+    * @param url : URL
+    * @param body : Body data pass in api
+    * @param isAdmin : Admin token flag
+    */
     post: async function (url: string, body: any,isAdmin:boolean) {
         try {
             let response;

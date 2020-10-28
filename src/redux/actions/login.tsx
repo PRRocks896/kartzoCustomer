@@ -7,7 +7,10 @@ export const loginService = {
   getAdminToken
 };
 
-/** Get Otp Request */
+/**
+ * 
+ * @param data : get otp request
+ */
 function login(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
@@ -38,7 +41,10 @@ function login(data: any) {
   }
 }
 
-/** Otp Verification Request */
+/**
+ * 
+ * @param data : otp verification request
+ */
 function verifyOtp(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
@@ -73,7 +79,10 @@ function verifyOtp(data: any) {
   }
 }
 
-/** Get Admin Token Request */
+/**
+ * 
+ * @param data : get admin token
+ */
 function getAdminToken(data:any) {
   return (dispatch: any) => {
     dispatch(request({data}));

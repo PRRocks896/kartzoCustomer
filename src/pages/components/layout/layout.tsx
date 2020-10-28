@@ -8,6 +8,7 @@ class Layout extends React.Component {
     super(props);
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

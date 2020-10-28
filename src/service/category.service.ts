@@ -6,6 +6,10 @@ import WebReqUrl from '../web-req/web-req';
 import { getCategoryListRequest } from '../modelController';
 
 export default {
+    /**
+     * 
+     * @param data : get category data
+     */
     getCategoryData: async function (data:getCategoryListRequest) {
         return axios.post(Constant.apiUrlAdmin + apiUrl.categoryController.category,data);
     }

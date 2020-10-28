@@ -41,7 +41,7 @@ class FindStore extends React.Component<{
     merchantdata: this.findstoreState.merchantdata,
     isLoading: this.findstoreState.isLoading,
     locationData: this.findstoreState.locationData,
-    cityid:  this.findstoreState.cityid,
+    cityid: this.findstoreState.cityid,
   };
   constructor(props: any) {
     super(props);
@@ -53,6 +53,7 @@ class FindStore extends React.Component<{
     this.searchLocationKeyUp = this.searchLocationKeyUp.bind(this);
   }
 
+  /** Page Render Call */
   componentDidMount() {
     document.title = constant.findstore + getAppName();
     const slug = this.props.location.pathname.split("/")[2];
@@ -67,6 +68,13 @@ class FindStore extends React.Component<{
     this.getMerchantData();
   }
 
+  /**
+   *
+   * @param searchText : search value
+   * @param cityId : get data with city
+   * @param page : page number
+   * @param size : per page value
+   */
   getMerchantData(
     searchText: string = "",
     cityId: number = 3,
@@ -83,7 +91,11 @@ class FindStore extends React.Component<{
     this.props.getMerchantData(obj);
   }
 
-  componentWillReceiveProps(nextProps: any, newState: any) {
+  /**
+   *
+   * @param nextProps : get updated props value
+   */
+  componentWillReceiveProps(nextProps: any) {
     // console.log("props", nextProps);
     if (nextProps.merchantDetail) {
       this.setState({
@@ -100,6 +112,10 @@ class FindStore extends React.Component<{
     }
   }
 
+  /**
+   *
+   * @param data : get merchant data
+   */
   getMerchantList(data: any) {
     this.setState({
       count: this.state.count = data.totalcount,
@@ -107,6 +123,7 @@ class FindStore extends React.Component<{
     });
   }
 
+  /** Button Increment value on pageination */
   btnIncrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound + this.state.pageBound,
@@ -118,6 +135,7 @@ class FindStore extends React.Component<{
     this.setState({ currentPage: listid });
   }
 
+  /** Button Decrement value on pageination */
   btnDecrementClick() {
     this.setState({
       upperPageBound: this.state.upperPageBound - this.state.pageBound,
@@ -129,6 +147,10 @@ class FindStore extends React.Component<{
     this.setState({ currentPage: listid });
   }
 
+  /**
+   *
+   * @param event : another page page number
+   */
   async handleClick(event: any) {
     this.setState({
       currentPage: this.state.currentPage = event.target.id,
@@ -143,6 +165,10 @@ class FindStore extends React.Component<{
     this.getMerchantData(obj.searchText, obj.cityId, obj.page, obj.size);
   }
 
+  /**
+   *
+   * @param event : get merchant value with particular city
+   */
   onItemSelectId(event: any) {
     this.setState({
       cityid: this.state.cityid = event,
@@ -157,6 +183,10 @@ class FindStore extends React.Component<{
     this.getMerchantData("", event, 1, 4);
   }
 
+  /**
+   *
+   * @param e : keypress search value get
+   */
   searchLocationKeyUp(e: any) {
     // console.log("e",e.target.value)
     const obj: searchCityListRequest = {
@@ -167,6 +197,10 @@ class FindStore extends React.Component<{
     }
   }
 
+  /**
+   *
+   * @param data : get location data
+   */
   locationdetails(data: any) {
     // console.log("data",data);
     this.setState({
@@ -174,6 +208,10 @@ class FindStore extends React.Component<{
     });
   }
 
+  /**
+   *
+   * @param pageNumbers : pagenumber
+   */
   pagination(pageNumbers: any) {
     var res = pageNumbers.map((number: any) => {
       if (number === 1 && parseInt(this.state.currentPage) === 1) {
@@ -216,6 +254,12 @@ class FindStore extends React.Component<{
     return res;
   }
 
+  /**
+   *
+   * @param pageDecrementBtn : value...
+   * @param renderPageNumbers : page number
+   * @param pageIncrementBtn : value...
+   */
   getPageData(
     pageDecrementBtn: any,
     renderPageNumbers: any,
@@ -234,6 +278,7 @@ class FindStore extends React.Component<{
     );
   }
 
+  /** Render DOM */
   render() {
     var pageNumbers = pageNumber(this.state.count, this.state.items_per_page);
     var renderPageNumbers = this.pagination(pageNumbers);

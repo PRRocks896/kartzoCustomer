@@ -4,6 +4,11 @@ const initialState = {
   category: ""
 };
 
+/**
+ * 
+ * @param state : intial state
+ * @param action : action response
+ */
 const category = (state = initialState, action: any) => {
   switch (action.type) {
     case ACTION.category.GET_CATEGORY_REQUEST:

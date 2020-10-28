@@ -22,6 +22,7 @@ class Cart extends React.Component<{
   updateToCart: any;
   removeProductFromCart: any;
 }> {
+  /** Cart State */
   cartState : cartStateRequest = constant.cartPage.state;
   state = {
     activeLink: this.cartState.activeLink,
@@ -32,16 +33,15 @@ class Cart extends React.Component<{
   constructor(props: any) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.onChangeEvent = this.onChangeEvent.bind(this);
     this.goBack = this.goBack.bind(this);
     this.incrementQty = this.incrementQty.bind(this);
     this.decrementQty = this.decrementQty.bind(this);
     this.open = this.open.bind(this);
-    this.onChange = this.onChange.bind(this);
     this.removeItemFromCart = this.removeItemFromCart.bind(this);
   }
 
+  /** Page Render Call */
   componentDidMount() {
     document.title = constant.cart + getAppName();
     EventEmitter.dispatch("isShow", true);
@@ -51,6 +51,12 @@ class Cart extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param page : page number
+   * @param size : per page display
+   */
   getCartData(searchText: string = "", page: number = 1, size: number = 20) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
@@ -64,6 +70,10 @@ class Cart extends React.Component<{
     this.props.getcartData(obj);
   }
 
+  /**
+   * 
+   * @param nextProps : get updated props
+   */
   componentWillReceiveProps(nextProps: any, newState: any) {
     console.log("props", nextProps);
     if (nextProps.getCartDetail) {
@@ -71,6 +81,10 @@ class Cart extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param data : get all cart data
+   */
   getCartAllProductData(data: any) {
     this.setState({
       cartarray: this.state.cartarray = data.data,
@@ -83,22 +97,24 @@ class Cart extends React.Component<{
     console.log("cartarray", this.state.cartarray);
   }
 
+  /**
+   * 
+   * @param id : active id
+   */
   handleClick = (id: any) => {
     this.setState({ activeLink: id });
   };
 
-  handleChange() {
-    console.log("e");
-  }
-
-  onChange() {
-    console.log("e");
-  }
-
+/** Redirect to previous page */
   goBack() {
     this.props.history.goBack();
   }
 
+  /**
+   * 
+   * @param event : update state value onchange event
+   * @param index : index  number
+   */
   onChangeEvent(event: any, index: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -106,6 +122,10 @@ class Cart extends React.Component<{
     this.setState(state);
   }
 
+  /**
+   * 
+   * @param data : cart item quantity increment
+   */
   incrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
@@ -124,6 +144,10 @@ class Cart extends React.Component<{
     // this.setState({ cartarray: tempCart });
   }
 
+  /**
+   * 
+   * @param data : cart item quantity decrement
+   */
   decrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
@@ -139,12 +163,19 @@ class Cart extends React.Component<{
     }, 200);
   }
 
+  /** Open block */
   open() {
     this.setState({
       isOpen: this.state.isOpen = true,
     });
   }
 
+  /**
+   * 
+   * @param id : cart item id
+   * @param text : message cart
+   * @param btext : button cart message
+   */
   async removeItemFromCart(id: any, text: string, btext: string) {
     if (await alertMessage(text, btext)) {
       let idArray = [];
@@ -160,6 +191,7 @@ class Cart extends React.Component<{
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

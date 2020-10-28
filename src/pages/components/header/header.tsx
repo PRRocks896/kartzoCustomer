@@ -29,8 +29,10 @@ class Header extends React.Component {
     });
   }
 
+  /** Page Render Call */
   componentDidMount() {}
 
+  /** Render DOM */
   render() {
     if (this.state.isShow === false) {
       return (

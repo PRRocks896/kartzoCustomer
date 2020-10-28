@@ -7,7 +7,7 @@ import merchant from './merchant';
 import product from './product';
 import placeOrder from './placeorder'
 
-
+/** Root Reducers */
 const rootReducer = combineReducers({
     auth: auth,
     category: category,

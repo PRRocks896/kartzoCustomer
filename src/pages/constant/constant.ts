@@ -96,6 +96,12 @@ export default {
     title: {},
     state: {
       mobile: "",
+      addressarray:[],
+      show:false,
+      mobilephone:'',
+      mobilephoneerror:'',
+      addressid:'',
+      addresstype:"1"
     },
   },
   categoryPage: {
@@ -140,6 +146,8 @@ export default {
       area: "",
       isSearch: false,
       location: "rajkot",
+      locationData:[],
+      cityid:''
     },
   },
   storeItemPage: {
@@ -179,7 +187,7 @@ export default {
       checkedpaymentvaluecard: false,
       checkedpaymentvaluenetbanking: false,
       usermobile: "",
-      addresstype: 1,
+      addresstype: "1",
       paymenttype: 0,
       paytype: 0,
       banktype: 0,

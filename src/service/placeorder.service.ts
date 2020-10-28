@@ -9,6 +9,10 @@ import {
 } from "../modelController";
 
 export default {
+  /**
+   * 
+   * @param data : get address data
+   */
   getAddressListData: async function (data: getAddressListRequest) {
     return WebReqUrl.post(
       Constant.apiUrl + apiUrl.addressController.getaddress,
@@ -16,6 +20,11 @@ export default {
       false
     );
   },
+
+  /**
+   * 
+   * @param data : add address
+   */
   addAddressData: async function (data: addAddressRequest) {
     return WebReqUrl.post(
       Constant.apiUrl + apiUrl.addressController.addaddress,
@@ -23,6 +32,11 @@ export default {
       false
     );
   },
+
+  /**
+   * 
+   * @param data : get address details
+   */
   getAddressByIdDetails: async function (data: any) {
     return WebReqUrl.put(
       Constant.apiUrl + apiUrl.addressController.getaddressbyid + data,
@@ -30,6 +44,11 @@ export default {
       false
     );
   },
+
+  /**
+   * 
+   * @param data : update address
+   */
   updateAddress: async function (data: any) {
     return WebReqUrl.put(
       Constant.apiUrl + apiUrl.addressController.updateAddress + data.addressID,
@@ -37,6 +56,11 @@ export default {
       false
     );
   },
+
+  /**
+   * 
+   * @param data : delete address
+   */
   deleteAddress: async function (data: removeCartItemRequest) {
     let queryString = "";
     data.id.map((id: any, index: number) => {

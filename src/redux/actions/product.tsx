@@ -1,7 +1,5 @@
 import * as ACTION from "../constant/constant";
 import { StoreAPI } from "../../service/index";
-import { showSuccess } from "../../pages/utils";
-// import { showSuccess, showError } from "../../pages/utils/index";
 
 export const productService = {
   getProductsData,
@@ -13,7 +11,10 @@ export const productService = {
   getProductDataWithSearching
 };
 
-/** Get Category Request */
+/**
+ * 
+ * @param data : get product data
+ */
 function getProductsData(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
@@ -41,6 +42,10 @@ function getProductsData(data: any) {
   }
 }
 
+/**
+ * 
+ * @param data : add to cart
+ */
 function addToCart(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
@@ -68,6 +73,10 @@ function addToCart(data: any) {
   }
 }
 
+/**
+ * 
+ * @param data : get cart data
+ */
 function getcartData(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
@@ -95,6 +104,11 @@ function getcartData(data: any) {
   }
 }
 
+/**
+ * 
+ * @param data : update cart data
+ * @param id : update product id
+ */
 function updateToCart(data: any, id: any) {
   return (dispatch: any) => {
     dispatch(request({ data, id }));
@@ -122,6 +136,10 @@ function updateToCart(data: any, id: any) {
   }
 }
 
+/**
+ * 
+ * @param data : reomove product from cart
+ */
 function removeProductFromCart(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
@@ -149,6 +167,10 @@ function removeProductFromCart(data: any) {
   }
 }
 
+/**
+ * 
+ * @param data : get search product
+ */
 function getSearchProduct(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
@@ -176,6 +198,10 @@ function getSearchProduct(data: any) {
   }
 }
 
+/**
+ * 
+ * @param data : get product with searching
+ */
 function getProductDataWithSearching(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));

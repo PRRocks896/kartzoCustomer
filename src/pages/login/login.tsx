@@ -49,6 +49,7 @@ class Login extends React.Component<{
     this.verifyotp = this.verifyotp.bind(this);
   }
 
+  /** Page Render Call */
   componentDidMount() {
     document.title = constant.loginpage.title.login + getAppName();
     /** Login Page Header  */
@@ -57,7 +58,11 @@ class Login extends React.Component<{
     EventEmitter.dispatch("isShowFooter", true);
   }
 
-  componentWillReceiveProps(nextProps: any, newState: any) {
+  /**
+   * 
+   * @param nextProps : get updated props value
+   */
+  componentWillReceiveProps(nextProps: any) {
     console.log("props", nextProps);
     const data: any = nextProps;
 
@@ -84,6 +89,10 @@ class Login extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param data : otp request success response
+   */
   otpSentRequestSuccess(data: any) {
     if (data.userDetail.status === 200) {
       this.setState({
@@ -101,6 +110,10 @@ class Login extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param data : otp verify success response 
+   */
   async verifySucess(data: any) {
     if (data.otpverify.status === 200) {
       this.setState({
@@ -127,6 +140,10 @@ class Login extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param event : onChange update state value
+   */
   handleChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -134,12 +151,17 @@ class Login extends React.Component<{
     this.setState(state);
   }
 
+  /**
+   * 
+   * @param otp : get otp
+   */
   handleChange(otp: any) {
     this.setState({
       otp: otp,
     });
   }
 
+  /** Check (valid || invalid) mobile number */
   validate() {
     let mobileerror = "";
 
@@ -159,6 +181,7 @@ class Login extends React.Component<{
     return true;
   }
 
+    /** Check (valid || invalid) otp */
   validateOtp() {
     let otperror = "";
 
@@ -178,6 +201,7 @@ class Login extends React.Component<{
     return true;
   }
 
+  /** Login API call */
   async login() {
     this.setState({
       isButton: true,
@@ -202,6 +226,7 @@ class Login extends React.Component<{
     }
   }
 
+  /** Enter key press */
   enterPressed(event: any) {
     var code = event.keyCode || event.which;
     if (code === 13) {
@@ -209,11 +234,8 @@ class Login extends React.Component<{
     }
   }
 
+  /** Verify OTP */
   verifyotp() {
-    // this.setState({
-    //   isButtonVerify: true,
-    //   disabled1: true,
-    // });
     const isValid = this.validateOtp();
     if (isValid) {
       this.setState({
@@ -227,13 +249,11 @@ class Login extends React.Component<{
         this.props.verifyOtp(obj);
       }
     } else {
-      // this.setState({
-      //   isButtonVerify: false,
-      //   disabled1: false,
-      // });
+     
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

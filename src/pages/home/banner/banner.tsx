@@ -17,8 +17,8 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
     area: this.bannerState.area,
     isSearch: this.bannerState.isSearch,
     location: this.bannerState.location,
-    locationData:[],
-    cityid:''
+    locationData:this.bannerState.locationData,
+    cityid:this.bannerState.cityid
   };
 
   constructor(props: any) {
@@ -30,10 +30,15 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
     this.onlocationSelectId = this.onlocationSelectId.bind(this);
   }
 
+  /** Page Render */
   componentDidMount() {}
 
+  /**
+   * 
+   * @param e : onKeyPress search value response get
+   */
   async searchLocationDataKeyUp(e: any) {
-    console.log("e",e.target.value)
+    // console.log("e",e.target.value)
     const obj : searchCityListRequest= {
       value:e.target.value
     }
@@ -42,14 +47,21 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
     }
   }
 
-  componentWillReceiveProps(nextProps: any, newState: any) {
+  /**
+   * 
+   * @param nextProps : get updated props value
+   */
+  componentWillReceiveProps(nextProps: any) {
     console.log("props", nextProps);
     if (nextProps.locationDetail) {
       this.locationdetails(nextProps.locationDetail);
     }
   }
 
-  
+  /**
+   * 
+   * @param data : get lcoation details
+   */
   locationdetails(data:any) {
     console.log("data",data);
     this.setState({
@@ -57,6 +69,10 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
     })
   }
 
+  /**
+   * 
+   * @param data : get selected city id
+   */
   onlocationSelectId(data:any) {
     console.log("data",data);
    this.setState({
@@ -64,6 +80,7 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
    })
   }
 
+  /** Get current location */
   async getCurrentLocation() {
     navigator.geolocation.getCurrentPosition((position: any) => {
       this.setState({
@@ -74,6 +91,7 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
     });
   }
 
+  /** Get location and redirect in location page */
   getLocationData() {
     if(this.state.cityid) {
       this.state.locationData.map((city:any,index:number) => (
@@ -86,6 +104,11 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
     }
   }
 
+  /**
+   * 
+   * @param latitude : get current location latitude
+   * @param longitude : get current location longitude
+   */
   async getAddress(latitude: any, longitude: any) {
     let _this = this;
     return new Promise(function (resolve, reject) {
@@ -129,6 +152,7 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
     });
   }
 
+  /** Render DOM */
   render() {
     return (
       <section className="banners-home">

@@ -9,6 +9,7 @@ import { categoryStateRequest, getCategoryListRequest } from "../../../modelCont
 
 class Categories extends React.Component<{ getCategoryData: any }> {
 
+  /** Category Page State */
   categoryPageState : categoryStateRequest = constant.categoryPage.state;
   state = {
     categorydata: this.categoryPageState.categorydata,
@@ -20,11 +21,16 @@ class Categories extends React.Component<{ getCategoryData: any }> {
     this.getCategory = this.getCategory.bind(this);
   }
 
+  /** Page Render Call */
   componentDidMount() {
     this.getCategory();
   }
 
-  componentWillReceiveProps(nextProps: any, newState: any) {
+  /**
+   * 
+   * @param nextProps : get updated props value
+   */
+  componentWillReceiveProps(nextProps: any) {
     // console.log("componentWillReceiveProps category", nextProps);
     if (nextProps.categoryDetail && nextProps.categoryDetail.length > 0) {
       if (nextProps.categoryDetail) {
@@ -36,6 +42,12 @@ class Categories extends React.Component<{ getCategoryData: any }> {
     }
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param page : page number
+   * @param size : per page value display
+   */
   getCategory(searchText: string = "", page: number = 1, size: number = 10) {
     const obj : getCategoryListRequest = {
       searchText: searchText,
@@ -45,12 +57,17 @@ class Categories extends React.Component<{ getCategoryData: any }> {
     this.props.getCategoryData(obj);
   }
 
+  /**
+   * 
+   * @param data : get category data response
+   */
   getCategoryResponse(data: any) {
     this.setState({
       categorydata: this.state.categorydata = data,
     });
   }
 
+  /** Render DOM */
   render() {
     return (
       <section className="want-done">

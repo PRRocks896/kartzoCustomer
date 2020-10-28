@@ -1,11 +1,16 @@
 import Swal from "sweetalert2";
 
+/** Scroll to top */
 export const scrollToTop = () => {
   setTimeout(() => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
   }, 50);
 };
 
+/**
+ * 
+ * @param msg : success message
+ */
 export const showSuccess = (msg: string) => {
   Swal.fire({
     text: msg,
@@ -13,6 +18,10 @@ export const showSuccess = (msg: string) => {
   });
 };
 
+/**
+ * 
+ * @param msg : error message
+ */
 export const showError = (msg: string) => {
   Swal.fire({
     text: msg,
@@ -20,10 +29,12 @@ export const showError = (msg: string) => {
   });
 };
 
+/** Get App Name In URL */
 export const getAppName = () => {
   return " | Kartzoo App";
 }
 
+/** Get Token Details */
 export const getHeaderDetail =  () => {
   return {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -32,6 +43,7 @@ export const getHeaderDetail =  () => {
   };
 }
 
+/** Get Admin Token Details */
 export const getAdminDetail =  () => {
   return {
     Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
@@ -40,6 +52,11 @@ export const getAdminDetail =  () => {
   };
 }
 
+/**
+ * 
+ * @param count : count
+ * @param perpage : per page value
+ */
 export const pageNumber = (count:string,perpage:string) => {
   var pageNumbers = [];
   for (
@@ -55,6 +72,11 @@ export const pageNumber = (count:string,perpage:string) => {
   return pageNumbers;
 }
 
+/**
+ * 
+ * @param text : alert message
+ * @param btext : button message
+ */
 export const alertMessage =  async (text:string,btext:string) => {
   let response = false;
   let result = await Swal.fire({

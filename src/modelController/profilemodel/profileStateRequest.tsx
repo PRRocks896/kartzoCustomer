@@ -1,3 +1,9 @@
 export interface profileStateRequest {
-    mobile:string
+    mobile:string,
+    addressarray:any,
+    show:boolean,
+    mobilephone:string,
+    mobilephoneerror:string,
+    addressid:string,
+    addresstype:string
 }

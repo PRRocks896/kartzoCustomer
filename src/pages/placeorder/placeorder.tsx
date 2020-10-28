@@ -39,8 +39,7 @@ class PlaceOrder extends React.Component<{
     checkedpaymentvalue: this.placeOrderState.checkedpaymentvalue,
     checkedpaymentvaluewallets: this.placeOrderState.checkedpaymentvaluewallets,
     checkedpaymentvaluecard: this.placeOrderState.checkedpaymentvaluecard,
-    checkedpaymentvaluenetbanking: this.placeOrderState
-      .checkedpaymentvaluenetbanking,
+    checkedpaymentvaluenetbanking: this.placeOrderState.checkedpaymentvaluenetbanking,
     usermobile: this.placeOrderState.usermobile,
     addresstype: this.placeOrderState.addresstype,
     paymenttype: this.placeOrderState.paymenttype,
@@ -86,7 +85,6 @@ class PlaceOrder extends React.Component<{
     this.change = this.change.bind(this);
     this.showSection = this.showSection.bind(this);
     this.changePaymentUPI = this.changePaymentUPI.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.changeAddress = this.changeAddress.bind(this);
     this.changePhonePay = this.changePhonePay.bind(this);
     this.changeBankType = this.changeBankType.bind(this);
@@ -103,6 +101,7 @@ class PlaceOrder extends React.Component<{
     this.deleteAddressData = this.deleteAddressData.bind(this);
   }
 
+  /** Page Render Call */
   componentDidMount() {
     document.title = constant.placeorder + getAppName();
     EventEmitter.dispatch("isShow", true);
@@ -121,6 +120,12 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param page : page number
+   * @param size : per page size value
+   */
   getCartData(searchText: string = "", page: number = 1, size: number = 20) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
@@ -134,26 +139,38 @@ class PlaceOrder extends React.Component<{
     this.props.getcartData(obj);
   }
 
+  /**
+   * 
+   * @param e : get address id 
+   */
   change(e: any) {
     this.setState({
       mainaddress: this.state.mainaddress = parseInt(e.target.id),
     });
   }
 
+  /** Open address add section */
   showSection() {
     this.setState({
       showSection: true,
     });
   }
 
+  /**
+   * 
+   * @param e : payment type 
+   */
   changePaymentUPI(e: any) {
     this.setState({
       paymenttype: this.state.paymenttype = parseInt(e.target.id),
     });
   }
 
-  handleChange() {}
-
+  /**
+   * @param searchText : search value
+   * @param page : page number
+   * @param size : per page display value
+   */
   getAddressDetails(
     searchText: string = "",
     page: number = 1,
@@ -171,18 +188,30 @@ class PlaceOrder extends React.Component<{
     this.props.getAddressList(obj);
   }
 
+  /**
+   * 
+   * @param e : address type select
+   */
   changeAddress(e: any) {
     this.setState({
-      addresstype: this.state.addresstype = parseInt(e.target.id),
+      addresstype: this.state.addresstype = e.target.id,
     });
   }
 
+  /**
+   * 
+   * @param e : phonepay with payment
+   */
   changePhonePay(e: any) {
     this.setState({
       paytype: this.state.paytype = parseInt(e.target.id),
     });
   }
 
+  /**
+   * 
+   * @param e : bank with payment
+   */
   changeBankType(e: any) {
     this.setState({
       banktype: this.state.banktype = parseInt(e.target.id),
@@ -190,6 +219,10 @@ class PlaceOrder extends React.Component<{
     console.log("banktype", this.state.banktype);
   }
 
+  /**
+   * 
+   * @param e : select bank for payment
+   */
   selectBank(e: any) {
     this.setState({
       banktype: this.state.banktype = parseInt(e.target.value),
@@ -197,22 +230,38 @@ class PlaceOrder extends React.Component<{
     console.log("banktype", this.state.banktype);
   }
 
+  /**
+   * 
+   * @param nextProps : get updated props value
+   */
   componentWillReceiveProps(nextProps: any, newState: any) {
     console.log("props", nextProps);
     if (nextProps.getCartDetail) {
       this.getCartAllProductData(nextProps.getCartDetail);
     }
     if (nextProps.addressDetails) {
+      this.setState({
+        showSection:this.state.showSection = false
+      })
       this.getAddressDetailsData(nextProps.addressDetails);
     }
   }
 
+  /**
+   * 
+   * @param data : get address details
+   */
   getAddressDetailsData(data: any) {
     this.setState({
       addressarray: this.state.addressarray = data.data,
     });
   }
 
+  /**
+   * 
+   * @param event : update state value
+   * @param index : index number
+   */
   onChangeEvent(event: any, index: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -220,6 +269,10 @@ class PlaceOrder extends React.Component<{
     this.setState(state);
   }
 
+  /**
+   * 
+   * @param data : get cart all items
+   */
   getCartAllProductData(data: any) {
     this.setState({
       cartarray: this.state.cartarray = data.data,
@@ -232,6 +285,7 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+/** Get current location */
   async getCurrentLocation() {
     navigator.geolocation.getCurrentPosition((position: any) => {
       this.setState({
@@ -242,6 +296,11 @@ class PlaceOrder extends React.Component<{
     });
   }
 
+  /**
+   * 
+   * @param latitude : get current latitude value
+   * @param longitude : get current longitude value
+   */
   async getAddress(latitude: any, longitude: any) {
     let _this = this;
     return new Promise(function (resolve, reject) {
@@ -268,16 +327,16 @@ class PlaceOrder extends React.Component<{
                 area: address.address_components[1].long_name
                   .toString()
                   .toLowerCase(),
-                city: address.address_components[2].long_name
+                city: address.address_components[3].long_name
                   .toString()
                   .toLowerCase(),
-                state: address.address_components[3].long_name
+                state: address.address_components[4].long_name
                   .toString()
                   .toLowerCase(),
-                country: address.address_components[4].long_name
+                country: address.address_components[5].long_name
                   .toString()
                   .toLowerCase(),
-                pincode: address.address_components[5].long_name,
+                pincode: address.address_components[6].long_name,
                 address: address.formatted_address,
               });
             }
@@ -291,6 +350,10 @@ class PlaceOrder extends React.Component<{
     });
   }
 
+  /**
+   * 
+   * @param event : change state when update address
+   */
   addressChange(event: any) {
     event.preventDefault();
     const state: any = this.state;
@@ -298,6 +361,7 @@ class PlaceOrder extends React.Component<{
     this.setState(state);
   }
 
+  /** Check valid || invalid data */
   validate() {
     let nameerror = "";
     let mobileerror = "";
@@ -371,6 +435,10 @@ class PlaceOrder extends React.Component<{
     return true;
   }
 
+  /**
+   * 
+   * @param data : increment quantity in cart product
+   */
   incrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
@@ -386,6 +454,10 @@ class PlaceOrder extends React.Component<{
     }, 200);
   }
 
+    /**
+   * 
+   * @param data : decrement quantity in cart product
+   */
   decrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
@@ -401,6 +473,7 @@ class PlaceOrder extends React.Component<{
     }, 200);
   }
 
+  /** Add Address functionality */
   addAddress() {
     const isValid = this.validate();
     if (isValid) {
@@ -426,16 +499,20 @@ class PlaceOrder extends React.Component<{
         country: this.state.country,
         pincode: parseInt(this.state.pincode),
         landmark: this.state.landmark,
-        addressType: this.state.addresstype === 1 ? "1" : "2",
+        addressType: this.state.addresstype === "1" ? "1" : "2",
       };
       this.props.addAddress(obj);
 
       setTimeout(() => {
         this.getAddressDetails();
-      }, 200);
+      }, 250);
     }
   }
 
+  /**
+   * 
+   * @param data : get address data
+   */
   getAddressData(data: any) {
     console.log("data",data);
     this.setState({
@@ -450,10 +527,11 @@ class PlaceOrder extends React.Component<{
       city: data.city,
       state: data.state,
       country: data.country,
-      addressType: data.addressType === "Home" ? "1" : "2"
+      addresstype: data.addressType === "Home" ? "1" : "2"
     });
   }
 
+  /** Edit Address value */
   editAddress() {
     const isValid = this.validate();
     if (isValid) {
@@ -490,6 +568,12 @@ class PlaceOrder extends React.Component<{
   }
   }
 
+  /**
+   * 
+   * @param id : delete address id
+   * @param text : message text
+   * @param btext : button message text
+   */
   async deleteAddressData(id:any,text:any,btext:any) {
     if (await alertMessage(text, btext)) {
     let deleteArray = [];
@@ -506,6 +590,7 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /** Add Address Block */
   addressBlock() {
     return (
       <div className="pro-box1 delvy-adres">
@@ -790,7 +875,7 @@ class PlaceOrder extends React.Component<{
                                   type="radio"
                                   id="1"
                                   checked={
-                                    this.state.addresstype === 1 ? true : false
+                                    this.state.addresstype === "1" ? true : false
                                   }
                                   onChange={this.changeAddress}
                                   name="radio"
@@ -805,7 +890,7 @@ class PlaceOrder extends React.Component<{
                                   type="radio"
                                   id="2"
                                   checked={
-                                    this.state.addresstype === 2 ? true : false
+                                    this.state.addresstype === "2" ? true : false
                                   }
                                   onChange={this.changeAddress}
                                   name="radio"
@@ -820,6 +905,7 @@ class PlaceOrder extends React.Component<{
                         {
                           this.state.updateTrue === false ? (
                             <button
+                            type="button"
                             className="save-delivry"
                             onClick={this.addAddress}
                           >
@@ -827,6 +913,7 @@ class PlaceOrder extends React.Component<{
                           </button>
                           ) : (
                             <button
+                             type="button"
                             className="save-delivry"
                             onClick={this.editAddress}
                           >
@@ -862,6 +949,7 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  /** UPI payment block */
   UPIBlock() {
     return (
       <div className="adrss-1">
@@ -946,6 +1034,7 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  /** Wallet payment block */
   walletBlock() {
     return (
       <div className="adrss-1">
@@ -1003,6 +1092,7 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  /** Card payment block */
   cardBlock() {
     return (
       <div className="adrss-1 pay-credit">
@@ -1152,6 +1242,7 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  /** Net banking block */
   netBankingBlock() {
     return (
       <div className="adrss-1 net-banking">
@@ -1284,6 +1375,7 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  /** Card item block */
   cardItemsBlock() {
     return (
       <div className="right-box order">
@@ -1381,6 +1473,7 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  /** If change login */
   async changeLogin(text: any, btext: any) {
     if (await alertMessage(text, btext)) {
       localStorage.removeItem("user");
@@ -1392,6 +1485,7 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

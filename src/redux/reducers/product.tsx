@@ -8,6 +8,11 @@ const initialState = {
   searchproduct:""
 };
 
+/**
+ * 
+ * @param state : intial state
+ * @param action : action response
+ */
 const product = (state = initialState, action: any) => {
   switch (action.type) {
     case ACTION.product.GET_PRODUCT_REQUEST:

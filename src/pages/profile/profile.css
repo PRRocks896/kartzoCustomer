@@ -417,3 +417,241 @@
 	padding: 10px 19px;
 }
 /* Support tabs end*/
+
+.fade.modal-dialog-centered.modal.show {
+	padding-right: 17px;
+	display: block !important;
+	min-height: calc(100% - (1.75rem * 2)) !important;
+	display: flex !important;
+  }
+
+  .modal-dialog {
+	min-width: 768px;
+    margin: 1.75rem auto;
+}
+
+.modal-body {
+    position: relative;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 0;
+}
+
+.deliver {
+	justify-content: space-between;
+    width: 100%;
+    display: flex;
+}
+
+
+
+.p-box1 .edit-dtle {
+    max-width: 100%;
+    border: 1px solid #fab132;
+    border-radius: 8px;
+    margin: auto;
+    font-size: 14px;
+}
+.p-box1 .edit-dtle .add-location {
+	color: #fff;
+	background-image: linear-gradient(to bottom, #FBB034, #ECCE09);
+	font-size: 14px;
+	line-height: 36px;
+	padding: 0px 25px;
+	border-radius: 38px;
+	margin-right: 25px;
+	font-weight: 600;
+	border: 1px solid #FBB034;
+	margin-top: 20px;
+	margin-bottom: 30px;
+	text-transform: uppercase;
+}
+.p-box1 .edit-dtle .form-1 .input-flex {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 25px;
+}
+.p-box1 .edit-dtle .form-group, .paymt-opton .form-group {
+	position: relative;
+	margin-bottom: 1.5rem;
+	width: 100%;
+}
+.p-box1 .edit-dtle .form-control:focus, .paymt-opton .form-control:focus {
+	border-bottom: 2px solid #FCBC25;
+	box-shadow: none;
+	color: #071828;
+	border-left: 2px solid #FCBC25;
+	border-right: 2px solid #FCBC25;
+	border-top: 1px solid #FCBC25;
+}
+.p-box1 .edit-dtle .form-control, .paymt-opton .form-control {
+	border: none;
+	border-radius: 0px;
+	border: 1px solid #FCBC25;
+	box-shadow: none;
+	padding: 0px;
+	color: #00225b;
+	font-size: 14px;
+	padding-left: 25px;
+	border-radius: 40px;
+	height: 40px;
+}
+.p-box1 .edit-dtle .form-control input, .paymt-opton .form-control input{ 
+	border: none;
+}
+.p-box1 .b-tt {
+	color: #071828;
+	font-weight: 600;
+}
+.p-box1 .edit-dtle .form-control-placeholder, .paymt-opton .form-control-placeholder {
+	position: absolute;
+	top: 8px;
+	padding: 7px 0 0 13px;
+	transition: all 200ms;
+	opacity: 1;
+	font-size: 14px;
+	padding: 0px;
+	left: 20px;
+	padding-left: 10px;
+	color: #5C6978;
+}
+.p-box1 .edit-dtle .form-1 {
+	margin-bottom: 25px;
+}
+.p-box1 .edit-dtle .input-box .input-flex img, .paymt-opton .input-box .input-flex img {
+	margin: 1px 17px;
+	width: 26px;
+	margin-top: -18px;
+}
+.p-box1 .edit-dtle .form-control:focus +  .form-control-placeholder, .p-box1 .edit-dtle .form-control:valid + .form-control-placeholder {
+	transform: translate3d(0, -100%, 0);
+	opacity: 1;
+	font-size: 12px;
+	font-weight: bold;
+	top: 10px;
+	background: #fff;
+	padding-left: 10px;
+	left: 20px;
+	color: #FCBC25;
+	padding-right: 10px;
+	-webkit-transform: translate3d(0, -100%, 0);
+	-moz-transform: translate3d(0, -100%, 0);
+	-ms-transform: translate3d(0, -100%, 0);
+	-o-transform: translate3d(0, -100%, 0);
+}
+.p-box1 .edit-dtle .form-control:focus + .form-control-placeholder{
+	color: #FCBC25;
+}
+.p-box1 .edit-dtle .input-flex .date{
+		width: 48%;
+}
+.p-box1 .edit-dtle .select-text {
+	font-size: 12px;
+	color: #024;
+	font-weight: bold;
+	position: absolute;
+	left: 34px;
+	background: #fff;
+	padding: 0px 10px;
+	top: -9px;
+	color: #FCBC25;
+}
+.p-box1 .edit-dtle textarea {
+	padding: 15px 28px !important;
+	border-radius: 17px !important;
+	height: auto !important;
+	resize: none !important;
+	overflow: hidden;
+	width: 100%;
+	font-size: 14px;
+	outline: none;
+}
+.p-box1 .delvy-adres .edit-dtle .adrss-1 {
+	padding-left: 13px;
+	border: none;
+	margin: 20px;
+	padding-top: 0px;
+	margin-top: 10px;
+	padding-bottom: 0px;
+}
+.p-box1 .edit-dtle .radio-dis {
+	display: flex;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.p-box1 .edit-dtle .b-tt {
+	font-weight: normal;
+	padding-left: 28px;
+	margin-right: 32px;
+}
+.p-box1 .save-delivry {
+	color: #fff;
+	background-image: linear-gradient(to bottom, #FBB034, #ECCE09);
+	font-size: 14px;
+	line-height: 36px;
+	padding: 0px 35px;
+	border-radius: 38px;
+	margin-right: 25px;
+	font-weight: 600;
+	border: 1px solid #FBB034;
+	display: inline-block;
+	margin-top: 10px;
+	text-align: center;
+	text-transform: uppercase;
+}
+.p-box1 .btb-text {
+	background: none;
+	border: none;
+	font-weight: 600;
+	color: #FCBC25;
+	text-transform: uppercase;
+}
+
+/* check box end*/
+
+.p-box1 .rdio-box1 {
+	display: block;
+	position: relative;
+	margin-bottom: 12px;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	margin-bottom: 0px;
+}
+.p-box1 .rdio-box1 input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+}
+.p-box1 .rdio-box1 .checkmark {
+	position: absolute;
+	top: 5px;
+	left: 0px;
+	height: 16px;
+	width: 16px;
+	border-radius: 50%;
+	border: 2px solid #979797;
+}
+.p-box1 .rdio-box1 input:checked~.checkmark {
+	background-color: #fff;
+	border-color: #f7b62b;
+}
+.p-box1 .rdio-box1 .checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+.p-box1 .rdio-box1 input:checked~.checkmark:after {
+	display: block;
+}
+.p-box1 .rdio-box1 .checkmark::after {
+	top: 2px;
+	left: 2px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #f7b62b;
+}
+/* check box */

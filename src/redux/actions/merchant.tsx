@@ -1,13 +1,15 @@
 import * as ACTION from "../constant/constant";
 import { FindStoreAPI } from "../../service/index";
-// import { showSuccess, showError } from "../../pages/utils/index";
 
 export const merchantService = {
   getMerchantData,
   searchLocationResponse,
 };
 
-/** Get Category Request */
+/**
+ * 
+ * @param data : get merchant data
+ */
 function getMerchantData(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
@@ -35,13 +37,17 @@ function getMerchantData(data: any) {
   }
 }
 
+/**
+ * 
+ * @param data : get search location
+ */
 function searchLocationResponse(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
 
     FindStoreAPI.getlocationData(data)
       .then((locationdata: any) => {
-        console.log("locationdata", locationdata);
+        // console.log("locationdata", locationdata);
         if (locationdata.status === 200) {
           dispatch(success(locationdata.data.resultObject));
         }

@@ -22,6 +22,7 @@ class Footer extends React.Component {
     });
   }
 
+  /** Render DOM */
   render() {
     if (this.state.isShow === false) {
       return (

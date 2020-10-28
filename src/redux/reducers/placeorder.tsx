@@ -7,6 +7,11 @@ const initialState = {
   deletedata: "",
 };
 
+/**
+ * 
+ * @param state : intial state
+ * @param action : action response
+ */
 const placeOrder = (state = initialState, action: any) => {
   switch (action.type) {
     case ACTION.placeOrder.GET_ADDRESS_REQUEST:

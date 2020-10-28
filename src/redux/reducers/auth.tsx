@@ -3,23 +3,13 @@ import * as ACTION from "../constant/constant";
 const initialState = {
   user: "",
   otpdetail:""
-  // user: {},
-  // avatar: {},
-  // auth_data: {},
-  // user_data: {},
-  // count: {},
-  // userrole: {},
-  // userroledata: {},
-  // userrightdata: {},
-  // userroletoright: {},
-  // error: null,
-  // userright: {},
-  // searchdata: {},
-  // appCount: {},
-  // appData: {},
-  // userdata: {}
 };
 
+/**
+ * 
+ * @param state : intial state
+ * @param action : action response
+ */
 const auth = (state = initialState, action: any) => {
   switch (action.type) {
     case ACTION.login.LOGIN_REQUEST:

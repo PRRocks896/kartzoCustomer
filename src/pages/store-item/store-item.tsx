@@ -61,6 +61,7 @@ class StoreItem extends React.Component<{
     this.goBack = this.goBack.bind(this);
   }
 
+  /** Page Render Call */
   componentDidMount() {
     console.log("isbutton", this.state.isButton);
     document.title = constant.store + getAppName();
@@ -91,17 +92,29 @@ class StoreItem extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param id : active category display
+   */
   handleClick = (id: any) => {
     this.setState({ activeLink: parseInt(id) });
   };
 
-  onChangeEvent(event: any, index: any) {
+  /**
+   * 
+   * @param event : update state value onchange event
+   */
+  onChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
     state[event.target.name] = event.target.value;
     this.setState(state);
   }
 
+  /**
+   * 
+   * @param data : cart item in increment quantity
+   */
   incrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
@@ -120,6 +133,10 @@ class StoreItem extends React.Component<{
     // this.setState({ cartarray: tempCart });
   }
 
+  /**
+   * 
+   * @param data : cart item in decrement quantity
+   */
   decrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
@@ -135,6 +152,11 @@ class StoreItem extends React.Component<{
     }, 200);
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param productId : product id
+   */
   getProductData(searchText: string = "", productId: number = 0) {
     const obj : getProductListRequest = {
       searchText: searchText,
@@ -144,6 +166,12 @@ class StoreItem extends React.Component<{
     this.props.getProductsData(obj);
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param page : page number
+   * @param size : per page value display
+   */
   getCartData(searchText: string = "", page: number = 1, size: number = 20) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
@@ -157,7 +185,11 @@ class StoreItem extends React.Component<{
     this.props.getcartData(obj);
   }
 
-  componentWillReceiveProps(nextProps: any, newState: any) {
+  /**
+   * 
+   * @param nextProps : get updated props value
+   */
+  componentWillReceiveProps(nextProps: any) {
     console.log("props", nextProps);
     if (nextProps.productDetail) {
       this.getSubCategory(nextProps.productDetail.subcategory);
@@ -178,6 +210,10 @@ class StoreItem extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param e : search value success response
+   */
   searchItemDataKeyUp(e: any) {
     const data: any = this.state.maindata;
     const obj : searchProductListRequest = {
@@ -187,12 +223,20 @@ class StoreItem extends React.Component<{
     this.props.getSearchProduct(obj);
   }
 
+  /**
+   * 
+   * @param data : get product listing value
+   */
   getProductListingData(data: any) {
     this.setState({
       searchproductdata: this.state.searchproductdata = data,
     });
   }
 
+  /**
+   * 
+   * @param id : select product id
+   */
   onProductSelectId(id: any) {
     console.log("e", id);
     const obj : getProductListRequest = {
@@ -206,6 +250,10 @@ class StoreItem extends React.Component<{
     }, 12);
   }
 
+  /**
+   * 
+   * @param data : geyt subcategory value
+   */
   getSubCategory(data: any) {
     this.setState({
       categorydata: this.state.categorydata = data,
@@ -218,6 +266,10 @@ class StoreItem extends React.Component<{
     console.log("link", this.state.activeLink);
   }
 
+  /**
+   * 
+   * @param data : get cart data response
+   */
   getCartAllProductData(data: any) {
     this.setState({
       isButton: this.state.isButton = false,
@@ -234,12 +286,20 @@ class StoreItem extends React.Component<{
     console.log("cartarray", this.state.cartarray);
   }
 
+  /**
+   * 
+   * @param product : get product data
+   */
   productData(product: any) {
     this.setState({
       productdata: this.state.productdata = product,
     });
   }
 
+  /**
+   * 
+   * @param data : get searchable product response
+   */
   searchableDataProduct(data: any) {
     this.setState({
       searchproductdatadetails: this.state.searchproductdatadetails = data,
@@ -247,6 +307,10 @@ class StoreItem extends React.Component<{
     });
   }
 
+  /**
+   * 
+   * @param data : add cart item
+   */
   additem(data: any) {
     this.setState({
       isButton: this.state.isButton = true,
@@ -312,10 +376,15 @@ class StoreItem extends React.Component<{
     }
   }
 
+  /** Redirect in previous page */
   goBack() {
     this.props.history.goBack();
   }
 
+  /**
+   * 
+   * @param id : click to scroll value particular section
+   */
   handleClickEvent(id: any) {
     console.log("id", id, this.ref[id]);
     this.setState({ activeLink: parseInt(id) });
@@ -327,10 +396,15 @@ class StoreItem extends React.Component<{
     // });
   }
 
+  /** Search results link active */
   handleClickStoreItemEvent() {
     this.setState({ activeLink: null });
   }
 
+  /**
+   * 
+   * @param data : true or false to display cart
+   */
   cardItem(data: boolean) {
     if (data === false) {
       return (
@@ -376,7 +450,7 @@ class StoreItem extends React.Component<{
                           type="text"
                           name="qty"
                           value={cartdata.quantity ? cartdata.quantity : ""}
-                          onChange={(e: any) => this.onChangeEvent(e, index)}
+                          onChange={(e: any) => this.onChangeEvent(e)}
                         />
                         <span
                           className="plus"
@@ -414,6 +488,11 @@ class StoreItem extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param categorydata : get category data
+   * @param productdata : get product data
+   */
   getProductItem(categorydata: any, productdata: any) {
     return (
       <div className="item-dtl">
@@ -607,9 +686,9 @@ class StoreItem extends React.Component<{
     );
   }
 
+  /** Render DOM */
   render() {
     const { categorydata, productdata, maindata }: any = this.state;
-    // console.log("TrackOrder",this.props)
     return (
       <>
         <div className="sticky-menu" id="fix-top">

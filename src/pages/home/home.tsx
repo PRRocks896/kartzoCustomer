@@ -18,6 +18,7 @@ class Home extends React.Component<{history:any,getcartData:any}> {
     super(props);
   }
 
+  /** Page Render Call */
   componentDidMount() {
     document.title = constant.home + getAppName();
     EventEmitter.dispatch('isShow', false);
@@ -27,6 +28,12 @@ class Home extends React.Component<{history:any,getcartData:any}> {
     }
   }
 
+  /**
+   * 
+   * @param searchText : search data
+   * @param page : page number
+   * @param size : per page value display
+   */
   getCartData(searchText: string = "", page: number = 1, size: number = 20) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
@@ -40,18 +47,27 @@ class Home extends React.Component<{history:any,getcartData:any}> {
     this.props.getcartData(obj);
   }
 
-  componentWillReceiveProps(nextProps: any, newState: any) {
+  /**
+   * 
+   * @param nextProps : get updated props 
+   */
+  componentWillReceiveProps(nextProps: any) {
     console.log("props", nextProps);
     if (nextProps.getCartDetail) {
       this.getCartAllProductData(nextProps.getCartDetail);
     }
   }
 
+  /**
+   * 
+   * @param data : get total count of cart item
+   */
   getCartAllProductData(data: any) {
     localStorage.setItem("cartcount", data.totalcount);
     EventEmitter.dispatch('count', data.totalcount);
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

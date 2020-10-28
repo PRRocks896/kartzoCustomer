@@ -16,6 +16,7 @@ class SearchCity extends React.Component<{
   location: any;
   getCategoryData: any;
 }> {
+  /** Search City State */
   searchcityState: searchcityStateRequest = constant.searchCityPage.state;
   state = {
     slugname: this.searchcityState.slugname,
@@ -28,6 +29,7 @@ class SearchCity extends React.Component<{
     this.getCategory = this.getCategory.bind(this);
   }
 
+  /** Page Render Call */
   componentDidMount() {
     EventEmitter.dispatch("isShow", false);
     document.title = constant.searchcity + getAppName();
@@ -41,7 +43,11 @@ class SearchCity extends React.Component<{
     this.getCategory();
   }
 
-  componentWillReceiveProps(nextProps: any, newState: any) {
+  /**
+   * 
+   * @param nextProps : get updated props value
+   */
+  componentWillReceiveProps(nextProps: any) {
     // console.log("componentWillReceiveProps category", nextProps);
     if (nextProps.categoryDetail && nextProps.categoryDetail.length > 0) {
       if (nextProps.categoryDetail) {
@@ -53,6 +59,12 @@ class SearchCity extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param searchText : search value
+   * @param page : page number
+   * @param size : per page size
+   */
   getCategory(searchText: string = "", page: number = 1, size: number = 10) {
     const obj = {
       searchText: searchText,
@@ -62,12 +74,17 @@ class SearchCity extends React.Component<{
     this.props.getCategoryData(obj);
   }
 
+  /**
+   * 
+   * @param data : get category response
+   */
   getCategoryResponse(data: any) {
     this.setState({
       categorydata: this.state.categorydata = data,
     });
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
