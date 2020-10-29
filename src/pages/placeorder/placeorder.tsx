@@ -518,11 +518,13 @@ class PlaceOrder extends React.Component<{
   incrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
+    const mid : any = localStorage.getItem('merchantID');
     const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity + 1,
       discountApplied: data.discountApplied,
+      merchantID:parseInt(mid)
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {
@@ -537,11 +539,13 @@ class PlaceOrder extends React.Component<{
   decrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
+    const mid : any = localStorage.getItem('merchantID');
     const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity - 1,
       discountApplied: data.discountApplied,
+      merchantID:parseInt(mid)
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {

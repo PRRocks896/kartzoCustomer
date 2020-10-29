@@ -12,8 +12,16 @@ import constant from "../constant/constant";
 import { getAppName } from "../utils";
 import "./store-item.css";
 import SelectSearch from "react-select-search";
-import { addCartRequest, getCartListRequest, getProductListRequest, searchProductListRequest, storeitemStateRequest } from "../../modelController";
+import {
+  addCartRequest,
+  getCartListRequest,
+  getProductListRequest,
+  removeCartItemRequest,
+  searchProductListRequest,
+  storeitemStateRequest,
+} from "../../modelController";
 import { productService } from "../../redux/actions";
+import { Modal } from "react-bootstrap";
 
 class StoreItem extends React.Component<{
   history: any;
@@ -25,6 +33,7 @@ class StoreItem extends React.Component<{
   updateToCart: any;
   getSearchProduct: any;
   getProductDataWithSearching: any;
+  removeProductFromCart:any;
 }> {
   prevRef = null;
   ref: any = {};
@@ -43,7 +52,8 @@ class StoreItem extends React.Component<{
     searchproductdata: this.storeItemState.searchproductdata,
     searchproductdatadetails: this.storeItemState.searchproductdatadetails,
     isButton: this.storeItemState.isButton,
-    loadingid: this.storeItemState.loadingid
+    loadingid: this.storeItemState.loadingid,
+    show: false,
   };
 
   constructor(props: any) {
@@ -59,6 +69,8 @@ class StoreItem extends React.Component<{
     this.onProductSelectId = this.onProductSelectId.bind(this);
     this.handleClickStoreItemEvent = this.handleClickStoreItemEvent.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.clearOldCart = this.clearOldCart.bind(this);
   }
 
   /** Page Render Call */
@@ -85,6 +97,8 @@ class StoreItem extends React.Component<{
       this.setState({
         maindata: this.state.maindata = maindata,
       });
+      let m: any = this.state.maindata;
+      localStorage.setItem("merchantID", m.merchantID);
     }
     console.log("maindata", this.state.maindata);
     if (localStorage.getItem("token")) {
@@ -93,15 +107,20 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param id : active category display
    */
   handleClick = (id: any) => {
     this.setState({ activeLink: parseInt(id) });
   };
 
+  /** Close model */
+  handleClose() {
+    this.setState({ show: !this.state.show });
+  }
+
   /**
-   * 
+   *
    * @param event : update state value onchange event
    */
   onChangeEvent(event: any) {
@@ -112,17 +131,19 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : cart item in increment quantity
    */
   incrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj : addCartRequest = {
+    let m: any = this.state.maindata;
+    const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity + 1,
       discountApplied: data.discountApplied,
+      merchantID: m.merchantID,
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {
@@ -134,17 +155,19 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : cart item in decrement quantity
    */
   decrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj : addCartRequest = {
+    let m: any = this.state.maindata;
+    const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity - 1,
       discountApplied: data.discountApplied,
+      merchantID: m.merchantID,
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {
@@ -153,12 +176,12 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param searchText : search value
    * @param productId : product id
    */
   getProductData(searchText: string = "", productId: number = 0) {
-    const obj : getProductListRequest = {
+    const obj: getProductListRequest = {
       searchText: searchText,
       productId: productId,
       slug: this.state.slugname,
@@ -167,7 +190,7 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param searchText : search value
    * @param page : page number
    * @param size : per page value display
@@ -175,18 +198,18 @@ class StoreItem extends React.Component<{
   getCartData(searchText: string = "", page: number = 1, size: number = 20) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj : getCartListRequest = {
+    const obj: getCartListRequest = {
       searchText: searchText,
       isActive: true,
       page: page,
       size: size,
-      userId:user.userID
+      userId: user.userID,
     };
     this.props.getcartData(obj);
   }
 
   /**
-   * 
+   *
    * @param nextProps : get updated props value
    */
   componentWillReceiveProps(nextProps: any) {
@@ -211,12 +234,12 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param e : search value success response
    */
   searchItemDataKeyUp(e: any) {
     const data: any = this.state.maindata;
-    const obj : searchProductListRequest = {
+    const obj: searchProductListRequest = {
       name: e.target.value,
       merchantid: data.merchantID,
     };
@@ -224,7 +247,7 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : get product listing value
    */
   getProductListingData(data: any) {
@@ -234,12 +257,12 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param id : select product id
    */
   onProductSelectId(id: any) {
     console.log("e", id);
-    const obj : getProductListRequest = {
+    const obj: getProductListRequest = {
       searchText: "",
       productId: id,
       slug: this.state.slugname,
@@ -251,7 +274,7 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : geyt subcategory value
    */
   getSubCategory(data: any) {
@@ -267,7 +290,7 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : get cart data response
    */
   getCartAllProductData(data: any) {
@@ -287,7 +310,7 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param product : get product data
    */
   productData(product: any) {
@@ -297,7 +320,7 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : get searchable product response
    */
   searchableDataProduct(data: any) {
@@ -308,65 +331,79 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : add cart item
    */
   additem(data: any) {
-    this.setState({
-      isButton: this.state.isButton = true,
-      loadingid: this.state.loadingid = data.productId,
-    });
-    if (this.state.cartarray && this.state.cartarray.length > 0) {
-      if (
-        this.state.cartarray
-          .map((cart: any) => cart.productID === data.productId)
-          .includes(true)
-      ) {
-        const users: any = localStorage.getItem("user");
-        let user = JSON.parse(users);
-        let selectedItem = this.state.cartarray.filter(
-          (cart: any) => cart.productID === data.productId
-        )[0];
-        let index = this.state.cartarray.indexOf(selectedItem);
-        // console.log("selectedItem: ", selectedItem);
-        // console.log("Index: ", index);
-        const obj : addCartRequest = {
-          userID: user.userID,
-          productID: selectedItem.productID,
-          quantity: selectedItem.quantity + 1,
-          discountApplied: selectedItem.discountApplied,
-        };
-        // console.log("increment object: ", obj);
-        this.props.updateToCart(obj, this.state.cartarray[index].orderCartID);
-
-        setTimeout(() => {
-          this.getCartData();
-        }, 200);
+    if(this.state.cartarray && this.state.cartarray.length > 0) {
+      let m: any = this.state.maindata;
+      if(m.merchantID === this.state.cartarray[0].merchantID) {
+        this.setState({
+          isButton: this.state.isButton = true,
+          loadingid: this.state.loadingid = data.productId,
+        });
+          if (
+            this.state.cartarray
+              .map((cart: any) => cart.productID === data.productId)
+              .includes(true)
+          ) {
+            const users: any = localStorage.getItem("user");
+            let user = JSON.parse(users);
+            let selectedItem = this.state.cartarray.filter(
+              (cart: any) => cart.productID === data.productId
+            )[0];
+            let index = this.state.cartarray.indexOf(selectedItem);
+            // console.log("selectedItem: ", selectedItem);
+            // console.log("Index: ", index);
+            let m: any = this.state.maindata;
+            const obj: addCartRequest = {
+              userID: user.userID,
+              productID: selectedItem.productID,
+              quantity: selectedItem.quantity + 1,
+              discountApplied: selectedItem.discountApplied,
+              merchantID: m.merchantID,
+            };
+            // console.log("increment object: ", obj);
+            this.props.updateToCart(obj, this.state.cartarray[index].orderCartID);
+    
+            setTimeout(() => {
+              this.getCartData();
+            }, 200);
+          } else {
+            const users: any = localStorage.getItem("user");
+            let user = JSON.parse(users);
+            let m: any = this.state.maindata;
+            const obj: addCartRequest = {
+              userID: user.userID,
+              productID: data.productId,
+              quantity: this.state.qty,
+              sellingPrice: data.price,
+              discountApplied: data.discountPrice,
+              merchantID: m.merchantID,
+            };
+            this.props.addToCart(obj);
+    
+            setTimeout(() => {
+              this.getCartData();
+            }, 200);
+          }
+       
       } else {
-        const users: any = localStorage.getItem("user");
-        let user = JSON.parse(users);
-        const obj : addCartRequest = {
-          userID: user.userID,
-          productID: data.productId,
-          quantity: this.state.qty,
-          sellingPrice: data.price,
-          discountApplied: data.discountPrice,
-        };
-        this.props.addToCart(obj);
-
-        setTimeout(() => {
-          this.getCartData();
-        }, 200);
+         this.setState({
+      show:true
+    })
       }
     } else {
       const users: any = localStorage.getItem("user");
       let user = JSON.parse(users);
-      const obj  : addCartRequest = {
+      let m: any = this.state.maindata;
+      const obj: addCartRequest = {
         userID: user.userID,
         productID: data.productId,
         quantity: this.state.qty,
         sellingPrice: data.price,
         discountApplied: data.discountPrice,
+        merchantID: m.merchantID,
       };
       this.props.addToCart(obj);
 
@@ -382,7 +419,7 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param id : click to scroll value particular section
    */
   handleClickEvent(id: any) {
@@ -402,7 +439,7 @@ class StoreItem extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : true or false to display cart
    */
   cardItem(data: boolean) {
@@ -488,8 +525,28 @@ class StoreItem extends React.Component<{
     }
   }
 
+  /** Clear old cart */
+  clearOldCart() {
+    let cartdeletearray = [];
+    for(var i = 0;i<this.state.cartarray.length;i++) {
+      cartdeletearray.push(this.state.cartarray[i].orderCartID)
+    }
+    const obj : removeCartItemRequest = {
+      moduleName: "OrderCart",
+      id: cartdeletearray,
+    };
+    this.props.removeProductFromCart(obj);
+
+    setTimeout(() => {
+      this.getCartData();
+    this.setState({
+      show:this.state.show = false,
+    })
+    }, 50);
+  }
+
   /**
-   * 
+   *
    * @param categorydata : get category data
    * @param productdata : get product data
    */
@@ -582,6 +639,37 @@ class StoreItem extends React.Component<{
                     </div>
                   )
                 )}
+              <Modal
+                className="modal-dialog-centered"
+                show={this.state.show}
+                onHide={this.handleClose}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <div className="clear-cart">
+                    <img
+                      src={require("../../assets/images/cart-icon.svg")}
+                      alt="cart icon"
+                    />
+                    <h1>Clear cart?</h1>
+                    <p>
+                      
+                      <strong>
+                        Do you want to clear the cart and add
+                        items from <strong>another cart?</strong>
+                      </strong>
+                    </p>
+                    <div className="flex-btn">
+                      <button className="cencel-btn" onClick={this.handleClose}>Cancel</button>
+                      <button className="clear-btn" onClick={this.clearOldCart}>Clear cart</button>
+                    </div>
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                </Modal.Footer>
+              </Modal>
             </div>
           ) : (
             ""
@@ -861,6 +949,8 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(productService.getSearchProduct(data)),
   getProductDataWithSearching: (data: any) =>
     dispatch(productService.getProductDataWithSearching(data)),
+    removeProductFromCart: (data: any) =>
+    dispatch(productService.removeProductFromCart(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoreItem);

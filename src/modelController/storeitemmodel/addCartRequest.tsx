@@ -4,5 +4,6 @@ export interface addCartRequest {
     quantity?: number,
     sellingPrice?:number,
     discountApplied?:number,
+    merchantID?:number
   }
   

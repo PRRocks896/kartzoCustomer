@@ -118,7 +118,7 @@ class FindStore extends React.Component<{
    */
   getMerchantList(data: any) {
     this.setState({
-      count: this.state.count = data.totalcount,
+      count: this.state.count = data.data ? data.data.length : '0',
       merchantdata: this.state.merchantdata = data.data,
     });
   }

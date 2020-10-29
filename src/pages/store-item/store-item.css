@@ -810,3 +810,48 @@
   .spinerButton2:focus {
 	outline: none;
   }
+
+  .clear-cart {
+	/* max-width: 540px; */
+	margin: 0 auto;
+	/* border: 1px solid #fab132; */
+	padding: 25px 30px;
+	border-radius: 8px;
+}
+ .clear-cart h1{
+    font-size: 20px;
+    font-weight: 600;  
+} 
+.clear-cart p{
+    
+} 
+.clear-cart .flex-btn {
+	display: flex;
+	margin-top: 30px;
+}
+.clear-cart .flex-btn .cencel-btn{
+    color: #fff;
+    background: #071828;
+    font-size: 16px;
+    line-height: 38px;
+    padding: 0px 25px;
+    border-radius: 38px;
+    margin-right: 15px;
+    font-weight: 600;
+    border: 1px solid #FBB034;
+}
+.clear-cart .flex-btn .clear-btn{
+    color: #fff;
+    background-image: linear-gradient(to bottom, #FBB034, #ECCE09);
+    font-size: 16px;
+    line-height: 38px;
+    padding: 0px 25px;
+    border-radius: 38px;
+    margin-right: 15px;
+    font-weight: 600;
+    border: 1px solid #FBB034;
+} 
+.clear-cart img {
+	width: 40px;
+	margin-bottom: 20px;
+}  

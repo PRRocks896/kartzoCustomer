@@ -78,7 +78,7 @@ class Profile extends React.Component<{
     EventEmitter.dispatch("isShow", false);
     EventEmitter.dispatch("isShowFooter", false);
     this.getAddressDetails();
-    // this.getOrderList();
+    this.getOrderList();
   }
 
   /**
