@@ -20,8 +20,8 @@ class SearchCity extends React.Component<{
   searchcityState: searchcityStateRequest = constant.searchCityPage.state;
   state = {
     slugname: this.searchcityState.slugname,
-    categorydata: [],
-    isLoading: true,
+    categorydata: this.searchcityState.categorydata,
+    isLoading: this.searchcityState.isLoading,
   };
 
   constructor(props: any) {

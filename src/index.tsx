@@ -89,17 +89,7 @@ ReactDOM.render(
           <Route exact path="/:slug1" component={SearchCity} />
           <Route exact path="/:slug1/:slug2" component={SearchCity} />
           <Route path="*" component={Page404}/>
-                  
-         
-          {/* <Route exact path="/admin/" render={(props) => (
-                    localStorage.getItem('token') ? (<Redirect to="/" />) : (<AdminLogin {...props}/>)
-                )} />
-                <Route exact path="/register" render={() => (
-                   localStorage.getItem('token') ? (<Redirect to="/" />) : (<Register />)
-                )} />
-                <Route exact path="/forgot-password" render={() => (
-                    localStorage.getItem('token') ? (<Redirect to="/" />) : (<ForgotPassword />)
-                )} /> */}
+            
           {/* <PrivateRoute path="/" name="Home" component={Main} /> */}
         </Switch>
       </Layout>

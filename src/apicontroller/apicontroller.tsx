@@ -30,7 +30,14 @@ const apiUrl = {
         getcard:'card/get-card-list',
         addcard:'card',
         getaddressbyid:'address/',
-        updateAddress:'address/',
+        updatecard:'card/',
+        deleteData:'delete'
+    },
+    orderController: {
+        getorder:'order/get-Order-list',
+        addcard:'card',
+        getaddressbyid:'address/',
+        updatecard:'card/',
         deleteData:'delete'
     },
 }

@@ -7,7 +7,9 @@ export const placeOrderService = {
   updateAddress,
   deleteAddress,
   addCard,
-  getcard
+  getcard,
+  updateCard,
+  deleteCard
 };
 
 /**
@@ -144,7 +146,7 @@ function addCard(data: any) {
 
     PlaceOrderAPI.addCardData(data)
       .then((addcard: any) => {
-        console.log("addcard", addcard);
+        // console.log("addcard", addcard);
         if (addcard.status === 200) {
           dispatch(success(addcard.data.resultObject));
         }
@@ -175,7 +177,7 @@ function getcard(data: any) {
 
     PlaceOrderAPI.getcarddata(data)
       .then((getcard: any) => {
-        console.log("getcard", getcard);
+        // console.log("getcard", getcard);
         if (getcard.status === 200) {
           dispatch(success(getcard.resultObject.data));
         }
@@ -193,5 +195,67 @@ function getcard(data: any) {
   }
   function failure(error: any) {
     return { type: ACTION.card.GET_CARD_FAILURE, error };
+  }
+}
+
+/**
+ * 
+ * @param data : update card 
+ */
+function updateCard(data: any) {
+  return (dispatch: any) => {
+    dispatch(request({ data }));
+
+    PlaceOrderAPI.updateCardData(data)
+      .then((updatecard: any) => {
+        // console.log("updatecard", updatecard);
+        if (updatecard.status === 200) {
+          dispatch(success(updatecard.data.resultObject));
+        }
+      })
+      .catch((err: any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(updatecard: any) {
+    return { type: ACTION.card.EDIT_CARD_REQUEST, updatecard };
+  }
+  function success(updatecard: any) {
+    return { type: ACTION.card.EDIT_CARD_SUCCESS, updatecard };
+  }
+  function failure(error: any) {
+    return { type: ACTION.card.EDIT_CARD_FAILURE, error };
+  }
+}
+
+/**
+ * 
+ * @param data : delete card
+ */
+function deleteCard(data: any) {
+  return (dispatch: any) => {
+    dispatch(request({ data }));
+
+    PlaceOrderAPI.deletecard(data)
+      .then((deletecard: any) => {
+        // console.log("deletecard", deletecard);
+        if (deletecard.status === 200) {
+          dispatch(success(deletecard.data.resultObject));
+        }
+      })
+      .catch((err: any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(deletecard: any) {
+    return { type: ACTION.card.DELETE_CARD_REQUEST, deletecard };
+  }
+  function success(deletecard: any) {
+    return { type: ACTION.card.DELETE_CARD_SUCCESS, deletecard };
+  }
+  function failure(error: any) {
+    return { type: ACTION.card.DELETE_CARD_FAILURE, error };
   }
 }

@@ -140,6 +140,7 @@
 .left-box .b-tt {
 	color: #071828;
 	font-weight: 600;
+	margin-right: 15px;
 }
 
 
@@ -914,8 +915,10 @@
 }
 
 .order-placed span.add-type {
-    float: right;
+	float: right;
     font-weight: 600;
+    margin-top: -17px;
+    margin-right: 20px;
 }
 .enter-cvv {
 
@@ -947,9 +950,7 @@
 	.paymt-opton .continue-btn {
 		margin-top: 25px;
 	}
-	.opti1 {
-		padding-left: 0px;
-	}
+
 	.pey-upi {
 		padding-left: 0px;
 		

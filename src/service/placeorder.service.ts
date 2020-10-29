@@ -97,4 +97,35 @@ export default {
       false
     );
   },
+
+  /**
+   * 
+   * @param data : update card
+   */
+  updateCardData: async function (data: any) {
+    return WebReqUrl.put(
+      Constant.apiUrl + apiUrl.cardController.updatecard + data.cardID,
+      data,
+      false
+    );
+  },
+  
+ /**
+   * 
+   * @param data : delete card
+   */
+  deletecard: async function (data: any) {
+    let queryString = "";
+    data.id.map((id: any, index: number) => {
+      queryString = queryString + `&id=${id}`;
+    });
+    return await WebReqUrl.delete(
+      Constant.apiUrl +
+        apiUrl.cardController.deleteData +
+        `?moduleName=${data.moduleName}${queryString}`,
+      false
+    );
+  },
+
+  
 };

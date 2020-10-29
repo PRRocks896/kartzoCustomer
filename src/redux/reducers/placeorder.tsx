@@ -109,6 +109,20 @@ const placeOrder = (state = initialState, action: any) => {
             error: action.error,
           };
 
+          case ACTION.card.EDIT_CARD_REQUEST:
+            return {
+              ...state,
+            };
+          case ACTION.card.EDIT_CARD_SUCCESS:
+            return {
+              ...state
+            };
+          case ACTION.card.EDIT_CARD_FAILURE:
+            return {
+              ...state,
+              error: action.error,
+            };
+
     default:
       return state;
   }

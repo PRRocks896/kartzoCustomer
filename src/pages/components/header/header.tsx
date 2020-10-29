@@ -21,6 +21,7 @@ class Header extends React.Component {
         isShow: this.state.isShow = data,
       });
     });
+    
 
     EventEmitter.subscribe("count", (data: any) => {
       this.setState({
@@ -30,7 +31,13 @@ class Header extends React.Component {
   }
 
   /** Page Render Call */
-  componentDidMount() {}
+  componentDidMount() {
+    if(localStorage.getItem('cartcount')) {
+      this.setState({
+        count: this.state.count = localStorage.getItem('cartcount')
+      })
+    }
+  }
 
   /** Render DOM */
   render() {

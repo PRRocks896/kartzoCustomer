@@ -1,3 +1,5 @@
 export interface searchcityStateRequest {
-   slugname:string
+   slugname:string,
+   categorydata: any,
+   isLoading: boolean,
 }

@@ -91,69 +91,67 @@ export const business = {
   brand6: require("../../../../assets/images/business/brand-6.png"),
   brand7: require("../../../../assets/images/business/brand-7.png"),
   brand8: require("../../../../assets/images/business/brand-8.png"),
-  design: require("../../../../assets/images/business/app-design.png")
+  design: require("../../../../assets/images/business/app-design.png"),
 };
 
 export const search = {
-    group1: require("../../../../assets/images/group1.png"),
-    brq5otcv: require("../../../../assets/images/brq5otcv.png"),
-    aa832a49: require("../../../../assets/images/aa832a49.png"),
-    group2: require("../../../../assets/images/group2.png"),
-    brand1: require("../../../../assets/images/business/brand-1.png"),
-    brand2: require("../../../../assets/images/business/brand-2.png"),
-    brand3: require("../../../../assets/images/business/brand-3.png"),
-    brand4: require("../../../../assets/images/business/brand-4.png"),
-    brand5: require("../../../../assets/images/business/brand-5.png"),
-    brand6: require("../../../../assets/images/business/brand-6.png"),
-    brand7: require("../../../../assets/images/business/brand-7.png"),
-    brand8: require("../../../../assets/images/business/brand-8.png"),
-    design: require("../../../../assets/images/business/app-design.png")
-  };
+  group1: require("../../../../assets/images/group1.png"),
+  brq5otcv: require("../../../../assets/images/brq5otcv.png"),
+  aa832a49: require("../../../../assets/images/aa832a49.png"),
+  group2: require("../../../../assets/images/group2.png"),
+  brand1: require("../../../../assets/images/business/brand-1.png"),
+  brand2: require("../../../../assets/images/business/brand-2.png"),
+  brand3: require("../../../../assets/images/business/brand-3.png"),
+  brand4: require("../../../../assets/images/business/brand-4.png"),
+  brand5: require("../../../../assets/images/business/brand-5.png"),
+  brand6: require("../../../../assets/images/business/brand-6.png"),
+  brand7: require("../../../../assets/images/business/brand-7.png"),
+  brand8: require("../../../../assets/images/business/brand-8.png"),
+  design: require("../../../../assets/images/business/app-design.png"),
+};
 
-  export const trackorder = {
-    location: require("../../../../assets/images/location.svg"),
-    shopping: require("../../../../assets/images/shopping-cart.svg"),
-    track: require("../../../../assets/images/track-order-map.jpg"),
-    orderpicked: require("../../../../assets/images/order-picked.jpg"),
-    man: require("../../../../assets/images/afro-man-city-260nw-1073895656.png")
-  };
+export const trackorder = {
+  location: require("../../../../assets/images/location.svg"),
+  shopping: require("../../../../assets/images/shopping-cart.svg"),
+  track: require("../../../../assets/images/track-order-map.jpg"),
+  orderpicked: require("../../../../assets/images/order-picked.jpg"),
+  man: require("../../../../assets/images/afro-man-city-260nw-1073895656.png"),
+};
 
-  export const findstore = {
-    store: require("../../../../assets/images/store-img.png"),
-    left: require("../../../../assets/images/left.png"),
-    right: require("../../../../assets/images/right.png")
-  };
+export const findstore = {
+  store: require("../../../../assets/images/store-img.png"),
+  left: require("../../../../assets/images/left.png"),
+  right: require("../../../../assets/images/right.png"),
+};
 
-  export const storeitem = {
-    product: require("../../../../assets/images/MmpaRGdyVDFzWmlhczFPVHBmdHN3UT09-product_image.png"),
-    Untitled: require("../../../../assets/images/Untitled-12.png")
-  };
+export const storeitem = {
+  product: require("../../../../assets/images/MmpaRGdyVDFzWmlhczFPVHBmdHN3UT09-product_image.png"),
+  Untitled: require("../../../../assets/images/Untitled-12.png"),
+};
 
-  export const placeorder = {
-    upiLogo: require("../../../../assets/images/upiLogo6.gif"),
-    paytm: require("../../../../assets/images/paytm-icon.webp")
-  };
+export const placeorder = {
+  upiLogo: require("../../../../assets/images/upiLogo6.gif"),
+  paytm: require("../../../../assets/images/paytm-icon.webp"),
+  card: require("../../../../assets/images/card.gif"),
+  wallet: require("../../../../assets/images/Wallet.gif"),
+};
 
-  export const cart = {
-    backarrow: require("../../../../assets/images/back-arrow.svg"),
-    eddnote: require("../../../../assets/images/edd-note.svg"),
-    address: require("../../../../assets/images/address.svg")
-  };
+export const cart = {
+  backarrow: require("../../../../assets/images/back-arrow.svg"),
+  eddnote: require("../../../../assets/images/edd-note.svg"),
+  address: require("../../../../assets/images/address.svg"),
+};
 
-  export const profile = {
-    profilepic: require("../../../../assets/images/profile-icon.png"),
-    food: require("../../../../assets/images/food-img.jpg"),
-    bag: require("../../../../assets/images/bag-icon.png"),
-    home: require("../../../../assets/images/home-icon.png"),
-    other: require("../../../../assets/images/other.png"),
-    paytm: require("../../../../assets/images/PayTM.webp"),
-    simple: require("../../../../assets/images/Simpl.png"),
-    lazypay: require("../../../../assets/images/Lazy_Pay.png"),
-    eligible: require("../../../../assets/images/eligible-icon.png"),
-    friends: require("../../../../assets/images/friends.svg"),
-    wallet: require("../../../../assets/images/wallet.svg")
-  };
-
-
-
-
+export const profile = {
+  profilepic: require("../../../../assets/images/profile-icon.png"),
+  food: require("../../../../assets/images/food-img.jpg"),
+  bag: require("../../../../assets/images/bag-icon.png"),
+  home: require("../../../../assets/images/home-icon.png"),
+  other: require("../../../../assets/images/other.png"),
+  paytm: require("../../../../assets/images/PayTM.webp"),
+  simple: require("../../../../assets/images/Simpl.png"),
+  lazypay: require("../../../../assets/images/Lazy_Pay.png"),
+  eligible: require("../../../../assets/images/eligible-icon.png"),
+  friends: require("../../../../assets/images/friends.svg"),
+  wallet: require("../../../../assets/images/wallet.svg"),
+};

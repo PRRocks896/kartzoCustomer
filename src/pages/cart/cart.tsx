@@ -321,12 +321,22 @@ class Cart extends React.Component<{
                           )
                         )
                       : ""}
-
-                    <div className="place-btn">
-                      <Link to="/placeorder">
-                        <button>Place Order</button>
-                      </Link>
-                    </div>
+                    {
+                      localStorage.getItem('token') ? (
+                        <div className="place-btn">
+                        <Link to="/placeorder">
+                          <button>Place Order</button>
+                        </Link>
+                      </div>
+                      ) : (
+                        <div className="place-btn">
+                        <Link to="/signin">
+                          <button>Sign In</button>
+                        </Link>
+                      </div>
+                      )
+                    }
+                   
                   </div>
 
                   <div className="right-box">

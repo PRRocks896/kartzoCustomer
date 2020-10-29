@@ -31,6 +31,8 @@ class PlaceOrder extends React.Component<{
   updateAddress: any;
   addCard: any;
   getcard: any;
+  updateCard: any;
+  deleteCard: any;
 }> {
   /** place order state */
   placeOrderState: placeorderStateRequest = constant.placeorderPage.state;
@@ -71,18 +73,23 @@ class PlaceOrder extends React.Component<{
     landmark: this.placeOrderState.landmark,
     cartarray: this.placeOrderState.cartarray,
     addressarray: this.placeOrderState.addressarray,
-    mainaddress: 0,
-    addressid: 0,
-    updateTrue: false,
-    month: 1,
-    year: 20,
-    cardnumber: "",
-    cardnumbererror: "",
-    cardholder: "",
-    cardholdererror: "",
-    cardtype: "",
-    carddata: [],
-    isCard: false,
+    mainaddress: this.placeOrderState.mainaddress,
+    addressid: this.placeOrderState.addressid,
+    updateTrue: this.placeOrderState.updateTrue,
+    month: this.placeOrderState.month,
+    year: this.placeOrderState.year,
+    cardnumber: this.placeOrderState.cardnumber,
+    cardnumbererror: this.placeOrderState.cardnumbererror,
+    cardholder: this.placeOrderState.cardholder,
+    cardholdererror: this.placeOrderState.cardholdererror,
+    cardtype: this.placeOrderState.cardtype,
+    carddata: this.placeOrderState.carddata,
+    isCard: this.placeOrderState.isCard,
+    cvvid: this.placeOrderState.cvvid,
+    cvv: this.placeOrderState.cvv,
+    cvverror: this.placeOrderState.cvverror,
+    cardid: this.placeOrderState.cardid,
+    cardUpdateTrue: this.placeOrderState.cardUpdateTrue,
   };
 
   constructor(props: any) {
@@ -109,25 +116,34 @@ class PlaceOrder extends React.Component<{
     this.addCard = this.addCard.bind(this);
     this.onPaymentChange = this.onPaymentChange.bind(this);
     this.showCardSection = this.showCardSection.bind(this);
+    this.changeCVV = this.changeCVV.bind(this);
+    this.getCardData = this.getCardData.bind(this);
+    this.editCard = this.editCard.bind(this);
+    this.deleteCardData = this.deleteCardData.bind(this);
+    this.paymentWithCard = this.paymentWithCard.bind(this);
   }
 
   /** Page Render Call */
   componentDidMount() {
-    document.title = constant.placeorder + getAppName();
-    EventEmitter.dispatch("isShow", true);
-    EventEmitter.dispatch("isShowFooter", true);
-    const users: any = localStorage.getItem("user");
-    let user = JSON.parse(users);
-    this.setState({
-      usermobile: user.phone,
-      firstname: user.firstName,
-      lastname: user.lastName,
-      mobile: user.phone,
-    });
-    this.getAddressDetails();
-    if (localStorage.getItem("token")) {
-      this.getCartData();
-      this.getCard();
+    if(!localStorage.getItem("token")) {
+      this.props.history.push('/signin');
+    } else {
+      document.title = constant.placeorder + getAppName();
+      EventEmitter.dispatch("isShow", true);
+      EventEmitter.dispatch("isShowFooter", true);
+      const users: any = localStorage.getItem("user");
+      let user = JSON.parse(users);
+      this.setState({
+        usermobile: user.phone,
+        firstname: user.firstName,
+        lastname: user.lastName,
+        mobile: user.phone,
+      });
+      this.getAddressDetails();
+      if (localStorage.getItem("token")) {
+        this.getCartData();
+        this.getCard();
+      }
     }
   }
 
@@ -182,6 +198,24 @@ class PlaceOrder extends React.Component<{
   /** Open address add section */
   showSection() {
     this.setState({
+      nameerror: "",
+      name: "",
+      mobileerror: "",
+      mobile: "",
+      addresserror: "",
+      address: "",
+      cityerror: "",
+      city: "",
+      stateerror: "",
+      state: "",
+      countryerror: "",
+      country: "",
+      pincodeerror: "",
+      pincode: "",
+      landmarkerror: "",
+      landmark: "",
+      addresstype: "1",
+      updateTrue: false,
       showSection: true,
     });
   }
@@ -304,7 +338,7 @@ class PlaceOrder extends React.Component<{
    * @param event : update state value
    * @param index : index number
    */
-  onChangeEvent(event: any, index: any) {
+  onChangeEvent(event: any) {
     event.preventDefault();
     const state: any = this.state;
     state[event.target.name] = event.target.value;
@@ -632,8 +666,16 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /** Show Card section */
   showCardSection() {
     this.setState({
+      cardnumbererror: "",
+      cardholdererror: "",
+      cardnumber: "",
+      cardholder: "",
+      month: 1,
+      year: 20,
+      cardUpdateTrue: this.state.cardUpdateTrue = false,
       isCard: this.state.isCard = true,
     });
   }
@@ -1116,7 +1158,7 @@ class PlaceOrder extends React.Component<{
 
         <div className="upi-payment">
           <div className="tt-line">
-            <img src={placeorder.paytm} alt="" />
+            <img src={placeorder.wallet} alt="" />
             <span className="tt-radio">Wallets</span>
           </div>
           {this.state.paymenttype === 2 ? (
@@ -1244,8 +1286,133 @@ class PlaceOrder extends React.Component<{
       };
       this.props.addCard(obj);
       setTimeout(() => {
+        this.setState({
+          cardnumber: "",
+          cardholder: "",
+          month: 1,
+          year: 20,
+        });
         this.getCard();
       }, 250);
+    }
+  }
+
+  /**
+   *
+   * @param e : cvv enter with card
+   */
+  changeCVV(e: any) {
+    this.setState({
+      cvvid: this.state.cvvid = parseInt(e.target.id),
+    });
+  }
+
+  /**
+   *
+   * @param data : get card data
+   */
+  getCardData(data: any) {
+    console.log("data", data);
+    this.setState({
+      isCard: this.state.isCard = true,
+      cardUpdateTrue: this.state.cardUpdateTrue = true,
+      cardid: data.cardID,
+      cardholder: data.cardName,
+      cardnumber: data.cardNumber,
+      month: data.expiryMonth,
+      year: data.expiryYear,
+      cardtype: data.cardType,
+    });
+  }
+
+  /** Edit card */
+  editCard() {
+    const isValid = this.validateCard();
+    if (isValid) {
+      this.setState({
+        cardnumbererror: "",
+        cardholdererror: "",
+      });
+      const users: any = localStorage.getItem("user");
+      let user = JSON.parse(users);
+      if (this.state.cardnumber) {
+        var visaCards = creditCardType(this.state.cardnumber);
+        console.log("card type", visaCards[0].type);
+        this.setState({
+          cardtype: this.state.cardtype = visaCards[0].type,
+        });
+      }
+      const obj = {
+        cardID: this.state.cardid,
+        id: user.userID,
+        cardNumber: this.state.cardnumber,
+        cardName: this.state.cardholder,
+        cardType: this.state.cardtype,
+        expiryMonth: this.state.month,
+        expiryYear: this.state.year,
+        isActive: true,
+      };
+      this.props.updateCard(obj);
+      setTimeout(() => {
+        this.setState({
+          cardnumber: "",
+          cardholder: "",
+          month: 1,
+          year: 20,
+        });
+        this.getCard();
+      }, 250);
+    }
+  }
+
+  /**
+   *
+   * @param id : delete card data
+   * @param text : message card
+   * @param btext : button message
+   */
+  async deleteCardData(id: any, text: any, btext: any) {
+    if (await alertMessage(text, btext)) {
+      let deleteCardArray = [];
+      deleteCardArray.push(id);
+      const obj = {
+        moduleName: "Card",
+        id: deleteCardArray,
+      };
+      this.props.deleteCard(obj);
+
+      setTimeout(() => {
+        this.getCard();
+      }, 200);
+    }
+  }
+
+  /** Check valid || invalid  CVV data */
+  validateCVV() {
+    let cvverror = "";
+
+    var regex = /^[0-9]{3,4}$/;
+    if (!this.state.cvv) {
+      cvverror = "please enter cvv";
+    } else if (!regex.test(this.state.cvv)) {
+      cvverror = "please enter valid cvv";
+    }
+
+    if (cvverror) {
+      this.setState({
+        cvverror,
+      });
+      return false;
+    }
+    return true;
+  }
+
+  paymentWithCard() {
+    const isValid = this.validateCVV();
+    if (isValid) {
+      this.setState({
+        cvverror: "",
+      });
     }
   }
 
@@ -1265,7 +1432,7 @@ class PlaceOrder extends React.Component<{
         </label>
         <div className="upi-payment">
           <div className="tt-line">
-            <img src={placeorder.paytm} alt="" />
+            <img src={placeorder.card} alt="" />
             <span className="tt-radio">Credit / Debit / ATM Card</span>
           </div>
 
@@ -1279,54 +1446,103 @@ class PlaceOrder extends React.Component<{
                         <div
                           className="row"
                           style={{ justifyContent: "flex-end" }}
-                        ></div>
+                        >
+                          {/* <i
+                            className="fas fa-edit edit-adres"
+                            style={{ color: "#f7b62b" }}
+                            onClick={() => this.getCardData(card)}
+                          ></i> */}
+                          <i
+                            className="fas fa-trash edit-adres ml-4"
+                            style={{ color: "#f7b62b" }}
+                            onClick={() =>
+                              this.deleteCardData(
+                                card.cardID,
+                                "You should be Remove card?",
+                                "Yes, Remove it"
+                              )
+                            }
+                          ></i>
+                        </div>
 
                         <label className="rdio-box1">
-                          <span className="b-tt">{card.cardNumber}</span>{" "}
+                          <span className="b-tt">
+                            {new Array(card.cardNumber.length - 3).join("X") +
+                              card.cardNumber.substr(
+                                card.cardNumber.length - 4,
+                                4
+                              )}
+                          </span>{" "}
                           <span className="add-type">{card.cardName}</span>{" "}
-                          <div></div>
                           <input
                             type="radio"
-                            id="12"
+                            id={card.cardID}
                             className="form-control"
-                            // checked={
-                            //   this.state.mainaddress === address.addressID
-                            //     ? true
-                            //     : false
-                            // }
-                            onChange={this.change}
-                            name="main"
+                            checked={
+                              this.state.cvvid === card.cardID ? true : false
+                            }
+                            onChange={this.changeCVV}
+                            name="cvvid"
                           />
                           <span className="checkmark"></span>
                         </label>
-                        <div>
-                          <div className="form-group enter-cvv">
-                            <div className="verfy-tt">
-                              ?
-                              <div className="togle-box">
-                                <img src="images/cvv-card.png" alt="cvv-card" />
-                                <h4 className="cvv-title">What is CVV?</h4>
-                                <span className="small-tt">
-                                  The CVV number is the last three digits on the
-                                  back of your card
-                                </span>
-                                <button className="close-btn">Close</button>
+                        {this.state.cvvid === card.cardID ? (
+                          <div>
+                            <div className="form-group enter-cvv">
+                              {/* <div className="verfy-tt">
+                                ?
+                                <div className="togle-box">
+                                  <img src="images/cvv-card.png" alt="cvv-card" />
+                                  <h4 className="cvv-title">What is CVV?</h4>
+                                  <span className="small-tt">
+                                    The CVV number is the last three digits on the
+                                    back of your card
+                                  </span>
+                                  <button className="close-btn">Close</button>
+                                </div>
+                              </div> */}
+
+                              <input
+                                type="text"
+                                id="from"
+                                className="form-control"
+                                name="cvv"
+                                maxLength={4}
+                                onChange={this.onChangeEvent}
+                                required
+                              />
+                              <label
+                                className="form-control-placeholder"
+                                htmlFor="from"
+                              >
+                                CVV
+                              </label>
+                              <div className="text-danger">
+                                {this.state.cvverror}
                               </div>
                             </div>
-                            <input
-                              type="text"
-                              id="from"
-                              className="form-control"
-                              required
-                            />
-                            <label
-                              className="form-control-placeholder"
-                              htmlFor="from"
+                            <button
+                              type="button"
+                              className="chk-outbtn"
+                              onClick={this.paymentWithCard}
                             >
-                              CVV
-                            </label>
+                              Pay
+                            </button>
+                            <button
+                              type="button"
+                              className="chk-outbtn"
+                              onClick={() =>
+                                this.setState({
+                                  cvvid: this.state.cvvid = 0,
+                                })
+                              }
+                            >
+                              cancel
+                            </button>
                           </div>
-                        </div>
+                        ) : (
+                          ""
+                        )}
                       </div>
                     ))
                   : ""}
@@ -1419,15 +1635,30 @@ class PlaceOrder extends React.Component<{
                         </div>
                       </div>
                       <div>
-                        <button className="continue-btn" onClick={this.addCard}>
-                          Add && Pay
-                        </button>
+                        {this.state.cardUpdateTrue === true ? (
+                          <button
+                            className="continue-btn"
+                            onClick={this.editCard}
+                          >
+                            Save Card
+                          </button>
+                        ) : (
+                          <button
+                            className="continue-btn"
+                            onClick={this.addCard}
+                          >
+                            Save Card
+                          </button>
+                        )}
+
                         <button
                           className="continue-btn"
                           onClick={() =>
                             this.setState({
                               cardholdererror: "",
                               cardnumbererror: "",
+                              cardholder: "",
+                              cardnumber: "",
                               isCard: this.state.isCard = false,
                             })
                           }
@@ -1615,7 +1846,7 @@ class PlaceOrder extends React.Component<{
                       type="text"
                       name="qty"
                       value={cartdata.quantity ? cartdata.quantity : ""}
-                      onChange={(e: any) => this.onChangeEvent(e, index)}
+                      onChange={(e: any) => this.onChangeEvent(e)}
                     />
                     <span
                       className="plus"
@@ -1906,6 +2137,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   deleteAddress: (data: any) => dispatch(placeOrderService.deleteAddress(data)),
   addCard: (data: any) => dispatch(placeOrderService.addCard(data)),
   getcard: (data: any) => dispatch(placeOrderService.getcard(data)),
+  updateCard: (data: any) => dispatch(placeOrderService.updateCard(data)),
+  deleteCard: (data: any) => dispatch(placeOrderService.deleteCard(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrder);

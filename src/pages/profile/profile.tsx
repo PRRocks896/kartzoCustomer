@@ -7,7 +7,7 @@ import {
   profileStateRequest,
 } from "../../modelController";
 import { profile } from "../../pages/components/helper/images";
-import { placeOrderService } from "../../redux/actions";
+import { placeOrderService, orderService } from "../../redux/actions";
 import constant from "../constant/constant";
 import { getAppName, alertMessage } from "../utils";
 import "./profile.css";
@@ -20,6 +20,7 @@ class Profile extends React.Component<{
   getAddressList: any;
   updateAddress: any;
   deleteAddress: any;
+  getOrderList: any;
 }> {
   /** Profile Page State */
   profileState: profileStateRequest = constant.profilePage.state;
@@ -49,7 +50,8 @@ class Profile extends React.Component<{
     landmarkerror: this.placeOrderState.landmarkerror,
     landmark: this.placeOrderState.landmark,
     addressid: this.profileState.addressid,
-    addresstype: this.profileState.addresstype
+    addresstype: this.profileState.addresstype,
+    orderdata: this.profileState.orderdata,
   };
 
   constructor(props: any) {
@@ -76,10 +78,11 @@ class Profile extends React.Component<{
     EventEmitter.dispatch("isShow", false);
     EventEmitter.dispatch("isShowFooter", false);
     this.getAddressDetails();
+    this.getOrderList();
   }
 
   /**
-   * 
+   *
    * @param searchText : search purpose
    * @param page : page number
    * @param size : per page
@@ -102,16 +105,38 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
+   * @param searchText : search value
+   * @param page : page number
+   * @param size : per page
+   */
+  getOrderList(searchText: string = "", page: number = 1, size: number = 20) {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const obj: getAddressListRequest = {
+      searchText: searchText,
+      isActive: true,
+      page: page,
+      size: size,
+      userId: user.userID,
+    };
+    this.props.getOrderList(obj);
+  }
+
+  /**
+   *
    * @param nextProps : updated props
    */
   componentWillReceiveProps(nextProps: any) {
     console.log("props", nextProps);
     if (nextProps.addressDetails) {
       this.setState({
-        show:this.state.show = false
-      })
+        show: this.state.show = false,
+      });
       this.getAddressDetailsData(nextProps.addressDetails);
+    }
+    if (nextProps.orderDetails) {
+      this.getOrderDetails(nextProps.orderDetails);
     }
   }
 
@@ -124,6 +149,16 @@ class Profile extends React.Component<{
     });
   }
 
+  /**
+   *
+   * @param data : get order listing data
+   */
+  getOrderDetails(data: any) {
+    this.setState({
+      orderdata: this.state.orderdata = data.data,
+    });
+  }
+
   /** logout from website */
   logout() {
     localStorage.removeItem("user");
@@ -131,12 +166,12 @@ class Profile extends React.Component<{
     localStorage.removeItem("cart");
     localStorage.removeItem("cartcount");
     localStorage.removeItem("adminToken");
-    EventEmitter.dispatch('count', 0);
+    EventEmitter.dispatch("count", 0);
     this.props.history.push("/");
   }
 
   /**
-   * 
+   *
    * @param data : open model and get address form data
    */
   modelOpen(data: any) {
@@ -173,7 +208,7 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param latitude : get current location latitiude
    * @param longitude : get current location longitude
    */
@@ -338,7 +373,7 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param id : delete address id
    * @param text : message text
    * @param btext : button message text
@@ -360,7 +395,7 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param event : onChange store value and update the state
    */
   addressChange(event: any) {
@@ -371,7 +406,7 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param e : change address type (work to home) || (home to work)
    */
   changeAddress(e: any) {
@@ -649,7 +684,7 @@ class Profile extends React.Component<{
                                 <div className="edit-dtle">
                                   <form className="form-1">
                                     <button
-                                       type="button"
+                                      type="button"
                                       className="add-location"
                                       onClick={this.getCurrentLocation}
                                     >
@@ -895,7 +930,8 @@ class Profile extends React.Component<{
                                                   type="radio"
                                                   id="1"
                                                   checked={
-                                                    this.state.addresstype === "1"
+                                                    this.state.addresstype ===
+                                                    "1"
                                                       ? true
                                                       : false
                                                   }
@@ -914,7 +950,8 @@ class Profile extends React.Component<{
                                                   type="radio"
                                                   id="2"
                                                   checked={
-                                                    this.state.addresstype === "2"
+                                                    this.state.addresstype ===
+                                                    "2"
                                                       ? true
                                                       : false
                                                   }
@@ -1161,6 +1198,7 @@ class Profile extends React.Component<{
 
 const mapStateToProps = (state: any) => ({
   addressDetails: state.placeOrder.addressdata,
+  orderDetails: state.order.orderdata,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -1168,6 +1206,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(placeOrderService.getAddressList(data)),
   updateAddress: (data: any) => dispatch(placeOrderService.updateAddress(data)),
   deleteAddress: (data: any) => dispatch(placeOrderService.deleteAddress(data)),
+  getOrderList: (data: any) => dispatch(orderService.getOrderList(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

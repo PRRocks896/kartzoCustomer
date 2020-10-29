@@ -5,5 +5,6 @@ export interface profileStateRequest {
     mobilephone:string,
     mobilephoneerror:string,
     addressid:string,
-    addresstype:string
+    addresstype:string,
+    orderdata:any
 }
