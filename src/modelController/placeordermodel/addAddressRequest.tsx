@@ -9,5 +9,6 @@ export interface addAddressRequest {
   pincode: number;
   landmark: string;
   addressType: string;
-  addressID?:number
+  addressID?:number,
+  isActive:boolean
 }

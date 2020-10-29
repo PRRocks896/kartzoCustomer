@@ -575,7 +575,8 @@ class PlaceOrder extends React.Component<{
         country: this.state.country,
         pincode: parseInt(this.state.pincode),
         landmark: this.state.landmark,
-        addressType: this.state.addresstype === "1" ? "1" : "2",
+        addressType: this.state.addresstype === "1" ? "1" : (this.state.addresstype === "2" ? "2" : (this.state.addresstype === "3" ? "3" : "")),
+        isActive: true
       };
       this.props.addAddress(obj);
 
@@ -603,7 +604,7 @@ class PlaceOrder extends React.Component<{
       city: data.city,
       state: data.state,
       country: data.country,
-      addresstype: data.addressType === "Home" ? "1" : "2",
+      addresstype: data.addressType === "Home" ? "1" : (data.addressType === "Work" ? "2" : (data.addressType === "Other" ? "3" : "")),
     });
   }
 
@@ -634,7 +635,8 @@ class PlaceOrder extends React.Component<{
         country: this.state.country,
         pincode: parseInt(this.state.pincode),
         landmark: this.state.landmark,
-        addressType: this.state.addresstype === "1" ? "1" : "2",
+        addressType: this.state.addresstype === "1" ? "1" : (this.state.addresstype === "2" ? "2" : (this.state.addresstype === "3" ? "3" : "")),
+        isActive: true
       };
       this.props.updateAddress(obj);
 
@@ -803,7 +805,7 @@ class PlaceOrder extends React.Component<{
                           />
                           <label
                             className="form-control-placeholder"
-                            htmlFor="from"
+                            htmlFor="from1"
                           >
                             Name
                           </label>
@@ -826,7 +828,7 @@ class PlaceOrder extends React.Component<{
                           />
                           <label
                             className="form-control-placeholder"
-                            htmlFor="from"
+                            htmlFor="from2"
                           >
                             10-digit mobile number
                           </label>
@@ -849,7 +851,7 @@ class PlaceOrder extends React.Component<{
                           />
                           <label
                             className="form-control-placeholder"
-                            htmlFor="from"
+                            htmlFor="from3"
                           >
                             Pincode
                           </label>
@@ -873,7 +875,7 @@ class PlaceOrder extends React.Component<{
                           />
                           <label
                             className="form-control-placeholder"
-                            htmlFor="from"
+                            htmlFor="from4"
                           >
                             Landmark
                           </label>
@@ -893,7 +895,7 @@ class PlaceOrder extends React.Component<{
                           ></textarea>
                           <label
                             className="form-control-placeholder"
-                            htmlFor="from"
+                            htmlFor="from5"
                           >
                             Address (Area and Street)
                           </label>
@@ -916,7 +918,7 @@ class PlaceOrder extends React.Component<{
                           />
                           <label
                             className="form-control-placeholder"
-                            htmlFor="from"
+                            htmlFor="from6"
                           >
                             City/District/Town
                           </label>
@@ -938,7 +940,7 @@ class PlaceOrder extends React.Component<{
                           />
                           <label
                             className="form-control-placeholder"
-                            htmlFor="from"
+                            htmlFor="from7"
                           >
                             State
                           </label>
@@ -960,7 +962,7 @@ class PlaceOrder extends React.Component<{
                           />
                           <label
                             className="form-control-placeholder"
-                            htmlFor="from"
+                            htmlFor="from8"
                           >
                             Country
                           </label>
@@ -998,6 +1000,23 @@ class PlaceOrder extends React.Component<{
                                   id="2"
                                   checked={
                                     this.state.addresstype === "2"
+                                      ? true
+                                      : false
+                                  }
+                                  onChange={this.changeAddress}
+                                  name="radio"
+                                />
+                                <span className="checkmark"></span>
+                              </label>
+                            </div>
+                            <div className="adrss-1">
+                              <label className="rdio-box1">
+                                <span className="b-tt">Other</span>
+                                <input
+                                  type="radio"
+                                  id="3"
+                                  checked={
+                                    this.state.addresstype === "3"
                                       ? true
                                       : false
                                   }
@@ -1563,7 +1582,7 @@ class PlaceOrder extends React.Component<{
                         {/* <span className="verfy-tt">Link Now</span> */}
                         <input
                           type="text"
-                          id="from"
+                          id="from9"
                           name="cardnumber"
                           className="form-control"
                           value={
@@ -1574,7 +1593,7 @@ class PlaceOrder extends React.Component<{
                         />
                         <label
                           className="form-control-placeholder"
-                          htmlFor="from"
+                          htmlFor="from9"
                         >
                           Enter Card Number
                         </label>
@@ -1585,7 +1604,7 @@ class PlaceOrder extends React.Component<{
                       <div className="form-group card-nombr">
                         <input
                           type="text"
-                          id="from"
+                          id="from10"
                           name="cardholder"
                           className="form-control"
                           value={
@@ -1596,7 +1615,7 @@ class PlaceOrder extends React.Component<{
                         />
                         <label
                           className="form-control-placeholder"
-                          htmlFor="from"
+                          htmlFor="from10"
                         >
                           Enter Card Holder Name
                         </label>

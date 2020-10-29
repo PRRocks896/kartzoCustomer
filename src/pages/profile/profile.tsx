@@ -78,7 +78,7 @@ class Profile extends React.Component<{
     EventEmitter.dispatch("isShow", false);
     EventEmitter.dispatch("isShowFooter", false);
     this.getAddressDetails();
-    this.getOrderList();
+    // this.getOrderList();
   }
 
   /**
@@ -187,7 +187,7 @@ class Profile extends React.Component<{
       city: data.city,
       state: data.state,
       country: data.country,
-      addresstype: data.addressType === "Home" ? "1" : "2",
+      addresstype: data.addressType === "Home" ? "1" : (data.addressType === "Work" ? "2" : (data.addressType === "Other" ? "3" : ""))
     });
   }
 
@@ -362,7 +362,8 @@ class Profile extends React.Component<{
         country: this.state.country,
         pincode: parseInt(this.state.pincode),
         landmark: this.state.landmark,
-        addressType: this.state.addresstype === "1" ? "1" : "2",
+        addressType: this.state.addresstype === "1" ? "1" : (this.state.addresstype === "2" ? "2" : (this.state.addresstype === "3" ? "3" : "")),
+        isActive: true
       };
       this.props.updateAddress(obj);
 
@@ -723,7 +724,7 @@ class Profile extends React.Component<{
                                           />
                                           <label
                                             className="form-control-placeholder"
-                                            htmlFor="from"
+                                            htmlFor="from1"
                                           >
                                             Name
                                           </label>
@@ -750,7 +751,7 @@ class Profile extends React.Component<{
                                           />
                                           <label
                                             className="form-control-placeholder"
-                                            htmlFor="from"
+                                            htmlFor="from2"
                                           >
                                             10-digit mobile number
                                           </label>
@@ -777,7 +778,7 @@ class Profile extends React.Component<{
                                           />
                                           <label
                                             className="form-control-placeholder"
-                                            htmlFor="from"
+                                            htmlFor="from3"
                                           >
                                             Pincode
                                           </label>
@@ -803,7 +804,7 @@ class Profile extends React.Component<{
                                           />
                                           <label
                                             className="form-control-placeholder"
-                                            htmlFor="from"
+                                            htmlFor="from4"
                                           >
                                             Landmark
                                           </label>
@@ -827,7 +828,7 @@ class Profile extends React.Component<{
                                           ></textarea>
                                           <label
                                             className="form-control-placeholder"
-                                            htmlFor="from"
+                                            htmlFor="from5"
                                           >
                                             Address (Area and Street)
                                           </label>
@@ -854,7 +855,7 @@ class Profile extends React.Component<{
                                           />
                                           <label
                                             className="form-control-placeholder"
-                                            htmlFor="from"
+                                            htmlFor="from6"
                                           >
                                             City/District/Town
                                           </label>
@@ -880,7 +881,7 @@ class Profile extends React.Component<{
                                           />
                                           <label
                                             className="form-control-placeholder"
-                                            htmlFor="from"
+                                            htmlFor="from7"
                                           >
                                             State
                                           </label>
@@ -906,7 +907,7 @@ class Profile extends React.Component<{
                                           />
                                           <label
                                             className="form-control-placeholder"
-                                            htmlFor="from"
+                                            htmlFor="from8"
                                           >
                                             Country
                                           </label>
@@ -952,6 +953,26 @@ class Profile extends React.Component<{
                                                   checked={
                                                     this.state.addresstype ===
                                                     "2"
+                                                      ? true
+                                                      : false
+                                                  }
+                                                  onChange={this.changeAddress}
+                                                  name="radio"
+                                                />
+                                                <span className="checkmark"></span>
+                                              </label>
+                                            </div>
+                                            <div className="adrss-1">
+                                              <label className="rdio-box1">
+                                                <span className="b-tt">
+                                                  Other{" "}
+                                                </span>
+                                                <input
+                                                  type="radio"
+                                                  id="3"
+                                                  checked={
+                                                    this.state.addresstype ===
+                                                    "3"
                                                       ? true
                                                       : false
                                                   }
