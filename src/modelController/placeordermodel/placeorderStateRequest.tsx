@@ -51,4 +51,5 @@ export interface placeorderStateRequest {
   cvverror: string;
   cardid: number;
   cardUpdateTrue: boolean;
+  cvvdesc: boolean
 }

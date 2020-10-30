@@ -75,7 +75,7 @@ class Cart extends React.Component<{
    * @param nextProps : get updated props
    */
   componentWillReceiveProps(nextProps: any, newState: any) {
-    console.log("props", nextProps);
+    // console.log("props", nextProps);
     if (nextProps.getCartDetail) {
       this.getCartAllProductData(nextProps.getCartDetail);
     }
@@ -93,8 +93,12 @@ class Cart extends React.Component<{
       this.setState({
         cartarray: this.state.cartarray = data.data,
       });
+      localStorage.setItem('cartcount',this.state.cartarray.length);
+    } else {
+      EventEmitter.dispatch('count', 0);
+      localStorage.setItem('cartcount','0');
+      localStorage.removeItem('merchantID');
     }
-    console.log("cartarray", this.state.cartarray);
   }
 
   /**

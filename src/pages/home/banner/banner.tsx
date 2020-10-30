@@ -170,13 +170,6 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
             search
             onChange={this.onlocationSelectId}
           />
-            {/* <input
-              type="search"
-              name="search"
-              className="src-input"
-              placeholder="Search for a location"
-              onKeyUp={this.searchLocationDataKeyUp}
-            /> */}
             <button className="search-btn" onClick={this.getLocationData}>Proceed</button>
           </div>
         </div>

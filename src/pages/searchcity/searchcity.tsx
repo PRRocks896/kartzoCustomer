@@ -7,7 +7,7 @@ import AppLink from "../home/app-link/app-link";
 import Information from "../home/information/information";
 import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
-import { searchcityStateRequest } from "../../modelController";
+import { searchcityStateRequest,getCategoryListRequest } from "../../modelController";
 import { categoryService } from "../../redux/actions/index";
 import { connect } from "react-redux";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -66,7 +66,7 @@ class SearchCity extends React.Component<{
    * @param size : per page size
    */
   getCategory(searchText: string = "", page: number = 1, size: number = 10) {
-    const obj = {
+    const obj : getCategoryListRequest = {
       searchText: searchText,
       page: page,
       size: size,

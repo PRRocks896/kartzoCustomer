@@ -847,7 +847,7 @@
 	border-radius: 8px;
 	padding-bottom: 20px;
 	padding: 15px;
-	display: none;
+	/* display: none; */
 }
 .pay-credit .togle-box::before {
 	content: "";

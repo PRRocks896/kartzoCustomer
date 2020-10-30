@@ -11,5 +11,6 @@ export interface storeitemStateRequest {
     searchproductdata:any,
     searchproductdatadetails:any,
     isButton:boolean,
-    loadingid:string
+    loadingid:string,
+    show:boolean
 }

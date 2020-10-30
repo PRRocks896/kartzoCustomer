@@ -32,9 +32,13 @@ class Header extends React.Component {
 
   /** Page Render Call */
   componentDidMount() {
-    if(localStorage.getItem('cartcount')) {
+    if(localStorage.getItem('cartcount') !== undefined) {
       this.setState({
         count: this.state.count = localStorage.getItem('cartcount')
+      })
+    } else {
+      this.setState({
+        count: this.state.count = 0
       })
     }
   }

@@ -166,6 +166,7 @@ class Profile extends React.Component<{
     localStorage.removeItem("cart");
     localStorage.removeItem("cartcount");
     localStorage.removeItem("adminToken");
+    localStorage.removeItem("merchantID");
     EventEmitter.dispatch("count", 0);
     this.props.history.push("/");
   }
@@ -526,36 +527,43 @@ class Profile extends React.Component<{
                       <div className="order-list">
                         <div className="col-md-12">
                           <h3 className="dlt-tt">Past Order</h3>
-                          <div className="order-list1">
-                            <div className="dlt-1">
-                              <div className="img-box">
-                                <img src={profile.food} alt="" />
-                              </div>
-                              <div className="order-dtl1">
-                                <h4 className="sub-tt">Sargam Food</h4>
-                                <div className="address-nm">
-                                  Race Couse Road
+                          {/* {
+                            this.state.orderdata ? (
+                              this.state.orderdata.length > 0 && this.state.orderdata.map((order:any,index:any) => (
+                                <div className="order-list1" key={index}>
+                                <div className="dlt-1">
+                                  <div className="img-box">
+                                    <img src={profile.food} alt="" />
+                                  </div>
+                                  <div className="order-dtl1">
+                                    <h4 className="sub-tt">Sargam Food</h4>
+                                    <div className="address-nm">
+                                      Race Couse Road
+                                    </div>
+                                    <div className="shop-id">
+                                      ORDER # 85474154056 | Sun, Oct 11, 2020, 12:19
+                                      PM
+                                    </div>
+                                    <button className="view-dtl">
+                                      View Details
+                                    </button>
+                                  </div>
                                 </div>
-                                <div className="shop-id">
-                                  ORDER # 85474154056 | Sun, Oct 11, 2020, 12:19
-                                  PM
+    
+                                <div className="order-food">
+                                  <div className="food-nm">
+                                    Paneer Tikka Masala x1
+                                  </div>
+                                  <div className="btn-box">
+                                    <button className="order-btn">REORDER</button>
+                                    <button className="help-btn">HELP</button>
+                                  </div>
                                 </div>
-                                <button className="view-dtl">
-                                  View Details
-                                </button>
                               </div>
-                            </div>
-
-                            <div className="order-food">
-                              <div className="food-nm">
-                                Paneer Tikka Masala x1
-                              </div>
-                              <div className="btn-box">
-                                <button className="order-btn">REORDER</button>
-                                <button className="help-btn">HELP</button>
-                              </div>
-                            </div>
-                          </div>
+                              ))
+                            ) : ('')
+                          }
+                          */}
                           <div className="order-list1">
                             <div className="dlt-1">
                               <div className="img-box">

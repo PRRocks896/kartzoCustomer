@@ -6,7 +6,7 @@ import {
   addCartRequest,
   getAddressListRequest,
   getCartListRequest,
-  placeorderStateRequest,
+  placeorderStateRequest,removeCartItemRequest
 } from "../../modelController";
 import {
   header,
@@ -90,6 +90,7 @@ class PlaceOrder extends React.Component<{
     cvverror: this.placeOrderState.cvverror,
     cardid: this.placeOrderState.cardid,
     cardUpdateTrue: this.placeOrderState.cardUpdateTrue,
+    cvvdesc:this.placeOrderState.cvvdesc
   };
 
   constructor(props: any) {
@@ -121,6 +122,7 @@ class PlaceOrder extends React.Component<{
     this.editCard = this.editCard.bind(this);
     this.deleteCardData = this.deleteCardData.bind(this);
     this.paymentWithCard = this.paymentWithCard.bind(this);
+    this.toggle = this.toggle.bind(this);
   }
 
   /** Page Render Call */
@@ -317,6 +319,10 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param data : get card data
+   */
   getCardDetails(data: any) {
     this.setState({
       carddata: this.state.carddata = data,
@@ -358,6 +364,10 @@ class PlaceOrder extends React.Component<{
       this.setState({
         cartarray: this.state.cartarray = data.data,
       });
+    } else {
+      EventEmitter.dispatch('count', 0);
+      localStorage.setItem('cartcount','0');
+      localStorage.removeItem('merchantID');
     }
   }
 
@@ -660,7 +670,7 @@ class PlaceOrder extends React.Component<{
     if (await alertMessage(text, btext)) {
       let deleteArray = [];
       deleteArray.push(id);
-      const obj = {
+      const obj:removeCartItemRequest = {
         moduleName: "Address",
         id: deleteArray,
       };
@@ -1439,6 +1449,13 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /** Toogle cvv information block */
+  toggle() {
+    this.setState({
+      cvvdesc:!this.state.cvvdesc
+    })
+  }
+
   /** Card payment block */
   cardBlock() {
     return (
@@ -1512,19 +1529,24 @@ class PlaceOrder extends React.Component<{
                         {this.state.cvvid === card.cardID ? (
                           <div>
                             <div className="form-group enter-cvv">
-                              {/* <div className="verfy-tt">
+                              <div className="verfy-tt" onClick={this.toggle}>
                                 ?
-                                <div className="togle-box">
-                                  <img src="images/cvv-card.png" alt="cvv-card" />
-                                  <h4 className="cvv-title">What is CVV?</h4>
-                                  <span className="small-tt">
-                                    The CVV number is the last three digits on the
-                                    back of your card
-                                  </span>
-                                  <button className="close-btn">Close</button>
-                                </div>
-                              </div> */}
-
+                                {
+                                  this.state.cvvdesc === true ? (
+                                    <div className="togle-box">
+                                    <img src={placeorder.cvvcard} alt="cvv-card" />
+                                    <h4 className="cvv-title">What is CVV?</h4>
+                                    <span className="small-tt">
+                                      The CVV number is the last three digits on the
+                                      back of your card
+                                    </span>
+                                    <button className="close-btn" onClick={this.toggle}>Close</button>
+                                  </div>
+                                  ) : (
+                                    ''
+                                  )
+                                }
+                              </div>
                               <input
                                 type="text"
                                 id="from"
@@ -1943,6 +1965,7 @@ class PlaceOrder extends React.Component<{
       localStorage.removeItem("cart");
       localStorage.removeItem("cartcount");
       localStorage.removeItem("adminToken");
+      localStorage.removeItem("merchantID");
       this.props.history.push("/signin");
     }
   }

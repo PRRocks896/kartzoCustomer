@@ -134,6 +134,7 @@ export const placeorder = {
   paytm: require("../../../../assets/images/paytm-icon.webp"),
   card: require("../../../../assets/images/card.gif"),
   wallet: require("../../../../assets/images/Wallet.gif"),
+  cvvcard: require("../../../../assets/images/cvv-card.png")
 };
 
 export const cart = {

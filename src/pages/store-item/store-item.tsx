@@ -53,7 +53,7 @@ class StoreItem extends React.Component<{
     searchproductdatadetails: this.storeItemState.searchproductdatadetails,
     isButton: this.storeItemState.isButton,
     loadingid: this.storeItemState.loadingid,
-    show: false,
+    show: this.storeItemState.show,
   };
 
   constructor(props: any) {
@@ -75,7 +75,6 @@ class StoreItem extends React.Component<{
 
   /** Page Render Call */
   componentDidMount() {
-    console.log("isbutton", this.state.isButton);
     document.title = constant.store + getAppName();
     const slug = this.props.location.pathname.split("/")[2];
     if (slug) {
@@ -97,8 +96,7 @@ class StoreItem extends React.Component<{
       this.setState({
         maindata: this.state.maindata = maindata,
       });
-      let m: any = this.state.maindata;
-      localStorage.setItem("merchantID", m.merchantID);
+      
     }
     console.log("maindata", this.state.maindata);
     if (localStorage.getItem("token")) {
@@ -137,13 +135,13 @@ class StoreItem extends React.Component<{
   incrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    let m: any = this.state.maindata;
+    const mid : any = localStorage.getItem('merchantID');
     const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity + 1,
       discountApplied: data.discountApplied,
-      merchantID: m.merchantID,
+      merchantID:parseInt(mid)
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {
@@ -161,13 +159,13 @@ class StoreItem extends React.Component<{
   decrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    let m: any = this.state.maindata;
+    const mid : any = localStorage.getItem('merchantID');
     const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity - 1,
       discountApplied: data.discountApplied,
-      merchantID: m.merchantID,
+      merchantID:parseInt(mid)
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {
@@ -305,8 +303,11 @@ class StoreItem extends React.Component<{
         cartarray: this.state.cartarray = data.data,
       });
       this.cardItem(true);
+    } else {
+      // EventEmitter.dispatch('count', 0);
+      // localStorage.setItem('cartcount','0');
+      // localStorage.removeItem('merchantID');
     }
-    console.log("cartarray", this.state.cartarray);
   }
 
   /**
@@ -355,13 +356,13 @@ class StoreItem extends React.Component<{
             let index = this.state.cartarray.indexOf(selectedItem);
             // console.log("selectedItem: ", selectedItem);
             // console.log("Index: ", index);
-            let m: any = this.state.maindata;
+            const mid : any = localStorage.getItem('merchantID');
             const obj: addCartRequest = {
               userID: user.userID,
               productID: selectedItem.productID,
               quantity: selectedItem.quantity + 1,
               discountApplied: selectedItem.discountApplied,
-              merchantID: m.merchantID,
+              merchantID:parseInt(mid)
             };
             // console.log("increment object: ", obj);
             this.props.updateToCart(obj, this.state.cartarray[index].orderCartID);
@@ -372,14 +373,14 @@ class StoreItem extends React.Component<{
           } else {
             const users: any = localStorage.getItem("user");
             let user = JSON.parse(users);
-            let m: any = this.state.maindata;
+            const mid : any = localStorage.getItem('merchantID');
             const obj: addCartRequest = {
               userID: user.userID,
               productID: data.productId,
               quantity: this.state.qty,
               sellingPrice: data.price,
               discountApplied: data.discountPrice,
-              merchantID: m.merchantID,
+              merchantID:parseInt(mid)
             };
             this.props.addToCart(obj);
     
@@ -394,9 +395,10 @@ class StoreItem extends React.Component<{
     })
       }
     } else {
+      let m: any = this.state.maindata;
+      localStorage.setItem("merchantID", m.merchantID);
       const users: any = localStorage.getItem("user");
       let user = JSON.parse(users);
-      let m: any = this.state.maindata;
       const obj: addCartRequest = {
         userID: user.userID,
         productID: data.productId,
@@ -539,6 +541,7 @@ class StoreItem extends React.Component<{
 
     setTimeout(() => {
       this.getCartData();
+      localStorage.removeItem('merchantID');
     this.setState({
       show:this.state.show = false,
     })
@@ -639,8 +642,9 @@ class StoreItem extends React.Component<{
                     </div>
                   )
                 )}
+            
               <Modal
-                className="modal-dialog-centered"
+                className="modal-dialog-centered d-ct"
                 show={this.state.show}
                 onHide={this.handleClose}
               >
@@ -670,7 +674,8 @@ class StoreItem extends React.Component<{
                 <Modal.Footer>
                 </Modal.Footer>
               </Modal>
-            </div>
+              </div>
+         
           ) : (
             ""
           )}
