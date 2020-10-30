@@ -52,6 +52,9 @@ class Profile extends React.Component<{
     addressid: this.profileState.addressid,
     addresstype: this.profileState.addresstype,
     orderdata: this.profileState.orderdata,
+    workdisabled:this.profileState.workdisabled,
+    otherdisabled:this.profileState.otherdisabled,
+    homedisabled:this.profileState.homedisabled
   };
 
   constructor(props: any) {
@@ -176,7 +179,22 @@ class Profile extends React.Component<{
    * @param data : open model and get address form data
    */
   modelOpen(data: any) {
-    this.setState({ show: !this.state.show });
+    if(data.addressType === "Home") {
+      this.setState({
+        workdisabled:true,
+        otherdisabled:true
+      })
+    } else if(data.addressType === "Work") {
+      this.setState({
+        homedisabled:true,
+        otherdisabled:true
+      })
+    } else if(data.addressType === "Other") {
+      this.setState({
+        homedisabled:true,
+        workdisabled:true
+      })
+    }
     this.setState({
       show: !this.state.show,
       addressid: data.addressID,
@@ -946,6 +964,7 @@ class Profile extends React.Component<{
                                                   }
                                                   onChange={this.changeAddress}
                                                   name="radio"
+                                                  disabled={this.state.homedisabled === true ? true : false}
                                                 />
                                                 <span className="checkmark"></span>
                                               </label>
@@ -966,6 +985,7 @@ class Profile extends React.Component<{
                                                   }
                                                   onChange={this.changeAddress}
                                                   name="radio"
+                                                  disabled={this.state.workdisabled === true ? true : false}
                                                 />
                                                 <span className="checkmark"></span>
                                               </label>
@@ -986,6 +1006,7 @@ class Profile extends React.Component<{
                                                   }
                                                   onChange={this.changeAddress}
                                                   name="radio"
+                                                  disabled={this.state.otherdisabled === true ? true : false}
                                                 />
                                                 <span className="checkmark"></span>
                                               </label>

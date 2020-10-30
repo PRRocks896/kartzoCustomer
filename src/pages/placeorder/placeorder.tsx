@@ -90,7 +90,10 @@ class PlaceOrder extends React.Component<{
     cvverror: this.placeOrderState.cvverror,
     cardid: this.placeOrderState.cardid,
     cardUpdateTrue: this.placeOrderState.cardUpdateTrue,
-    cvvdesc:this.placeOrderState.cvvdesc
+    cvvdesc:this.placeOrderState.cvvdesc,
+    workdisabled:this.placeOrderState.workdisabled,
+    otherdisabled:this.placeOrderState.otherdisabled,
+    homedisabled:this.placeOrderState.homedisabled
   };
 
   constructor(props: any) {
@@ -219,6 +222,9 @@ class PlaceOrder extends React.Component<{
       addresstype: "1",
       updateTrue: false,
       showSection: true,
+      homedisabled:false,
+      workdisabled:false,
+      otherdisabled:false
     });
   }
 
@@ -606,6 +612,22 @@ class PlaceOrder extends React.Component<{
    */
   getAddressData(data: any) {
     console.log("data", data);
+    if(data.addressType === "Home") {
+      this.setState({
+        workdisabled:true,
+        otherdisabled:true
+      })
+    } else if(data.addressType === "Work") {
+      this.setState({
+        homedisabled:true,
+        otherdisabled:true
+      })
+    } else if(data.addressType === "Other") {
+      this.setState({
+        homedisabled:true,
+        workdisabled:true
+      })
+    }
     this.setState({
       showSection: this.state.showSection = true,
       updateTrue: this.state.updateTrue = true,
@@ -1002,6 +1024,7 @@ class PlaceOrder extends React.Component<{
                                   }
                                   onChange={this.changeAddress}
                                   name="radio"
+                                  disabled={this.state.homedisabled === true ? true : false}
                                 />
                                 <span className="checkmark"></span>
                               </label>
@@ -1019,6 +1042,7 @@ class PlaceOrder extends React.Component<{
                                   }
                                   onChange={this.changeAddress}
                                   name="radio"
+                                  disabled={this.state.workdisabled === true ? true : false}
                                 />
                                 <span className="checkmark"></span>
                               </label>
@@ -1036,6 +1060,7 @@ class PlaceOrder extends React.Component<{
                                   }
                                   onChange={this.changeAddress}
                                   name="radio"
+                                  disabled={this.state.otherdisabled === true ? true : false}
                                 />
                                 <span className="checkmark"></span>
                               </label>

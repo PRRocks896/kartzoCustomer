@@ -6,5 +6,8 @@ export interface profileStateRequest {
     mobilephoneerror:string,
     addressid:string,
     addresstype:string,
-    orderdata:any
+    orderdata:any,
+    workdisabled:boolean,
+    otherdisabled:boolean,
+    homedisabled:boolean
 }

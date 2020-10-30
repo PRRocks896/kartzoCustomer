@@ -103,6 +103,9 @@ export default {
       addressid: "",
       addresstype: "1",
       orderdata: [],
+      workdisabled:false,
+      otherdisabled:false,
+      homedisabled:false
     },
   },
   categoryPage: {
@@ -236,7 +239,10 @@ export default {
       cvverror: "",
       cardid: 0,
       cardUpdateTrue: false,
-      cvvdesc:false
+      cvvdesc:false,
+      workdisabled:false,
+    otherdisabled:false,
+    homedisabled:false
     },
     bankarray: [
       { title: "Airtel Payments Bank", value: "6" },
