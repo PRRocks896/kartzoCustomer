@@ -36,7 +36,6 @@ class TrackOrder extends React.Component<{show: boolean}> {
                   </a>
                 </div>
                 <div className="right-content">
-                  
                   <div className="cart-icon">
                     <img src={trackorder.shopping} alt="cart-icon" />
                   </div>

@@ -5,12 +5,14 @@ import { connect } from "react-redux";
 import { categoryService } from "../../../redux/actions/index";
 import "./categories.css";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import { categoryStateRequest, getCategoryListRequest } from "../../../modelController";
+import {
+  categoryStateRequest,
+  getCategoryListRequest,
+} from "../../../modelController";
 
 class Categories extends React.Component<{ getCategoryData: any }> {
-
   /** Category Page State */
-  categoryPageState : categoryStateRequest = constant.categoryPage.state;
+  categoryPageState: categoryStateRequest = constant.categoryPage.state;
   state = {
     categorydata: this.categoryPageState.categorydata,
     isLoading: this.categoryPageState.isLoading,
@@ -27,7 +29,7 @@ class Categories extends React.Component<{ getCategoryData: any }> {
   }
 
   /**
-   * 
+   *
    * @param nextProps : get updated props value
    */
   componentWillReceiveProps(nextProps: any) {
@@ -43,13 +45,13 @@ class Categories extends React.Component<{ getCategoryData: any }> {
   }
 
   /**
-   * 
+   *
    * @param searchText : search value
    * @param page : page number
    * @param size : per page value display
    */
   getCategory(searchText: string = "", page: number = 1, size: number = 10) {
-    const obj : getCategoryListRequest = {
+    const obj: getCategoryListRequest = {
       searchText: searchText,
       page: page,
       size: size,
@@ -58,7 +60,7 @@ class Categories extends React.Component<{ getCategoryData: any }> {
   }
 
   /**
-   * 
+   *
    * @param data : get category data response
    */
   getCategoryResponse(data: any) {
@@ -86,58 +88,86 @@ class Categories extends React.Component<{ getCategoryData: any }> {
               <div className="row">
                 {this.state.categorydata
                   ? this.state.categorydata.length > 0 &&
-                    this.state.categorydata.map((c: any, index: number) => (
+                    this.state.categorydata.map((c: any, index: number) =>
                       c.parentCategoryId === 0 ? (
                         <div key={index} className="col-sm-6 col-md-4 col-lg-3">
-                        <Link to={`/order/${c.slug}`}>
-                          <div
-                            className="box-1"
-                            style={{
-                              border: `1px solid ${constant.categoryColor[index].clr}`,
-                            }}
-                          >
-                            <div
-                              className="bdr-bottom"
-                              style={{
-                                background: `${constant.categoryColor[index].bclr}`,
-                              }}
-                            ></div>
-                            {c.imagePath ? (
-                              <img
-                                className="category_img"
-                                src={constant.filepath + c.imagePath}
-                                alt={c.category}
-                              />
-                            ) : (
-                              ""
-                            )}
-                            <div className="tt-1">{c.category}</div>
-                          </div>
-                        </Link>
-                      </div>
+                          {c.category === "Pickup & Drop" ? (
+                            <Link to="/send-packages">
+                              <div
+                                className="box-1"
+                                style={{
+                                  border: `1px solid ${constant.categoryColor[index].clr}`,
+                                }}
+                              >
+                                <div
+                                  className="bdr-bottom"
+                                  style={{
+                                    background: `${constant.categoryColor[index].bclr}`,
+                                  }}
+                                ></div>
+                                {c.imagePath ? (
+                                  <img
+                                    className="category_img"
+                                    src={constant.filepath + c.imagePath}
+                                    alt={c.category}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                                <div className="tt-1">{c.category}</div>
+                              </div>
+                            </Link>
+                          ) : (
+                            <Link to={`/order/${c.slug}`}>
+                              <div
+                                className="box-1"
+                                style={{
+                                  border: `1px solid ${constant.categoryColor[index].clr}`,
+                                }}
+                              >
+                                <div
+                                  className="bdr-bottom"
+                                  style={{
+                                    background: `${constant.categoryColor[index].bclr}`,
+                                  }}
+                                ></div>
+                                {c.imagePath ? (
+                                  <img
+                                    className="category_img"
+                                    src={constant.filepath + c.imagePath}
+                                    alt={c.category}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                                <div className="tt-1">{c.category}</div>
+                              </div>
+                            </Link>
+                          )}
+                        </div>
                       ) : (
-                        ''
+                        ""
                       )
-                    ))
+                    )
                   : ""}
               </div>
             </div>
           ) : (
             <div className="main-div">
               <div className="row">
-                {[1,2,3, 4].map((data: any, index: number) => (
-                <div key={index} className="col-sm-6 col-md-4 col-lg-3">
-                  <SkeletonTheme color="#202020" highlightColor="#444">
-                  <div className="box-1">
-                    <div className="bdr-bottom">
-                      <Skeleton count={1} />
-                    </div>
-                    {/* <img alt="img"className="category_img">
+                {[1, 2, 3, 4].map((data: any, index: number) => (
+                  <div key={index} className="col-sm-6 col-md-4 col-lg-3">
+                    <SkeletonTheme color="#202020" highlightColor="#444">
+                      <div className="box-1">
+                        <div className="bdr-bottom">
+                          <Skeleton count={1} />
+                        </div>
+                        {/* <img alt="img"className="category_img">
                       <Skeleton count={1} />
                     </img> */}
-                    </div>
-                  </SkeletonTheme>
-                </div>
+                      </div>
+                    </SkeletonTheme>
+                  </div>
                 ))}
               </div>
             </div>
