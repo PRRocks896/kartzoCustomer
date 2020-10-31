@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import constant from "../../constant/constant";
 import SelectSearch from "react-select-search";
 import './banner.css';
-import { merchantService } from "../../../redux/actions";
+import { merchantService } from "../../../redux/index";
 import { connect } from "react-redux";
 import { searchCityListRequest } from "../../../modelController";
 

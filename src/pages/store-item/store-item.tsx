@@ -20,7 +20,7 @@ import {
   searchProductListRequest,
   storeitemStateRequest,
 } from "../../modelController";
-import { productService } from "../../redux/actions";
+import { productService } from "../../redux/index";
 import { Modal } from "react-bootstrap";
 
 class StoreItem extends React.Component<{

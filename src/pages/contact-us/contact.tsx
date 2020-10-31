@@ -7,15 +7,19 @@ import "./contact.css";
 import constant from "../constant/constant";
 
 class ContactUs extends React.Component {
+
+  /** Constructor call */
   constructor(props: any) {
     super(props);
   }
 
+  /** Page Render Call */
   componentDidMount() {
     document.title = constant.contact + getAppName();
     scrollToTop();
   }
 
+  /** Render Call */
   render() {
     return (
       <>

@@ -7,7 +7,7 @@ import {
   profileStateRequest,
 } from "../../modelController";
 import { profile } from "../../pages/components/helper/images";
-import { placeOrderService, orderService } from "../../redux/actions";
+import { placeOrderService, orderService } from "../../redux/index";
 import constant from "../constant/constant";
 import { getAppName, alertMessage } from "../utils";
 import "./profile.css";

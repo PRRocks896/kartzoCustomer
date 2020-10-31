@@ -17,7 +17,7 @@ import constant from "../constant/constant";
 import { getAppName, alertMessage } from "../utils";
 import { connect } from "react-redux";
 import "./placeorder.css";
-import { placeOrderService, productService } from "../../redux/actions";
+import { placeOrderService, productService } from "../../redux/index";
 var creditCardType = require("credit-card-type");
 
 class PlaceOrder extends React.Component<{

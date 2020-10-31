@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import constant from "../../constant/constant";
 import { connect } from "react-redux";
-import { categoryService } from "../../../redux/actions/index";
+import { categoryService } from "../../../redux/index";
 import "./categories.css";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import {

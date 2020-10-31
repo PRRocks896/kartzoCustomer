@@ -8,7 +8,7 @@ import Information from "../home/information/information";
 import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
 import { searchcityStateRequest,getCategoryListRequest } from "../../modelController";
-import { categoryService } from "../../redux/actions/index";
+import { categoryService } from "../../redux/index";
 import { connect } from "react-redux";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 

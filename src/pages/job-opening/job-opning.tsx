@@ -3,14 +3,18 @@ import constant from "../constant/constant";
 import { getAppName } from "../utils";
 
 class JobOpening extends React.Component {
+
+  /** Constructor call */
   constructor(props: any) {
     super(props);
   }
 
+  /** Page Render Call */
   componentDidMount() {
     document.title = constant.job + getAppName();
   }
 
+  /** Render DOM */
   render() {
     return (
       <section className="current-job">

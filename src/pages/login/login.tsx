@@ -6,7 +6,7 @@ import constant from "../constant/constant";
 import OtpInput from "react-otp-input";
 import { connect } from "react-redux";
 // import { withRouter } from 'react-router-dom';
-import { loginService } from "../../redux/actions/index";
+import { loginService } from "../../redux/index";
 import "./login.css";
 import { getAppName } from "../utils";
 import { getAdminTokenRequest, loginCreateRequest, loginStateRequest, verifyOtpRequest } from "../../modelController";
