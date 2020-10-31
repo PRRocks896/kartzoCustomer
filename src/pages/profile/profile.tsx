@@ -131,7 +131,7 @@ class Profile extends React.Component<{
    * @param nextProps : updated props
    */
   componentWillReceiveProps(nextProps: any) {
-    console.log("props", nextProps);
+    // console.log("props", nextProps);
     if (nextProps.addressDetails) {
       this.setState({
         show: this.state.show = false,
@@ -251,7 +251,7 @@ class Profile extends React.Component<{
           if (request.status === 200) {
             var data = JSON.parse(request.responseText);
             var address = data.results[0];
-            console.log("address", address);
+            // console.log("address", address);
             if (address && address.address_components.length > 0) {
               _this.setState({
                 area: address.address_components[1].long_name
@@ -1246,16 +1246,32 @@ class Profile extends React.Component<{
   }
 }
 
+/**
+ * 
+ * @param state : api call response update state
+ */
 const mapStateToProps = (state: any) => ({
   addressDetails: state.placeOrder.addressdata,
   orderDetails: state.order.orderdata,
 });
 
+/**
+ * 
+ * @param dispatch : call api with action
+ */
 const mapDispatchToProps = (dispatch: any) => ({
+
+  /** Get Address Data */
   getAddressList: (data: any) =>
     dispatch(placeOrderService.getAddressList(data)),
+
+  /** Update Address */
   updateAddress: (data: any) => dispatch(placeOrderService.updateAddress(data)),
+
+  /** Delete Address */
   deleteAddress: (data: any) => dispatch(placeOrderService.deleteAddress(data)),
+
+  /** Get Order list */
   getOrderList: (data: any) => dispatch(orderService.getOrderList(data)),
 });
 

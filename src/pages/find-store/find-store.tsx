@@ -498,11 +498,19 @@ class FindStore extends React.Component<{
   }
 }
 
+/**
+ * 
+ * @param state : api call response update state
+ */
 const mapStateToProps = (state: any) => ({
   merchantDetail: state.merchant.merchant,
   locationDetail: state.merchant.locationdata,
 });
 
+/**
+ * 
+ * @param dispatch : call api with action
+ */
 const mapDispatchToProps = (dispatch: any) => ({
   getMerchantData: (data: any) =>
     dispatch(merchantService.getMerchantData(data)),

@@ -208,7 +208,7 @@ function getProductDataWithSearching(data: any) {
 
     StoreAPI.getProductData(data)
       .then((searchdatadetail: any) => {
-        console.log("searchdatadetail", searchdatadetail);
+        // console.log("searchdatadetail", searchdatadetail);
         if (searchdatadetail.status === 200) {
           dispatch(success(searchdatadetail.data.resultObject));
         }

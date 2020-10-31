@@ -52,7 +52,7 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
    * @param nextProps : get updated props value
    */
   componentWillReceiveProps(nextProps: any) {
-    console.log("props", nextProps);
+    // console.log("props", nextProps);
     if (nextProps.locationDetail) {
       this.locationdetails(nextProps.locationDetail);
     }
@@ -63,7 +63,7 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
    * @param data : get lcoation details
    */
   locationdetails(data:any) {
-    console.log("data",data);
+    // console.log("data",data);
     this.setState({
       locationData:this.state.locationData = data
     })
@@ -74,7 +74,7 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
    * @param data : get selected city id
    */
   onlocationSelectId(data:any) {
-    console.log("data",data);
+    // console.log("data",data);
    this.setState({
      cityid:this.state.cityid = data
    })
@@ -178,11 +178,21 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
   }
 }
 
+/**
+ * 
+ * @param state : api call response update state
+ */
 const mapStateToProps = (state: any) => ({
   locationDetail: state.merchant.locationdata
 });
 
+/**
+ * 
+ * @param dispatch : call api with action
+ */
 const mapDispatchToProps = (dispatch: any) => ({
+
+  /** Search Location */
     searchLocationResponse: (data: any) =>
     dispatch(merchantService.searchLocationResponse(data))
 });

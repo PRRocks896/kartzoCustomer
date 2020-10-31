@@ -63,7 +63,7 @@ class Login extends React.Component<{
    * @param nextProps : get updated props value
    */
   componentWillReceiveProps(nextProps: any) {
-    console.log("props", nextProps);
+    // console.log("props", nextProps);
     const data: any = nextProps;
 
     /** otp get success response */
@@ -405,13 +405,28 @@ class Login extends React.Component<{
   }
 }
 
+/**
+ * 
+ * @param state : api call response update state
+ */
 const mapStateToProps = (state: any) => ({
   userDetail: state.auth.user,
   otpverify: state.auth.otpdetail,
 });
+
+/**
+ * 
+ * @param dispatch : call api with action
+ */
 const mapDispatchToProps = (dispatch: any) => ({
+
+  /** Login Functionality */
   login: (data: any) => dispatch(loginService.login(data)),
+
+  /** Verify OTP */
   verifyOtp: (data: any) => dispatch(loginService.verifyOtp(data)),
+
+  /** Get Admin Token */
   getAdminToken: (data: any) => dispatch(loginService.getAdminToken(data)),
 });
 

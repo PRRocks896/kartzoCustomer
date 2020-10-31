@@ -84,7 +84,7 @@ function updateAddress(data: any) {
 
     PlaceOrderAPI.updateAddress(data)
       .then((updateaddress: any) => {
-        console.log("updateaddress", updateaddress);
+        // console.log("updateaddress", updateaddress);
         if (updateaddress.status === 200) {
           dispatch(success(updateaddress.data.resultObject));
         }
@@ -115,7 +115,7 @@ function deleteAddress(data: any) {
 
     PlaceOrderAPI.deleteAddress(data)
       .then((deleteaddress: any) => {
-        console.log("deleteaddress", deleteaddress);
+        // console.log("deleteaddress", deleteaddress);
         if (deleteaddress.status === 200) {
           dispatch(success(deleteaddress.data.resultObject));
         }

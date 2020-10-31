@@ -288,7 +288,7 @@ class PlaceOrder extends React.Component<{
     this.setState({
       banktype: this.state.banktype = parseInt(e.target.id),
     });
-    console.log("banktype", this.state.banktype);
+    // console.log("banktype", this.state.banktype);
   }
 
   /**
@@ -299,7 +299,7 @@ class PlaceOrder extends React.Component<{
     this.setState({
       banktype: this.state.banktype = parseInt(e.target.value),
     });
-    console.log("banktype", this.state.banktype);
+    // console.log("banktype", this.state.banktype);
   }
 
   /**
@@ -307,7 +307,7 @@ class PlaceOrder extends React.Component<{
    * @param nextProps : get updated props value
    */
   componentWillReceiveProps(nextProps: any, newState: any) {
-    console.log("props", nextProps);
+    // console.log("props", nextProps);
     if (nextProps.getCartDetail) {
       this.getCartAllProductData(nextProps.getCartDetail);
     }
@@ -373,7 +373,6 @@ class PlaceOrder extends React.Component<{
     } else {
       EventEmitter.dispatch('count', 0);
       localStorage.setItem('cartcount','0');
-      // localStorage.removeItem('merchantID');
     }
   }
 
@@ -413,7 +412,7 @@ class PlaceOrder extends React.Component<{
           if (request.status === 200) {
             var data = JSON.parse(request.responseText);
             var address = data.results[0];
-            console.log("address", address);
+            // console.log("address", address);
             if (address && address.address_components.length > 0) {
               _this.setState({
                 area: address.address_components[1].long_name
@@ -611,7 +610,7 @@ class PlaceOrder extends React.Component<{
    * @param data : get address data
    */
   getAddressData(data: any) {
-    console.log("data", data);
+    // console.log("data", data);
     if(data.addressType === "Home") {
       this.setState({
         workdisabled:true,
@@ -1265,7 +1264,7 @@ class PlaceOrder extends React.Component<{
     this.setState({
       month: this.state.month = parseInt(e.target.value),
     });
-    console.log("month", this.state.month);
+    // console.log("month", this.state.month);
   }
 
   /**
@@ -1273,7 +1272,7 @@ class PlaceOrder extends React.Component<{
    * @param e : year value
    */
   onYearChange(e: any) {
-    console.log("year", e.target.value, this.state.year);
+    // console.log("year", e.target.value, this.state.year);
     this.setState({
       year: this.state.year = parseInt(e.target.value),
     });
@@ -1328,7 +1327,7 @@ class PlaceOrder extends React.Component<{
       let user = JSON.parse(users);
       if (this.state.cardnumber) {
         var visaCards = creditCardType(this.state.cardnumber);
-        console.log("card type", visaCards[0].type);
+        // console.log("card type", visaCards[0].type);
         this.setState({
           cardtype: this.state.cardtype = visaCards[0].type,
         });
@@ -1370,7 +1369,7 @@ class PlaceOrder extends React.Component<{
    * @param data : get card data
    */
   getCardData(data: any) {
-    console.log("data", data);
+    // console.log("data", data);
     this.setState({
       isCard: this.state.isCard = true,
       cardUpdateTrue: this.state.cardUpdateTrue = true,
@@ -1395,7 +1394,7 @@ class PlaceOrder extends React.Component<{
       let user = JSON.parse(users);
       if (this.state.cardnumber) {
         var visaCards = creditCardType(this.state.cardnumber);
-        console.log("card type", visaCards[0].type);
+        // console.log("card type", visaCards[0].type);
         this.setState({
           cardtype: this.state.cardtype = visaCards[0].type,
         });
@@ -2190,6 +2189,11 @@ class PlaceOrder extends React.Component<{
   }
 }
 
+
+/**
+ * 
+ * @param state : api call response update state
+ */
 const mapStateToProps = (state: any) => ({
   addressDetails: state.placeOrder.addressdata,
   getCartDetail: state.product.getcartdetails,
@@ -2197,19 +2201,44 @@ const mapStateToProps = (state: any) => ({
   getCardDetail: state.placeOrder.getcarddata,
 });
 
+/**
+ * 
+ * @param dispatch : call api with action
+ */
 const mapDispatchToProps = (dispatch: any) => ({
+
+  /** Get Address List */
   getAddressList: (data: any) =>
     dispatch(placeOrderService.getAddressList(data)),
+
+  /** Add Address */
   addAddress: (data: any) => dispatch(placeOrderService.addAddress(data)),
+
+  /** Get cart data */
   getcartData: (data: any) => dispatch(productService.getcartData(data)),
+
+  /** Update cart */
   updateToCart: (data: any, id: any) =>
     dispatch(productService.updateToCart(data, id)),
+
+  /** Update Address */
   updateAddress: (data: any) => dispatch(placeOrderService.updateAddress(data)),
+
+  /** Delete Address */
   deleteAddress: (data: any) => dispatch(placeOrderService.deleteAddress(data)),
+
+  /** Add Card */
   addCard: (data: any) => dispatch(placeOrderService.addCard(data)),
+
+  /** Get card */
   getcard: (data: any) => dispatch(placeOrderService.getcard(data)),
+
+  /** Update Card */
   updateCard: (data: any) => dispatch(placeOrderService.updateCard(data)),
-  deleteCard: (data: any) => dispatch(placeOrderService.deleteCard(data)),
+
+  /** Delete card */
+  deleteCard: (data: any) => dispatch(placeOrderService.deleteCard(data))
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrder);

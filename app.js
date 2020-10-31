@@ -27,68 +27,6 @@ app.get('/store/:slug', function(req, res) {
     res.sendFile(path.join(__dirname  + '/build/index.html'));
 });
 
-// app.get('/signin', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-
-// app.get('/about', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-// app.get('/contact-us', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-// app.get('/carrers', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-
-// app.get('/carrers-job', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-
-// app.get('/partners', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-// app.get('/business', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-// app.get('/search-city', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-// app.get('/track-order', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-// app.get('/find-store', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-// app.get('/store-item', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-
-// app.get('/placeorder', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-
-// app.get('/cart', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-// app.get('/profile', function(req, res) {
-//     res.sendFile(path.join(__dirname  + '/build/index.html'));
-// });
-
-
 
 
 

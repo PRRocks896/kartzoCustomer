@@ -98,7 +98,7 @@ class StoreItem extends React.Component<{
       });
       
     }
-    console.log("maindata", this.state.maindata);
+    // console.log("maindata", this.state.maindata);
     if (localStorage.getItem("token")) {
       this.getCartData();
     }
@@ -211,7 +211,7 @@ class StoreItem extends React.Component<{
    * @param nextProps : get updated props value
    */
   componentWillReceiveProps(nextProps: any) {
-    console.log("props", nextProps);
+    // console.log("props", nextProps);
     if (nextProps.productDetail) {
       this.getSubCategory(nextProps.productDetail.subcategory);
       this.productData(nextProps.productDetail.data);
@@ -259,7 +259,7 @@ class StoreItem extends React.Component<{
    * @param id : select product id
    */
   onProductSelectId(id: any) {
-    console.log("e", id);
+    // console.log("e", id);
     const obj: getProductListRequest = {
       searchText: "",
       productId: id,
@@ -284,7 +284,7 @@ class StoreItem extends React.Component<{
         ? this.state.categorydata[0].value
         : "",
     });
-    console.log("link", this.state.activeLink);
+    // console.log("link", this.state.activeLink);
   }
 
   /**
@@ -425,9 +425,9 @@ class StoreItem extends React.Component<{
    * @param id : click to scroll value particular section
    */
   handleClickEvent(id: any) {
-    console.log("id", id, this.ref[id]);
+    // console.log("id", id, this.ref[id]);
     this.setState({ activeLink: parseInt(id) });
-    console.log("ref", this.ref[id]);
+    // console.log("ref", this.ref[id]);
     this.ref[id].scrollIntoView();
     // this.ref.id.scrollIntoView({
     //   behavior: "smooth",
@@ -681,9 +681,9 @@ class StoreItem extends React.Component<{
           )}
           {categorydata &&
             categorydata.map((cat: any, index: number) => (
+              <div  ref={el => (this.ref[cat.value] = el)}  key={"item-" + index}>
               <div
-              ref={el => (this.ref[cat.value] = el)}
-                key={"item-" + index}
+                id={cat.value}
                 className="item-details-1"
               >
                 <div className="item-nm-tt">{cat.name}</div>
@@ -703,7 +703,7 @@ class StoreItem extends React.Component<{
                   // )
                   ""
                 )}
-
+ 
                 {productdata &&
                   productdata.map((product: any, index: number) =>
                     product.subCategoryId === cat.value ? (
@@ -772,6 +772,7 @@ class StoreItem extends React.Component<{
                       ""
                     )
                   )}
+              </div>
               </div>
             ))}
         </div>
@@ -935,6 +936,10 @@ class StoreItem extends React.Component<{
   }
 }
 
+/**
+ * 
+ * @param state : api call response update state
+ */
 const mapStateToProps = (state: any) => ({
   productDetail: state.product.product,
   addToCartDetail: state.product.addcartdata,
@@ -943,17 +948,35 @@ const mapStateToProps = (state: any) => ({
   searchableProduct: state.product.searchproduct,
 });
 
+/**
+ * 
+ * @param dispatch : call api with action
+ */
 const mapDispatchToProps = (dispatch: any) => ({
+  
+  /** Get Products data */
   getProductsData: (data: any) =>
     dispatch(productService.getProductsData(data)),
+
+  /** Add to cart */
   addToCart: (data: any) => dispatch(productService.addToCart(data)),
+
+  /** Update Cart */
   updateToCart: (data: any, id: any) =>
     dispatch(productService.updateToCart(data, id)),
+
+  /** Get Cart Data */
   getcartData: (data: any) => dispatch(productService.getcartData(data)),
+
+  /** Get Search Product */
   getSearchProduct: (data: any) =>
     dispatch(productService.getSearchProduct(data)),
+
+  /** Get Product with searching */
   getProductDataWithSearching: (data: any) =>
     dispatch(productService.getProductDataWithSearching(data)),
+
+  /** Remove Product form cart */
     removeProductFromCart: (data: any) =>
     dispatch(productService.removeProductFromCart(data)),
 });

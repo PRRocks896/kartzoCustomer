@@ -97,7 +97,6 @@ class Cart extends React.Component<{
     } else {
       EventEmitter.dispatch('count', 0);
       localStorage.setItem('cartcount','0');
-      // localStorage.removeItem('merchantID');
     }
   }
 
@@ -459,15 +458,29 @@ class Cart extends React.Component<{
   }
 }
 
+/**
+ * 
+ * @param state : api call response update state
+ */
 const mapStateToProps = (state: any) => ({
   addToCartDetail: state.product.addcartdata,
   getCartDetail: state.product.getcartdetails,
 });
 
+/**
+ * 
+ * @param dispatch : call api with action
+ */
 const mapDispatchToProps = (dispatch: any) => ({
+  
+  /** Update Cart */
   updateToCart: (data: any, id: any) =>
     dispatch(productService.updateToCart(data, id)),
+
+  /** Get Cart */
   getcartData: (data: any) => dispatch(productService.getcartData(data)),
+  
+  /** Remove Product */
   removeProductFromCart: (data: any) =>
     dispatch(productService.removeProductFromCart(data)),
 });

@@ -15,7 +15,7 @@ function getOrderList(data: any) {
 
     OrderAPI.getOrderListData(data)
       .then((getorderdata: any) => {
-        console.log("getorderdata", getorderdata);
+        // console.log("getorderdata", getorderdata);
         if (getorderdata.status === 200) {
           dispatch(success(getorderdata.resultObject.data));
         }

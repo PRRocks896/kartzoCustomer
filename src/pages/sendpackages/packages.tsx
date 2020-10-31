@@ -2,32 +2,38 @@ import React from "react";
 import ReactDOM from "react-dom";
 import MyMapComponent from "../map/map";
 import EventEmitter from "../../event";
+import constant from "../constant/constant";
+import { packageStateRequest } from "../../modelController/packageModel";
 
 class Packages extends React.Component {
+
+  /** Package state */
+  packagesState : packageStateRequest = constant.packagesPage.state;
   state = {
-    lat: 22.2856,
-    long: 70.7561,
-    isMarkerShown: false,
-    city: "",
-    cityerror: "",
-    area: "",
-    country: "",
-    countryerror: "",
-    state: "",
-    stateerror: "",
-    pincode: "",
-    pincodeerror: "",
-    addresserror: "",
-    address: "",
-    name: "",
-    nameerror: "",
-    addresstype:"1",
-    addresstypeerror: "",
-    mobileerror: "",
-    mobile: "",
-    landmark: "",
-    landmarkerror: "",
+    lat:this.packagesState.lat,
+    long: this.packagesState.long,
+    isMarkerShown: this.packagesState.isMarkerShown,
+    city: this.packagesState.city,
+    cityerror: this.packagesState.cityerror,
+    area: this.packagesState.area,
+    country: this.packagesState.country,
+    countryerror: this.packagesState.countryerror,
+    state: this.packagesState.state,
+    stateerror: this.packagesState.stateerror,
+    pincode: this.packagesState.pincode,
+    pincodeerror: this.packagesState.pincodeerror,
+    addresserror: this.packagesState.addresserror,
+    address: this.packagesState.address,
+    name: this.packagesState.name,
+    nameerror: this.packagesState.nameerror,
+    addresstype:this.packagesState.addresstype,
+    addresstypeerror: this.packagesState.addresstypeerror,
+    mobileerror: this.packagesState.mobileerror,
+    mobile: this.packagesState.mobile,
+    landmark: this.packagesState.landmark,
+    landmarkerror: this.packagesState.landmarkerror,
   };
+
   constructor(props: any) {
     super(props);
     EventEmitter.subscribe("latlong", (data: any) => {
@@ -39,6 +45,11 @@ class Packages extends React.Component {
     });
   }
 
+  /**
+   * 
+   * @param latitude : latitude
+   * @param longitude : longitude
+   */
   async getAddress(latitude: any, longitude: any) {
     let _this = this;
     return new Promise(function (resolve, reject) {
@@ -88,6 +99,7 @@ class Packages extends React.Component {
     });
   }
 
+  /** Render DOM */
   render() {
     return (
       <div style={{margin:'auto',width:'500px'}}>

@@ -178,11 +178,21 @@ class Categories extends React.Component<{ getCategoryData: any }> {
   }
 }
 
+/**
+ * 
+ * @param state : api call response update state
+ */
 const mapStateToProps = (state: any) => ({
   categoryDetail: state.category.category,
 });
 
+/**
+ * 
+ * @param dispatch : call api with action
+ */
 const mapDispatchToProps = (dispatch: any) => ({
+
+  /** Get category data */
   getCategoryData: (data: any) =>
     dispatch(categoryService.getCategoryData(data)),
 });

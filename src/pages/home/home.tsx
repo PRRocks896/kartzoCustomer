@@ -52,7 +52,7 @@ class Home extends React.Component<{history:any,getcartData:any}> {
    * @param nextProps : get updated props 
    */
   componentWillReceiveProps(nextProps: any) {
-    console.log("props", nextProps);
+    // console.log("props", nextProps);
     if (nextProps.getCartDetail) {
       this.getCartAllProductData(nextProps.getCartDetail);
     }
@@ -82,12 +82,21 @@ class Home extends React.Component<{history:any,getcartData:any}> {
   }
 }
 
-
+/**
+ * 
+ * @param state : api call response update state
+ */
 const mapStateToProps = (state: any) => ({
   getCartDetail: state.product.getcartdetails
 });
 
+/**
+ * 
+ * @param dispatch : call api with action
+ */
 const mapDispatchToProps = (dispatch: any) => ({
+
+  /** Get cart data */
   getcartData: (data: any) => dispatch(productService.getcartData(data))
 });
 
