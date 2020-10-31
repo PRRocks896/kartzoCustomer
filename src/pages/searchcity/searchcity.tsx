@@ -24,6 +24,7 @@ class SearchCity extends React.Component<{
     isLoading: this.searchcityState.isLoading,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.getCategory = this.getCategory.bind(this);

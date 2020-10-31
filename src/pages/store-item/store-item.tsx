@@ -56,6 +56,7 @@ class StoreItem extends React.Component<{
     show: this.storeItemState.show,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.handleClick = this.handleClick.bind(this);

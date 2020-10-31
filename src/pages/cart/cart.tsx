@@ -140,7 +140,9 @@ class Cart extends React.Component<{
       discountApplied: data.discountApplied,
       merchantID:parseInt(mid)
     };
+    
     this.props.updateToCart(obj, data.orderCartID);
+
     setTimeout(() => {
       this.getCartData();
     }, 200);

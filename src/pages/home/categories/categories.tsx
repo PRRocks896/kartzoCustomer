@@ -11,6 +11,7 @@ import {
 } from "../../../modelController";
 
 class Categories extends React.Component<{ getCategoryData: any }> {
+
   /** Category Page State */
   categoryPageState: categoryStateRequest = constant.categoryPage.state;
   state = {
@@ -18,6 +19,7 @@ class Categories extends React.Component<{ getCategoryData: any }> {
     isLoading: this.categoryPageState.isLoading,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.getCategory = this.getCategory.bind(this);

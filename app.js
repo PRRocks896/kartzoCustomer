@@ -4,13 +4,14 @@ var path = require('path');
 
 var app = express();
 
-// Use for angular
+// Use for react
 var distDir = __dirname + "/build";
 app.use(express.static(distDir));
 app.use(function(req,res) {
   res.sendFile(path.join(__dirname  + '/build/index.html'));
 });
 
+// Path
 app.get('/:path', function(req, res) {
     res.sendFile(path.join(__dirname  + '/build/index.html'));
 });
@@ -26,9 +27,6 @@ app.get('/order/:slug', function(req, res) {
 app.get('/store/:slug', function(req, res) {
     res.sendFile(path.join(__dirname  + '/build/index.html'));
 });
-
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

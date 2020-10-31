@@ -43,6 +43,8 @@ class FindStore extends React.Component<{
     locationData: this.findstoreState.locationData,
     cityid: this.findstoreState.cityid,
   };
+
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.btnIncrementClick = this.btnIncrementClick.bind(this);
@@ -512,8 +514,12 @@ const mapStateToProps = (state: any) => ({
  * @param dispatch : call api with action
  */
 const mapDispatchToProps = (dispatch: any) => ({
+
+  /** Get Merchant Data */
   getMerchantData: (data: any) =>
     dispatch(merchantService.getMerchantData(data)),
+
+  /** Search Location */
   searchLocationResponse: (data: any) =>
     dispatch(merchantService.searchLocationResponse(data)),
 });

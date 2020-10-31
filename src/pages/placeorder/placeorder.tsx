@@ -96,6 +96,7 @@ class PlaceOrder extends React.Component<{
     homedisabled:this.placeOrderState.homedisabled
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.change = this.change.bind(this);

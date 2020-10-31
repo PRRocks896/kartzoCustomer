@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { searchCityListRequest } from "../../../modelController";
 
 class Banner extends React.Component<{ history: any,searchLocationResponse:any }> {
+
   /** Banner Page State */
   bannerState = constant.bannerPage.state;
   state = {
@@ -21,6 +22,7 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
     cityid:this.bannerState.cityid
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.searchLocationDataKeyUp = this.searchLocationDataKeyUp.bind(this);

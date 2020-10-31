@@ -40,6 +40,7 @@ class Login extends React.Component<{
     disabledInput: this.loginState.disabledInput,
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.handleChangeEvent = this.handleChangeEvent.bind(this);

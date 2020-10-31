@@ -57,6 +57,7 @@ class Profile extends React.Component<{
     homedisabled:this.profileState.homedisabled
   };
 
+  /** Constructor call */
   constructor(props: any) {
     super(props);
     this.logout = this.logout.bind(this);

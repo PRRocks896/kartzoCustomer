@@ -14,6 +14,8 @@ import { productService } from "../../redux/actions";
 import { getCartListRequest } from "../../modelController";
 
 class Home extends React.Component<{history:any,getcartData:any}> {
+  
+  /** Constrctor Call */
   constructor(props: any) {
     super(props);
   }
