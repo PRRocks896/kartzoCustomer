@@ -16,7 +16,7 @@ import {
   getMerchantListRequest,
   searchCityListRequest,
 } from "../../modelController";
-import { merchantService } from "../../redux/actions";
+import { merchantService } from "../../redux/index";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 class FindStore extends React.Component<{
