@@ -682,7 +682,7 @@ class StoreItem extends React.Component<{
           {categorydata &&
             categorydata.map((cat: any, index: number) => (
               <div
-                ref={(node: any) => (this.ref[cat.value] = node)}
+              ref={el => (this.ref[cat.value] = el)}
                 key={"item-" + index}
                 className="item-details-1"
               >

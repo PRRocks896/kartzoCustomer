@@ -63,8 +63,8 @@ class Home extends React.Component<{history:any,getcartData:any}> {
    * @param data : get total count of cart item
    */
   getCartAllProductData(data: any) {
-    localStorage.setItem("cartcount", data.totalcount);
-    EventEmitter.dispatch('count', data.totalcount);
+    localStorage.setItem("cartcount", data.totalcount ? data.totalcount : 0);
+    EventEmitter.dispatch('count', data.totalcount ? data.totalcount : 0);
   }
 
   /** Render DOM */

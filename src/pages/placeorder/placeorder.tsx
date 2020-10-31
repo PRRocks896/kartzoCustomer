@@ -373,7 +373,7 @@ class PlaceOrder extends React.Component<{
     } else {
       EventEmitter.dispatch('count', 0);
       localStorage.setItem('cartcount','0');
-      localStorage.removeItem('merchantID');
+      // localStorage.removeItem('merchantID');
     }
   }
 
