@@ -355,217 +355,223 @@ class Packages extends React.Component<{ getAddressList: any }> {
           <Modal.Footer></Modal.Footer>
         </Modal>
         <div className="main-package">
-        <Modal
-          className="modal-dialog-centered main-package"
-          show={this.state.showMap}
-          onHide={this.handleCloseMap}
-        >
-          <Modal.Header closeButton>
-            <div className="Back-Arrow">
-            <i className="fas fa-arrow-circle-left"  onClick={this.handleCloseMap}></i>
-            </div>
-            <Modal.Title>Set Pickup Location</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div>
-              <MyMapComponent isMarkerShown={true} />
-            </div>
-            <div className="p-box11">
-              <div className="edit-dtle">
-                <form className="form-1">
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          id="from1"
-                          name="name"
-                          className="form-control"
-                          // value={
-                          //   this.state.name
-                          //     ? this.state.name
-                          //     : ""
-                          // }
-                          // onChange={this.addressChange}
-                          required
-                        />
-                        <label
-                          className="form-control-placeholder"
-                          htmlFor="from1"
-                        >
-                          Name
-                        </label>
-                        <div className="text-danger">
-                          {this.state.nameerror}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          id="from2"
-                          name="mobilephone"
-                          maxLength={10}
-                          // value={
-                          //   this.state.mobilephone
-                          //     ? this.state.mobilephone
-                          //     : ""
-                          // }
-                          className="form-control"
-                          // onChange={this.addressChange}
-                          required
-                        />
-                        <label
-                          className="form-control-placeholder"
-                          htmlFor="from2"
-                        >
-                          10-digit mobile number
-                        </label>
-                        {/* <div className="text-danger">
-                                            {this.state.mobilephoneerror}
-                                          </div> */}
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <input
-                          type="number"
-                          id="from3"
-                          name="pincode"
-                          // value={
-                          //   this.state.pincode
-                          //     ? this.state.pincode
-                          //     : ""
-                          // }
-                          className="form-control"
-                          // onChange={this.addressChange}
-                          maxLength={6}
-                          required
-                        />
-                        <label
-                          className="form-control-placeholder"
-                          htmlFor="from3"
-                        >
-                          Pincode
-                        </label>
-                        {/* <div className="text-danger">
+          <Modal
+            className="modal-dialog-centered main-package"
+            show={this.state.showMap}
+            onHide={this.handleCloseMap}
+          >
+            <Modal.Header closeButton>
+              <div className="Back-Arrow">
+                <i
+                  className="fas fa-arrow-circle-left"
+                  onClick={this.handleCloseMap}
+                ></i>
+              </div>
+              <Modal.Title>Set Pickup Location</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div>
+                <MyMapComponent isMarkerShown={true} />
+              </div>
+              <div className="p-box11">
+                <div className="edit-dtle">
+                  <form className="form-1">
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <input
+                            type="text"
+                            id="from3"
+                            name="pincode"
+                            // value={
+                            //   this.state.pincode
+                            //     ? this.state.pincode
+                            //     : ""
+                            // }
+                            className="form-control"
+                            // onChange={this.addressChange}
+                            maxLength={6}
+                            required
+                          />
+                          <label
+                            className="form-control-placeholder"
+                            htmlFor="from3"
+                          >
+                            FLAT,FLOR,BUILDING NAME*
+                          </label>
+                          {/* <div className="text-danger">
                                             {this.state.pincodeerror}
                                           </div> */}
+                        </div>
                       </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          id="from4"
-                          name="landmark"
-                          // value={
-                          //   this.state.landmark
-                          //     ? this.state.landmark
-                          //     : ""
-                          // }
-                          // onChange={this.addressChange}
-                          className="form-control"
-                          required
-                        />
-                        <label
-                          className="form-control-placeholder"
-                          htmlFor="from4"
-                        >
-                          Landmark
-                        </label>
-                        {/* <div className="text-danger">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <input
+                            type="text"
+                            id="from4"
+                            name="landmark"
+                            // value={
+                            //   this.state.landmark
+                            //     ? this.state.landmark
+                            //     : ""
+                            // }
+                            // onChange={this.addressChange}
+                            className="form-control"
+                            required
+                          />
+                          <label
+                            className="form-control-placeholder"
+                            htmlFor="from4"
+                          >
+                            HOW TO REACH
+                          </label>
+                          {/* <div className="text-danger">
                                             {this.state.landmarkerror}
                                           </div> */}
+                        </div>
                       </div>
-                    </div>
-
-                    <div className="col-md-12">
-                      <div className="address-type">
-                        <span className="text-add">Address Type</span>
-                        <div className="radio-dis">
-                          <div className="adrss-1">
-                            <label className="rdio-box1">
-                              <span className="b-tt">Home </span>
-                              <input
-                                type="radio"
-                                id="1"
-                                // checked={
-                                //   this.state.addresstype ===
-                                //   "1"
-                                //     ? true
-                                //     : false
-                                // }
-                                // onChange={this.changeAddress}
-                                name="radio"
-                                // disabled={this.state.homedisabled === true ? true : false}
-                              />
-                              <span className="checkmark"></span>
-                            </label>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <input
+                            type="text"
+                            id="from1"
+                            name="name"
+                            className="form-control"
+                            // value={
+                            //   this.state.name
+                            //     ? this.state.name
+                            //     : ""
+                            // }
+                            // onChange={this.addressChange}
+                            required
+                          />
+                          <label
+                            className="form-control-placeholder"
+                            htmlFor="from1"
+                          >
+                            CONTACT PERSON NAME
+                          </label>
+                          <div className="text-danger">
+                            {this.state.nameerror}
                           </div>
-                          <div className="adrss-1">
-                            <label className="rdio-box1">
-                              <span className="b-tt">Work </span>
-                              <input
-                                type="radio"
-                                id="2"
-                                checked={
-                                  this.state.addresstype === "2" ? true : false
-                                }
-                                // onChange={this.changeAddress}
-                                name="radio"
-                                // disabled={this.state.workdisabled === true ? true : false}
-                              />
-                              <span className="checkmark"></span>
-                            </label>
-                          </div>
-                          <div className="adrss-1">
-                            <label className="rdio-box1">
-                              <span className="b-tt">Other </span>
-                              <input
-                                type="radio"
-                                id="3"
-                                checked={
-                                  this.state.addresstype === "3" ? true : false
-                                }
-                                // onChange={this.changeAddress}
-                                name="radio"
-                                // disabled={this.state.otherdisabled === true ? true : false}
-                              />
-                              <span className="checkmark"></span>
-                            </label>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <input
+                            type="text"
+                            id="from2"
+                            name="mobilephone"
+                            maxLength={10}
+                            // value={
+                            //   this.state.mobilephone
+                            //     ? this.state.mobilephone
+                            //     : ""
+                            // }
+                            className="form-control"
+                            // onChange={this.addressChange}
+                            required
+                          />
+                          <label
+                            className="form-control-placeholder"
+                            htmlFor="from2"
+                          >
+                            CONTACT DETAIL
+                          </label>
+                          {/* <div className="text-danger">
+                                            {this.state.mobilephoneerror}
+                                          </div> */}
+                        </div>
+                      </div>
+                      <div className="col-md-12">
+                        <div className="address-type">
+                          <span className="text-add">Address Type</span>
+                          <div className="radio-dis">
+                            <div className="adrss-1">
+                              <label className="rdio-box1">
+                                <span className="b-tt">Home </span>
+                                <input
+                                  type="radio"
+                                  id="1"
+                                  // checked={
+                                  //   this.state.addresstype ===
+                                  //   "1"
+                                  //     ? true
+                                  //     : false
+                                  // }
+                                  // onChange={this.changeAddress}
+                                  name="radio"
+                                  // disabled={this.state.homedisabled === true ? true : false}
+                                />
+                                <span className="checkmark"></span>
+                              </label>
+                            </div>
+                            <div className="adrss-1">
+                              <label className="rdio-box1">
+                                <span className="b-tt">Work </span>
+                                <input
+                                  type="radio"
+                                  id="2"
+                                  checked={
+                                    this.state.addresstype === "2"
+                                      ? true
+                                      : false
+                                  }
+                                  // onChange={this.changeAddress}
+                                  name="radio"
+                                  // disabled={this.state.workdisabled === true ? true : false}
+                                />
+                                <span className="checkmark"></span>
+                              </label>
+                            </div>
+                            <div className="adrss-1">
+                              <label className="rdio-box1">
+                                <span className="b-tt">Other </span>
+                                <input
+                                  type="radio"
+                                  id="3"
+                                  checked={
+                                    this.state.addresstype === "3"
+                                      ? true
+                                      : false
+                                  }
+                                  // onChange={this.changeAddress}
+                                  name="radio"
+                                  // disabled={this.state.otherdisabled === true ? true : false}
+                                />
+                                <span className="checkmark"></span>
+                              </label>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <div className="col-md-12">
-              <div className="deliver">
-                <button
-                  type="button"
-                  className="save-delivry"
-                  // onClick={this.editAddress}
-                >
-                  Save and Deliver Here
-                </button>
+            </Modal.Body>
+            <Modal.Footer>
+              <div className="col-md-12">
+                <div className="deliver">
+                  <button
+                    type="button"
+                    className="save-delivry"
+                    // onClick={this.editAddress}
+                  >
+                    Save and Deliver Here
+                  </button>
 
-                <button
-                  type="button"
-                  className="btb-text"
-                  onClick={this.handleCloseMap}
-                >
-                  Cancel
-                </button>
+                  <button
+                    type="button"
+                    className="btb-text"
+                    onClick={this.handleCloseMap}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-            </div>
-          </Modal.Footer>
-        </Modal>
+            </Modal.Footer>
+          </Modal>
         </div>
       </>
     );
