@@ -21,5 +21,8 @@ export interface packageStateRequest {
       mobile: string,
       landmark: string,
       landmarkerror: string,
+      addressarray:any,
+      show:boolean,
+      showMap:boolean
   }
   

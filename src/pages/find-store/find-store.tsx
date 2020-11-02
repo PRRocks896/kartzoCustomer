@@ -67,7 +67,16 @@ class FindStore extends React.Component<{
     scrollToTop();
     EventEmitter.dispatch("isShow", true);
     EventEmitter.dispatch("isShowFooter", true);
-    this.getMerchantData();
+   console.log("props",this.props);
+    let citystore :  any = this.props;
+    if(citystore && citystore.locationDetail) {
+      this.setState({
+        location:this.state.location = citystore.locationDetail[0].name
+      })
+     this.getMerchantData("",citystore.locationDetail[0].value,1,4)
+    } else {
+      this.getMerchantData();
+    }
   }
 
   /**

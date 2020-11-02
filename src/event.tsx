@@ -1,5 +1,6 @@
 const EventEmitter:any = {
     events: {},
+    
     /** Dispatch Event */
     dispatch: function (event:any,data:any) {
         if(!this.events[event]) return

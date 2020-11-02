@@ -1,4 +1,4 @@
-import * as ACTION from "../constant/constant";
+import * as ACTION from "../index";
 import { PlaceOrderAPI } from "../../service/index";
 
 export const placeOrderService = {

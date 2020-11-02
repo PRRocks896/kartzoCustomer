@@ -376,6 +376,9 @@ export default {
       mobile: "",
       landmark: "",
       landmarkerror: "",
+      addressarray:[],
+      show:true,
+      showMap:false
     },
   },
 };

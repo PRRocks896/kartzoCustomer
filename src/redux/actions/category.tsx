@@ -1,4 +1,4 @@
-import * as ACTION from "../constant/constant";
+import * as ACTION from "../index";
 import {CategoryAPI} from "../../service/index";
 
 export const categoryService = {

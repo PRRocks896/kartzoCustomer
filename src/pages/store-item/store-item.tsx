@@ -686,6 +686,7 @@ class StoreItem extends React.Component<{
               <div
                 id={cat.value}
                 className="item-details-1"
+                
               >
                 <div className="item-nm-tt">{cat.name}</div>
                 {productdata.length === 0 ? (

@@ -42,6 +42,7 @@ class SearchCity extends React.Component<{
     }
     scrollToTop();
     this.getCategory();
+   
   }
 
   /**
@@ -134,7 +135,7 @@ class SearchCity extends React.Component<{
                             key={index}
                             className="col-sm-6 col-md-4 col-lg-3"
                           >
-                            <Link to={`/order/${c.slug}`}>
+                            <Link to={{pathname:`/order/${c.slug}`, state:{city:this.state.slugname.toLocaleLowerCase()}}}>
                               <div
                                 className="box-1"
                                 style={{

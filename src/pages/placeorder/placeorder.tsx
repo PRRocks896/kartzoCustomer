@@ -258,7 +258,9 @@ class PlaceOrder extends React.Component<{
       size: size,
       userId: user.userID,
     };
-    this.props.getAddressList(obj);
+    if(user) {
+      this.props.getAddressList(obj);
+    }
   }
 
   /**

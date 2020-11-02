@@ -98,7 +98,10 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
     if(this.state.cityid) {
       this.state.locationData.map((city:any,index:number) => (
         city.value === this.state.cityid ? (
-          this.props.history.push(`/${city.name}`)
+          this.props.history.push({
+            pathname: `/${city.name.toLowerCase()}`,
+            state: { cityid: city.value }
+          })
         ) : ('')
       ))
     } else {
