@@ -12,6 +12,7 @@ import "./packages.css";
 import SelectSearch from "react-select-search";
 
 class Packages extends React.Component<{ getAddressList: any }> {
+  
   /** Package state */
   packagesState: packageStateRequest = constant.packagesPage.state;
   state = {
