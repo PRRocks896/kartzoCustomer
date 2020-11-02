@@ -8,12 +8,13 @@ import {
 } from "react-google-maps";
 import EventEmitter from "../../event";
 
+/** Google Map Intialize with current location */
 const MyMapComponent:any = compose(
   withProps({
     googleMapURL:
       "https://maps.googleapis.com/maps/api/js?key=AIzaSyAAyBoIK3-3psCrVDMpZCKj5zaMmDAPp0I&libraries=geometry,drawing,places",
-    loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `400px` }} />,
+    loadingElement: <div style={{ height: `100%`,borderRadius: '10px 10px 0px 0px',overflow:'none'}} />,
+    containerElement: <div style={{ height: `250px` }} />,
     mapElement: <div style={{ height: `100%` }} />
   }),
   lifecycle({
@@ -36,7 +37,9 @@ const MyMapComponent:any = compose(
   withScriptjs,
   withGoogleMap
 )((props:any) => (
-  <GoogleMap defaultZoom={8} defaultCenter={{ lat: 22.2856, lng: 70.7561 }}>
+  
+  /** Google Map */
+  <GoogleMap defaultZoom={8} defaultCenter={{ lat: 22.2856, lng: 70.7561 }} options={{streetViewControl: false}}>
     {props.isMarkerShown && (
       <Marker
         position={{ lat: 22.2856, lng: 70.7561 }}

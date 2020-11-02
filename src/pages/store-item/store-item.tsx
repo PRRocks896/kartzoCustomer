@@ -142,7 +142,7 @@ class StoreItem extends React.Component<{
       productID: data.productID,
       quantity: data.quantity + 1,
       discountApplied: data.discountApplied,
-      merchantID:parseInt(mid)
+      merchantID:data.merchantID
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {
@@ -166,7 +166,7 @@ class StoreItem extends React.Component<{
       productID: data.productID,
       quantity: data.quantity - 1,
       discountApplied: data.discountApplied,
-      merchantID:parseInt(mid)
+      merchantID:data.merchantID
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {

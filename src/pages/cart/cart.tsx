@@ -74,7 +74,7 @@ class Cart extends React.Component<{
    * 
    * @param nextProps : get updated props
    */
-  componentWillReceiveProps(nextProps: any, newState: any) {
+  componentWillReceiveProps(nextProps: any) {
     // console.log("props", nextProps);
     if (nextProps.getCartDetail) {
       this.getCartAllProductData(nextProps.getCartDetail);
@@ -138,7 +138,7 @@ class Cart extends React.Component<{
       productID: data.productID,
       quantity: data.quantity + 1,
       discountApplied: data.discountApplied,
-      merchantID:parseInt(mid)
+      merchantID:data.merchantID
     };
     
     this.props.updateToCart(obj, data.orderCartID);
@@ -164,7 +164,7 @@ class Cart extends React.Component<{
       productID: data.productID,
       quantity: data.quantity - 1,
       discountApplied: data.discountApplied,
-      merchantID:parseInt(mid)
+      merchantID:data.merchantID
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {
