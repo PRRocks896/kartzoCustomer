@@ -6,7 +6,8 @@ import category from './category';
 import merchant from './merchant';
 import product from './product';
 import placeOrder from './placeorder';
-import order from './order'
+import order from './order';
+import sendpackage from './package';
 
 /** Root Reducers */
 const rootReducer = combineReducers({
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     merchant: merchant,
     product:product,
     placeOrder:placeOrder,
-    order:order
+    order:order,
+    sendpackage:sendpackage
 });
 
 export default rootReducer;

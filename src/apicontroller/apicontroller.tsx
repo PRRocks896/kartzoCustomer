@@ -40,6 +40,10 @@ const apiUrl = {
         updatecard:'card/',
         deleteData:'delete'
     },
+    packageController: {
+        getaddress:'address/get-address'
+    },
+    
 }
 
 export default apiUrl;

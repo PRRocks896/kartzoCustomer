@@ -3,8 +3,8 @@
 }
 .send-packages .main-flex {
 	display: flex;
+	align-items: self-start;
 	padding-top: 50px;
-	overflow: hidden;
 }
 .send-packages .right-box .dtl-box {
 	border: 1px solid #e6e6e6;
@@ -20,7 +20,7 @@
 	-o-border-radius: 10px;
 	width: 365px;
 	height: 80vh;
-	
+	min-height: 500px;
 }
 .send-packages .right-box .title-dtl {
 	font-size: 20px;
@@ -48,6 +48,9 @@
 	background: #fff;
 	padding-bottom: 5px;
 }
+.place-order .right-box12 {
+	width: 365px !important;
+}
 /* end right box */
 
 /* card item start */
@@ -65,7 +68,9 @@
 	overflow: hidden;
 	padding: 0px 20px;
 	padding-bottom: 20px;
-	height: 80vh;
+	/* height: 80vh;
+	min-height: 500px; */
+
 }
 .send-packages .left-box .card-item p {
 	padding-top: 12px;
@@ -91,14 +96,14 @@
 .send-packages .left-box .add-address {
 	position: relative;
 }
-.send-packages .left-box .add-address::after {
+.send-packages .left-box .add-address .bdr-left {
 	position: absolute;
-	content: "";
-	border-left: 2px dotted #f7b62b;
-	height: 75px;
-	top: 42px;
-	left: 9px;
-	z-index: 1;
+    content: "";
+    border-left: 2px dotted #f7b62b;
+    height: 50%;
+    top: 45px;
+    left: 9px;
+    z-index: 1;
 }
 
 .send-packages .left-box .address-box1 {
@@ -250,15 +255,15 @@
 .select-search {
     margin-left: 0px;
 }
-.map_main .select-search::after {
-	content: "\f002";
-	font-family: 'Font Awesome 5 Free';
-	font-weight: bold;
-	left: 22px;
-	position: absolute;
-	top: 11px;
-	font-size: 14px;
-	color: #1f1f1f;
+.map_main .search-data::after {
+    content: "\f002";
+    font-family: 'Font Awesome 5 Free';
+    font-weight: bold;
+    left: 42px;
+    position: absolute;
+    top: 8px;
+    font-size: 14px;
+    color: #1f1f1f;
 }
 .select-search__input:focus {
 	border:1px solid #fbb132;
@@ -298,6 +303,11 @@ span.location-img-1 img {
     float: left;
     margin-right: 10px;
 }
+
+.mm-1:hover {
+    background: #e8e8e8;
+}
+
 .add-map {
     overflow: hidden;
 }
@@ -313,10 +323,14 @@ span.location-img-1 img {
     margin-bottom: 10px;
 }
 .mm-1 {
-    
     border-bottom: 1px solid #d8d8d8;
     padding-bottom: 10px;
-    margin-top: 10px;
+	cursor: pointer;
+	padding-top: 10px;
+	padding-left: 5px;
+}
+input:-internal-autofill-selected {
+	background-color: #fff;
 }
 /* new popup  */
 .edit-dtle {
@@ -554,3 +568,12 @@ span.location-img-1 img {
 	background: #f7b62b;
 }
 /* check box */
+
+.search-data input.src-input {
+    border-radius: 40px;
+    border: 1px solid #c5c5c5;
+    text-indent: 30px;
+    font-size: 13px;
+    height: 35px;
+    width: 100%;
+}

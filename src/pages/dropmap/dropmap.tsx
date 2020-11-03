@@ -9,7 +9,7 @@ import {
 import EventEmitter from "../../event";
 
 /** Google Map Intialize with current location */
-const MyMapComponent:any = compose(
+const MyMapDropComponent:any = compose(
   withProps({
     googleMapURL:
       "https://maps.googleapis.com/maps/api/js?key=AIzaSyAAyBoIK3-3psCrVDMpZCKj5zaMmDAPp0I&libraries=geometry,drawing,places",
@@ -29,7 +29,7 @@ const MyMapComponent:any = compose(
 
         onPositionChanged: () => {
           const position = refs.marker.getPosition();
-          EventEmitter.dispatch('latlong', position);
+          EventEmitter.dispatch('latlongdrop', position);
         }
       });
     }
@@ -40,15 +40,15 @@ const MyMapComponent:any = compose(
   
   /** Google Map */
   <GoogleMap defaultZoom={8} defaultCenter={{ lat: props.lat, lng: props.long }} options={{streetViewControl: false}}>
-    {props.isMarkerShown && (
-      <Marker
-        position={{ lat: props.lat, lng: props.long }}
-        draggable={true}
-        ref={props.onMarkerMounted}
-        onPositionChanged={props.onPositionChanged}
-      />
-    )}
-  </GoogleMap>
+  {props.isMarkerShown && (
+    <Marker
+      position={{ lat: props.lat, lng: props.long }}
+      draggable={true}
+      ref={props.onMarkerMounted}
+      onPositionChanged={props.onPositionChanged}
+    />
+  )}
+</GoogleMap>
 ));
 
-export default MyMapComponent;
+export default MyMapDropComponent;
