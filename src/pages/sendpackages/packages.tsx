@@ -88,6 +88,7 @@ class Packages extends React.Component<{
     displaydesc: this.packagesState.displaydesc,
     addressmaintype: this.packagesState.addressmaintype,
     addressmaintype1: this.packagesState.addressmaintype1,
+    sameaddress:false
   };
 
   /** Constructor call */
@@ -133,6 +134,7 @@ class Packages extends React.Component<{
     this.decrementQty = this.decrementQty.bind(this);
     this.handleClearCart = this.handleClearCart.bind(this);
     this.clearOldCart = this.clearOldCart.bind(this);
+    this.handleSameAddress = this.handleSameAddress.bind(this);
   }
 
   /** Page Render Call */
@@ -458,6 +460,15 @@ class Packages extends React.Component<{
       mobile: this.state.mobile = data.mobile,
       addressmaintype: data.addressType,
     });
+    if(this.state.selectedaddress === this.state.selectedaddressdrop) {
+      this.setState({
+        sameaddress:true
+      })
+    } else {
+      this.setState({
+        sameaddress:false
+      })
+    }
   }
 
   /** Address Select */
@@ -470,6 +481,15 @@ class Packages extends React.Component<{
       mobile1: this.state.mobile1 = data.mobile,
       addressmaintype1: data.addressType,
     });
+    if(this.state.selectedaddress === this.state.selectedaddressdrop) {
+      this.setState({
+        sameaddress:true
+      })
+    } else {
+      this.setState({
+        sameaddress:false
+      })
+    }
   }
 
   /**
@@ -1873,6 +1893,46 @@ class Packages extends React.Component<{
     );
   }
 
+  handleSameAddress() {
+    this.setState({
+      sameaddress:!this.state.sameaddress
+    })
+  }
+
+  sameaddress() {
+    return(
+      <Modal
+      className="modal-dialog-centered d-ct"
+      show={this.state.sameaddress}
+      onHide={this.handleSameAddress}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title></Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="clear-cart">
+          <img
+            src={require("../../assets/images/location.svg")}
+            alt="cart icon"
+          />
+          <h1>Closeby locations detected</h1>
+          <p>
+            <strong>
+            The pickup and drop addresses are exactly same. Please check the locations{" "}
+            </strong>
+          </p>
+          <div className="flex-btn">
+            <button className="cencel-btn" onClick={this.handleSameAddress}>
+              Ok
+            </button>
+          </div>
+        </div>
+      </Modal.Body>
+      <Modal.Footer></Modal.Footer>
+    </Modal>
+    )
+  }
+
   /** Render DOM */
   render() {
     return (
@@ -1918,7 +1978,7 @@ class Packages extends React.Component<{
                       <button className="confirm-btn">Confirm Order</button>
                     </div>
                   </div>
-
+                  {this.sameaddress()}
                   {this.state.displaydesc === false
                     ? this.cartDataBlock()
                     : this.descriptionBlock()}
