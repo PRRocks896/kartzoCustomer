@@ -267,7 +267,7 @@
 	align-items: flex-end;
 	height: 128px;
 	position: sticky;
-	top: 256px !important;
+	top: 254px !important;
 	overflow: unset;
 	background: #fff;
 	z-index: 2;

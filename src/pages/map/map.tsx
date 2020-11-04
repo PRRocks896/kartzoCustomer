@@ -39,7 +39,7 @@ const MyMapComponent:any = compose(
 )((props:any) => (
   
   /** Google Map */
-  <GoogleMap defaultZoom={8} defaultCenter={{ lat: props.lat, lng: props.long }} options={{streetViewControl: false}}>
+  <GoogleMap defaultZoom={8} defaultCenter={{ lat: props.lat, lng: props.long }} options={{streetViewControl: false,fullscreenControl:false,mapTypeControl:false}}>
     {props.isMarkerShown && (
       <Marker
         position={{ lat: props.lat, lng: props.long }}

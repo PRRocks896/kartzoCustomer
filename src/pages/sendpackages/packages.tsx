@@ -4,7 +4,11 @@ import MyMapComponent from "../map/map";
 import MyMapDropComponent from "../dropmap/dropmap";
 import EventEmitter from "../../event";
 import constant from "../constant/constant";
-import { packageStateRequest } from "../../modelController/packageModel";
+import {
+  packageStateRequest,
+  addCartRequest,
+  removeCartItemRequest,
+} from "../../modelController/index";
 import {
   getAddressListRequest,
   getCartListRequest,
@@ -13,13 +17,15 @@ import { placeOrderService, packageService, productService } from "../../redux";
 import { connect } from "react-redux";
 import { Modal } from "react-bootstrap";
 import "./packages.css";
-import SelectSearch from "react-select-search";
 import Geocode from "react-geocode";
 
 class Packages extends React.Component<{
   getAddressList: any;
   searchAddressData: any;
   getcartData: any;
+  updateToCart: any;
+  removeProductFromCart: any;
+  history: any;
 }> {
   /** Package state */
   packagesState: packageStateRequest = constant.packagesPage.state;
@@ -58,7 +64,6 @@ class Packages extends React.Component<{
     flaterror: this.packagesState.flaterror,
     reach: this.packagesState.reach,
     reacherror: this.packagesState.reacherror,
-    continueBlock: this.packagesState.continueBlock,
 
     show1: this.packagesState.show1,
     showMap1: this.packagesState.showMap1,
@@ -77,8 +82,12 @@ class Packages extends React.Component<{
     home1error: this.packagesState.home1error,
     work1error: this.packagesState.work1error,
     searchaddress: this.packagesState.searchaddress,
-    searchSection: false,
-    cartarray: [],
+    searchSection: this.packagesState.searchSection,
+    cartarray: this.packagesState.cartarray,
+    clearcart: this.packagesState.clearcart,
+    displaydesc: this.packagesState.displaydesc,
+    addressmaintype: this.packagesState.addressmaintype,
+    addressmaintype1: this.packagesState.addressmaintype1,
   };
 
   /** Constructor call */
@@ -91,6 +100,14 @@ class Packages extends React.Component<{
         long: this.state.long = data.lng().toString(),
       });
       this.getAddress(this.state.lat, this.state.long);
+    });
+
+    EventEmitter.subscribe("latlongdrop", (data: any) => {
+      this.setState({
+        lat1: this.state.lat1 = data.lat().toString(),
+        long1: this.state.long1 = data.lng().toString(),
+      });
+      this.getAddressDropMapData(this.state.lat1, this.state.long1);
     });
 
     this.mapOpen = this.mapOpen.bind(this);
@@ -112,17 +129,25 @@ class Packages extends React.Component<{
     this.searchAddressDrop = this.searchAddressDrop.bind(this);
     this.addressSearchSelect = this.addressSearchSelect.bind(this);
     this.addressSearchDropSelect = this.addressSearchDropSelect.bind(this);
+    this.incrementQty = this.incrementQty.bind(this);
+    this.decrementQty = this.decrementQty.bind(this);
+    this.handleClearCart = this.handleClearCart.bind(this);
+    this.clearOldCart = this.clearOldCart.bind(this);
   }
 
   /** Page Render Call */
   componentDidMount() {
-    EventEmitter.dispatch("isShow", false);
-    EventEmitter.dispatch("isShowFooter", true);
-    this.getAllAddress();
-    this.getAddress(this.state.lat, this.state.long);
-    this.getAddressDropMapData(this.state.lat, this.state.long);
-    if (localStorage.getItem("token")) {
-      this.getCartData();
+    if (!localStorage.getItem("token")) {
+      this.props.history.push("/signin");
+    } else {
+      EventEmitter.dispatch("isShow", false);
+      EventEmitter.dispatch("isShowFooter", true);
+      this.getAllAddress();
+      // this.getAddress(this.state.lat, this.state.long);
+      // this.getAddressDropMapData(this.state.lat, this.state.long);
+      if (localStorage.getItem("token")) {
+        this.getCartData();
+      }
     }
   }
 
@@ -194,8 +219,12 @@ class Packages extends React.Component<{
     if (this.state.cartarray && this.state.cartarray.length > 0) {
       this.setState({
         cartarray: this.state.cartarray = data.data,
+        displaydesc: false,
       });
     } else {
+      this.setState({
+        displaydesc: true,
+      });
       EventEmitter.dispatch("count", 0);
       localStorage.setItem("cartcount", "0");
     }
@@ -340,22 +369,36 @@ class Packages extends React.Component<{
 
   /** Model Open */
   modelOpen() {
-    this.setState({ show: !this.state.show });
-    if (this.state.continueBlock === true) {
+    if (this.state.cartarray && this.state.cartarray.length > 0) {
       this.setState({
-        continueBlock: !this.state.continueBlock,
+        clearcart: true,
       });
+    } else {
+      this.setState({ show: !this.state.show });
     }
   }
 
   /** Model Open */
   modelOpenDrop() {
-    this.setState({ show1: !this.state.show1 });
+    console.log("search",this.state.searchSection)
+    this.setState({
+      show1: !this.state.show1,
+    });
+    if(this.state.selectedaddress) {
+      this.setState({
+        searchSection: this.state.searchSection =  false,
+      });
+    }
   }
 
   /** Close model */
   handleClose() {
     this.setState({ show: !this.state.show });
+  }
+
+  /** Close model */
+  handleClearCart() {
+    this.setState({ clearcart: !this.state.clearcart });
   }
 
   /** Close model */
@@ -368,6 +411,7 @@ class Packages extends React.Component<{
     this.setState({
       showMap1: !this.state.showMap1,
       show1: !this.state.show1,
+      searchSection: this.state.searchSection = false,
     });
   }
 
@@ -376,7 +420,7 @@ class Packages extends React.Component<{
     this.setState({
       showMap: !this.state.showMap,
       show: !this.state.show,
-      searchSection: !this.state.searchSection,
+      searchSection: this.state.searchSection = false,
     });
   }
 
@@ -412,6 +456,7 @@ class Packages extends React.Component<{
       selectedaddress: this.state.selectedaddress = data.address,
       name: this.state.name = data.name,
       mobile: this.state.mobile = data.mobile,
+      addressmaintype: data.addressType,
     });
   }
 
@@ -423,6 +468,7 @@ class Packages extends React.Component<{
       selectedaddressdrop: this.state.selectedaddressdrop = data.address,
       name1: this.state.name1 = data.name,
       mobile1: this.state.mobile1 = data.mobile,
+      addressmaintype1: data.addressType,
     });
   }
 
@@ -626,6 +672,10 @@ class Packages extends React.Component<{
             showMap: !this.state.showMap,
             selectblock: !this.state.selectblock,
           });
+        } else {
+          this.setState({
+            showMap: !this.state.showMap,
+          });
         }
       }
     }
@@ -636,7 +686,7 @@ class Packages extends React.Component<{
     if (this.state.addressdroptype === "1") {
       let addresslist: any = this.state.addressarray;
       addresslist.map((data: any, index: number) =>
-        data.addressdroptype === "Home"
+        data.addressType === "Home"
           ? this.setState({
               home1error: this.state.home1error =
                 "An address is already saved as HOME",
@@ -658,6 +708,10 @@ class Packages extends React.Component<{
           this.setState({
             showMap1: !this.state.showMap1,
             selectblock1: !this.state.selectblock1,
+          });
+        } else {
+          this.setState({
+            showMap1: !this.state.showMap1,
           });
         }
       }
@@ -686,6 +740,10 @@ class Packages extends React.Component<{
     this.props.searchAddressData(obj);
   }
 
+  /**
+   *
+   * @param data : search address select data
+   */
   addressSearchSelect(data: any) {
     Geocode.setApiKey("AIzaSyAAyBoIK3-3psCrVDMpZCKj5zaMmDAPp0I");
     Geocode.fromAddress(data.main_text).then(
@@ -705,6 +763,10 @@ class Packages extends React.Component<{
     );
   }
 
+  /**
+   *
+   * @param data : search address drop select data
+   */
   addressSearchDropSelect(data: any) {
     Geocode.setApiKey("AIzaSyAAyBoIK3-3psCrVDMpZCKj5zaMmDAPp0I");
     Geocode.fromAddress(data.main_text).then(
@@ -724,275 +786,253 @@ class Packages extends React.Component<{
     );
   }
 
-  /** Render DOM */
-  render() {
+  /**
+   *
+   * @param data : increment quantity in cart product
+   */
+  incrementQty(data: any) {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const mid: any = localStorage.getItem("merchantID");
+    const obj: addCartRequest = {
+      userID: user.userID,
+      productID: data.productID,
+      quantity: data.quantity + 1,
+      discountApplied: data.discountApplied,
+      merchantID: data.merchantID,
+    };
+    this.props.updateToCart(obj, data.orderCartID);
+    setTimeout(() => {
+      this.getCartData();
+    }, 200);
+  }
+
+  /**
+   *
+   * @param data : decrement quantity in cart product
+   */
+  decrementQty(data: any) {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const mid: any = localStorage.getItem("merchantID");
+    const obj: addCartRequest = {
+      userID: user.userID,
+      productID: data.productID,
+      quantity: data.quantity - 1,
+      discountApplied: data.discountApplied,
+      merchantID: data.merchantID,
+    };
+    this.props.updateToCart(obj, data.orderCartID);
+    setTimeout(() => {
+      this.getCartData();
+    }, 200);
+  }
+
+  /** Clear old cart */
+  clearOldCart() {
+    let cartdeletearray = [];
+    let temparray: any = this.state.cartarray;
+    for (var i = 0; i < temparray.length; i++) {
+      cartdeletearray.push(temparray[i].orderCartID);
+    }
+    const obj: removeCartItemRequest = {
+      moduleName: "OrderCart",
+      id: cartdeletearray,
+    };
+    this.props.removeProductFromCart(obj);
+
+    setTimeout(() => {
+      this.setState({
+        clearcart: false,
+        show: true,
+        displaydesc: true,
+      });
+      this.getCartData();
+      localStorage.removeItem("merchantID");
+    }, 50);
+  }
+
+  /** Clear Cart Model */
+  clearCart() {
     return (
-      <>
-        <section className="send-packages">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-md-12">
-                <div className="main-flex">
-                  <div className="left-box">
-                    <div className="card-item123">
-                      <h1 className="my-cart-item">Send packages in Mumbai </h1>
-                      <p className="mt-3">Your on demand local courier </p>
-                    </div>
-                    <div className="add-address">
-                      <div className="bdr-left"></div>
-                      <div className="address-box1">
-                        <div className="small-tt">Pickup location</div>
-                        {this.state.selectblock === false ? (
-                          <div
-                            className="pickup-location"
-                            onClick={this.modelOpen}
-                          >
-                            Search pickup location
-                          </div>
-                        ) : (
-                          <>
-                            <div
-                              className="pickup-location"
-                              onClick={this.modelOpen}
-                            >
-                              {this.state.selectedaddress
-                                ? this.state.selectedaddress
-                                : ""}
-                            </div>
-                            <p
-                              className="mb-0"
-                              style={{ cursor: "pointer",fontSize:'14px' }}
-                              onClick={this.modelOpen}
-                            >
-                              <span>
-                                <strong>{this.state.name}</strong>
-                              </span>{" "}
-                              <span>({this.state.mobile})</span>
-                            </p>
-                          </>
-                        )}
-                        <div className="btn-line"></div>
-                        <div className="circle-box"> </div>
-                      </div>
-                      <div className="address-box1">
-                        <div className="small-tt">Drop point</div>
-                        {this.state.selectblock1 === false ? (
-                          <div
-                            className="pickup-location"
-                            onClick={this.modelOpenDrop}
-                          >
-                            Search drop location
-                          </div>
-                        ) : (
-                          <>
-                            <div
-                              className="pickup-location"
-                              onClick={this.modelOpenDrop}
-                            >
-                              {this.state.selectedaddressdrop
-                                ? this.state.selectedaddressdrop
-                                : ""}
-                            </div>
-                            <p
-                              className="mb-0"
-                              style={{ cursor: "pointer",fontSize:'14px' }}
-                              onClick={this.modelOpenDrop}
-                            >
-                              <span>
-                                <strong>{this.state.name1}</strong>
-                              </span>{" "}
-                              <span>({this.state.mobile1})</span>
-                            </p>
-                          </>
-                        )}
+      <Modal
+        className="modal-dialog-centered d-ct"
+        show={this.state.clearcart}
+        onHide={this.handleClearCart}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="clear-cart">
+            <img
+              src={require("../../assets/images/cart-icon.svg")}
+              alt="cart icon"
+            />
+            <h1>Clear cart?</h1>
+            <p>
+              <strong>
+                Do you want to clear the cart and raise{" "}
+                <strong>a new order?</strong>
+              </strong>
+            </p>
+            <div className="flex-btn">
+              <button className="cencel-btn" onClick={this.handleClearCart}>
+                Cancel
+              </button>
+              <button className="clear-btn" onClick={this.clearOldCart}>
+                Clear cart
+              </button>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
+    );
+  }
 
-                        <div className="btn-line"></div>
-                        <div className="circle-box"> </div>
-                      </div>
+  /** Cart Data Block */
+  cartDataBlock() {
+    return (
+      <div className="place-order">
+        <div className="right-box right-box12 order">
+          <div className="pay-box">
+            <div className="your-card">
+              <h3>Your Cart ({localStorage.getItem("cartcount")} Items)</h3>
+              <hr />
+            </div>
+            <div className="market-name"></div>
+            {this.state.cartarray
+              ? this.state.cartarray.length > 0 &&
+                this.state.cartarray.map((cartdata: any, index: any) => (
+                  <div className="flex-box" key={index}>
+                    <div className="bdr-roud"></div>
+                    <div className="item-title ">
+                      <h4>{cartdata.productName}</h4>
                     </div>
-                    <div className="instructions">
-                      <div className="input-box">
-                        <img
-                          src={require("../../assets/images/input-icon1.svg")}
-                          alt=""
-                        />
-                        <input
-                          type="text"
-                          name="instructions"
-                          className="instructions-box"
-                          placeholder="Any instructions for the delivery partner?"
-                        />
-                      </div>
-                      <span className="instructions-tt">
-                        By confirming I accept this order doesn’t contain
-                        illegal/resticted items, if illegal/restricted items are
-                        found by Dunzo Partner, they may report it to the law
-                        enforcement authorities.
-                        <a href="#" className="tc-text">
-                          {" "}
-                          Terms and Conditions
-                        </a>
+                    <div className="number">
+                      <span
+                        className="minus"
+                        onClick={() => this.decrementQty(cartdata)}
+                      >
+                        -
                       </span>
-
-                      <button className="confirm-btn">Confirm Order</button>
+                      <input
+                        type="text"
+                        name="qty"
+                        value={cartdata.quantity ? cartdata.quantity : ""}
+                        onChange={this.addressChange}
+                      />
+                      <span
+                        className="plus"
+                        onClick={() => this.incrementQty(cartdata)}
+                      >
+                        +
+                      </span>
                     </div>
+                    <span className="price">R{cartdata.sellingPrice}</span>
                   </div>
-                  {/* <div className="place-order">
-                  <div className="right-box right-box12 order">
-                    <div className="pay-box">
-                      <div className="your-card">
-                        <h3>
-                          Your Cart ({localStorage.getItem("cartcount")} Items)
-                        </h3>
-                        <hr />
-                      </div>
-                      <div className="market-name">
-                      
-                      </div>
-                      {this.state.cartarray
-                        ? this.state.cartarray.length > 0 &&
-                          this.state.cartarray.map(
-                            (cartdata: any, index: any) => (
-                              <div className="flex-box" key={index}>
-                                <div className="bdr-roud"></div>
-                                <div className="item-title ">
-                                  <h4>{cartdata.productName}</h4>
-                                
-                                </div>
-                                <div className="number">
-                                  <span
-                                    className="minus"
-                                   
-                                  >
-                                    -
-                                  </span>
-                                  <input
-                                    type="text"
-                                    name="qty"
-                                    value={
-                                      cartdata.quantity ? cartdata.quantity : ""
-                                    }
-                                   
-                                  />
-                                  <span
-                                    className="plus"
-                                   
-                                  >
-                                    +
-                                  </span>
-                                </div>
-                                <span className="price">
-                                  R{cartdata.sellingPrice}
-                                </span>
-                              </div>
-                            )
-                          )
-                        : ""}
-                    </div>
-                    <div className="pay-box">
-                      <div className="flex-box flex-box2">
-                        <img src="images/edd-note.svg" alt="" />
-                        <textarea
-                          value="Any instructions for the delivery partner?"
-                          // onChange={this.change}
-                        >
-                          Any instructions for the delivery partner?
-                        </textarea>
-                      </div>
-                    </div>
-                    <div className="pay-box">
-                      <div className="your-card">
-                        <h3>Invoice</h3>
-                        <hr />
-                        <span className="bt-tt-signin">
-                          • Delivery charges may change after signing in{" "}
-                        </span>
-                      </div>
-                      <div className="invoice-box">
-                        <div className="tilte">Item total price</div>
-                        <div className="price">
-                          R{" "}
-                          {this.state.cartarray
-                            ? this.state.cartarray.reduce(
-                                (sum: number, i: any) =>
-                                  (sum += i.sellingPrice),
-                                0
-                              )
-                            : 0}
-                        </div>
-                      </div>
-                      <div className="invoice-box">
-                        <div className="tilte">Item total</div>
-                        <div className="price free">Free</div>
-                      </div>
-                      <div className="invoice-box total-pay ">
-                        <div className="tilte">To pay</div>
-                        <div className="price">
-                          R{" "}
-                          {this.state.cartarray
-                            ? this.state.cartarray.reduce(
-                                (sum: number, i: any) =>
-                                  (sum += i.sellingPrice),
-                                0
-                              )
-                            : 0}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  </div> */}
-
-
-
-                  <div className="right-box">
-                    <div className="dtl-box">
-                      <h3 className="title-dtl">Some do’s & Dont’s</h3>
-                      <div className="discr-box">
-                        <div className="discr-1">
-                          <span className="bold-tt">No Purchases - </span>
-                          <span>
-                            Delivery partner would not be able to make any
-                            purchase
-                          </span>
-                        </div>
-                        <div className="discr-1">
-                          <span className="bold-tt">Package Weight - </span>
-                          <span>
-                            We cannot deliver items that can’t be easily carried
-                            on bike
-                          </span>
-                        </div>
-                        <div className="discr-1">
-                          <span className="bold-tt">No Autos/Cabs - </span>
-                          <span>
-                            We will not be able to get something transported via
-                            these
-                          </span>
-                        </div>
-                        <div className="discr-1">
-                          <span className="bold-tt">
-                            Restricted/Illegal Item -{" "}
-                          </span>
-                          <span>
-                            Please don’t hand over any restricted item
-                          </span>
-                        </div>
-                      </div>
-                      <div className="deliveryboy-img">
-                        <img
-                          src={require("../../assets/images/delivery-boy-img.jpg")}
-                          alt="deliveryboy"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-
-                </div>
+                ))
+              : ""}
+          </div>
+          <div className="pay-box">
+            <div className="flex-box flex-box2">
+              <img src="images/edd-note.svg" alt="" />
+              <textarea
+                value="Any instructions for the delivery partner?"
+                onChange={() => console.log("data")}
+              >
+                Any instructions for the delivery partner?
+              </textarea>
+            </div>
+          </div>
+          <div className="pay-box">
+            <div className="your-card">
+              <h3>Invoice</h3>
+              <hr />
+              <span className="bt-tt-signin">
+                • Delivery charges may change after signing in{" "}
+              </span>
+            </div>
+            <div className="invoice-box">
+              <div className="tilte">Item total price</div>
+              <div className="price">
+                R{" "}
+                {this.state.cartarray
+                  ? this.state.cartarray.reduce(
+                      (sum: number, i: any) => (sum += i.sellingPrice),
+                      0
+                    )
+                  : 0}
+              </div>
+            </div>
+            <div className="invoice-box">
+              <div className="tilte">Item total</div>
+              <div className="price free">Free</div>
+            </div>
+            <div className="invoice-box total-pay ">
+              <div className="tilte">To pay</div>
+              <div className="price">
+                R{" "}
+                {this.state.cartarray
+                  ? this.state.cartarray.reduce(
+                      (sum: number, i: any) => (sum += i.sellingPrice),
+                      0
+                    )
+                  : 0}
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </div>
+    );
+  }
+
+  /** Description Block */
+  descriptionBlock() {
+    return (
+      <div className="right-box">
+        <div className="dtl-box">
+          <h3 className="title-dtl">Some do’s & Dont’s</h3>
+          <div className="discr-box">
+            <div className="discr-1">
+              <span className="bold-tt">No Purchases - </span>
+              <span>
+                Delivery partner would not be able to make any purchase
+              </span>
+            </div>
+            <div className="discr-1">
+              <span className="bold-tt">Package Weight - </span>
+              <span>
+                We cannot deliver items that can’t be easily carried on bike
+              </span>
+            </div>
+            <div className="discr-1">
+              <span className="bold-tt">No Autos/Cabs - </span>
+              <span>
+                We will not be able to get something transported via these
+              </span>
+            </div>
+            <div className="discr-1">
+              <span className="bold-tt">Restricted/Illegal Item - </span>
+              <span>Please don’t hand over any restricted item</span>
+            </div>
+          </div>
+          <div className="deliveryboy-img">
+            <img
+              src={require("../../assets/images/delivery-boy-img.jpg")}
+              alt="deliveryboy"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /** PickUp Model */
+  pickup() {
+    return (
+      <>
         <Modal
           className="modal-dialog-centered"
           show={this.state.show}
@@ -1007,7 +1047,7 @@ class Packages extends React.Component<{
                 <input
                   type="text"
                   name="searchvalue"
-                  className="src-input form-control"
+                  className="src-input"
                   placeholder="Enter area, building name"
                   onKeyUp={this.searchAddress}
                 />
@@ -1038,9 +1078,15 @@ class Packages extends React.Component<{
                             key={index}
                             onClick={() => this.addressSelect(address)}
                           >
-                            <img
-                              src={require("../../assets/images/home-icon.png")}
-                            />
+                            {this.state.searchSection === false ? (
+                              <img
+                                src={require("../../assets/images/home-icon.png")}
+                              />
+                            ) : (
+                              <img
+                                src={require("../../assets/images/search.svg")}
+                              />
+                            )}
                             <div className="add-map">
                               <div className="text-address">
                                 {address.addressType}
@@ -1066,9 +1112,15 @@ class Packages extends React.Component<{
                             key={index}
                             onClick={() => this.addressSearchSelect(address)}
                           >
-                            <img
-                              src={require("../../assets/images/search.svg")}
-                            />
+                            {this.state.searchSection === false ? (
+                              <img
+                                src={require("../../assets/images/home-icon.png")}
+                              />
+                            ) : (
+                              <img
+                                src={require("../../assets/images/search.svg")}
+                              />
+                            )}
                             <div className="add-map">
                               <div className="text-address">
                                 {address.main_text}
@@ -1316,7 +1368,14 @@ class Packages extends React.Component<{
             </Modal.Footer>
           </Modal>
         </div>
+      </>
+    );
+  }
 
+  /** DropUp Model */
+  dropup() {
+    return (
+      <>
         <Modal
           className="modal-dialog-centered"
           show={this.state.show1}
@@ -1357,7 +1416,8 @@ class Packages extends React.Component<{
                             onClick={() => this.addressSelectDrop(address)}
                           >
                             <img
-                              src={require("../../assets/images/search.svg")}
+                             src={require("../../assets/images/home-icon.png")}
+                              
                             />
                             <div className="add-map">
                               <div className="text-address">
@@ -1387,7 +1447,7 @@ class Packages extends React.Component<{
                             }
                           >
                             <img
-                              src={require("../../assets/images/home-icon.png")}
+                             src={require("../../assets/images/search.svg")}
                             />
                             <div className="add-map">
                               <div className="text-address">
@@ -1639,6 +1699,194 @@ class Packages extends React.Component<{
       </>
     );
   }
+
+  /** Main Package Form */
+  packageForm() {
+    return (
+      <div className="add-address">
+        <div className="bdr-left"></div>
+        <div className="address-box1">
+          <div className="small-tt">Pickup location</div>
+          {this.state.selectblock === false ? (
+            <div className="pickup-location" onClick={this.modelOpen}>
+              Search pickup location
+            </div>
+          ) : (
+            <>
+              <div className="pickup-location" onClick={this.modelOpen}>
+                {this.state.selectedaddress ? (
+                  <span>
+                    <b>{this.state.selectedaddress}</b>
+                  </span>
+                ) : (
+                  ""
+                )}
+              </div>
+              <p
+                className="mb-0"
+                style={{ cursor: "pointer", fontSize: "14px" }}
+                onClick={this.modelOpen}
+              >
+                <span>
+                  <strong>{this.state.name}</strong>
+                </span>{" "}
+                <span>({this.state.mobile})</span>
+              </p>
+            </>
+          )}
+          <div className="btn-line"></div>
+          <div className="circle-box">
+            { 
+            this.state.selectedaddress ? (
+               <div className="icon-dot-bg">
+              <svg
+                version="1.1"
+                id="Layer_1"
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                viewBox="0 0 319 318"
+              >
+                <g>
+                  <path d="M159.8,8.68c82.77,0.05,150.08,67.18,150.01,149.59c-0.07,83.76-67.4,151.54-150.41,151.43   C76.4,309.59,8.27,241.72,8.26,159.11C8.24,75.32,75.43,8.63,159.8,8.68z M124.36,146.18c1.32-1.45,2.09-2.36,2.92-3.21   c5.91-5.93,11.91-11.78,17.74-17.79c4.8-4.94,4.71-11.2,0.01-16.01c-4.79-4.91-11.33-5.14-16.28-0.24   c-13.94,13.8-27.82,27.67-41.63,41.61c-5.01,5.06-5.03,11.59-0.07,16.72c13.46,13.93,27,27.79,40.58,41.59   c4.78,4.86,11.19,4.86,16.04,0.29c5.04-4.75,5.32-11.12,0.45-16.27c-5.83-6.18-11.85-12.19-17.77-18.28   c-0.72-0.75-1.35-1.59-2.43-2.86c2.03,0,3.37,0,4.72,0c30.75-0.01,61.5-0.01,92.24-0.02c6.54,0,11.45-3.41,13.17-9.05   c2.59-8.48-3.71-16.46-13.15-16.47c-30.62-0.04-61.25-0.02-91.87-0.02C127.73,146.18,126.41,146.18,124.36,146.18z" />
+                </g>
+              </svg>
+            </div>
+            ) : ('')
+            } 
+           
+          </div>
+          <div className="line-dot-1"> </div>
+        </div>
+
+        {/** Clear Cart Model */}
+        {this.clearCart()}
+
+        <div
+          className="address-box1"
+          style={{
+            pointerEvents: !this.state.selectedaddress ? "none" : "visible",
+          }}
+        >
+          <div className="small-tt">Drop point</div>
+          {this.state.selectblock1 === false ? (
+            <div className="pickup-location" onClick={this.modelOpenDrop}>
+              Search drop location
+            </div>
+          ) : (
+            <>
+              <div className="pickup-location" onClick={this.modelOpenDrop}>
+                {this.state.selectedaddressdrop ? (
+                  <span>
+                    <b>{this.state.selectedaddressdrop}</b>
+                  </span>
+                ) : (
+                  ""
+                )}
+              </div>
+              <p
+                className="mb-0"
+                style={{ cursor: "pointer", fontSize: "14px" }}
+                onClick={this.modelOpenDrop}
+              >
+                <span>
+                  <strong>{this.state.name1}</strong>
+                </span>{" "}
+                <span>({this.state.mobile1})</span>
+              </p>
+            </>
+          )}
+
+          <div className="btn-line"></div>
+          <div className="circle-box">
+            { 
+            this.state.selectedaddressdrop ? (
+               <div className="icon-dot-bg2">
+              <svg
+                version="1.1"
+                id="Layer_1"
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                viewBox="0 0 319 318"
+              >
+                <g>
+                  <path d="M159.8,8.68c82.77,0.05,150.08,67.18,150.01,149.59c-0.07,83.76-67.4,151.54-150.41,151.43   C76.4,309.59,8.27,241.72,8.26,159.11C8.24,75.32,75.43,8.63,159.8,8.68z M124.36,146.18c1.32-1.45,2.09-2.36,2.92-3.21   c5.91-5.93,11.91-11.78,17.74-17.79c4.8-4.94,4.71-11.2,0.01-16.01c-4.79-4.91-11.33-5.14-16.28-0.24   c-13.94,13.8-27.82,27.67-41.63,41.61c-5.01,5.06-5.03,11.59-0.07,16.72c13.46,13.93,27,27.79,40.58,41.59   c4.78,4.86,11.19,4.86,16.04,0.29c5.04-4.75,5.32-11.12,0.45-16.27c-5.83-6.18-11.85-12.19-17.77-18.28   c-0.72-0.75-1.35-1.59-2.43-2.86c2.03,0,3.37,0,4.72,0c30.75-0.01,61.5-0.01,92.24-0.02c6.54,0,11.45-3.41,13.17-9.05   c2.59-8.48-3.71-16.46-13.15-16.47c-30.62-0.04-61.25-0.02-91.87-0.02C127.73,146.18,126.41,146.18,124.36,146.18z" />
+                </g>
+              </svg>
+            </div>
+            ) : ('')
+            } 
+          </div>
+          <div className="line-dot-2"> </div>
+      </div>
+      </div>
+    );
+  }
+
+  /** Render DOM */
+  render() {
+    return (
+      <>
+        <section className="send-packages">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-md-12">
+                <div className="main-flex">
+                  <div className="left-box">
+                    <div className="card-item123">
+                      <h1 className="my-cart-item">Send packages in Mumbai </h1>
+                      <p className="mt-3">Your on demand local courier </p>
+                    </div>
+
+                    {/** Main Package Form */}
+                    {this.packageForm()}
+
+                    {/** Instructions */}
+                    <div className="instructions">
+                      <div className="input-box">
+                        <img
+                          src={require("../../assets/images/input-icon1.svg")}
+                          alt=""
+                        />
+                        <input
+                          type="text"
+                          name="instructions"
+                          className="instructions-box"
+                          placeholder="Any instructions for the delivery partner?"
+                        />
+                      </div>
+                      <span className="instructions-tt">
+                        By confirming I accept this order doesn’t contain
+                        illegal/resticted items, if illegal/restricted items are
+                        found by Dunzo Partner, they may report it to the law
+                        enforcement authorities.
+                        <a href="#" className="tc-text">
+                          {" "}
+                          Terms and Conditions
+                        </a>
+                      </span>
+                      <button className="confirm-btn">Confirm Order</button>
+                    </div>
+                  </div>
+
+                  {this.state.displaydesc === false
+                    ? this.cartDataBlock()
+                    : this.descriptionBlock()}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/** Pick Up Model */}
+        {this.pickup()}
+
+        {/** Drop Up Model */}
+        {this.dropup()}
+      </>
+    );
+  }
 }
 
 /**
@@ -1665,6 +1913,13 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(packageService.searchAddressData(data)),
 
   getcartData: (data: any) => dispatch(productService.getcartData(data)),
+
+  updateToCart: (data: any, id: any) =>
+    dispatch(productService.updateToCart(data, id)),
+
+  /** Remove Product form cart */
+  removeProductFromCart: (data: any) =>
+    dispatch(productService.removeProductFromCart(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Packages);
