@@ -1893,12 +1893,14 @@ class Packages extends React.Component<{
     );
   }
 
+  /** Same Address Model Close */
   handleSameAddress() {
     this.setState({
       sameaddress:!this.state.sameaddress
     })
   }
 
+  /** Same Address Model Open */
   sameaddress() {
     return(
       <Modal
