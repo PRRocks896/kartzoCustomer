@@ -604,7 +604,7 @@ class PlaceOrder extends React.Component<{
 
       setTimeout(() => {
         this.getAddressDetails();
-      }, 250);
+      }, 300);
     }
   }
 

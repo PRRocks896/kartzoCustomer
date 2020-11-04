@@ -310,7 +310,7 @@
     z-index: 1;
 }
 
-.select-search__value::after {
+.left-content .select-search__value::after {
     content: '';
     display: inline-block;
     position: absolute;

@@ -493,6 +493,7 @@ class Packages extends React.Component<{
         addresstype: this.state.addresstype = e.target.id,
       });
       let addresslist: any = this.state.addressarray;
+      if(addresslist.length > 0) {
       addresslist.map((data: any, index: number) =>
         data.addressType === "Home"
           ? this.setState({
@@ -502,11 +503,19 @@ class Packages extends React.Component<{
             })
           : ""
       );
+          } else {
+            if(this.state.workerror) {
+              this.setState({
+                workerror: this.state.workerror = ""
+              })
+            }
+          }
     } else if (e.target.id === "2") {
       this.setState({
         addresstype: this.state.addresstype = e.target.id,
       });
       let addresslist: any = this.state.addressarray;
+      if(addresslist.length > 0) {
       addresslist.map((data: any, index: number) =>
         data.addressType === "Work"
           ? this.setState({
@@ -516,6 +525,13 @@ class Packages extends React.Component<{
             })
           : ""
       );
+          } else {
+            if(this.state.homeerror) {
+              this.setState({
+                homeerror: this.state.homeerror = ""
+              })
+            }
+          }
     } else if (e.target.id === "3") {
       this.setState({
         homeerror: this.state.homeerror = "",
@@ -535,6 +551,7 @@ class Packages extends React.Component<{
         addressdroptype: this.state.addressdroptype = e.target.id,
       });
       let addresslist: any = this.state.addressarray;
+      if(addresslist.length > 0) {
       addresslist.map((data: any, index: number) =>
         data.addressType === "Home"
           ? this.setState({
@@ -544,20 +561,37 @@ class Packages extends React.Component<{
             })
           : ""
       );
+          } else {
+
+            if(this.state.work1error) {
+              this.setState({
+                work1error: this.state.work1error = ""
+              })
+            }
+          }
     } else if (e.target.id === "2") {
       this.setState({
         addressdroptype: this.state.addressdroptype = e.target.id,
       });
       let addresslist: any = this.state.addressarray;
-      addresslist.map((data: any, index: number) =>
-        data.addressType === "Work"
-          ? this.setState({
-              home1error: this.state.home1error = "",
-              work1error: this.state.work1error =
-                "An address is already saved as WORK",
-            })
-          : ""
-      );
+      if(addresslist.length > 0) {
+        addresslist.map((data: any, index: number) =>
+          data.addressType === "Work"
+            ? this.setState({
+                home1error: this.state.home1error = "",
+                work1error: this.state.work1error =
+                  "An address is already saved as WORK",
+              })
+            : ""
+        );
+      } else {
+       
+        if(this.state.home1error) {
+          this.setState({
+            home1error: this.state.home1error = ""
+          })
+        }
+      }
     } else if (e.target.id === "3") {
       this.setState({
         home1error: this.state.home1error = "",
@@ -657,6 +691,7 @@ class Packages extends React.Component<{
           : ""
       );
     }
+   
     const isValid = this.validate();
     if (isValid) {
       this.setState({
@@ -694,6 +729,20 @@ class Packages extends React.Component<{
             })
           : ""
       );
+    }
+    if(this.state.addresstype === "1" && this.state.addressdroptype === "1") {
+      this.setState({
+        home1error: this.state.home1error =
+          "An address is already saved as HOME",
+          work1error: this.state.work1error = ""
+      })
+    } 
+    if(this.state.addresstype === "2" && this.state.addressdroptype === "2") {
+      this.setState({
+        work1error: this.state.work1error =
+          "An address is already saved as WORK",
+          home1error: this.state.home1error = ""
+      })
     }
     const isValid = this.validateDrop();
     if (isValid) {
@@ -845,7 +894,7 @@ class Packages extends React.Component<{
       this.setState({
         clearcart: false,
         show: true,
-        displaydesc: true,
+        displaydesc: this.state.displaydesc = true,
       });
       this.getCartData();
       localStorage.removeItem("merchantID");

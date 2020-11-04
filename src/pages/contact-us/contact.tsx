@@ -91,14 +91,14 @@ class ContactUs extends React.Component {
                       One app to do it all Just Thabo Pule it!{" "}
                     </h1>
                     <div className="img-flex">
-                      <a href="#">
+                      <a href="https://play.google.com/store/apps/details?id=com.dunzo.user&hl=en" target="_blank">
                         <LazyLoadImage
                           alt="playstore-icon"
                           effect="blur"
                           src={applink.playstore}
                         />
                       </a>
-                      <a href="#">
+                      <a href="https://apps.apple.com/in/app/dunzoit/id1032391728" target="_blank">
                         <LazyLoadImage
                           alt="appstore-icon"
                           effect="blur"
