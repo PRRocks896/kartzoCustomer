@@ -14,10 +14,10 @@ function searchAddressData(data: any) {
     dispatch(request({ data }));
 
     PackageAPI.searchAddressData(data)
-      .then((searchdata: any) => {
+      .then(async (searchdata: any) => {
         console.log("searchdata", searchdata);
         if (searchdata.status === 200) {
-          dispatch(success(searchdata.resultObject));
+          dispatch(success(await searchdata.resultObject));
         }
       })
       .catch((err: any) => {

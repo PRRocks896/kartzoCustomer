@@ -2,7 +2,8 @@ const apiUrl = {
     userController: {
         createData:'user/otp-send',
         verifyotp:'user/otp-verified',
-        adminToken:'token/get-admin-token'
+        adminToken:'token/get-admin-token',
+        getapplink:'user/get-app-link'
     },
     categoryController: {
         category:'category/get-category-list'

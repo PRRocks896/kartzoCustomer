@@ -21,10 +21,10 @@ function getAddressList(data: any) {
     dispatch(request({ data }));
 
     PlaceOrderAPI.getAddressListData(data)
-      .then((addressdata: any) => {
+      .then(async (addressdata: any) => {
         // console.log("addressdata", addressdata);
         if (addressdata.status === 200) {
-          dispatch(success(addressdata.resultObject));
+          dispatch(success(await addressdata.resultObject));
         }
       })
       .catch((err: any) => {
@@ -52,10 +52,10 @@ function addAddress(data: any) {
     dispatch(request({ data }));
 
     PlaceOrderAPI.addAddressData(data)
-      .then((addaddress: any) => {
+      .then(async (addaddress: any) => {
         // console.log("addaddress", addaddress);
         if (addaddress.status === 200) {
-          dispatch(success(addaddress.data.resultObject));
+          dispatch(success(await addaddress.data.resultObject));
         }
       })
       .catch((err: any) => {
@@ -83,10 +83,10 @@ function updateAddress(data: any) {
     dispatch(request({ data }));
 
     PlaceOrderAPI.updateAddress(data)
-      .then((updateaddress: any) => {
+      .then(async (updateaddress: any) => {
         // console.log("updateaddress", updateaddress);
         if (updateaddress.status === 200) {
-          dispatch(success(updateaddress.data.resultObject));
+          dispatch(success(await updateaddress.data.resultObject));
         }
       })
       .catch((err: any) => {
@@ -114,10 +114,10 @@ function deleteAddress(data: any) {
     dispatch(request({ data }));
 
     PlaceOrderAPI.deleteAddress(data)
-      .then((deleteaddress: any) => {
+      .then(async (deleteaddress: any) => {
         // console.log("deleteaddress", deleteaddress);
         if (deleteaddress.status === 200) {
-          dispatch(success(deleteaddress.data.resultObject));
+          dispatch(success(await deleteaddress.data.resultObject));
         }
       })
       .catch((err: any) => {
@@ -145,10 +145,10 @@ function addCard(data: any) {
     dispatch(request({ data }));
 
     PlaceOrderAPI.addCardData(data)
-      .then((addcard: any) => {
+      .then(async (addcard: any) => {
         // console.log("addcard", addcard);
         if (addcard.status === 200) {
-          dispatch(success(addcard.data.resultObject));
+          dispatch(success(await addcard.data.resultObject));
         }
       })
       .catch((err: any) => {
@@ -176,10 +176,10 @@ function getcard(data: any) {
     dispatch(request({ data }));
 
     PlaceOrderAPI.getcarddata(data)
-      .then((getcard: any) => {
+      .then(async (getcard: any) => {
         // console.log("getcard", getcard);
         if (getcard.status === 200) {
-          dispatch(success(getcard.resultObject.data));
+          dispatch(success(await getcard.resultObject.data));
         }
       })
       .catch((err: any) => {
@@ -207,10 +207,10 @@ function updateCard(data: any) {
     dispatch(request({ data }));
 
     PlaceOrderAPI.updateCardData(data)
-      .then((updatecard: any) => {
+      .then(async (updatecard: any) => {
         // console.log("updatecard", updatecard);
         if (updatecard.status === 200) {
-          dispatch(success(updatecard.data.resultObject));
+          dispatch(success(await updatecard.data.resultObject));
         }
       })
       .catch((err: any) => {
@@ -238,10 +238,10 @@ function deleteCard(data: any) {
     dispatch(request({ data }));
 
     PlaceOrderAPI.deletecard(data)
-      .then((deletecard: any) => {
+      .then(async (deletecard: any) => {
         // console.log("deletecard", deletecard);
         if (deletecard.status === 200) {
-          dispatch(success(deletecard.data.resultObject));
+          dispatch(success(await deletecard.data.resultObject));
         }
       })
       .catch((err: any) => {

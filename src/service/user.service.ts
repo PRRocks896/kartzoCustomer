@@ -29,5 +29,14 @@ export default {
     getAdminToken: async function (data:getAdminTokenRequest) {
         return axios.post(Constant.apiUrl + apiUrl.userController.adminToken,data);
     },
+
+    
+    /**
+     * 
+     * @param data : get app link
+     */
+    getAppLinkData: async function (data:any) {
+        return axios.post(Constant.apiUrl + apiUrl.userController.getapplink + `?phone=${data.phone}`);
+    }  
     
 }

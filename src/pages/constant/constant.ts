@@ -419,4 +419,13 @@ export default {
       addressmaintype1: "",
     },
   },
+
+  servicePage: {
+    title: {},
+    state: {
+      mobile: "",
+    mobileerror: "",
+    hide: false,
+    },
+  },
 };

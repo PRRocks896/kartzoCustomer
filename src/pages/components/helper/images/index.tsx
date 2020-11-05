@@ -24,7 +24,7 @@ export const categories = {
 export const applink = {
   playstore: require("../../../../assets/images/playstore.png"),
   appstore: require("../../../../assets/images/appstore.png"),
-  Flag_of_South_Africa: require("../../../../assets/images/Flag_of_South_Africa.png"),
+  Flag_of_South_Africa: require("../../../../assets/images/india-flag.png"),
   applocationimg: require("../../../../assets/images/app-location-img.png"),
 };
 

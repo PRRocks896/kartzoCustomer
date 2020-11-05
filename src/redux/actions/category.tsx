@@ -15,12 +15,13 @@ function getCategoryData(data: any) {
 
     CategoryAPI
       .getCategoryData(data)
-      .then((categorydata:any) => {
+      .then(async (categorydata:any) => {
         // console.log("categorydata", categorydata);
         if (categorydata.status === 200) {
           // const msg = categorydata.message;
           // showSuccess(msg);
-          dispatch(success(categorydata.data.resultObject.data));
+          const res = await categorydata.data.resultObject.data;
+          dispatch(success(res));
         }
       })
       .catch((err:any) => {
