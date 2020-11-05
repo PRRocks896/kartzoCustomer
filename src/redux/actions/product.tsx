@@ -15,7 +15,7 @@ export const productService = {
  * 
  * @param data : get product data
  */
-function getProductsData(data: any) {
+export function getProductsData(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
 

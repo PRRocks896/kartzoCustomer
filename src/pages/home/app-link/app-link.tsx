@@ -122,8 +122,8 @@ class AppLink extends React.Component<{getAppLink:any}> {
                   </>
                 ) : (
                   <h4 className="mt-5">
-                    It's DUN! Thanks, we shall notify you on the launch of Your
-                    Mobile
+                    It's Done! Thanks, we shall notify you on the launch of your
+                    mobile
                   </h4>
                 )}
             </div>

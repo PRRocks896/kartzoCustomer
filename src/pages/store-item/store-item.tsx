@@ -22,6 +22,7 @@ import {
 } from "../../modelController";
 import { productService } from "../../redux/index";
 import { Modal } from "react-bootstrap";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 class StoreItem extends React.Component<{
   history: any;
@@ -33,7 +34,7 @@ class StoreItem extends React.Component<{
   updateToCart: any;
   getSearchProduct: any;
   getProductDataWithSearching: any;
-  removeProductFromCart:any;
+  removeProductFromCart: any;
 }> {
   prevRef = null;
   ref: any = {};
@@ -97,7 +98,6 @@ class StoreItem extends React.Component<{
       this.setState({
         maindata: this.state.maindata = maindata,
       });
-      
     }
     // console.log("maindata", this.state.maindata);
     if (localStorage.getItem("token")) {
@@ -133,21 +133,21 @@ class StoreItem extends React.Component<{
    *
    * @param data : cart item in increment quantity
    */
-  incrementQty(data: any) {
+  async incrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const mid : any = localStorage.getItem('merchantID');
+    const mid: any = localStorage.getItem("merchantID");
     const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity + 1,
       discountApplied: data.discountApplied,
-      merchantID:data.merchantID
+      merchantID: data.merchantID,
     };
-    this.props.updateToCart(obj, data.orderCartID);
-    setTimeout(() => {
-      this.getCartData();
-    }, 200);
+    await this.props.updateToCart(obj, data.orderCartID);
+    setTimeout(async () => {
+      await this.getCartData();
+    }, 100);
     // let tempCart = this.state.cartarray;
     // tempCart[index].qty = parseInt(tempCart[index].qty) + 1;
     // this.setState({ cartarray: tempCart });
@@ -157,21 +157,21 @@ class StoreItem extends React.Component<{
    *
    * @param data : cart item in decrement quantity
    */
-  decrementQty(data: any) {
+  async decrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const mid : any = localStorage.getItem('merchantID');
+    const mid: any = localStorage.getItem("merchantID");
     const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity - 1,
       discountApplied: data.discountApplied,
-      merchantID:data.merchantID
+      merchantID: data.merchantID,
     };
-    this.props.updateToCart(obj, data.orderCartID);
-    setTimeout(() => {
-      this.getCartData();
-    }, 200);
+    await this.props.updateToCart(obj, data.orderCartID);
+    setTimeout(async () => {
+      await this.getCartData();
+    }, 100);
   }
 
   /**
@@ -337,63 +337,62 @@ class StoreItem extends React.Component<{
    * @param data : add cart item
    */
   additem(data: any) {
-    if(this.state.cartarray && this.state.cartarray.length > 0) {
+    if (this.state.cartarray && this.state.cartarray.length > 0) {
       let m: any = this.state.maindata;
-      if(m.merchantID === this.state.cartarray[0].merchantID) {
+      if (m.merchantID === this.state.cartarray[0].merchantID) {
         this.setState({
           isButton: this.state.isButton = true,
           loadingid: this.state.loadingid = data.productId,
         });
-          if (
-            this.state.cartarray
-              .map((cart: any) => cart.productID === data.productId)
-              .includes(true)
-          ) {
-            const users: any = localStorage.getItem("user");
-            let user = JSON.parse(users);
-            let selectedItem = this.state.cartarray.filter(
-              (cart: any) => cart.productID === data.productId
-            )[0];
-            let index = this.state.cartarray.indexOf(selectedItem);
-            // console.log("selectedItem: ", selectedItem);
-            // console.log("Index: ", index);
-            const mid : any = localStorage.getItem('merchantID');
-            const obj: addCartRequest = {
-              userID: user.userID,
-              productID: selectedItem.productID,
-              quantity: selectedItem.quantity + 1,
-              discountApplied: selectedItem.discountApplied,
-              merchantID:parseInt(mid)
-            };
-            // console.log("increment object: ", obj);
-            this.props.updateToCart(obj, this.state.cartarray[index].orderCartID);
-    
-            setTimeout(() => {
-              this.getCartData();
-            }, 200);
-          } else {
-            const users: any = localStorage.getItem("user");
-            let user = JSON.parse(users);
-            const mid : any = localStorage.getItem('merchantID');
-            const obj: addCartRequest = {
-              userID: user.userID,
-              productID: data.productId,
-              quantity: this.state.qty,
-              sellingPrice: data.price,
-              discountApplied: data.discountPrice,
-              merchantID:parseInt(mid)
-            };
-            this.props.addToCart(obj);
-    
-            setTimeout(() => {
-              this.getCartData();
-            }, 200);
-          }
-       
+        if (
+          this.state.cartarray
+            .map((cart: any) => cart.productID === data.productId)
+            .includes(true)
+        ) {
+          const users: any = localStorage.getItem("user");
+          let user = JSON.parse(users);
+          let selectedItem = this.state.cartarray.filter(
+            (cart: any) => cart.productID === data.productId
+          )[0];
+          let index = this.state.cartarray.indexOf(selectedItem);
+          // console.log("selectedItem: ", selectedItem);
+          // console.log("Index: ", index);
+          const mid: any = localStorage.getItem("merchantID");
+          const obj: addCartRequest = {
+            userID: user.userID,
+            productID: selectedItem.productID,
+            quantity: selectedItem.quantity + 1,
+            discountApplied: selectedItem.discountApplied,
+            merchantID: parseInt(mid),
+          };
+          // console.log("increment object: ", obj);
+          this.props.updateToCart(obj, this.state.cartarray[index].orderCartID);
+
+          setTimeout(() => {
+            this.getCartData();
+          }, 200);
+        } else {
+          const users: any = localStorage.getItem("user");
+          let user = JSON.parse(users);
+          const mid: any = localStorage.getItem("merchantID");
+          const obj: addCartRequest = {
+            userID: user.userID,
+            productID: data.productId,
+            quantity: this.state.qty,
+            sellingPrice: data.price,
+            discountApplied: data.discountPrice,
+            merchantID: parseInt(mid),
+          };
+          this.props.addToCart(obj);
+
+          setTimeout(() => {
+            this.getCartData();
+          }, 200);
+        }
       } else {
-         this.setState({
-      show:true
-    })
+        this.setState({
+          show: true,
+        });
       }
     } else {
       let m: any = this.state.maindata;
@@ -531,10 +530,10 @@ class StoreItem extends React.Component<{
   /** Clear old cart */
   clearOldCart() {
     let cartdeletearray = [];
-    for(var i = 0;i<this.state.cartarray.length;i++) {
-      cartdeletearray.push(this.state.cartarray[i].orderCartID)
+    for (var i = 0; i < this.state.cartarray.length; i++) {
+      cartdeletearray.push(this.state.cartarray[i].orderCartID);
     }
-    const obj : removeCartItemRequest = {
+    const obj: removeCartItemRequest = {
       moduleName: "OrderCart",
       id: cartdeletearray,
     };
@@ -542,10 +541,10 @@ class StoreItem extends React.Component<{
 
     setTimeout(() => {
       this.getCartData();
-      localStorage.removeItem('merchantID');
-    this.setState({
-      show:this.state.show = false,
-    })
+      localStorage.removeItem("merchantID");
+      this.setState({
+        show: this.state.show = false,
+      });
     }, 50);
   }
 
@@ -643,7 +642,7 @@ class StoreItem extends React.Component<{
                     </div>
                   )
                 )}
-            
+
               <Modal
                 className="modal-dialog-centered d-ct"
                 show={this.state.show}
@@ -660,121 +659,141 @@ class StoreItem extends React.Component<{
                     />
                     <h1>Clear cart?</h1>
                     <p>
-                      
                       <strong>
-                        Do you want to clear the cart and add
-                        items from <strong>another cart?</strong>
+                        Do you want to clear the cart and add items from{" "}
+                        <strong>another cart?</strong>
                       </strong>
                     </p>
                     <div className="flex-btn">
-                      <button className="cencel-btn" onClick={this.handleClose}>Cancel</button>
-                      <button className="clear-btn" onClick={this.clearOldCart}>Clear cart</button>
+                      <button className="cencel-btn" onClick={this.handleClose}>
+                        Cancel
+                      </button>
+                      <button className="clear-btn" onClick={this.clearOldCart}>
+                        Clear cart
+                      </button>
                     </div>
                   </div>
                 </Modal.Body>
-                <Modal.Footer>
-                </Modal.Footer>
+                <Modal.Footer></Modal.Footer>
               </Modal>
-              </div>
-         
+            </div>
           ) : (
             ""
           )}
+
           {categorydata &&
             categorydata.map((cat: any, index: number) => (
-              <div  ref={el => (this.ref[cat.value] = el)}  key={"item-" + index}>
               <div
-                id={cat.value}
-                className="item-details-1"
-                
+                ref={(el) => (this.ref[cat.value] = el)}
+                key={"item-" + index}
               >
-                <div className="item-nm-tt">{cat.name}</div>
-                {productdata.length === 0 ? (
-                  <p className="text-center mt-4">No Product Avaliable</p>
-                ) : (
-                  //   productdata &&
-                  //   productdata.map((product: any, index: number) =>
-                  //     product.subCategoryId !== cat.value ? (
-                  //       <p className="text-center mt-4" key={index}>
-                  //         No Product Avaliable
-                  //       </p>
-                  //     ) : (
-                  //       ""
-                  //     )
-                  //   )
-                  // )
-                  ""
-                )}
- 
-                {productdata &&
-                  productdata.map((product: any, index: number) =>
-                    product.subCategoryId === cat.value ? (
-                      <div key={index}>
-                        <h3 className="tt-1"></h3>
-                        <div className="box-1">
-                          <div className="product-img">
-                            {product.productImages &&
-                            product.productImages[0].imagePath ? (
-                              <img
-                                className="product_img_size"
-                                src={
-                                  constant.filemerchantpath +
-                                  product.productImages[0].imagePath
-                                }
-                                alt=""
-                              />
-                            ) : (
-                              <img
-                                className="product_img_size"
-                                src={findstore.store}
-                                alt=""
-                              />
-                            )}
-                          </div>
-                          <div className="right-tt">
-                            <h4 className="tt-2">{product.productName}</h4>
-                            <span className="price">R {product.price}</span>
-                            <p
-                              dangerouslySetInnerHTML={{
-                                __html: product.productDesc,
-                              }}
-                            ></p>
-                          </div>
-                          <div className="btn-add-item">
-                            {localStorage.getItem("token") ? (
-                              this.state.isButton === false ? (
-                                <button
-                                  className="addproduct"
-                                  onClick={() => this.additem(product)}
-                                >
-                                  + Add
-                                </button>
+                <div id={cat.value} className="item-details-1">
+                  <div className="item-nm-tt">{cat.name}</div>
+                  {productdata.length === 0 ? (
+                    <p className="text-center mt-4">No Product Avaliable</p>
+                  ) : (
+                    //   productdata &&
+                    //   productdata.map((product: any, index: number) =>
+                    //     product.subCategoryId !== cat.value ? (
+                    //       <p className="text-center mt-4" key={index}>
+                    //         No Product Avaliable
+                    //       </p>
+                    //     ) : (
+                    //       ""
+                    //     )
+                    //   )
+                    // )
+                    ""
+                  )}
+                  {productdata && productdata.length > 0 ? (
+                    productdata &&
+                    productdata.map((product: any, index: number) =>
+                      product.subCategoryId === cat.value ? (
+                        <div key={index}>
+                          <h3 className="tt-1"></h3>
+                          <div className="box-1">
+                            <div className="product-img">
+                              {product.productImages &&
+                              product.productImages[0].imagePath ? (
+                                <img
+                                  className="product_img_size"
+                                  src={
+                                    constant.filemerchantpath +
+                                    product.productImages[0].imagePath
+                                  }
+                                  alt=""
+                                />
                               ) : (
-                                <div className="spinerButton2">
-                                  <button className="addproduct" disabled>
+                                <img
+                                  className="product_img_size"
+                                  src={findstore.store}
+                                  alt=""
+                                />
+                              )}
+                            </div>
+                            <div className="right-tt">
+                              <h4 className="tt-2">{product.productName}</h4>
+                              <span className="price">R {product.price}</span>
+                              <p
+                                dangerouslySetInnerHTML={{
+                                  __html: product.productDesc,
+                                }}
+                              ></p>
+                            </div>
+                            <div className="btn-add-item">
+                              {localStorage.getItem("token") ? (
+                                this.state.isButton === false ? (
+                                  <button
+                                    className="addproduct"
+                                    onClick={() => this.additem(product)}
+                                  >
                                     + Add
                                   </button>
-                                  {this.state.loadingid ===
-                                  product.productId ? (
-                                    <div className="spinners2"></div>
-                                  ) : (
-                                    ""
-                                  )}
-                                </div>
-                              )
-                            ) : (
-                              <Link to="/signin">
-                                <button className="addproduct">+ Add</button>
-                              </Link>
-                            )}
+                                ) : (
+                                  <div className="spinerButton2">
+                                    <button className="addproduct" disabled>
+                                      + Add
+                                    </button>
+                                    {this.state.loadingid ===
+                                    product.productId ? (
+                                      <div className="spinners2"></div>
+                                    ) : (
+                                      ""
+                                    )}
+                                  </div>
+                                )
+                              ) : (
+                                <Link to="/signin">
+                                  <button className="addproduct">+ Add</button>
+                                </Link>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )
+                    )
+                  ) : (
+                    <SkeletonTheme color="#202020" highlightColor="#444">
+                      <div>
+                        <Skeleton count={1} />
+                        <div className="box-1">
+                          <Skeleton count={1} />
+                          <div className="right-tt">
+                            <Skeleton count={1} />
+                            <Skeleton count={1} />
+                            <Skeleton count={1} />
+                          </div>
+                          <div className="btn-add-item">
+                            <Skeleton count={1} />
                           </div>
                         </div>
                       </div>
-                    ) : (
-                      ""
-                    )
+                    </SkeletonTheme>
                   )}
-              </div>
+                
+                </div>
               </div>
             ))}
         </div>
@@ -939,7 +958,7 @@ class StoreItem extends React.Component<{
 }
 
 /**
- * 
+ *
  * @param state : api call response update state
  */
 const mapStateToProps = (state: any) => ({
@@ -951,11 +970,10 @@ const mapStateToProps = (state: any) => ({
 });
 
 /**
- * 
+ *
  * @param dispatch : call api with action
  */
 const mapDispatchToProps = (dispatch: any) => ({
-  
   /** Get Products data */
   getProductsData: (data: any) =>
     dispatch(productService.getProductsData(data)),
@@ -979,7 +997,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(productService.getProductDataWithSearching(data)),
 
   /** Remove Product form cart */
-    removeProductFromCart: (data: any) =>
+  removeProductFromCart: (data: any) =>
     dispatch(productService.removeProductFromCart(data)),
 });
 
