@@ -55,6 +55,7 @@ class StoreItem extends React.Component<{
     isButton: this.storeItemState.isButton,
     loadingid: this.storeItemState.loadingid,
     show: this.storeItemState.show,
+    isLoading: false,
   };
 
   /** Constructor call */
@@ -215,6 +216,7 @@ class StoreItem extends React.Component<{
     // console.log("props", nextProps);
     if (nextProps.productDetail) {
       this.getSubCategory(nextProps.productDetail.subcategory);
+     
       this.productData(nextProps.productDetail.data);
     }
     if (nextProps.getCartDetail) {
@@ -317,6 +319,7 @@ class StoreItem extends React.Component<{
    */
   productData(product: any) {
     this.setState({
+      isLoading:true,
       productdata: this.state.productdata = product,
     });
   }
@@ -705,7 +708,8 @@ class StoreItem extends React.Component<{
                     // )
                     ""
                   )}
-                  {productdata && productdata.length > 0 ? (
+
+                  {this.state.isLoading === true ? (
                     productdata &&
                     productdata.map((product: any, index: number) =>
                       product.subCategoryId === cat.value ? (
@@ -775,24 +779,27 @@ class StoreItem extends React.Component<{
                       )
                     )
                   ) : (
-                    <SkeletonTheme color="#202020" highlightColor="#444">
-                      <div>
+                    [1, 2, 3, 4].map((data: any, index: number) => (
+                      <div className="all-item" key={index}>
+                    <div className="item-details-1">
+                      <SkeletonTheme color="#202020" highlightColor="#444">
                         <Skeleton count={1} />
                         <div className="box-1">
-                          <Skeleton count={1} />
+                          <div className="product-img">
+                            <Skeleton count={1} />
+                          </div>
                           <div className="right-tt">
-                            <Skeleton count={1} />
-                            <Skeleton count={1} />
                             <Skeleton count={1} />
                           </div>
                           <div className="btn-add-item">
                             <Skeleton count={1} />
                           </div>
                         </div>
-                      </div>
                     </SkeletonTheme>
+                      </div>
+                    </div>
+                    ))
                   )}
-                
                 </div>
               </div>
             ))}

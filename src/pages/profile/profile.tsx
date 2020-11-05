@@ -200,7 +200,7 @@ class Profile extends React.Component<{
       show: !this.state.show,
       addressid: data.addressID,
       name: data.name,
-      mobile: data.mobile,
+      mobilephone: data.mobilephone,
       pincode: data.pincode,
       landmark: data.landmark,
       address: data.address,
