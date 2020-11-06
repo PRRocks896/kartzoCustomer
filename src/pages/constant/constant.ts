@@ -155,7 +155,7 @@ export default {
       merchantdata: [],
       locationData: [],
       isLoading: true,
-      cityid: "",
+      cityid: 3,
     },
   },
   bannerPage: {

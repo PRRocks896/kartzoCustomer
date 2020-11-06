@@ -22,6 +22,7 @@ class SearchCity extends React.Component<{
     slugname: this.searchcityState.slugname,
     categorydata: this.searchcityState.categorydata,
     isLoading: this.searchcityState.isLoading,
+    cityid:3
   };
 
   /** Constructor call */
@@ -42,6 +43,12 @@ class SearchCity extends React.Component<{
     }
     scrollToTop();
     this.getCategory();
+    console.log("props",this.props);
+    if(this.props && this.props.location && this.props.location.state && this.props.location.state.cityid) {
+      this.setState({
+        cityid:this.props.location.state.cityid
+      })
+    }
    
   }
 
@@ -135,7 +142,7 @@ class SearchCity extends React.Component<{
                             key={index}
                             className="col-sm-6 col-md-4 col-lg-3"
                           >
-                            <Link to={{pathname:`/order/${c.slug}`, state:{city:this.state.slugname.toLocaleLowerCase()}}}>
+                            <Link to={{pathname:`/order/${c.slug}`, state:{city:this.state.slugname.toLocaleLowerCase(),cityid:this.state.cityid}}}>
                               <div
                                 className="box-1"
                                 style={{

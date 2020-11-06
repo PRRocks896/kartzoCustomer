@@ -100,7 +100,7 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
         city.value === this.state.cityid ? (
           this.props.history.push({
             pathname: `/${city.name.toLowerCase()}`,
-            state: { cityid: city.value }
+            state: { cityid: this.state.cityid }
           })
         ) : ('')
       ))

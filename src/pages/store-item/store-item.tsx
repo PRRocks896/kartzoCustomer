@@ -55,7 +55,7 @@ class StoreItem extends React.Component<{
     isButton: this.storeItemState.isButton,
     loadingid: this.storeItemState.loadingid,
     show: this.storeItemState.show,
-    isLoading: false,
+    isLoading: true
   };
 
   /** Constructor call */
@@ -216,7 +216,7 @@ class StoreItem extends React.Component<{
     // console.log("props", nextProps);
     if (nextProps.productDetail) {
       this.getSubCategory(nextProps.productDetail.subcategory);
-     
+
       this.productData(nextProps.productDetail.data);
     }
     if (nextProps.getCartDetail) {
@@ -319,7 +319,7 @@ class StoreItem extends React.Component<{
    */
   productData(product: any) {
     this.setState({
-      isLoading:true,
+      isLoading: false,
       productdata: this.state.productdata = product,
     });
   }
@@ -709,80 +709,84 @@ class StoreItem extends React.Component<{
                     ""
                   )}
 
-                  {this.state.isLoading === true ? (
-                    productdata &&
-                    productdata.map((product: any, index: number) =>
-                      product.subCategoryId === cat.value ? (
-                        <div key={index}>
-                          <h3 className="tt-1"></h3>
-                          <div className="box-1">
-                            <div className="product-img">
-                              {product.productImages &&
-                              product.productImages[0].imagePath ? (
-                                <img
-                                  className="product_img_size"
-                                  src={
-                                    constant.filemerchantpath +
-                                    product.productImages[0].imagePath
-                                  }
-                                  alt=""
-                                />
-                              ) : (
-                                <img
-                                  className="product_img_size"
-                                  src={findstore.store}
-                                  alt=""
-                                />
-                              )}
-                            </div>
-                            <div className="right-tt">
-                              <h4 className="tt-2">{product.productName}</h4>
-                              <span className="price">R {product.price}</span>
-                              <p
-                                dangerouslySetInnerHTML={{
-                                  __html: product.productDesc,
-                                }}
-                              ></p>
-                            </div>
-                            <div className="btn-add-item">
-                              {localStorage.getItem("token") ? (
-                                this.state.isButton === false ? (
-                                  <button
-                                    className="addproduct"
-                                    onClick={() => this.additem(product)}
-                                  >
-                                    + Add
-                                  </button>
+                  {this.state.isLoading === false
+                    ? (
+                      productdata &&
+                      productdata.map((product: any, index: number) =>
+                        product.subCategoryId === cat.value ? (
+                          <div key={index}>
+                            <h3 className="tt-1"></h3>
+                            <div className="box-1">
+                              <div className="product-img">
+                                {product.productImages &&
+                                product.productImages[0].imagePath ? (
+                                  <img
+                                    className="product_img_size"
+                                    src={
+                                      constant.filemerchantpath +
+                                      product.productImages[0].imagePath
+                                    }
+                                    alt=""
+                                  />
                                 ) : (
-                                  <div className="spinerButton2">
-                                    <button className="addproduct" disabled>
+                                  <img
+                                    className="product_img_size"
+                                    src={findstore.store}
+                                    alt=""
+                                  />
+                                )}
+                              </div>
+                              <div className="right-tt">
+                                <h4 className="tt-2">{product.productName}</h4>
+                                <span className="price">R {product.price}</span>
+                                <p
+                                  dangerouslySetInnerHTML={{
+                                    __html: product.productDesc,
+                                  }}
+                                ></p>
+                              </div>
+                              <div className="btn-add-item">
+                                {localStorage.getItem("token") ? (
+                                  this.state.isButton === false ? (
+                                    <button
+                                      className="addproduct"
+                                      onClick={() => this.additem(product)}
+                                    >
                                       + Add
                                     </button>
-                                    {this.state.loadingid ===
-                                    product.productId ? (
-                                      <div className="spinners2"></div>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </div>
-                                )
-                              ) : (
-                                <Link to="/signin">
-                                  <button className="addproduct">+ Add</button>
-                                </Link>
-                              )}
+                                  ) : (
+                                    <div className="spinerButton2">
+                                      <button className="addproduct" disabled>
+                                        + Add
+                                      </button>
+                                      {this.state.loadingid ===
+                                      product.productId ? (
+                                        <div className="spinners2"></div>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+                                  )
+                                ) : (
+                                  <Link to="/signin">
+                                    <button className="addproduct">
+                                      + Add
+                                    </button>
+                                  </Link>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ) : (
+                        ) : (
                         ""
+                        )
                       )
                     )
-                  ) : (
-                    [1, 2, 3, 4].map((data: any, index: number) => (
-                      <div className="all-item" key={index}>
-                    <div className="item-details-1">
-                      <SkeletonTheme color="#202020" highlightColor="#444">
+                    :( 
+                      [1, 2, 3, 4].map((data: any, index: number) => (
+                        <div className="all-item" key={index}>
+                          <div className="item-details-1">
+                          <SkeletonTheme color="#202020" highlightColor="#444">
                         <Skeleton count={1} />
                         <div className="box-1">
                           <div className="product-img">
@@ -796,10 +800,11 @@ class StoreItem extends React.Component<{
                           </div>
                         </div>
                     </SkeletonTheme>
-                      </div>
-                    </div>
-                    ))
-                  )}
+                          </div>
+                        </div>
+                      ))
+                      )
+                      }
                 </div>
               </div>
             ))}
