@@ -5,7 +5,9 @@ export const loginService = {
   login,
   verifyOtp,
   getAdminToken,
-  getAppLink
+  getAppLink,
+  updateProfileData,
+  getProfile
 };
 
 /**
@@ -152,4 +154,81 @@ function getAppLink(data:any) {
     return { type: ACTION.login.GET_APPLINK_FAILURE, error };
   }
 }
+
+/**
+ * 
+ * @param data : update profile
+ */
+function updateProfileData(data:any) {
+  return (dispatch: any) => {
+    dispatch(request({data}));
+
+    UserAPI
+      .updateprofile(data)
+      .then(async (getprofiledata:any) => {
+        console.log("getprofiledata", getprofiledata);
+        if (getprofiledata.status === 200) {
+          // const msg = otpdata.message;
+          // showSuccess(msg);
+          dispatch(success(await getprofiledata.data.resultObject));
+        } else {
+          dispatch(failure(getprofiledata));
+        }
+      })
+      .catch((err:any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(getprofiledata: any) {
+    return { type: ACTION.login.UPDATE_PROFILE_REQUEST, getprofiledata };
+  }
+  function success(getprofiledata: any) {
+    return { type: ACTION.login.UPDATE_PROFILE_SUCCESS, getprofiledata };
+  }
+  function failure(error: any) {
+    return { type: ACTION.login.UPDATE_PROFILE_FAILURE, error };
+  }
+}
+
+
+/**
+ * 
+ * @param data : update profile
+ */
+function getProfile(data:any) {
+  return (dispatch: any) => {
+    dispatch(request({data}));
+
+    UserAPI
+      .getprofile(data)
+      .then(async (getprofiledata:any) => {
+        console.log("getprofiledata", getprofiledata);
+        if (getprofiledata.status === 200) {
+          // const msg = otpdata.message;
+          // showSuccess(msg);
+          dispatch(success(await getprofiledata.resultObject));
+        } else {
+          dispatch(failure(getprofiledata));
+        }
+      })
+      .catch((err:any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(getprofiledata: any) {
+    return { type: ACTION.login.GET_PROFILE_REQUEST, getprofiledata };
+  }
+  function success(getprofiledata: any) {
+    return { type: ACTION.login.GET_PROFILE_SUCCESS, getprofiledata };
+  }
+  function failure(error: any) {
+    return { type: ACTION.login.GET_PROFILE_FAILURE, error };
+  }
+}
+
+
+
+
 

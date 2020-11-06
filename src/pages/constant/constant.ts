@@ -46,6 +46,7 @@ export default {
   apiUrl: "http://api-customer.kartzoapp.com/v1/api/",
   filepath: "http://api.kartzoapp.com/",
   filemerchantpath: "http://api-merchant.kartzoapp.com/",
+  fileuserpath:"http://api-customer.kartzoapp.com/",
   apiUrlAdmin: "http://api.kartzoapp.com/v1/api/",
   apiUrlMerchant: "http://api-merchant.kartzoapp.com/v1/api/",
   home: "Get free online delivery for food,medicines,groceries and more | ...",

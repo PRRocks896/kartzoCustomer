@@ -37,6 +37,30 @@ export default {
      */
     getAppLinkData: async function (data:any) {
         return axios.post(Constant.apiUrl + apiUrl.userController.getapplink + `?phone=${data.phone}`);
-    }  
+    }, 
+    
+      /**
+     * 
+     * @param data : update profile
+     */
+    updateprofile: async function (data:any) {
+        const config = {     
+            headers: { 
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Access-Control-Allow-Origin': true,
+                'content-type': 'multipart/form-data'
+            }
+        }
+        return axios.post(Constant.apiUrl + apiUrl.userController.updateprofile,data,config);
+    },
+
+        
+    /**
+     * 
+     * @param data : get profile
+     */
+    getprofile: async function (data:any) {
+        return WebReqUrl.get(Constant.apiUrl + apiUrl.userController.getprofile + data.id,false);
+    }
     
 }

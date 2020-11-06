@@ -144,7 +144,7 @@ export const cart = {
 };
 
 export const profile = {
-  profilepic: require("../../../../assets/images/profile-icon.png"),
+  profilepic: require("../../../../assets/images/user.svg"),
   food: require("../../../../assets/images/food-img.jpg"),
   bag: require("../../../../assets/images/bag-icon.png"),
   home: require("../../../../assets/images/home-icon.png"),

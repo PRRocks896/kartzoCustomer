@@ -2,7 +2,9 @@ import * as ACTION from "../index";
 
 const initialState = {
   user: "",
-  otpdetail:""
+  otpdetail:"",
+  profiledata:"",
+  updateprofiledata:""
 };
 
 /**
@@ -48,6 +50,43 @@ const auth = (state = initialState, action: any) => {
         ...state,
         error: action.error,
       };
+
+      case ACTION.login.GET_PROFILE_REQUEST:
+        return {
+          ...state,
+        };
+      case ACTION.login.GET_PROFILE_SUCCESS:
+        // Auth.setAuth(action.response.data);
+        return {
+          ...state,
+          profiledata: action.getprofiledata
+        };
+      case ACTION.login.GET_PROFILE_FAILURE:
+        // Auth.removeAuth();
+        // Auth.removeAuthenticateUser();
+        return {
+          ...state,
+          error: action.error,
+        };
+
+
+      case ACTION.login.UPDATE_PROFILE_REQUEST:
+        return {
+          ...state,
+        };
+      case ACTION.login.UPDATE_PROFILE_SUCCESS:
+        // Auth.setAuth(action.response.data);
+        return {
+          ...state,
+          updateprofiledata: action.getprofiledata
+        };
+      case ACTION.login.UPDATE_PROFILE_FAILURE:
+        // Auth.removeAuth();
+        // Auth.removeAuthenticateUser();
+        return {
+          ...state,
+          error: action.error,
+        };
 
     default:
       return state;

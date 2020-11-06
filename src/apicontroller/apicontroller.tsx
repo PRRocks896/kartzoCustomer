@@ -3,7 +3,9 @@ const apiUrl = {
         createData:'user/otp-send',
         verifyotp:'user/otp-verified',
         adminToken:'token/get-admin-token',
-        getapplink:'user/get-app-link'
+        getapplink:'user/get-app-link',
+        updateprofile:'user/update-profile',
+        getprofile:'user/'
     },
     categoryController: {
         category:'category/get-category-list'
