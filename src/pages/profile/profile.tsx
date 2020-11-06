@@ -687,7 +687,7 @@ class Profile extends React.Component<{
                       ) : (
                         <span
                           onClick={this.updateModel}
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: "pointer",color:'#5d75fb' }}
                         >
                           Update-Profile
                         </span>
