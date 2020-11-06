@@ -34,6 +34,20 @@ class Footer extends React.Component<{getFooterData:any}> {
     // this.props.getFooterData();
   }
 
+  
+  /**
+   * 
+   *
+   * @param nextProps : get updated props value
+   */
+  componentWillReceiveProps(nextProps: any) {
+    console.log("props", nextProps);
+    if (nextProps.footerDetail) {
+      
+    }
+  }
+
+
   /** Render DOM */
   render() {
     if (this.state.isShow === false) {
