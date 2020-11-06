@@ -8,6 +8,7 @@ import product from './product';
 import placeOrder from './placeorder';
 import order from './order';
 import sendpackage from './package';
+import footer from './common';
 
 /** Root Reducers */
 const rootReducer = combineReducers({
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     product:product,
     placeOrder:placeOrder,
     order:order,
-    sendpackage:sendpackage
+    sendpackage:sendpackage,
+    footer:footer
 });
 
 export default rootReducer;

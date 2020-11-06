@@ -5,6 +5,7 @@ import StoreAPI from './store.service';
 import PlaceOrderAPI from './placeorder.service';
 import OrderAPI from './order.service';
 import PackageAPI from './package.service';
+import CommonAPI from './common.service';
 
 export * from './user.service';
 export * from './category.service';
@@ -13,6 +14,7 @@ export * from './store.service';
 export * from './placeorder.service';
 export * from './order.service';
 export * from './package.service';
+export * from './category.service';
 
 export {
     UserAPI,
@@ -21,5 +23,6 @@ export {
     StoreAPI,
     PlaceOrderAPI,
     OrderAPI,
-    PackageAPI
+    PackageAPI,
+    CommonAPI
 }

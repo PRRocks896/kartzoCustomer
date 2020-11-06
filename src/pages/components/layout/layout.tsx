@@ -14,7 +14,7 @@ class Layout extends React.Component {
       <>
         <Header {...this.props}/>
         {this.props.children}
-        <Footer {...this.props}/>
+        <Footer/>
       </>
     );
   }

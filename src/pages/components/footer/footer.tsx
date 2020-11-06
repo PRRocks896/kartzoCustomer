@@ -5,14 +5,21 @@ import { Link } from "react-router-dom";
 import EventEmitter from "../../../event";
 import constant from "../../constant/constant";
 import { layoutStateRequest } from "../../../modelController";
+import { connect } from "react-redux";
+import { commonService } from "../../../redux";
 // import ProtectedRoute from 'react-protected-route-component'
 
-class Footer extends React.Component {
+class Footer extends React.Component<{getFooterData:any}> {
+
+  /** Footer state */
   footerState : layoutStateRequest = constant.footerPage.state;
   state = {
     isShow: this.footerState.isShow,
+    footercitydata:this.footerState.footercitydata,
+    footersocialdata:this.footerState.footersocialdata
   };
 
+  /** Constructor */
   constructor(props: any) {
     super(props);
     EventEmitter.subscribe("isShowFooter", (data: any) => {
@@ -20,6 +27,11 @@ class Footer extends React.Component {
         isShow: this.state.isShow = data,
       });
     });
+  }
+
+  /** Page Render Call */
+  componentDidMount() {
+    // this.props.getFooterData();
   }
 
   /** Render DOM */
@@ -112,4 +124,23 @@ class Footer extends React.Component {
   }
 }
 
-export default Footer;
+/**
+ * 
+ * @param state : api call response update state
+ */
+const mapStateToProps = (state: any) => ({
+  // footerDetail: state.footer.footerdata
+});
+
+/**
+ * 
+ * @param dispatch : call api with action
+ */
+const mapDispatchToProps = (dispatch: any) => ({
+
+  /** Get Footer Data */
+  getFooterData: (data: any) =>
+    dispatch(commonService.getFooterData(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Footer);

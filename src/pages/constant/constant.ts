@@ -91,6 +91,8 @@ export default {
     title: {},
     state: {
       isShow: false,
+      footercitydata:[],
+      footersocialdata:[]
     },
   },
   profilePage: {

@@ -10,6 +10,9 @@ const apiUrl = {
     categoryController: {
         category:'category/get-category-list'
     },
+    commonController: {
+        getfooterdata:'user/footer'
+    },
     findStoreController: {
         getStore:'user/get-merchant-list',
         getLocation:'address/get-city-list'
