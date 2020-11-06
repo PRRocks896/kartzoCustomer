@@ -7,7 +7,11 @@ import {
   profileStateRequest,
 } from "../../modelController";
 import { profile } from "../../pages/components/helper/images";
-import { placeOrderService, orderService, loginService } from "../../redux/index";
+import {
+  placeOrderService,
+  orderService,
+  loginService,
+} from "../../redux/index";
 import constant from "../constant/constant";
 import { getAppName, alertMessage } from "../utils";
 import "./profile.css";
@@ -22,7 +26,7 @@ class Profile extends React.Component<{
   deleteAddress: any;
   getOrderList: any;
   updateProfileData: any;
-  getProfile:any;
+  getProfile: any;
 }> {
   /** Profile Page State */
   profileState: profileStateRequest = constant.profilePage.state;
@@ -57,19 +61,19 @@ class Profile extends React.Component<{
     workdisabled: this.profileState.workdisabled,
     otherdisabled: this.profileState.otherdisabled,
     homedisabled: this.profileState.homedisabled,
-    updatemodel: false,
-    update:false,
-    firstname: "",
-    firstnameerror: "",
-    lastname: "",
-    lastnameerror: "",
-    useremail: "",
-    useremailerror: "",
-    file:"",
-    filetrue:false,
-    selectedFile: "",
-    selectedFileerror: "",
-    disable:false
+    updatemodel: this.profileState.updatemodel,
+    update: this.profileState.update,
+    firstname: this.profileState.firstname,
+    firstnameerror: this.profileState.firstnameerror,
+    lastname: this.profileState.lastname,
+    lastnameerror: this.profileState.lastnameerror,
+    useremail: this.profileState.useremail,
+    useremailerror: this.profileState.useremailerror,
+    file: this.profileState.file,
+    filetrue: this.profileState.filetrue,
+    selectedFile: this.profileState.selectedFile,
+    selectedFileerror: this.profileState.selectedFileerror,
+    disable: this.profileState.disable,
   };
 
   /** Constructor call */
@@ -134,13 +138,11 @@ class Profile extends React.Component<{
     let user = JSON.parse(users);
 
     const obj = {
-      id:user.userID
-    }
+      id: user.userID,
+    };
 
     this.props.getProfile(obj);
   }
-  
-
 
   /**
    *
@@ -176,19 +178,19 @@ class Profile extends React.Component<{
     if (nextProps.orderDetails) {
       this.getOrderDetails(nextProps.orderDetails);
     }
-    if(nextProps.profileData) {
+    if (nextProps.profileData) {
       this.getProfileData(nextProps.profileData);
     }
 
-    if(nextProps.updateProfileData) {
+    if (nextProps.updateProfileData) {
       this.setState({
-        disable:false
-      })
+        disable: false,
+      });
       // this.updateProfileData(nextProps.updateProfileData);
     } else {
       this.setState({
-        disable:false
-      })
+        disable: false,
+      });
     }
   }
 
@@ -201,29 +203,28 @@ class Profile extends React.Component<{
     });
   }
 
-  getProfileData(data:any) {
+  getProfileData(data: any) {
     this.setState({
-      update:true,
-      updatemodel:false,
-      firstname:this.state.firstname = data.firstName,
-      lastname:this.state.lastname = data.lastName,
-      useremail:this.state.useremail = data.email,
-      file:this.state.file = data.photoPath,
-    })
-  }
-
-  updateProfileData(data:any) {
-    this.setState({
-      update:true,
-      disable:false,
-      updatemodel:false,
-      firstname:this.state.firstname = data.firstName,
-      lastname:this.state.lastname = data.lastName,
-      useremail:this.state.useremail = data.email,
-      file:this.state.file = data.photoPath,
+      update: true,
+      updatemodel: false,
+      firstname: this.state.firstname = data.firstName,
+      lastname: this.state.lastname = data.lastName,
+      useremail: this.state.useremail = data.email,
+      file: this.state.file = data.photoPath,
     });
   }
 
+  updateProfileData(data: any) {
+    this.setState({
+      update: true,
+      disable: false,
+      updatemodel: false,
+      firstname: this.state.firstname = data.firstName,
+      lastname: this.state.lastname = data.lastName,
+      useremail: this.state.useremail = data.email,
+      file: this.state.file = data.photoPath,
+    });
+  }
 
   /**
    *
@@ -555,15 +556,11 @@ class Profile extends React.Component<{
       useremailerror = "please enter valid email";
     }
 
-    if (
-      firstnameerror ||
-      useremailerror ||
-      lastnameerror
-    ) {
+    if (firstnameerror || useremailerror || lastnameerror) {
       this.setState({
         firstnameerror,
         useremailerror,
-        lastnameerror
+        lastnameerror,
       });
       return false;
     }
@@ -572,15 +569,15 @@ class Profile extends React.Component<{
 
   updateProfile() {
     this.setState({
-      disable:this.state.disable = true
-    })
+      disable: this.state.disable = true,
+    });
     const isValid = this.validateProfile();
     if (isValid) {
       this.setState({
         firstnameerror: "",
         useremailerror: "",
-        lastnameerror: ""
-      })
+        lastnameerror: "",
+      });
       const users: any = localStorage.getItem("user");
       let user = JSON.parse(users);
 
@@ -590,26 +587,28 @@ class Profile extends React.Component<{
       formData.append("FirstName", this.state.firstname);
       formData.append("LastName", this.state.lastname);
       formData.append("Email", this.state.useremail);
-      formData.append("files", this.state.selectedFile ? this.state.selectedFile[0] : '');
-      formData.append("UserId",'0');
+      formData.append(
+        "files",
+        this.state.selectedFile ? this.state.selectedFile[0] : ""
+      );
+      formData.append("UserId", "0");
       this.props.updateProfileData(formData);
 
       setTimeout(() => {
-        this.getProfile()
+        this.getProfile();
       }, 300);
     } else {
       this.setState({
-        disable:false
-      })
+        disable: false,
+      });
     }
   }
 
-  
   onChangeHandler(event: any) {
     if (this.state.update === true) {
       this.setState({
-        update:false,
-        selectedFile:  event.target.files,
+        update: false,
+        selectedFile: event.target.files,
       });
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
@@ -635,10 +634,9 @@ class Profile extends React.Component<{
   removeIcon() {
     this.setState({
       file: this.state.file = "",
-      selectedFile: this.state.selectedFile = ""
+      selectedFile: this.state.selectedFile = "",
     });
   }
-
 
   /** Render DOM */
   render() {
@@ -650,42 +648,50 @@ class Profile extends React.Component<{
               <div className="col-md-12">
                 <div className="dix-flex">
                   <div className="profile-name">
-                  {
-                                this.state.update === true ? (
-                                  this.state.file !== "" ? (
-                                    <img src={constant.fileuserpath + this.state.file} alt=""/>
-                                  ) : (
-                                    <img src={profile.profilepic} alt=""/>
-                                  )
-                                ) : (
-                                  this.state.file !== "" ? (
-                                    <img src={this.state.file} alt=""/>
-                                  ) : (
-                                    <img src={profile.profilepic} alt=""/>
-                                  )
-                                )
-                              }
-                 
+                    {this.state.update === true ? (
+                      this.state.file !== "" ? (
+                        <img
+                          src={constant.fileuserpath + this.state.file}
+                          alt=""
+                        />
+                      ) : (
+                        <img src={profile.profilepic} alt="" />
+                      )
+                    ) : this.state.file !== "" ? (
+                      <img src={this.state.file} alt="" />
+                    ) : (
+                      <img src={profile.profilepic} alt="" />
+                    )}
+
                     <div className="pro-tt1">
                       <div className="name">+91-{this.state.mobile} </div>
-                      {
-                        this.state.firstname && this.state.lastname && this.state.useremail ? (
-                          <>
-                          <span className="mobl-no">{this.state.firstname ? this.state.firstname : ''} {this.state.lastname ? this.state.lastname : ''}</span>
+                      {this.state.firstname &&
+                      this.state.lastname &&
+                      this.state.useremail ? (
+                        <>
+                          <span className="mobl-no">
+                            {this.state.firstname ? this.state.firstname : ""}{" "}
+                            {this.state.lastname ? this.state.lastname : ""}
+                          </span>
                           <span className="mobl-no"> | </span>
-                          <span className="mobl-no">{this.state.useremail ? this.state.useremail : ''}</span>
-                          <span style={{marginLeft:'12px'}} onClick={this.updateModel}><i className="fas fa-edit"></i></span>
-                          </>
-                        ) : (
+                          <span className="mobl-no">
+                            {this.state.useremail ? this.state.useremail : ""}
+                          </span>
                           <span
+                            style={{ marginLeft: "12px" }}
+                            onClick={this.updateModel}
+                          >
+                            <i className="fas fa-edit"></i>
+                          </span>
+                        </>
+                      ) : (
+                        <span
                           onClick={this.updateModel}
                           style={{ cursor: "pointer" }}
                         >
                           Update-Profile
                         </span>
-                        )
-                      }
-                  
+                      )}
                     </div>
                     <Modal
                       className="modal-dialog-centered d-ct"
@@ -697,142 +703,139 @@ class Profile extends React.Component<{
                       </Modal.Header>
                       <Modal.Body>
                         <>
-                       
-                      <div className="file-attach">
-                        <span className="btn-file">
-                            <input
-                              id="file-input"
-                              type="file"
-                              className="form-control"
-                              name="file"
-                              onChange={this.onChangeHandler.bind(this)}
+                          <div className="file-attach">
+                            <span className="btn-file">
+                              <input
+                                id="file-input"
+                                type="file"
+                                className="form-control"
+                                name="file"
+                                onChange={this.onChangeHandler.bind(this)}
                               />
-                            <div className="bg-img">
-                              {
-                                this.state.update === true ? (
+                              <div className="bg-img">
+                                {this.state.update === true ? (
                                   this.state.file !== "" ? (
-                                    <img src={constant.fileuserpath + this.state.file} alt=""/>
+                                    <img
+                                      src={
+                                        constant.fileuserpath + this.state.file
+                                      }
+                                      alt=""
+                                    />
                                   ) : (
-                                    <img src={profile.profilepic} alt=""/>
+                                    <img src={profile.profilepic} alt="" />
                                   )
+                                ) : this.state.file !== "" ? (
+                                  <img src={this.state.file} alt="" />
                                 ) : (
-                                  this.state.file !== "" ? (
-                                    <img src={this.state.file} alt=""/>
-                                  ) : (
-                                    <img src={profile.profilepic} alt=""/>
-                                  )
-                                )
-                              }
-                            </div>
-                        </span>
-                    </div>
-                        <div className="p-box1">
-                          <div className="edit-dtle">
-                            <form className="form-1">
-                              <div className="row">
-                                
-                                <div className="col-md-6">
-                                  <div className="form-group">
-                                    <input
-                                      type="text"
-                                      id="from1"
-                                      name="firstname"
-                                      className="form-control"
-                                      value={
-                                        this.state.firstname
-                                          ? this.state.firstname
-                                          : ""
-                                      }
-                                      onChange={this.addressChange}
-                                      required
-                                    />
-                                    <label
-                                      className="form-control-placeholder"
-                                      htmlFor="from1"
-                                    >
-                                      First Name
-                                    </label>
-                                    <div className="text-danger">
-                                      {this.state.firstnameerror}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="col-md-6">
-                                  <div className="form-group">
-                                    <input
-                                      type="text"
-                                      id="from66"
-                                      name="lastname"
-                                      className="form-control"
-                                      value={
-                                        this.state.lastname
-                                          ? this.state.lastname
-                                          : ""
-                                      }
-                                      onChange={this.addressChange}
-                                      required
-                                    />
-                                    <label
-                                      className="form-control-placeholder"
-                                      htmlFor="from66"
-                                    >
-                                      Last Name
-                                    </label>
-                                    <div className="text-danger">
-                                      {this.state.lastnameerror}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="col-md-6">
-                                  <div className="form-group">
-                                    <input
-                                      type="text"
-                                      id="from3"
-                                      name="useremail"
-                                      value={
-                                        this.state.useremail
-                                          ? this.state.useremail
-                                          : ""
-                                      }
-                                      className="form-control"
-                                      onChange={this.addressChange}
-                                      required
-                                    />
-                                    <label
-                                      className="form-control-placeholder"
-                                      htmlFor="from3"
-                                    >
-                                      E-Mail
-                                    </label>
-                                    <div className="text-danger">
-                                      {this.state.useremailerror}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="col-md-6">
-                                  <div className="form-group">
-                                    <input
-                                      type="text"
-                                      id="from8"
-                                      name="mobile"
-                                      maxLength={10}
-                                      value={
-                                        this.state.mobile
-                                          ? this.state.mobile
-                                          : ""
-                                      }
-                                      className="form-control"
-                                      required
-                                      disabled
-                                    />
-                                 
-                                  </div>
-                                </div>
-                             
+                                  <img src={profile.profilepic} alt="" />
+                                )}
                               </div>
-                            </form>
+                            </span>
                           </div>
-                        </div>
+                          <div className="p-box1">
+                            <div className="edit-dtle">
+                              <form className="form-1">
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <div className="form-group">
+                                      <input
+                                        type="text"
+                                        id="from1"
+                                        name="firstname"
+                                        className="form-control"
+                                        value={
+                                          this.state.firstname
+                                            ? this.state.firstname
+                                            : ""
+                                        }
+                                        onChange={this.addressChange}
+                                        required
+                                      />
+                                      <label
+                                        className="form-control-placeholder"
+                                        htmlFor="from1"
+                                      >
+                                        First Name
+                                      </label>
+                                      <div className="text-danger">
+                                        {this.state.firstnameerror}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-6">
+                                    <div className="form-group">
+                                      <input
+                                        type="text"
+                                        id="from66"
+                                        name="lastname"
+                                        className="form-control"
+                                        value={
+                                          this.state.lastname
+                                            ? this.state.lastname
+                                            : ""
+                                        }
+                                        onChange={this.addressChange}
+                                        required
+                                      />
+                                      <label
+                                        className="form-control-placeholder"
+                                        htmlFor="from66"
+                                      >
+                                        Last Name
+                                      </label>
+                                      <div className="text-danger">
+                                        {this.state.lastnameerror}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-6">
+                                    <div className="form-group">
+                                      <input
+                                        type="text"
+                                        id="from3"
+                                        name="useremail"
+                                        value={
+                                          this.state.useremail
+                                            ? this.state.useremail
+                                            : ""
+                                        }
+                                        className="form-control"
+                                        onChange={this.addressChange}
+                                        required
+                                      />
+                                      <label
+                                        className="form-control-placeholder"
+                                        htmlFor="from3"
+                                      >
+                                        E-Mail
+                                      </label>
+                                      <div className="text-danger">
+                                        {this.state.useremailerror}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-md-6">
+                                    <div className="form-group">
+                                      <input
+                                        type="text"
+                                        id="from8"
+                                        name="mobile"
+                                        maxLength={10}
+                                        value={
+                                          this.state.mobile
+                                            ? this.state.mobile
+                                            : ""
+                                        }
+                                        className="form-control"
+                                        required
+                                        disabled
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
                         </>
                       </Modal.Body>
                       <Modal.Footer>
@@ -1675,7 +1678,7 @@ const mapStateToProps = (state: any) => ({
   addressDetails: state.placeOrder.addressdata,
   orderDetails: state.order.orderdata,
   profileData: state.auth.profiledata,
-  updateProfileData: state.auth.updateprofiledata
+  updateProfileData: state.auth.updateprofiledata,
 });
 
 /**
@@ -1696,12 +1699,11 @@ const mapDispatchToProps = (dispatch: any) => ({
   /** Get Order list */
   getOrderList: (data: any) => dispatch(orderService.getOrderList(data)),
 
-    /** Update Profile Data */
-    updateProfileData: (data: any) => dispatch(loginService.updateProfileData(data)),
+  /** Update Profile Data */
+  updateProfileData: (data: any) =>
+    dispatch(loginService.updateProfileData(data)),
 
-    getProfile: (data: any) => dispatch(loginService.getProfile(data)),
-    
-  
+  getProfile: (data: any) => dispatch(loginService.getProfile(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
