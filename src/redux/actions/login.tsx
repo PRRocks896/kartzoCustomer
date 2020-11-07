@@ -1,6 +1,7 @@
 import * as ACTION from "../index";
 import {UserAPI} from "../../service/index";
 
+/** Login service */
 export const loginService = {
   login,
   verifyOtp,

@@ -2015,6 +2015,7 @@ const mapStateToProps = (state: any) => ({
  * @param dispatch : call api with action
  */
 const mapDispatchToProps = (dispatch: any) => ({
+  
   /** Get Address List */
   getAddressList: (data: any) =>
     dispatch(placeOrderService.getAddressList(data)),

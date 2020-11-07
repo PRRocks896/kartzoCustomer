@@ -1,6 +1,7 @@
 import * as ACTION from "../index";
 import { StoreAPI } from "../../service/index";
 
+/** Product service */
 export const productService = {
   getProductsData,
   addToCart,

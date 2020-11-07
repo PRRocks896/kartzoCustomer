@@ -8,15 +8,19 @@ import constant from "../constant/constant";
 import { Link } from "react-router-dom";
 
 class Business extends React.Component {
+
+  /** constructor call */
   constructor(props: any) {
     super(props);
   }
 
+  /** Page Render Call */
   componentDidMount() {
     document.title = constant.business + getAppName();
     scrollToTop();
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

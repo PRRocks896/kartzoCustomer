@@ -4,10 +4,13 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 class Features extends React.Component {
+
+  /** Constructor call */
   constructor(props: any) {
     super(props);
   }
 
+  /** Render DOM */
   render() {
     return (
       <section className="we-kart">

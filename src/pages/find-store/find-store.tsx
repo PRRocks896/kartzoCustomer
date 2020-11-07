@@ -24,6 +24,7 @@ class FindStore extends React.Component<{
   location: any;
   searchLocationResponse: any;
 }> {
+  
   /** Find Store State */
   findstoreState: findstoreStateRequest = constant.findStorePage.state;
   state = {
@@ -78,6 +79,9 @@ class FindStore extends React.Component<{
       })
      this.getMerchantData("",this.state.cityid,1,4)
     } else {
+      this.setState({
+        search:false
+      })
       this.getMerchantData();
     }
   }

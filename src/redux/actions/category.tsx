@@ -1,6 +1,7 @@
 import * as ACTION from "../index";
 import {CategoryAPI} from "../../service/index";
 
+/** Category service */
 export const categoryService = {
     getCategoryData
 };

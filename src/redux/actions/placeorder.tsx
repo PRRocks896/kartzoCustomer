@@ -1,6 +1,7 @@
 import * as ACTION from "../index";
 import { PlaceOrderAPI } from "../../service/index";
 
+/** Place order service */
 export const placeOrderService = {
   getAddressList,
   addAddress,

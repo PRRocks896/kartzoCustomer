@@ -1,6 +1,7 @@
 import * as ACTION from "../index";
 import {CommonAPI} from "../../service/index";
 
+/** Common service */
 export const commonService = {
 getFooterData
 };

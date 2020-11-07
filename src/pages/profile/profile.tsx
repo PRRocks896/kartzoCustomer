@@ -523,12 +523,14 @@ class Profile extends React.Component<{
     });
   }
 
+  /** Update Model */
   updateModel() {
     this.setState({
       updatemodel: !this.state.updatemodel,
     });
   }
 
+  /** Update Model close */
   handleupdateModel() {
     this.setState({
       updatemodel: !this.state.updatemodel,
@@ -567,6 +569,7 @@ class Profile extends React.Component<{
     return true;
   }
 
+  /** Update Profile */
   updateProfile() {
     this.setState({
       disable: this.state.disable = true,
@@ -604,6 +607,10 @@ class Profile extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param event : profile photo upload
+   */
   onChangeHandler(event: any) {
     if (this.state.update === true) {
       this.setState({
@@ -631,6 +638,7 @@ class Profile extends React.Component<{
     }
   }
 
+  /** Remove icon */
   removeIcon() {
     this.setState({
       file: this.state.file = "",

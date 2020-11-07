@@ -8,12 +8,15 @@ import constant from "../../constant/constant";
 import { layoutStateRequest } from "../../../modelController";
 
 class Header extends React.Component {
+
+  /** Header state */
   headerState : layoutStateRequest = constant.headerPage.state;
   state = {
     isShow: this.headerState.isShow,
     count: this.headerState.count
   };
 
+  /** constructor call */
   constructor(props: any) {
     super(props);
     EventEmitter.subscribe("isShow", (data: any) => {

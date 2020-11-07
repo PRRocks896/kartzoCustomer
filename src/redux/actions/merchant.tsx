@@ -1,6 +1,7 @@
 import * as ACTION from "../index";
 import { FindStoreAPI } from "../../service/index";
 
+/** Merchant service */
 export const merchantService = {
   getMerchantData,
   searchLocationResponse,

@@ -138,6 +138,7 @@ export default {
       slugname: "",
       categorydata: [],
       isLoading: true,
+      cityid:3
     },
   },
   findStorePage: {
@@ -190,6 +191,7 @@ export default {
       isButton: false,
       loadingid: "",
       show: false,
+      isLoading:true
     },
   },
   cartPage: {

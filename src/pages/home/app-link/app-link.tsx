@@ -74,6 +74,7 @@ class AppLink extends React.Component<{getAppLink:any}> {
     }
   }
 
+  /** Render DOM */
   render() {
     return (
       <section className="one-app">

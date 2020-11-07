@@ -1,6 +1,7 @@
 import * as ACTION from "../index";
 import { OrderAPI } from "../../service/index";
 
+/** Order service */
 export const orderService = {
   getOrderList,
 };

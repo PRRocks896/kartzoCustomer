@@ -1,5 +1,6 @@
 import * as ACTION from "../index";
 
+/** Intial state */
 const initialState = {
   footerdata: ""
 };

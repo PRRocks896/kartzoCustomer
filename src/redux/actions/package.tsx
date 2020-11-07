@@ -1,6 +1,7 @@
 import * as ACTION from "../index";
 import { PackageAPI } from "../../service/index";
 
+/** Package service */
 export const packageService = {
     searchAddressData
 };

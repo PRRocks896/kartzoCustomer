@@ -1,5 +1,6 @@
 import * as ACTION from "../index";
 
+/** intial state */
 const initialState = {
   addressdata: "",
   addaddress: "",

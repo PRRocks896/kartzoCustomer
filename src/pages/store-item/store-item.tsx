@@ -55,7 +55,7 @@ class StoreItem extends React.Component<{
     isButton: this.storeItemState.isButton,
     loadingid: this.storeItemState.loadingid,
     show: this.storeItemState.show,
-    isLoading: true
+    isLoading: this.storeItemState.isLoading
   };
 
   /** Constructor call */

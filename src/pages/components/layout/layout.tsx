@@ -4,6 +4,8 @@ import Header from "../header/header";
 // import ProtectedRoute from 'react-protected-route-component'
 
 class Layout extends React.Component {
+  
+  /** Constructor call */
   constructor(props: any) {
     super(props);
   }
