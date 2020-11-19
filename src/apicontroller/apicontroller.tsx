@@ -11,7 +11,7 @@ const apiUrl = {
         category:'category/get-category-list'
     },
     commonController: {
-        getfooterdata:'user/footer'
+        getfooterdata:'users/get-footer-detail'
     },
     findStoreController: {
         getStore:'user/get-merchant-list',

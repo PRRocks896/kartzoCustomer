@@ -9,7 +9,7 @@ export default {
      * 
      * @param data : get category data
      */
-    getfooterdata: async function (data:any) {
-        return WebReqUrl.get(Constant.apiUrl + apiUrl.commonController.getfooterdata,false);
+    getfooterdata: async function () {
+        return axios.get(Constant.apiUrlAdmin + apiUrl.commonController.getfooterdata);
     }
 }

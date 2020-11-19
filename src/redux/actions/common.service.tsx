@@ -10,18 +10,18 @@ getFooterData
  * 
  * @param data : get footer data request
  */
-function getFooterData(data: any) {
+function getFooterData() {
   return (dispatch: any) => {
-    dispatch(request({ data }));
+    // dispatch(request({ data }));
 
     CommonAPI
-      .getfooterdata(data)
+      .getfooterdata()
       .then(async (footerdata) => {
         console.log("footerdata", footerdata);
         if (footerdata.status === 200) {
           // const msg = footerdata.message;
           // showSuccess(msg);
-          dispatch(success(await footerdata));
+          dispatch(success(await footerdata.data.resultObject));
         }
       })
       .catch((err) => {

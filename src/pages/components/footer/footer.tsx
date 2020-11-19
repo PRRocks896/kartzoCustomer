@@ -31,7 +31,7 @@ class Footer extends React.Component<{getFooterData:any}> {
 
   /** Page Render Call */
   componentDidMount() {
-    // this.props.getFooterData();
+    this.props.getFooterData();
   }
 
   
@@ -43,8 +43,19 @@ class Footer extends React.Component<{getFooterData:any}> {
   componentWillReceiveProps(nextProps: any) {
     console.log("props", nextProps);
     if (nextProps.footerDetail) {
-      
+      this.getFooterCityData(nextProps.footerDetail);
     }
+  }
+
+/**
+ * 
+ * @param data : get footer city data 
+ */
+  getFooterCityData(data:any) {
+    this.setState({
+      footercitydata:this.state.footercitydata = data
+    })
+    console.log("footer",this.state.footercitydata);
   }
 
 
@@ -92,20 +103,17 @@ class Footer extends React.Component<{getFooterData:any}> {
 
               <div className="col-md-3">
                 <h3 className="tt-1">Serviceable Cities</h3>
-                <ul>
-                  <li>
-                    <a href="#">Johannesburg</a>
-                  </li>
-                  <li>
-                    <a href="#">Pretoria</a>
-                  </li>
-                  <li>
-                    <a href="#">Durban</a>
-                  </li>
-                  <li>
-                    <a href="#">Cape Town</a>
-                  </li>
-                </ul>
+                {
+                  this.state.footercitydata ? (
+                    this.state.footercitydata.length > 0 && this.state.footercitydata.map((data:any,index:number) => (
+                      <ul key={index}>
+                      <li>
+                        <Link to={`/${data.name.toLowerCase()}`}>{data.name}</Link>
+                      </li>
+                    </ul>
+                    ))
+                  ) : ('')
+                }
               </div>
 
               <div className="col-md-3">
@@ -143,7 +151,7 @@ class Footer extends React.Component<{getFooterData:any}> {
  * @param state : api call response update state
  */
 const mapStateToProps = (state: any) => ({
-  // footerDetail: state.footer.footerdata
+  footerDetail: state.footer.footerdata
 });
 
 /**
@@ -153,8 +161,8 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = (dispatch: any) => ({
 
   /** Get Footer Data */
-  getFooterData: (data: any) =>
-    dispatch(commonService.getFooterData(data))
+  getFooterData: () =>
+    dispatch(commonService.getFooterData())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Footer);
