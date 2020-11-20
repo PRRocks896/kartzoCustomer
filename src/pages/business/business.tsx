@@ -43,11 +43,15 @@ class Business extends React.Component {
                     <a href="#">
                       Sign up for free<i className="fas fa-angle-right"></i>
                     </a>
-                    <Link className="login" to="/signin">
-                      Login<i className="fas fa-angle-right"></i>
-                    </Link>
-                    {/* <a href="#" className="login">
-                    </a> */}
+                    {
+                      localStorage.getItem('token') ? (
+                        ''
+                      ) : (
+                        <Link className="login" to="/signin">
+                        Login<i className="fas fa-angle-right"></i>
+                      </Link>
+                      )
+                    }
                   </div>
                 </div>
               </div>

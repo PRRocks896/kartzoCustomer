@@ -68,7 +68,7 @@ class SearchCity extends React.Component<{
     if (nextProps.categoryDetail && nextProps.categoryDetail.length > 0) {
       if (nextProps.categoryDetail) {
         this.setState({
-          isLoading: false,
+          isLoading: false
         });
         this.getCategoryResponse(nextProps.categoryDetail);
       }

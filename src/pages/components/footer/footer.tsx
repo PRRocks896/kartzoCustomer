@@ -34,7 +34,6 @@ class Footer extends React.Component<{getFooterData:any}> {
     this.props.getFooterData();
   }
 
-  
   /**
    * 
    *
