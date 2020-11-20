@@ -23,6 +23,7 @@ import {
 import { productService } from "../../redux/index";
 import { Modal } from "react-bootstrap";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+// import {Link} from 'react-scroll'
 
 class StoreItem extends React.Component<{
   history: any;
@@ -431,7 +432,7 @@ class StoreItem extends React.Component<{
     // console.log("id", id, this.ref[id]);
     this.setState({ activeLink: parseInt(id) });
     // console.log("ref", this.ref[id]);
-    this.ref[id].scrollIntoView();
+    // this.ref[id].scrollIntoView();
     // this.ref.id.scrollIntoView({
     //   behavior: "smooth",
     //   block: "start",
@@ -687,10 +688,12 @@ class StoreItem extends React.Component<{
           {categorydata &&
             categorydata.map((cat: any, index: number) => (
               <div
-                ref={(el) => (this.ref[cat.value] = el)}
+              id={cat.name}
+              // style={{height: 135,overflow:'auto'}}
+                // ref={(el) => (this.ref[cat.value] = el)}
                 key={"item-" + index}
               >
-                <div id={cat.value} className="item-details-1">
+                <div className="item-details-1">
                   <div className="item-nm-tt">{cat.name}</div>
                   {productdata.length === 0 ? (
                     <p className="text-center mt-4">No Product Avaliable</p>
@@ -936,6 +939,7 @@ class StoreItem extends React.Component<{
                                     : ""
                                 }
                               >
+                                {/* <Link onClick={() => this.handleClickEvent(data.value)} to={data.name} className={data.name} spy={true} smooth={true}> */}
                                 <a
                                   key={index}
                                   className={data.name}
@@ -944,6 +948,7 @@ class StoreItem extends React.Component<{
                                   }
                                 >
                                   {data.name}
+                                {/* </Link> */}
                                 </a>
                               </li>
                             )
