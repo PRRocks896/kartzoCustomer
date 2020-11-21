@@ -99,10 +99,10 @@ getFooterLinksData(data:any) {
                     <Link to="/contact-us">Contact</Link>
                   </li>
                   <li>
-                    <a href="#">Terms & Conditions</a>
+                  <Link to="/terms">Terms & Conditions</Link>
                   </li>
                   <li>
-                    <a href="#">Privacy Policy </a>
+                  <Link to="/policy">Privacy Policy </Link>
                   </li>
                   <li>
                     <Link to="/partners">Kartzo for partner</Link>
@@ -120,7 +120,7 @@ getFooterLinksData(data:any) {
                     this.state.footercitydata.length > 0 && this.state.footercitydata.map((data:any,index:number) => (
                       <ul key={index}>
                       <li>
-                        <Link to={`/${data.name.toLowerCase()}`}>{data.name}</Link>
+                        <Link to={{pathname: `/${data.name.toLowerCase()}`, state: { cityid: parseInt(data.value) }}}>{data.name}</Link>
                       </li>
                     </ul>
                     ))
@@ -135,7 +135,7 @@ getFooterLinksData(data:any) {
                     this.state.footersocialdata.length > 0 && this.state.footersocialdata.map((data:any,index:number) => (
                       <ul key={index}>
                       <li>
-                        <Link to={`/${data.name}`}>{data.value}</Link>
+                        <Link to={`/${data.name}`} target="_blank">{data.value}</Link>
                       </li>
                     </ul>
                     ))

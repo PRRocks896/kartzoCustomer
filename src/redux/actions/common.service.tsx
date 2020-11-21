@@ -17,12 +17,12 @@ function getFooterData() {
 
     CommonAPI
       .getfooterdata()
-      .then(async (footerdata) => {
+      .then((footerdata) => {
         // console.log("footerdata", footerdata);
         if (footerdata.status === 200) {
           // const msg = footerdata.message;
           // showSuccess(msg);
-          dispatch(success(await footerdata.data.resultObject));
+          dispatch(success(footerdata.data.resultObject));
         }
       })
       .catch((err) => {
@@ -51,12 +51,12 @@ function getFooterLinkData() {
 
     CommonAPI
       .getfooterlinkdata()
-      .then(async (footerlinkdata:any) => {
+      .then((footerlinkdata:any) => {
         console.log("footerdata", footerlinkdata);
         if (footerlinkdata.status === 200) {
           // const msg = footerlinkdata.message;
           // showSuccess(msg);
-          dispatch(success(await footerlinkdata.data.resultObject));
+          dispatch(success(footerlinkdata.data.resultObject));
         }
       })
       .catch((err:any) => {

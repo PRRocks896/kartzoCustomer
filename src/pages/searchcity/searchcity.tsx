@@ -46,7 +46,7 @@ class SearchCity extends React.Component<{
     }
     scrollToTop();
     this.getCategory();
-    // console.log("props", this.props);
+    console.log("props", this.props);
     if (
       this.props &&
       this.props.location &&

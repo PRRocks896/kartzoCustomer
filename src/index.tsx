@@ -32,6 +32,8 @@ import Cart from "./pages/cart/cart";
 import Page404 from "./pages/pagenotfound/pagenotfound";
 import Profile from "./pages/profile/profile";
 import Packages from "./pages/sendpackages/packages";
+import Terms from "./pages/terms/terms";
+import Policy from "./pages/policy/policy";
 const interceptor = require("./intercepter");
 const middleware = [thunk, api];
 const store = createStore(reducers, applyMiddleware(...middleware));
@@ -74,6 +76,8 @@ ReactDOM.render(
           <Route exact path="/signin" component={Login}  />
           <Route exact path="/profile" component={Profile}  />
           <Route exact path="/about" component={About} />
+          <Route exact path="/terms" component={Terms} />
+          <Route exact path="/policy" component={Policy} />
           <Route exact path="/contact-us" component={ContactUs} />
           <Route exact path="/carrers" component={Careers} />
           <Route exact path="/carrers-job" component={JobOpening} />
