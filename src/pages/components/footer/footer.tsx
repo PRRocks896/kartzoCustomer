@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { commonService } from "../../../redux";
 // import ProtectedRoute from 'react-protected-route-component'
 
-class Footer extends React.Component<{getFooterData:any}> {
+class Footer extends React.Component<{getFooterData:any,getFooterLinkData:any}> {
 
   /** Footer state */
   footerState : layoutStateRequest = constant.footerPage.state;
@@ -31,7 +31,8 @@ class Footer extends React.Component<{getFooterData:any}> {
 
   /** Page Render Call */
   componentDidMount() {
-    // this.props.getFooterData();
+    this.props.getFooterData();
+    this.props.getFooterLinkData();
   }
 
   /**
@@ -44,6 +45,9 @@ class Footer extends React.Component<{getFooterData:any}> {
     if (nextProps.footerDetail) {
       this.getFooterCityData(nextProps.footerDetail);
     }
+    if (nextProps.footerLinkDetail) {
+      this.getFooterLinksData(nextProps.footerLinkDetail);
+    }
   }
 
 /**
@@ -54,8 +58,17 @@ class Footer extends React.Component<{getFooterData:any}> {
     this.setState({
       footercitydata:this.state.footercitydata = data
     })
-    console.log("footer",this.state.footercitydata);
   }
+
+  /**
+ * 
+ * @param data : get footer link data 
+ */
+getFooterLinksData(data:any) {
+  this.setState({
+    footersocialdata:this.state.footersocialdata = data
+  })
+}
 
 
   /** Render DOM */
@@ -117,23 +130,17 @@ class Footer extends React.Component<{getFooterData:any}> {
 
               <div className="col-md-3">
                 <h3 className="tt-1">Get in touch</h3>
-                <ul>
-                  <li>
-                    <a href="#">Email</a>
-                  </li>
-                  <li>
-                    <a href="#">Twitter</a>
-                  </li>
-                  <li>
-                    <a href="#">Facebook</a>
-                  </li>
-                  <li>
-                    <a href="#">Instagram</a>
-                  </li>
-                  <li>
-                    <a href="#">Linkedin</a>
-                  </li>
-                </ul>
+                {
+                  this.state.footersocialdata ? (
+                    this.state.footersocialdata.length > 0 && this.state.footersocialdata.map((data:any,index:number) => (
+                      <ul key={index}>
+                      <li>
+                        <Link to={`/${data.name}`}>{data.value}</Link>
+                      </li>
+                    </ul>
+                    ))
+                  ) : ('')
+                }
               </div>
             </div>
           </div>
@@ -150,7 +157,8 @@ class Footer extends React.Component<{getFooterData:any}> {
  * @param state : api call response update state
  */
 const mapStateToProps = (state: any) => ({
-  footerDetail: state.footer.footerdata
+  footerDetail: state.footer.footerdata,
+  footerLinkDetail: state.footer.footerlinkdata
 });
 
 /**
@@ -161,7 +169,11 @@ const mapDispatchToProps = (dispatch: any) => ({
 
   /** Get Footer Data */
   getFooterData: () =>
-    dispatch(commonService.getFooterData())
+    dispatch(commonService.getFooterData()),
+
+    /** Get Footer Link Data */
+    getFooterLinkData: () =>
+  dispatch(commonService.getFooterLinkData())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Footer);

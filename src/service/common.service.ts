@@ -11,5 +11,13 @@ export default {
      */
     getfooterdata: async function () {
         return axios.get(Constant.apiUrlAdmin + apiUrl.commonController.getfooterdata);
-    }
+    },
+       /**
+     * 
+     * @param data : get category data
+     */
+    getfooterlinkdata: async function () {
+        return axios.get(Constant.apiUrlAdmin + apiUrl.commonController.getfooterlinkdata);
+    },
+    
 }
