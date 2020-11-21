@@ -5,14 +5,21 @@ import { Link } from "react-router-dom";
 import EventEmitter from "../../../event";
 import constant from "../../constant/constant";
 import { layoutStateRequest } from "../../../modelController";
+import { connect } from "react-redux";
+import { commonService } from "../../../redux";
 // import ProtectedRoute from 'react-protected-route-component'
 
-class Footer extends React.Component {
+class Footer extends React.Component<{getFooterData:any}> {
+
+  /** Footer state */
   footerState : layoutStateRequest = constant.footerPage.state;
   state = {
     isShow: this.footerState.isShow,
+    footercitydata:this.footerState.footercitydata,
+    footersocialdata:this.footerState.footersocialdata
   };
 
+  /** Constructor */
   constructor(props: any) {
     super(props);
     EventEmitter.subscribe("isShowFooter", (data: any) => {
@@ -21,6 +28,35 @@ class Footer extends React.Component {
       });
     });
   }
+
+  /** Page Render Call */
+  componentDidMount() {
+    // this.props.getFooterData();
+  }
+
+  /**
+   * 
+   *
+   * @param nextProps : get updated props value
+   */
+  componentWillReceiveProps(nextProps: any) {
+    console.log("props", nextProps);
+    if (nextProps.footerDetail) {
+      this.getFooterCityData(nextProps.footerDetail);
+    }
+  }
+
+/**
+ * 
+ * @param data : get footer city data 
+ */
+  getFooterCityData(data:any) {
+    this.setState({
+      footercitydata:this.state.footercitydata = data
+    })
+    console.log("footer",this.state.footercitydata);
+  }
+
 
   /** Render DOM */
   render() {
@@ -66,20 +102,17 @@ class Footer extends React.Component {
 
               <div className="col-md-3">
                 <h3 className="tt-1">Serviceable Cities</h3>
-                <ul>
-                  <li>
-                    <a href="#">Johannesburg</a>
-                  </li>
-                  <li>
-                    <a href="#">Pretoria</a>
-                  </li>
-                  <li>
-                    <a href="#">Durban</a>
-                  </li>
-                  <li>
-                    <a href="#">Cape Town</a>
-                  </li>
-                </ul>
+                {
+                  this.state.footercitydata ? (
+                    this.state.footercitydata.length > 0 && this.state.footercitydata.map((data:any,index:number) => (
+                      <ul key={index}>
+                      <li>
+                        <Link to={`/${data.name.toLowerCase()}`}>{data.name}</Link>
+                      </li>
+                    </ul>
+                    ))
+                  ) : ('')
+                }
               </div>
 
               <div className="col-md-3">
@@ -112,4 +145,23 @@ class Footer extends React.Component {
   }
 }
 
-export default Footer;
+/**
+ * 
+ * @param state : api call response update state
+ */
+const mapStateToProps = (state: any) => ({
+  footerDetail: state.footer.footerdata
+});
+
+/**
+ * 
+ * @param dispatch : call api with action
+ */
+const mapDispatchToProps = (dispatch: any) => ({
+
+  /** Get Footer Data */
+  getFooterData: () =>
+    dispatch(commonService.getFooterData())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Footer);

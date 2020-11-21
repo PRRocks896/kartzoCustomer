@@ -1,6 +1,7 @@
-import * as ACTION from "../constant/constant";
+import * as ACTION from "../index";
 import { StoreAPI } from "../../service/index";
 
+/** Product service */
 export const productService = {
   getProductsData,
   addToCart,
@@ -15,15 +16,15 @@ export const productService = {
  * 
  * @param data : get product data
  */
-function getProductsData(data: any) {
+export function getProductsData(data: any) {
   return (dispatch: any) => {
     dispatch(request({ data }));
 
     StoreAPI.getProductData(data)
-      .then((productdata: any) => {
+      .then(async (productdata: any) => {
         // console.log("productdata", productdata);
         if (productdata.status === 200) {
-          dispatch(success(productdata.data.resultObject));
+          dispatch(success(await productdata.data.resultObject));
         }
       })
       .catch((err: any) => {
@@ -51,10 +52,10 @@ function addToCart(data: any) {
     dispatch(request({ data }));
 
     StoreAPI.addtocart(data)
-      .then((addtocartdata: any) => {
+      .then(async (addtocartdata: any) => {
         // console.log("addtocartdata", addtocartdata);
         if (addtocartdata.status === 200) {
-          dispatch(success(addtocartdata.data.resultObject));
+          dispatch(success(await addtocartdata.data.resultObject));
         }
       })
       .catch((err: any) => {
@@ -82,10 +83,10 @@ function getcartData(data: any) {
     dispatch(request({ data }));
 
     StoreAPI.getCartAllData(data)
-      .then((getcartData: any) => {
+      .then(async (getcartData: any) => {
         // console.log("getcartData", getcartData);
         if (getcartData.status === 200) {
-          dispatch(success(getcartData.resultObject));
+          dispatch(success(await getcartData.resultObject));
         }
       })
       .catch((err: any) => {
@@ -114,10 +115,10 @@ function updateToCart(data: any, id: any) {
     dispatch(request({ data, id }));
 
     StoreAPI.updatecart(data, id)
-      .then((updateToCart: any) => {
+      .then(async (updateToCart: any) => {
         // console.log("updateToCart", updateToCart);
         if (updateToCart.status === 200) {
-          dispatch(success(updateToCart.data.resultObject));
+          dispatch(success(await updateToCart.data.resultObject));
         }
       })
       .catch((err: any) => {
@@ -145,10 +146,10 @@ function removeProductFromCart(data: any) {
     dispatch(request({ data }));
 
     StoreAPI.removeProductFromCart(data)
-      .then((removedata: any) => {
+      .then(async (removedata: any) => {
         // console.log("removedata", removedata);
         if (removedata.status === 200) {
-          dispatch(success(removedata.data.resultObject));
+          dispatch(success(await removedata.data.resultObject));
         }
       })
       .catch((err: any) => {
@@ -176,10 +177,10 @@ function getSearchProduct(data: any) {
     dispatch(request({ data }));
 
     StoreAPI.getSearchProductData(data)
-      .then((searchdata: any) => {
+      .then(async (searchdata: any) => {
         // console.log("searchdata", searchdata);
         if (searchdata.status === 200) {
-          dispatch(success(searchdata.data.resultObject));
+          dispatch(success(await searchdata.data.resultObject));
         }
       })
       .catch((err: any) => {
@@ -207,10 +208,10 @@ function getProductDataWithSearching(data: any) {
     dispatch(request({ data }));
 
     StoreAPI.getProductData(data)
-      .then((searchdatadetail: any) => {
+      .then(async (searchdatadetail: any) => {
         // console.log("searchdatadetail", searchdatadetail);
         if (searchdatadetail.status === 200) {
-          dispatch(success(searchdatadetail.data.resultObject));
+          dispatch(success(await searchdatadetail.data.resultObject));
         }
       })
       .catch((err: any) => {

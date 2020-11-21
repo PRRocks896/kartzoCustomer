@@ -7,8 +7,11 @@ import AppLink from "../home/app-link/app-link";
 import Information from "../home/information/information";
 import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
-import { searchcityStateRequest,getCategoryListRequest } from "../../modelController";
-import { categoryService } from "../../redux/actions/index";
+import {
+  searchcityStateRequest,
+  getCategoryListRequest,
+} from "../../modelController";
+import { categoryService } from "../../redux/index";
 import { connect } from "react-redux";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
@@ -22,6 +25,7 @@ class SearchCity extends React.Component<{
     slugname: this.searchcityState.slugname,
     categorydata: this.searchcityState.categorydata,
     isLoading: this.searchcityState.isLoading,
+    cityid: this.searchcityState.cityid,
   };
 
   /** Constructor call */
@@ -42,10 +46,21 @@ class SearchCity extends React.Component<{
     }
     scrollToTop();
     this.getCategory();
+    // console.log("props", this.props);
+    if (
+      this.props &&
+      this.props.location &&
+      this.props.location.state &&
+      this.props.location.state.cityid
+    ) {
+      this.setState({
+        cityid: this.props.location.state.cityid,
+      });
+    }
   }
 
   /**
-   * 
+   *
    * @param nextProps : get updated props value
    */
   componentWillReceiveProps(nextProps: any) {
@@ -53,7 +68,7 @@ class SearchCity extends React.Component<{
     if (nextProps.categoryDetail && nextProps.categoryDetail.length > 0) {
       if (nextProps.categoryDetail) {
         this.setState({
-          isLoading: false,
+          isLoading: false
         });
         this.getCategoryResponse(nextProps.categoryDetail);
       }
@@ -61,13 +76,13 @@ class SearchCity extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param searchText : search value
    * @param page : page number
    * @param size : per page size
    */
   getCategory(searchText: string = "", page: number = 1, size: number = 10) {
-    const obj : getCategoryListRequest = {
+    const obj: getCategoryListRequest = {
       searchText: searchText,
       page: page,
       size: size,
@@ -76,13 +91,90 @@ class SearchCity extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : get category response
    */
   getCategoryResponse(data: any) {
     this.setState({
       categorydata: this.state.categorydata = data,
     });
+  }
+
+  /** Get Category Block */
+  getCategoryBlock() {
+    return (
+      <>
+        {this.state.isLoading === false ? (
+          <div className="main-div">
+            <div className="row">
+              {this.state.categorydata
+                ? this.state.categorydata.length > 0 &&
+                  this.state.categorydata.map((c: any, index: number) =>
+                    c.parentCategoryId === 0 ? (
+                      <div key={index} className="col-sm-6 col-md-4 col-lg-3">
+                        <Link
+                          to={{
+                            pathname: `/order/${c.slug}`,
+                            state: {
+                              city: this.state.slugname.toLocaleLowerCase(),
+                              cityid: this.state.cityid,
+                            },
+                          }}
+                        >
+                          <div
+                            className="box-1"
+                            style={{
+                              border: `1px solid ${constant.categoryColor[index].clr}`,
+                            }}
+                          >
+                            <div
+                              className="bdr-bottom"
+                              style={{
+                                background: `${constant.categoryColor[index].bclr}`,
+                              }}
+                            ></div>
+                            {c.imagePath ? (
+                              <img
+                                className="category_img"
+                                src={constant.filepath + c.imagePath}
+                                alt={c.category}
+                              />
+                            ) : (
+                              ""
+                            )}
+                            <div className="tt-1">{c.category}</div>
+                          </div>
+                        </Link>
+                      </div>
+                    ) : (
+                      ""
+                    )
+                  )
+                : ""}
+            </div>
+          </div>
+        ) : (
+          <div className="main-div">
+            <div className="row">
+              {[1, 2, 3, 4].map((data: any, index: number) => (
+                <div key={index} className="col-sm-6 col-md-4 col-lg-3">
+                  <SkeletonTheme color="#202020" highlightColor="#444">
+                    <div className="box-1">
+                      <div className="bdr-bottom">
+                        <Skeleton count={1} />
+                      </div>
+                      {/* <img alt="img"className="category_img">
+                      <Skeleton count={1} />
+                    </img> */}
+                    </div>
+                  </SkeletonTheme>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </>
+    );
   }
 
   /** Render DOM */
@@ -123,70 +215,9 @@ class SearchCity extends React.Component<{
               </div>
             </div>
 
-            {this.state.isLoading === false ? (
-              <div className="main-div">
-                <div className="row">
-                  {this.state.categorydata
-                    ? this.state.categorydata.length > 0 &&
-                      this.state.categorydata.map((c: any, index: number) =>
-                        c.parentCategoryId === 0 ? (
-                          <div
-                            key={index}
-                            className="col-sm-6 col-md-4 col-lg-3"
-                          >
-                            <Link to={`/order/${c.slug}`}>
-                              <div
-                                className="box-1"
-                                style={{
-                                  border: `1px solid ${constant.categoryColor[index].clr}`,
-                                }}
-                              >
-                                <div
-                                  className="bdr-bottom"
-                                  style={{
-                                    background: `${constant.categoryColor[index].bclr}`,
-                                  }}
-                                ></div>
-                                {c.imagePath ? (
-                                  <img
-                                    className="category_img"
-                                    src={constant.filepath + c.imagePath}
-                                    alt={c.category}
-                                  />
-                                ) : (
-                                  ""
-                                )}
-                                <div className="tt-1">{c.category}</div>
-                              </div>
-                            </Link>
-                          </div>
-                        ) : (
-                          ""
-                        )
-                      )
-                    : ""}
-                </div>
-              </div>
-            ) : (
-              <div className="main-div">
-                <div className="row">
-                  {[1, 2, 3, 4].map((data: any, index: number) => (
-                    <div key={index} className="col-sm-6 col-md-4 col-lg-3">
-                      <SkeletonTheme color="#202020" highlightColor="#444">
-                        <div className="box-1">
-                          <div className="bdr-bottom">
-                            <Skeleton count={1} />
-                          </div>
-                          {/* <img alt="img"className="category_img">
-                      <Skeleton count={1} />
-                    </img> */}
-                        </div>
-                      </SkeletonTheme>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/** Get Category Block */}
+            {this.getCategoryBlock()}
+
           </div>
         </section>
 
@@ -284,6 +315,7 @@ class SearchCity extends React.Component<{
             </div>
           </div>
         </section>
+
         <section className="product-1 product-2">
           <div className="container-fluid">
             <div className="row">
@@ -408,6 +440,7 @@ class SearchCity extends React.Component<{
             </div>
           </div>
         </section>
+        
         <AppLink />
         <Information />
       </>
@@ -416,7 +449,7 @@ class SearchCity extends React.Component<{
 }
 
 /**
- * 
+ *
  * @param state : api call response update state
  */
 const mapStateToProps = (state: any) => ({
@@ -424,7 +457,7 @@ const mapStateToProps = (state: any) => ({
 });
 
 /**
- * 
+ *
  * @param dispatch : call api with action
  */
 const mapDispatchToProps = (dispatch: any) => ({

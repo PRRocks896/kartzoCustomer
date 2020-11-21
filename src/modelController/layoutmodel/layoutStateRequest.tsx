@@ -1,4 +1,6 @@
 export interface layoutStateRequest {
     isShow:boolean,
-    count?:any
+    count?:any,
+    footercitydata?:any,
+    footersocialdata?:any
 }

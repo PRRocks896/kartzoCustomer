@@ -7,15 +7,19 @@ import "./partners.css";
 import constant from "../constant/constant";
 
 class Partners extends React.Component {
+
+  /** Constructor  call */
   constructor(props: any) {
     super(props);
   }
 
+  /** Page Render First Call */
   componentDidMount() {
     document.title = constant.partners + getAppName();
     scrollToTop();
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

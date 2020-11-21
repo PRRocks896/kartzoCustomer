@@ -8,15 +8,19 @@ import constant from "../constant/constant";
 import { Link } from "react-router-dom";
 
 class Business extends React.Component {
+
+  /** constructor call */
   constructor(props: any) {
     super(props);
   }
 
+  /** Page Render Call */
   componentDidMount() {
     document.title = constant.business + getAppName();
     scrollToTop();
   }
 
+  /** Render DOM */
   render() {
     return (
       <>
@@ -39,11 +43,15 @@ class Business extends React.Component {
                     <a href="#">
                       Sign up for free<i className="fas fa-angle-right"></i>
                     </a>
-                    <Link className="login" to="/signin">
-                      Login<i className="fas fa-angle-right"></i>
-                    </Link>
-                    {/* <a href="#" className="login">
-                    </a> */}
+                    {
+                      localStorage.getItem('token') ? (
+                        ''
+                      ) : (
+                        <Link className="login" to="/signin">
+                        Login<i className="fas fa-angle-right"></i>
+                      </Link>
+                      )
+                    }
                   </div>
                 </div>
               </div>

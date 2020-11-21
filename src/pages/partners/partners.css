@@ -58,6 +58,7 @@
 .partner-bnr .dis-flex {
 	display: flex;
 	align-items: center;
+	overflow: hidden;
 }
 .partner-bnr .img-bnr{
 	width: 50%;

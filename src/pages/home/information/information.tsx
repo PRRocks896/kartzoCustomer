@@ -1,10 +1,13 @@
 import React from "react";
 
 class Information extends React.Component {
+
+  /** Constructor call */
   constructor(props: any) {
     super(props);
   }
 
+  /** Render DOM */
   render() {
     return (
       <section className="services-offer">

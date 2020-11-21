@@ -75,7 +75,7 @@ class Home extends React.Component<{history:any,getcartData:any}> {
       <>
         <Banner {...this.props}/>
         <Categories/>
-        <AppLink {...this.props}/>
+        <AppLink/>
         <Features {...this.props}/>
         <Testimonials {...this.props}/>
         <Information {...this.props}/>

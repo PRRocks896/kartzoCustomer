@@ -2,10 +2,16 @@ const apiUrl = {
     userController: {
         createData:'user/otp-send',
         verifyotp:'user/otp-verified',
-        adminToken:'token/get-admin-token'
+        adminToken:'token/get-admin-token',
+        getapplink:'user/get-app-link',
+        updateprofile:'user/update-profile',
+        getprofile:'user/'
     },
     categoryController: {
         category:'category/get-category-list'
+    },
+    commonController: {
+        getfooterdata:'users/get-footer-detail'
     },
     findStoreController: {
         getStore:'user/get-merchant-list',
@@ -40,6 +46,10 @@ const apiUrl = {
         updatecard:'card/',
         deleteData:'delete'
     },
+    packageController: {
+        getaddress:'address/get-address'
+    },
+    
 }
 
 export default apiUrl;

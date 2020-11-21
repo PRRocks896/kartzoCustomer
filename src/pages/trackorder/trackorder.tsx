@@ -8,15 +8,19 @@ import { getAppName } from "../utils";
 import './trackorder.css';
 
 class TrackOrder extends React.Component<{show: boolean}> {
+
+  /** Constuctor call */
   constructor(props: any) {
     super(props);
   }
 
+  /** Page Render call */
   componentDidMount() {
     document.title = constant.trackorder + getAppName();
     EventEmitter.dispatch('isShow', true);
   }
 
+  /** Render DOM */
   render() {
       // console.log("TrackOrder",this.props)
     return (

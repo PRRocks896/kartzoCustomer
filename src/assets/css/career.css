@@ -432,6 +432,7 @@ input {
 	border: 1px solid #FCBC25;
 	border-radius: 40px;
 	font-size: 14px;
+	outline: none;
 }
 
 .current-job .box-data {

@@ -24,7 +24,7 @@ export const categories = {
 export const applink = {
   playstore: require("../../../../assets/images/playstore.png"),
   appstore: require("../../../../assets/images/appstore.png"),
-  Flag_of_South_Africa: require("../../../../assets/images/Flag_of_South_Africa.png"),
+  Flag_of_South_Africa: require("../../../../assets/images/india-flag.png"),
   applocationimg: require("../../../../assets/images/app-location-img.png"),
 };
 
@@ -144,7 +144,7 @@ export const cart = {
 };
 
 export const profile = {
-  profilepic: require("../../../../assets/images/profile-icon.png"),
+  profilepic: require("../../../../assets/images/user.svg"),
   food: require("../../../../assets/images/food-img.jpg"),
   bag: require("../../../../assets/images/bag-icon.png"),
   home: require("../../../../assets/images/home-icon.png"),

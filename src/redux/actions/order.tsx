@@ -1,6 +1,7 @@
-import * as ACTION from "../constant/constant";
+import * as ACTION from "../index";
 import { OrderAPI } from "../../service/index";
 
+/** Order service */
 export const orderService = {
   getOrderList,
 };
@@ -14,10 +15,10 @@ function getOrderList(data: any) {
     dispatch(request({ data }));
 
     OrderAPI.getOrderListData(data)
-      .then((getorderdata: any) => {
+      .then(async (getorderdata: any) => {
         // console.log("getorderdata", getorderdata);
         if (getorderdata.status === 200) {
-          dispatch(success(getorderdata.resultObject.data));
+          dispatch(success(await getorderdata.resultObject.data));
         }
       })
       .catch((err: any) => {

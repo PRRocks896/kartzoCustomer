@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import constant from "../../constant/constant";
 import SelectSearch from "react-select-search";
 import './banner.css';
-import { merchantService } from "../../../redux/actions";
+import { merchantService } from "../../../redux/index";
 import { connect } from "react-redux";
 import { searchCityListRequest } from "../../../modelController";
 
@@ -98,7 +98,10 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
     if(this.state.cityid) {
       this.state.locationData.map((city:any,index:number) => (
         city.value === this.state.cityid ? (
-          this.props.history.push(`/${city.name}`)
+          this.props.history.push({
+            pathname: `/${city.name.toLowerCase()}`,
+            state: { cityid: this.state.cityid }
+          })
         ) : ('')
       ))
     } else {

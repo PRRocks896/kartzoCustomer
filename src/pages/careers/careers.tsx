@@ -8,14 +8,18 @@ import JobOpening from "../job-opening/job-opning";
 import { Link } from "react-router-dom";
 
 class Careers extends React.Component {
+
+  /** constructor call */
   constructor(props: any) {
     super(props);
   }
 
+  /** page render call */
   componentDidMount() {
     scrollToTop();
   }
 
+  /** Render DOM */
   render() {
     return (
       <>

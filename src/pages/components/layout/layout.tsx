@@ -4,6 +4,8 @@ import Header from "../header/header";
 // import ProtectedRoute from 'react-protected-route-component'
 
 class Layout extends React.Component {
+  
+  /** Constructor call */
   constructor(props: any) {
     super(props);
   }
@@ -14,7 +16,7 @@ class Layout extends React.Component {
       <>
         <Header {...this.props}/>
         {this.props.children}
-        <Footer {...this.props}/>
+        <Footer/>
       </>
     );
   }

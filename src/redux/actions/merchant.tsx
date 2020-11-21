@@ -1,6 +1,7 @@
-import * as ACTION from "../constant/constant";
+import * as ACTION from "../index";
 import { FindStoreAPI } from "../../service/index";
 
+/** Merchant service */
 export const merchantService = {
   getMerchantData,
   searchLocationResponse,
@@ -15,10 +16,10 @@ function getMerchantData(data: any) {
     dispatch(request({ data }));
 
     FindStoreAPI.getMerchantData(data)
-      .then((merchantdata: any) => {
+      .then(async (merchantdata: any) => {
         // console.log("merchantdata", merchantdata);
         if (merchantdata.status === 200) {
-          dispatch(success(merchantdata.data.resultObject));
+          dispatch(success(await merchantdata.data.resultObject));
         }
       })
       .catch((err: any) => {
@@ -46,10 +47,10 @@ function searchLocationResponse(data: any) {
     dispatch(request({ data }));
 
     FindStoreAPI.getlocationData(data)
-      .then((locationdata: any) => {
+      .then(async (locationdata: any) => {
         // console.log("locationdata", locationdata);
         if (locationdata.status === 200) {
-          dispatch(success(locationdata.data.resultObject));
+          dispatch(success(await locationdata.data.resultObject));
         }
       })
       .catch((err: any) => {

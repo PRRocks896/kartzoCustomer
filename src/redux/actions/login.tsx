@@ -1,10 +1,14 @@
-import * as ACTION from "../constant/constant";
+import * as ACTION from "../index";
 import {UserAPI} from "../../service/index";
 
+/** Login service */
 export const loginService = {
   login,
   verifyOtp,
-  getAdminToken
+  getAdminToken,
+  getAppLink,
+  updateProfileData,
+  getProfile
 };
 
 /**
@@ -17,12 +21,12 @@ function login(data: any) {
 
     UserAPI
       .loginUser(data)
-      .then((userdata) => {
+      .then(async (userdata) => {
         // console.log("user", userdata);
         if (userdata.status === 200) {
           // const msg = userdata.message;
           // showSuccess(msg);
-          dispatch(success(userdata));
+          dispatch(success(await userdata));
         }
       })
       .catch((err) => {
@@ -51,14 +55,14 @@ function verifyOtp(data: any) {
 
     UserAPI
       .verifyotp(data)
-      .then((otpdata:any) => {
+      .then(async (otpdata:any) => {
         // console.log("otpdata", otpdata);
         if (otpdata.status === 200) {
           localStorage.setItem('user',JSON.stringify(otpdata.data.resultObject));
           localStorage.setItem('token',otpdata.data.resultObject.token);
           // const msg = otpdata.message;
           // showSuccess(msg);
-          dispatch(success(otpdata));
+          dispatch(success(await otpdata));
         } else {
           dispatch(failure(otpdata));
         }
@@ -89,13 +93,13 @@ function getAdminToken(data:any) {
 
     UserAPI
       .getAdminToken(data)
-      .then((token:any) => {
+      .then(async (token:any) => {
         // console.log("token", token);
         if (token.status === 200) {
           localStorage.setItem('adminToken',token.data.token);
           // const msg = otpdata.message;
           // showSuccess(msg);
-          dispatch(success(token));
+          dispatch(success(await token));
         } else {
           dispatch(failure(token));
         }
@@ -115,3 +119,117 @@ function getAdminToken(data:any) {
     return { type: ACTION.login.ADMIN_TOKEN_FAILURE, error };
   }
 }
+
+/**
+ * 
+ * @param data : get AppLink
+ */
+function getAppLink(data:any) {
+  return (dispatch: any) => {
+    dispatch(request({data}));
+
+    UserAPI
+      .getAppLinkData(data)
+      .then(async (getappdata:any) => {
+        // console.log("getappdata", getappdata);
+        if (getappdata.status === 200) {
+          // const msg = otpdata.message;
+          // showSuccess(msg);
+          dispatch(success(await getappdata));
+        } else {
+          dispatch(failure(getappdata));
+        }
+      })
+      .catch((err:any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(getappdata: any) {
+    return { type: ACTION.login.GET_APPLINK_REQUEST, getappdata };
+  }
+  function success(getappdata: any) {
+    return { type: ACTION.login.GET_APPLINK_SUCCESS, getappdata };
+  }
+  function failure(error: any) {
+    return { type: ACTION.login.GET_APPLINK_FAILURE, error };
+  }
+}
+
+/**
+ * 
+ * @param data : update profile
+ */
+function updateProfileData(data:any) {
+  return (dispatch: any) => {
+    dispatch(request({data}));
+
+    UserAPI
+      .updateprofile(data)
+      .then(async (getprofiledata:any) => {
+        console.log("getprofiledata", getprofiledata);
+        if (getprofiledata.status === 200) {
+          // const msg = otpdata.message;
+          // showSuccess(msg);
+          dispatch(success(await getprofiledata.data.resultObject));
+        } else {
+          dispatch(failure(getprofiledata));
+        }
+      })
+      .catch((err:any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(getprofiledata: any) {
+    return { type: ACTION.login.UPDATE_PROFILE_REQUEST, getprofiledata };
+  }
+  function success(getprofiledata: any) {
+    return { type: ACTION.login.UPDATE_PROFILE_SUCCESS, getprofiledata };
+  }
+  function failure(error: any) {
+    return { type: ACTION.login.UPDATE_PROFILE_FAILURE, error };
+  }
+}
+
+
+/**
+ * 
+ * @param data : update profile
+ */
+function getProfile(data:any) {
+  return (dispatch: any) => {
+    dispatch(request({data}));
+
+    UserAPI
+      .getprofile(data)
+      .then(async (getprofiledata:any) => {
+        console.log("getprofiledata", getprofiledata);
+        if (getprofiledata.status === 200) {
+          // const msg = otpdata.message;
+          // showSuccess(msg);
+          dispatch(success(await getprofiledata.resultObject));
+        } else {
+          dispatch(failure(getprofiledata));
+        }
+      })
+      .catch((err:any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(getprofiledata: any) {
+    return { type: ACTION.login.GET_PROFILE_REQUEST, getprofiledata };
+  }
+  function success(getprofiledata: any) {
+    return { type: ACTION.login.GET_PROFILE_SUCCESS, getprofiledata };
+  }
+  function failure(error: any) {
+    return { type: ACTION.login.GET_PROFILE_FAILURE, error };
+  }
+}
+
+
+
+
+

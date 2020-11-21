@@ -9,5 +9,19 @@ export interface profileStateRequest {
     orderdata:any,
     workdisabled:boolean,
     otherdisabled:boolean,
-    homedisabled:boolean
+    homedisabled:boolean,
+
+    updatemodel: boolean,
+    update: boolean,
+    firstname: string,
+    firstnameerror: string,
+    lastname: string,
+    lastnameerror: string,
+    useremail: string,
+    useremailerror: string,
+    file: string,
+    filetrue: boolean,
+    selectedFile: string,
+    selectedFileerror: string,
+    disable: boolean,
 }

@@ -16,7 +16,7 @@ import {
   getMerchantListRequest,
   searchCityListRequest,
 } from "../../modelController";
-import { merchantService } from "../../redux/actions";
+import { merchantService } from "../../redux/index";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 class FindStore extends React.Component<{
@@ -24,6 +24,7 @@ class FindStore extends React.Component<{
   location: any;
   searchLocationResponse: any;
 }> {
+  
   /** Find Store State */
   findstoreState: findstoreStateRequest = constant.findStorePage.state;
   state = {
@@ -42,6 +43,7 @@ class FindStore extends React.Component<{
     isLoading: this.findstoreState.isLoading,
     locationData: this.findstoreState.locationData,
     cityid: this.findstoreState.cityid,
+    search:false
   };
 
   /** Constructor call */
@@ -67,7 +69,21 @@ class FindStore extends React.Component<{
     scrollToTop();
     EventEmitter.dispatch("isShow", true);
     EventEmitter.dispatch("isShowFooter", true);
-    this.getMerchantData();
+   console.log("props",this.props);
+    let citystore :  any = this.props;
+    if(citystore && citystore.location && citystore.location.state) {
+      this.setState({
+        location:this.state.location = citystore.location.state.city,
+        cityid:this.state.cityid = citystore.location.state.cityid,
+        search:true
+      })
+     this.getMerchantData("",this.state.cityid,1,4)
+    } else {
+      this.setState({
+        search:false
+      })
+      this.getMerchantData();
+    }
   }
 
   /**
@@ -307,7 +323,7 @@ class FindStore extends React.Component<{
       );
     }
 
-    const options = [{ name: "Rajkot", value: "sv" }];
+    const options = [{ name: this.state.location, value: this.state.cityid.toString() }];
 
     return (
       <>
@@ -319,41 +335,61 @@ class FindStore extends React.Component<{
                   <Link to="/">
                     <img src={header.logo} alt="logo" />
                   </Link>
-                  {this.state.locationData.length > 0 ? (
-                    <div
-                      className="position-relative d-none d-sm-block"
-                      onKeyUp={this.searchLocationKeyUp}
-                    >
-                      <SelectSearch
-                        options={
-                          this.state.locationData &&
-                          this.state.locationData.length > 0
-                            ? this.state.locationData
-                            : []
-                        }
-                        search
-                        onChange={this.onItemSelectId}
-                      />
-                      <span className="find-map-icon">
-                        <i className="fas fa-map-marker-alt map-icon"></i>
-                      </span>
-                    </div>
-                  ) : (
-                    <div
-                      className="position-relative d-none d-sm-block"
-                      onKeyUp={this.searchLocationKeyUp}
-                    >
-                      <SelectSearch
-                        options={options.length > 0 ? options : []}
-                        search
-                        value="Rajkot"
-                        onChange={this.onItemSelectId}
-                      />
-                      <span className="find-map-icon">
-                        <i className="fas fa-map-marker-alt map-icon"></i>
-                      </span>
-                    </div>
-                  )}
+                  {
+                    this.state.search === false ? (
+                      this.state.locationData.length > 0 ? (
+                        <div
+                          className="position-relative d-none d-sm-block"
+                          onKeyUp={this.searchLocationKeyUp}
+                        >
+                          <SelectSearch
+                            options={
+                              this.state.locationData &&
+                              this.state.locationData.length > 0
+                                ? this.state.locationData
+                                : []
+                            }
+                            search
+                            onChange={this.onItemSelectId}
+                          />
+                          <span className="find-map-icon">
+                            <i className="fas fa-map-marker-alt map-icon"></i>
+                          </span>
+                        </div>
+                      ) : (
+                        <div
+                          className="position-relative d-none d-sm-block"
+                          onKeyUp={this.searchLocationKeyUp}
+                        >
+                          <SelectSearch
+                            options={options.length > 0 ? options : []}
+                            search
+                            value="Rajkot"
+                            onChange={this.onItemSelectId}
+                          />
+                          <span className="find-map-icon">
+                            <i className="fas fa-map-marker-alt map-icon"></i>
+                          </span>
+                        </div>
+                      )
+                    ) : (
+                      <div
+                          className="position-relative d-none d-sm-block"
+                          onKeyUp={this.searchLocationKeyUp}
+                        >
+                          <SelectSearch
+                            options={options.length > 0 ? options : []}
+                            search
+                            value="Rajkot"
+                            onChange={this.onItemSelectId}
+                          />
+                          <span className="find-map-icon">
+                            <i className="fas fa-map-marker-alt map-icon"></i>
+                          </span>
+                        </div>
+                    )
+                  }
+                  
 
                   {/* <a href="#">
                     <div className="search-box">

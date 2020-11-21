@@ -17,7 +17,7 @@ import constant from "../constant/constant";
 import { getAppName, alertMessage } from "../utils";
 import { connect } from "react-redux";
 import "./placeorder.css";
-import { placeOrderService, productService } from "../../redux/actions";
+import { placeOrderService, productService } from "../../redux/index";
 var creditCardType = require("credit-card-type");
 
 class PlaceOrder extends React.Component<{
@@ -258,7 +258,9 @@ class PlaceOrder extends React.Component<{
       size: size,
       userId: user.userID,
     };
-    this.props.getAddressList(obj);
+    if(user) {
+      this.props.getAddressList(obj);
+    }
   }
 
   /**
@@ -540,7 +542,7 @@ class PlaceOrder extends React.Component<{
       productID: data.productID,
       quantity: data.quantity + 1,
       discountApplied: data.discountApplied,
-      merchantID:parseInt(mid)
+      merchantID:data.merchantID
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {
@@ -561,7 +563,7 @@ class PlaceOrder extends React.Component<{
       productID: data.productID,
       quantity: data.quantity - 1,
       discountApplied: data.discountApplied,
-      merchantID:parseInt(mid)
+      merchantID:data.merchantID
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {
@@ -602,7 +604,7 @@ class PlaceOrder extends React.Component<{
 
       setTimeout(() => {
         this.getAddressDetails();
-      }, 250);
+      }, 300);
     }
   }
 
