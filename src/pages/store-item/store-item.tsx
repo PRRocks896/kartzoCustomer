@@ -432,7 +432,7 @@ class StoreItem extends React.Component<{
     // console.log("id", id, this.ref[id]);
     this.setState({ activeLink: parseInt(id) });
     // console.log("ref", this.ref[id]);
-    // this.ref[id].scrollIntoView();
+    this.ref[id].scrollIntoView();
     // this.ref.id.scrollIntoView({
     //   behavior: "smooth",
     //   block: "start",
@@ -688,9 +688,9 @@ class StoreItem extends React.Component<{
           {categorydata &&
             categorydata.map((cat: any, index: number) => (
               <div
-              id={cat.name}
+              // id={cat.name}
               // style={{height: 135,overflow:'auto'}}
-                // ref={(el) => (this.ref[cat.value] = el)}
+                ref={(el) => (this.ref[cat.value] = el)}
                 key={"item-" + index}
               >
                 <div className="item-details-1">
