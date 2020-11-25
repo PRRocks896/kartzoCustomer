@@ -1,0 +1,691 @@
+.grow-google-bnr {
+	
+	background-size: 100%;
+	overflow: hidden;
+	padding: 100px 0;
+	position: relative;
+}
+.grow-google-bnr::before {
+	background: url('../../assets/images/business/bg-bnr.png') repeat-y;
+	background-size: 100%;
+	overflow: hidden;
+	content: "";
+	padding: 100px 0;
+	position: absolute;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+}
+
+.grow-google-bnr::after {
+	content: "";
+	background: url('../../assets/images/business/3523653.jpg') repeat-y;
+	height: 100%;
+	width: 50%;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	z-index: -2;
+}
+
+.grow-google-bnr .img-bnr {
+	position: relative;
+	z-index: -6;
+}
+
+.grow-google-bnr .container-fluid {
+	max-width: 1170px;
+}
+
+.grow-google-bnr .left-box {
+	text-align: left;
+	max-width: 520px;
+}
+
+.grow-google-bnr .left-box .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin-bottom: 25px;
+	margin-top: 20px;
+}
+
+.grow-google-bnr p {
+	color: #fff;
+	margin-bottom: 40px;
+}
+
+.grow-google-bnr .logo1 {
+	margin-top: 40px;
+}
+
+.grow-google-bnr .left-box .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+
+.grow-google-bnr .left-box .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+
+.grow-google-bnr .btn-1 a {
+	background: #071828;
+	color: #fff;
+	border-radius: 50px;
+	padding: 0px 40px;
+	display: inline-block;
+	border: 1px solid #071828;
+	line-height: 50px;
+	transition: 0.5s ease-in-out;
+	text-decoration: none;
+}
+
+.grow-google-bnr .btn-1 .login {
+	background: none;
+	color: #071828;
+	border: 1px solid #071828;
+	margin-left: 30px;
+}
+
+
+.grow-google-bnr .tt1 {
+	font-size: 50px;
+	font-weight: bold;
+	color: #fff;
+}
+
+.grow-google-bnr .btn-1 a i {
+	margin-left: 12px;
+}
+
+.grow-google-bnr .dis-flex {
+	display: flex;
+	align-items: center;
+}
+
+/* Popular locations */
+.growgoogle-why-kartzo {
+	text-align: left;
+	padding: 100px 0;
+}
+.growgoogle-why-kartzo .maxwidth100 {
+	max-width: 100%;
+}
+.growgoogle-why-kartzo .container-fluid {
+	max-width: 1170px;
+}
+.growgoogle-why-kartzo .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+.growgoogle-why-kartzo .tt1 {
+	font-size: 36px;
+}
+.growgoogle-why-kartzo .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+.growgoogle-why-kartzo .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+.growgoogle-why-kartzo .listmenu {
+	padding: 0px;
+}
+.growgoogle-why-kartzo li {
+	list-style: none;
+	position: relative;
+	padding-left: 40px;
+	margin-bottom: 8px;
+	color: #071828;
+}
+.growgoogle-why-kartzo li img {
+	width: 25px;
+	position: absolute;
+	left: 0px;
+	top: 1px;
+}
+/* Zero sign up fees */
+.growgoogle-signupfee {
+	position: relative;
+	background-image: linear-gradient(to top, #FBB034, #ECCE09);
+	padding: 100px 0;
+	text-align: center;
+	
+}
+.growgoogle-signupfee::before {
+	position: absolute;
+	content: "";
+	background: url('../../assets/images/abstract-bg.jpg') no-repeat;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	background-size: cover;
+	opacity: 0.2;
+	background-position: left;
+}
+.growgoogle-signupfee .container-fluid{
+	max-width: 1170px;
+}
+.growgoogle-signupfee .title {
+	font-size: 30px;
+	text-transform: uppercase;
+	color: #fff;
+	font-weight: 600;
+	margin-bottom: 30px;
+}
+.growgoogle-signupfee .small-text {
+	font-size: 14px;
+	color: #fff;
+	display: block;
+	margin-top: 30px;
+}
+.growgoogle-signupfee .btn-1 a i {
+	margin-left: 12px;
+}
+.growgoogle-signupfee .btn-1{
+
+}
+.growgoogle-signupfee .btn-1 a{
+	background: #071828;
+	color: #fff;
+	border-radius: 50px;
+	padding: 0px 40px;
+	display: inline-block;
+	border: 1px solid #071828;
+	line-height: 50px;
+	transition: 0.5s ease-in-out;
+	text-decoration: none;
+}
+
+.growgoogle-signupfee .btn-1 .small-text{
+
+}
+/* Zero sign up fees end*/
+
+/* Here are some answers for your queries */
+.some-answers {
+	position: relative;
+	padding: 100px 0;
+}
+.some-answers .container-fluid{
+	max-width: 1170px;
+}
+.some-answers .tt1 {
+	font-size: 36px;
+	color: #071828;
+}
+.some-answers .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+.some-answers .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+.some-answers .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+}
+.some-answers .left-content {
+	margin-right: 20px;
+}
+.some-answers .list1 {
+	font-size: 20px;
+	background: #fab131;
+	font-weight: 600;
+	color: #fff;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+	width: 40px;
+	display: block;
+	text-align: center;
+	height: 45px;
+	line-height: 45px;
+}
+.some-answers .small-title {
+	font-size: 16px;
+	margin-bottom: 5px;
+}
+.some-answers p {
+	margin: 0px;
+	font-size: 14px;
+	
+}
+.some-answers p a{
+	margin: 0px;
+	color: #5C6978;
+	text-decoration: underline;
+	font-size: 14px;
+	
+}
+.some-answers .box-1 {
+	display: flex;
+	align-items: center;
+	box-shadow: 0px 1px 4px #c8c8c8;
+	padding: 15px 15px;
+	margin-bottom: 20px;
+	border-radius: 4px;
+}
+.some-answers .img-bg img{
+	max-width: 100%;
+}
+/* Here are some answers for your queries end*/
+
+/* local businesses */
+
+.local-businesses {
+	position: relative;
+	padding: 100px 0;
+	background-color: rgb(248, 248, 251);
+}
+.local-businesses .container-fluid{
+	max-width: 1170px;
+}
+.local-businesses .tt1 {
+	font-size: 36px;
+	color: #071828;
+}
+.local-businesses .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.local-businesses .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+}
+.local-businesses .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+}
+.local-businesses .title-box-top {
+	text-align: center;
+}
+.local-businesses .sub-title {
+	font-size: 20px;
+	margin-top: 20px;
+}
+.local-businesses .box1 {
+	box-shadow: 0px 1px 4px #c8c8c8;
+	padding: 26px 30px;
+	height: 100%;
+	margin-top: 30px;
+	background: #fff;
+}
+/* local businesses end */
+
+/* Your safety is our top priority */
+.safety-priority {
+	text-align: left;
+	padding: 100px 0;
+}
+.safety-priority .maxwidth100 {
+	max-width: 100%;
+}
+.safety-priority .container-fluid {
+	max-width: 1170px;
+}
+.safety-priority .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+.safety-priority .tt1 {
+	font-size: 36px;
+}
+.safety-priority .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+.safety-priority .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+
+.safety-priority .listmenu {
+	padding: 0px;
+}
+.safety-priority li {
+	list-style: none;
+	position: relative;
+	padding-left: 69px;
+	margin: 50px 0px;
+	color: #071828;
+}
+.safety-priority li img {
+	width: 50px;
+	position: absolute;
+	left: 0px;
+	top: -12px;
+}
+
+/* Your safety is our top priority end */
+
+/* Join our community */
+.join-community {
+	text-align: left;
+	padding: 100px 0;
+	padding-top: 0px;
+}
+.join-community .maxwidth100 {
+	max-width: 100%;
+}
+.join-community .video-box1 {
+	margin-top: 30px;
+}
+.join-community .container-fluid {
+	max-width: 1170px;
+}
+.join-community .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+.join-community .tt1 {
+	font-size: 36px;
+}
+.join-community .big {
+	height: 10px;
+	width: 57px;
+	background: #071828;
+	border-radius: 10px;
+}
+.join-community .small {
+	height: 10px;
+	width: 18px;
+	background: #071828;
+	border-radius: 10px;
+	margin-left: 8px;
+}
+.join-community .title-box-top {
+	text-align: center;
+}
+.join-community .bdr-tt {
+	width: 81px;
+	display: flex;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.join-community .img-box1 img{
+	max-width: 100%;
+}
+.join-community .img-box1 {
+	height: 240px;
+}
+.join-community .play-btn {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	opacity: 0.8;
+}
+.join-community .img-box1 img {
+	max-height: 100%;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+}
+/* Join our community end*/
+
+/* Have more questions? */
+.more-questions {
+	text-align: center;
+	padding: 100px 0;
+	padding-top: 0px;
+}
+.more-questions .container-fluid {
+	max-width: 1170px;
+}
+.more-questions .tt1 {
+	font-size: 36px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+.more-questions .chat-us {
+	height: 45px;
+	color: #fff;
+	background-image: linear-gradient(to bottom, #FBB034, #ECCE09);
+	font-size: 18px;
+	line-height: 45px;
+	padding: 0px 25px;
+	border-radius: 45px;
+	margin-right: 15px;
+	font-weight: 500;
+	border: 1px solid #FBB034;
+	display: inline-block;
+	margin-top: 12px;
+	-webkit-border-radius: 45px;
+	-moz-border-radius: 45px;
+	-ms-border-radius: 45px;
+	-o-border-radius: 45px;
+}
+.more-questions .chat-us:hover {
+	color: #fff;
+}
+.more-questions hr {
+	margin: 70px 0px;
+}
+.more-questions .partnership-tt {
+	color: #fab033;
+	font-size: 18px;
+	font-weight: 600;
+}
+/* Have more questions? end */
+/* Footer Start */
+.footer {
+	position: relative;
+	background-image: linear-gradient(to top, #FBB034, #ECCE09);
+	padding: 100px 0;
+	text-align: center;
+	overflow: hidden;
+}
+
+.footer .container-fluid {
+	max-width: 1170px;
+}
+
+.footer::before {
+	position: absolute;
+	content: "";
+	background: url('../../assets/images/delivery2.png') no-repeat;
+	width: 556px;
+	background-size: 556px 556px !important;
+	width: 11;
+	height: 556px;
+	overflow: hidden;
+	left: 50%;
+	transform: translate(30%, 0%);
+	top: 0px;
+}
+
+.footer .tt-1 {
+	font-size: 22px;
+	color: #fff;
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+.footer .logo-footer {
+	margin-bottom: 50px;
+}
+
+.footer ul {
+	padding: 0px;
+	text-align: left;
+}
+
+.footer li {
+	list-style: none;
+	margin-top: 10px;
+}
+
+.footer a {
+	font-size: 16px;
+	color: #fff;
+	text-decoration: none;
+}
+
+/* Footer End */
+
+@media only screen and (max-width: 991px) {
+	.header .btn-partnr {
+		display: none;
+	}
+	.footer::before {
+		display: none;
+	}
+	.maxwidth100 {
+		display: none;
+	}
+	.some-answers .img-bg img{
+		display: none;
+	}
+	.local-businesses .col-md-12.col-lg-4 {
+		margin-bottom: 20px;
+	}
+	.local-businesses .box1 {
+		height: auto;
+		margin-top: 0px; 
+		padding-bottom: 10px;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	.header .btn-business {
+		display: none;
+	}
+
+	/* title text */
+	.grow-google-bnr .tt1,
+	.growgoogle-why-kartzo .tt1,
+	.growgoogle-signupfee .title,
+	.some-answers .tt1,
+	.local-businesses .tt1,
+	.safety-priority .tt1,
+	.join-community .tt1,
+	.more-questions .tt1{
+		font-size: 25px;
+	}
+
+	/* p all text */
+	.footer a,
+	.grow-google-bnr p,
+	.grow-google-bnr .btn-1 a,
+	.growgoogle-why-kartzo li,
+	.growgoogle-why-kartzo p,
+	.growgoogle-signupfee .btn-1 a,
+	.local-businesses p,
+	.safety-priority p,
+	.safety-priority ul li,
+	.more-questions p{
+		font-size: 14px;
+	}
+	.more-questions .chat-us {
+		font-size: 16px;
+	}
+	.more-questions .partnership-tt {
+		font-size: 16px;
+	}
+	.safety-priority li img {
+		width: 40px;
+		top: -8px;
+	}
+	.safety-priority li {
+		margin: 40px 0px;
+	}
+	.local-businesses .sub-title {
+		font-size: 16px;
+	}
+	.footer .tt-1 {
+		font-size: 20px;
+	}
+
+	.grow-google-bnr .btn-1 .login {
+		margin-left: 10px;
+	}
+
+	.grow-google-bnr .btn-1 a {
+		line-height: 38px;
+		padding: 0px 20px;
+	}
+
+	.grow-google-bnr,
+	.growgoogle-why-kartzo,
+	.growgoogle-signupfee,
+	.some-answers,
+	.local-businesses,
+	.safety-priority,
+	.join-community,
+	.more-questions,
+	.footer {
+		padding: 30px 0;
+	}
+	.more-questions hr {
+		margin: 30px 0px;
+	}
+	.some-answers .tt1, .growgoogle-why-kartzo .tt1, .safety-priority .tt1 {
+		text-align: center;
+	}
+	.some-answers .bdr-tt, .growgoogle-why-kartzo .bdr-tt, .safety-priority .bdr-tt {
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+/* responsive end */

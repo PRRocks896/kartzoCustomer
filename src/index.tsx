@@ -34,6 +34,7 @@ import Profile from "./pages/profile/profile";
 import Packages from "./pages/sendpackages/packages";
 import Terms from "./pages/terms/terms";
 import Policy from "./pages/policy/policy";
+import Grow from "./pages/grow/grow";
 const interceptor = require("./intercepter");
 const middleware = [thunk, api];
 const store = createStore(reducers, applyMiddleware(...middleware));
@@ -80,6 +81,7 @@ ReactDOM.render(
           <Route exact path="/policy" component={Policy} />
           <Route exact path="/contact-us" component={ContactUs} />
           <Route exact path="/carrers" component={Careers} />
+          <Route exact path="/grow" component={Grow} />
           <Route exact path="/carrers-job" component={JobOpening} />
           <Route exact path="/partners" component={Partners} />
           <Route exact path="/business" component={Business} />

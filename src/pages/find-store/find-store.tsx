@@ -43,7 +43,8 @@ class FindStore extends React.Component<{
     isLoading: this.findstoreState.isLoading,
     locationData: this.findstoreState.locationData,
     cityid: this.findstoreState.cityid,
-    search:false
+    search:false,
+    totalcount:0
   };
 
   /** Constructor call */
@@ -138,6 +139,7 @@ class FindStore extends React.Component<{
     this.setState({
       count: this.state.count = data.data ? data.data.length : '0',
       merchantdata: this.state.merchantdata = data.data,
+      totalcount:this.state.totalcount = data.totalcount
     });
   }
 
@@ -444,7 +446,7 @@ class FindStore extends React.Component<{
               <h3>
                 {this.state.slugname} in {this.state.location}{" "}
               </h3>
-              <div className="small-text">4 outlets</div>
+                  <div className="small-text">{this.state.totalcount} outlets</div>
             </div>
           </div>
           <div className="store-box">

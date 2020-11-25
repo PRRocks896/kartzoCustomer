@@ -110,6 +110,9 @@ getFooterLinksData(data:any) {
                   <li>
                     <Link to="/business">Kartzo for business</Link>
                   </li>
+                  <li>
+                    <Link to="/grow">Grow With Google</Link>
+                  </li>
                 </ul>
               </div>
 
@@ -134,9 +137,18 @@ getFooterLinksData(data:any) {
                   this.state.footersocialdata ? (
                     this.state.footersocialdata.length > 0 && this.state.footersocialdata.map((data:any,index:number) => (
                       <ul key={index}>
-                      <li>
-                        <Link to={`/${data.name}`} target="_blank">{data.value}</Link>
-                      </li>
+                        {
+                          data.value === "Email"  ? (
+                            <li>
+                           <a href="mailto:support@dunzo.in">{data.value}</a>
+                          </li>
+                          ) : (
+                            <li>
+                            <Link to={`/${data.name}`} target="_blank">{data.value}</Link>
+                          </li>
+                          )
+                        }
+                     
                     </ul>
                     ))
                   ) : ('')

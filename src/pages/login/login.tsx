@@ -262,9 +262,9 @@ class Login extends React.Component<{
           <div className="container-fluid">
             <div className="dis-flx">
               <div className="left-content">
-                <Link className="back-arrow" to="/">
+                <a className="back-arrow" onClick={() => this.props.history.goBack()}>
                   <img src={loginimg.backarrow} alt="logo" />
-                </Link>
+                </a>
                 <h4 className="res-tt1">Enter your mobile number</h4>
               </div>
               {/* <div className="right-content">

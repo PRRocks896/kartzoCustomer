@@ -141,9 +141,9 @@ class PlaceOrder extends React.Component<{
       let user = JSON.parse(users);
       this.setState({
         usermobile: user.phone,
+        mobile: this.state.mobile = user.phone,
         firstname: user.firstName,
         lastname: user.lastName,
-        mobile: user.phone,
       });
       this.getAddressDetails();
       if (localStorage.getItem("token")) {
@@ -207,7 +207,7 @@ class PlaceOrder extends React.Component<{
       nameerror: "",
       name: "",
       mobileerror: "",
-      mobile: "",
+      // mobile: "",
       addresserror: "",
       address: "",
       cityerror: "",

@@ -29,7 +29,7 @@ export interface placeorderStateRequest {
   nameerror: string;
   addresstypeerror: string;
   mobileerror: string;
-  mobile: any;
+  mobile: string;
   landmark: any;
   landmarkerror: string;
   cartarray: any;

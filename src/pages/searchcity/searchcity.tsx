@@ -104,75 +104,95 @@ class SearchCity extends React.Component<{
   getCategoryBlock() {
     return (
       <>
-        {this.state.isLoading === false ? (
-          <div className="main-div">
-            <div className="row">
-              {this.state.categorydata
-                ? this.state.categorydata.length > 0 &&
-                  this.state.categorydata.map((c: any, index: number) =>
-                    c.parentCategoryId === 0 ? (
-                      <div key={index} className="col-sm-6 col-md-4 col-lg-3">
-                        <Link
-                          to={{
-                            pathname: `/order/${c.slug}`,
-                            state: {
-                              city: this.state.slugname.toLocaleLowerCase(),
-                              cityid: this.state.cityid,
-                            },
-                          }}
-                        >
-                          <div
-                            className="box-1"
-                            style={{
-                              border: `1px solid ${constant.categoryColor[index].clr}`,
-                            }}
-                          >
-                            <div
-                              className="bdr-bottom"
-                              style={{
-                                background: `${constant.categoryColor[index].bclr}`,
-                              }}
-                            ></div>
-                            {c.imagePath ? (
-                              <img
-                                className="category_img"
-                                src={constant.filepath + c.imagePath}
-                                alt={c.category}
-                              />
-                            ) : (
-                              ""
-                            )}
-                            <div className="tt-1">{c.category}</div>
-                          </div>
-                        </Link>
-                      </div>
-                    ) : (
-                      ""
+       {this.state.isLoading === false ? (
+            <div className="main-div">
+              <div className="row">
+                {this.state.categorydata
+                  ? this.state.categorydata.length > 0 &&
+                    this.state.categorydata.map((c: any, index: number) =>
+                      c.parentCategoryId === 0 ? (
+                        <div key={index} className="col-sm-6 col-md-4 col-lg-3">
+                          {c.category === "Pickup & Drop" ? (
+                            <Link to="/send-packages">
+                              <div
+                                className="box-1"
+                                style={{
+                                  border: `1px solid ${constant.categoryColor[index].clr}`,
+                                }}
+                              >
+                                <div
+                                  className="bdr-bottom"
+                                  style={{
+                                    background: `${constant.categoryColor[index].bclr}`,
+                                  }}
+                                ></div>
+                                {c.imagePath ? (
+                                  <img
+                                    className="category_img"
+                                    src={constant.filepath + c.imagePath}
+                                    alt={c.category}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                                <div className="tt-1">{c.category}</div>
+                              </div>
+                            </Link>
+                          ) : (
+                            <Link to={`/order/${c.slug}`}>
+                              <div
+                                className="box-1"
+                                style={{
+                                  border: `1px solid ${constant.categoryColor[index].clr}`,
+                                }}
+                              >
+                                <div
+                                  className="bdr-bottom"
+                                  style={{
+                                    background: `${constant.categoryColor[index].bclr}`,
+                                  }}
+                                ></div>
+                                {c.imagePath ? (
+                                  <img
+                                    className="category_img"
+                                    src={constant.filepath + c.imagePath}
+                                    alt={c.category}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                                <div className="tt-1">{c.category}</div>
+                              </div>
+                            </Link>
+                          )}
+                        </div>
+                      ) : (
+                        ""
+                      )
                     )
-                  )
-                : ""}
+                  : ""}
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="main-div">
-            <div className="row">
-              {[1, 2, 3, 4].map((data: any, index: number) => (
-                <div key={index} className="col-sm-6 col-md-4 col-lg-3">
-                  <SkeletonTheme color="#202020" highlightColor="#444">
-                    <div className="box-1">
-                      <div className="bdr-bottom">
-                        <Skeleton count={1} />
-                      </div>
-                      {/* <img alt="img"className="category_img">
+          ) : (
+            <div className="main-div">
+              <div className="row">
+                {[1, 2, 3, 4].map((data: any, index: number) => (
+                  <div key={index} className="col-sm-6 col-md-4 col-lg-3">
+                    <SkeletonTheme color="#202020" highlightColor="#444">
+                      <div className="box-1">
+                        <div className="bdr-bottom">
+                          <Skeleton count={1} />
+                        </div>
+                        {/* <img alt="img"className="category_img">
                       <Skeleton count={1} />
                     </img> */}
-                    </div>
-                  </SkeletonTheme>
-                </div>
-              ))}
+                      </div>
+                    </SkeletonTheme>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </>
     );
   }
