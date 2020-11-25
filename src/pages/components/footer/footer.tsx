@@ -31,7 +31,7 @@ class Footer extends React.Component<{getFooterData:any,getFooterLinkData:any}> 
 
   /** Page Render Call */
   componentDidMount() {
-    this.props.getFooterData();
+    // this.props.getFooterData();
     this.props.getFooterLinkData();
   }
 
@@ -118,7 +118,13 @@ getFooterLinksData(data:any) {
 
               <div className="col-md-3">
                 <h3 className="tt-1">Serviceable Cities</h3>
-                {
+                <ul>
+                    <li><a href="#">Rajkot</a></li>
+                    <li><a href="#">Surat</a></li>
+                    <li><a href="#">Ahmedabad</a></li>
+                    <li><a href="#">Baroda</a></li>
+                </ul>
+                {/* {
                   this.state.footercitydata ? (
                     this.state.footercitydata.length > 0 && this.state.footercitydata.map((data:any,index:number) => (
                       <ul key={index}>
@@ -127,8 +133,10 @@ getFooterLinksData(data:any) {
                       </li>
                     </ul>
                     ))
-                  ) : ('')
-                }
+                  ) : (
+                   ''
+                  )
+                } */}
               </div>
 
               <div className="col-md-3">

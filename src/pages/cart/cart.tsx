@@ -43,16 +43,12 @@ class Cart extends React.Component<{
 
   /** Page Render Call */
   componentDidMount() {
-    if(!localStorage.getItem("token")) {
-      this.props.history.push('/signin');
-    } else {
     document.title = constant.cart + getAppName();
     EventEmitter.dispatch("isShow", true);
     EventEmitter.dispatch("isShowFooter", true);
     if (localStorage.getItem("token")) {
       this.getCartData();
     }
-  }
   }
 
   /**

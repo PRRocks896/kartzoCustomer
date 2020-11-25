@@ -6,14 +6,13 @@ import constant from "../../constant/constant";
 import { loginService } from "../../../redux/actions/index";
 import { connect } from "react-redux";
 
-class AppLink extends React.Component<{getAppLink:any}> {
-
+class AppLink extends React.Component<{ getAppLink: any }> {
   /** Contact State */
   applinkState = constant.servicePage.state;
   state = {
     mobile: this.applinkState.mobile,
     mobileerror: this.applinkState.mobileerror,
-    hide: this.applinkState.hide
+    hide: this.applinkState.hide,
   };
 
   /** Constructor call */
@@ -22,9 +21,9 @@ class AppLink extends React.Component<{getAppLink:any}> {
     this.onChange = this.onChange.bind(this);
     this.getAppLink = this.getAppLink.bind(this);
   }
-  
+
   /**
-   * 
+   *
    * @param event : update state value
    */
   onChange(event: any) {
@@ -99,36 +98,40 @@ class AppLink extends React.Component<{getAppLink:any}> {
                 </a>
               </div>
               {this.state.hide === false ? (
-                  <>
-                    <div className="src-location">
-                      <div className="input-box">
-                        <LazyLoadImage
-                          alt="flag"
-                          effect="blur"
-                          src={applink.Flag_of_South_Africa}
-                        />
-                        <input
-                          id="number"
-                          type="text"
-                          name="mobile"
-                          className="src-input"
-                          placeholder="Enter Mobile Number"
-                          maxLength={10}
-                          onChange={this.onChange}
-                        />
-                      </div>
-                      <button onClick={this.getAppLink}>Get App Link</button>
+                <>
+                  <div className="src-location">
+                    <div className="input-box">
+                      <LazyLoadImage
+                        alt="flag"
+                        effect="blur"
+                        src={applink.Flag_of_South_Africa}
+                      />
+                      <input
+                        id="number"
+                        type="text"
+                        name="mobile"
+                        className="src-input"
+                        placeholder="Enter Mobile Number"
+                        maxLength={10}
+                        onChange={this.onChange}
+                      />
                     </div>
-                    <div className="text-danger">{this.state.mobileerror}</div>
-                  </>
-                ) : (
-                  <h4 className="mt-5">
-                    It's Done! Thanks, we shall notify you on the launch of your
-                    mobile
-                  </h4>
-                )}
+                    <button onClick={this.getAppLink}>Get App Link</button>
+                  </div>
+                  <div className="text-danger">{this.state.mobileerror}</div>
+                </>
+              ) : (
+                <h4 className="mt-5">
+                  It's Done! Thanks, we shall notify you on the launch of your
+                  mobile
+                </h4>
+              )}
             </div>
-            <div className="right-img wow slideInRight" data-wow-duration="2s" data-wow-delay="5s">
+            <div
+              className="right-img wow slideInRight"
+              data-wow-duration="2s"
+              data-wow-delay="5s"
+            >
               <LazyLoadImage
                 alt="location-app"
                 // effect="blur"
@@ -153,7 +156,6 @@ const mapStateToProps = (state: any) => ({});
  * @param dispatch : call api with action
  */
 const mapDispatchToProps = (dispatch: any) => ({
-  
   /** Get AppLink */
   getAppLink: (data: any) => dispatch(loginService.getAppLink(data)),
 });
