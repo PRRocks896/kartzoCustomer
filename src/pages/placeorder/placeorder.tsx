@@ -14,11 +14,12 @@ import {
   placeorder,
 } from "../../pages/components/helper/images";
 import constant from "../constant/constant";
-import { getAppName, alertMessage } from "../utils";
+import { getAppName, alertMessage , rendomGenerateNumber} from "../utils";
 import { connect } from "react-redux";
 import "./placeorder.css";
 import { placeOrderService, productService } from "../../redux/index";
 var creditCardType = require("credit-card-type");
+declare var Razorpay: any; 
 
 class PlaceOrder extends React.Component<{
   show: boolean;
@@ -33,6 +34,7 @@ class PlaceOrder extends React.Component<{
   getcard: any;
   updateCard: any;
   deleteCard: any;
+  createOrder: any;
 }> {
   /** place order state */
   placeOrderState: placeorderStateRequest = constant.placeorderPage.state;
@@ -93,7 +95,9 @@ class PlaceOrder extends React.Component<{
     cvvdesc:this.placeOrderState.cvvdesc,
     workdisabled:this.placeOrderState.workdisabled,
     otherdisabled:this.placeOrderState.otherdisabled,
-    homedisabled:this.placeOrderState.homedisabled
+    homedisabled:this.placeOrderState.homedisabled,
+    amount:0,
+    amounterror:''
   };
 
   /** Constructor call */
@@ -127,6 +131,7 @@ class PlaceOrder extends React.Component<{
     this.deleteCardData = this.deleteCardData.bind(this);
     this.paymentWithCard = this.paymentWithCard.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.openCheckout = this.openCheckout.bind(this);
   }
 
   /** Page Render Call */
@@ -134,6 +139,7 @@ class PlaceOrder extends React.Component<{
     if(!localStorage.getItem("token")) {
       this.props.history.push('/signin');
     } else {
+      
       document.title = constant.placeorder + getAppName();
       EventEmitter.dispatch("isShow", true);
       EventEmitter.dispatch("isShowFooter", true);
@@ -1473,6 +1479,32 @@ class PlaceOrder extends React.Component<{
       this.setState({
         cvverror: "",
       });
+      const users: any = localStorage.getItem("user");
+      let user = JSON.parse(users);
+      var today = new Date(),
+      date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+      const obj = {
+        userID:user.userID,
+        couponID:0,
+        orderDate:date,
+        orderNo:2,
+        // orderNo:rendomGenerateNumber(),
+        paymentMethod:0,
+        orderStatus:0,
+        paymentStatus:0,
+        distance:0,
+        totalQty:1,
+        totalAmount:10000,
+        discountAmount:0,
+        taxAmount:0,
+        deliveryAmount:0,
+        couponAmount:0,
+        transactionID:24,
+        paymentMessage:"Success",
+        cardNumber:""
+      }
+
+      this.props.createOrder(obj);
     }
   }
 
@@ -1769,6 +1801,7 @@ class PlaceOrder extends React.Component<{
         </label>
         <div className="upi-payment">
           <div className="tt-line">
+          <img src={placeorder.net} alt="" />
             <span className="tt-radio">Net Banking</span>
           </div>
           {this.state.paymenttype === 4 ? (
@@ -1877,6 +1910,101 @@ class PlaceOrder extends React.Component<{
               </div>
 
               <button className="continue-btn">PAY R400</button>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  /** Razerpay functionality */
+  openCheckout() {
+    if(this.state.amount) {
+      let options = {
+        "key": "rzp_live_5dM1OK63yl61hL",
+        "amount": this.state.amount, // 2000 paise = INR 20, amount in paisa
+        "name": "Merchant Name",
+        "description": "Purchase Description",
+        "image": "",
+        "handler": function (response:any){
+          alert(response.razorpay_payment_id);
+        },
+        "prefill": {
+          "name": "Dax Patel",
+          "email": "dixit20051998@gmail.com"
+        },
+        "notes": {
+          "address": "Hello World"
+        },
+        "theme": {
+          "color": "#F37254"
+        }
+      };
+      
+      let rzp = new Razorpay(options);
+      rzp.open();
+
+    } else {
+      this.setState({
+        amounterror:'Please enter amount'
+      })
+    }
+  }
+
+  /** Razerpay Block */
+  rezarpay() {
+    return (
+      <div className="adrss-1">
+        <label className="rdio-box1">
+          <input
+            type="radio"
+            id="5"
+            checked={this.state.paymenttype === 5 ? true : false}
+            onChange={this.changePaymentUPI}
+            name="payment"
+          />
+          <span className="checkmark"></span>
+        </label>
+
+        <div className="upi-payment">
+          <div className="tt-line">
+            <img src={placeorder.wallet} alt="" />
+            <span className="tt-radio">Razer-Pay</span>
+          </div>
+          {this.state.paymenttype === 5 ? (
+            <div className="pey-upi">
+              <div className="opti1 opti2">
+                <label className="rdio-box1">
+                  <span className="tt-radio">Razer-pay</span>
+                  <input
+                    type="radio"
+                    checked={true}
+                    onChange={this.change}
+                    name="radio"
+                  />
+                  <span className="checkmark"></span>
+                </label>
+                <div className="box-input1">
+                  <div className="form-group">
+                    <span className="verfy-tt">Amount</span>
+                    <input
+                      type="number"
+                      id="from"
+                      name="amount"
+                      onChange={this.onChangeEvent}
+                      className="form-control"
+                      required
+                    />
+                    <label className="form-control-placeholder" htmlFor="from">
+                      Enter Amount
+                    </label>
+                  </div>
+                  <div className="text-danger">{this.state.amounterror}</div>
+                  <button className="continue-btn" onClick={this.openCheckout}>PAY WITH RAZER-PAY</button>
+                </div>
+              </div>
             </div>
           ) : (
             ""
@@ -2168,6 +2296,9 @@ class PlaceOrder extends React.Component<{
 
                               {/* <!-- Net Banking --> */}
                               {this.netBankingBlock()}
+
+                               {/* <!-- RazerPay --> */}
+                               {this.rezarpay()}
                             </div>
                           </div>
                           {/* <div className="dis-right">
@@ -2240,7 +2371,11 @@ const mapDispatchToProps = (dispatch: any) => ({
   updateCard: (data: any) => dispatch(placeOrderService.updateCard(data)),
 
   /** Delete card */
-  deleteCard: (data: any) => dispatch(placeOrderService.deleteCard(data))
+  deleteCard: (data: any) => dispatch(placeOrderService.deleteCard(data)),
+
+  /** Create Order */
+  createOrder: (data: any) => dispatch(placeOrderService.createOrder(data))
+  
   
 });
 

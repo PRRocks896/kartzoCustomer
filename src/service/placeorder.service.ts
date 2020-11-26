@@ -127,5 +127,18 @@ export default {
     );
   },
 
+   /**
+   * 
+   * @param data : delete card
+   */
+  createorder: async function (data: any) {
+    return WebReqUrl.post(
+      Constant.apiUrl + apiUrl.orderController.createorder,
+      data,
+      false
+    );
+  },
+
+  
   
 };

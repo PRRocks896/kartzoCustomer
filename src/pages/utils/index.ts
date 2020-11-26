@@ -94,3 +94,8 @@ export const alertMessage =  async (text:string,btext:string) => {
   }
   return response;
 }
+
+export const rendomGenerateNumber = () => {
+  var digits = Math.floor(Math.random() * 900000000000) + 100000000000;
+  return digits;
+}

@@ -50,7 +50,7 @@ export const about = {
 };
 
 export const contact = {
-  map: require("../../../../assets/images/map-contact.jpg"),
+  map: require("../../../../assets/images/map-contact.png"),
 };
 
 export const carrers = {
@@ -134,7 +134,8 @@ export const placeorder = {
   paytm: require("../../../../assets/images/paytm-icon.webp"),
   card: require("../../../../assets/images/card.gif"),
   wallet: require("../../../../assets/images/Wallet.gif"),
-  cvvcard: require("../../../../assets/images/cvv-card.png")
+  cvvcard: require("../../../../assets/images/cvv-card.png"),
+  net: require("../../../../assets/images/net.gif"),
 };
 
 export const cart = {

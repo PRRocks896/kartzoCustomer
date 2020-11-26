@@ -10,7 +10,8 @@ export const placeOrderService = {
   addCard,
   getcard,
   updateCard,
-  deleteCard
+  deleteCard,
+  createOrder
 };
 
 /**
@@ -260,3 +261,35 @@ function deleteCard(data: any) {
     return { type: ACTION.card.DELETE_CARD_FAILURE, error };
   }
 }
+
+/**
+ * 
+ * @param data : delete card
+ */
+function createOrder(data: any) {
+  return (dispatch: any) => {
+    dispatch(request({ data }));
+
+    PlaceOrderAPI.createorder(data)
+      .then(async (orderdata: any) => {
+        console.log("orderdata", orderdata);
+        if (orderdata.status === 200) {
+          dispatch(success(await orderdata.data.resultObject));
+        }
+      })
+      .catch((err: any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(orderdata: any) {
+    return { type: ACTION.order.CREATE_ORDER_REQUEST, orderdata };
+  }
+  function success(orderdata: any) {
+    return { type: ACTION.order.CREATE_ORDER_SUCCESS, orderdata };
+  }
+  function failure(error: any) {
+    return { type: ACTION.order.CREATE_ORDER_FAILURE, error };
+  }
+}
+
