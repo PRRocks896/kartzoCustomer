@@ -14,7 +14,7 @@ import {
   placeorder,
 } from "../../pages/components/helper/images";
 import constant from "../constant/constant";
-import { getAppName, alertMessage , rendomGenerateNumber} from "../utils";
+import { getAppName, alertMessage , rendomGenerateOrderNumber} from "../utils";
 import { connect } from "react-redux";
 import "./placeorder.css";
 import { placeOrderService, productService } from "../../redux/index";
@@ -96,8 +96,27 @@ class PlaceOrder extends React.Component<{
     workdisabled:this.placeOrderState.workdisabled,
     otherdisabled:this.placeOrderState.otherdisabled,
     homedisabled:this.placeOrderState.homedisabled,
+    changewallet:0,
     amount:0,
-    amounterror:''
+    amounterror:'',
+
+    upiTrue:false,
+    cardTrue:false,
+    walletTrue:false,
+    netbankingTrue: false,
+    freecharge:false,
+    olamoney:false,
+    payzapp:false,
+    AMEX:"",
+    BAJAJ:"",
+    DICL:"",
+    JCB:"",
+    MAES:"",
+    MC:"",
+    RUPAY:"",
+    VISA:"",
+    bankarray:[],
+    walletnumber:0
   };
 
   /** Constructor call */
@@ -132,6 +151,8 @@ class PlaceOrder extends React.Component<{
     this.paymentWithCard = this.paymentWithCard.bind(this);
     this.toggle = this.toggle.bind(this);
     this.openCheckout = this.openCheckout.bind(this);
+    this.changeWallet = this.changeWallet.bind(this);
+    this.payWallet = this.payWallet.bind(this);
   }
 
   /** Page Render Call */
@@ -155,6 +176,7 @@ class PlaceOrder extends React.Component<{
       if (localStorage.getItem("token")) {
         this.getCartData();
         this.getCard();
+        this.openCheckout();
       }
     }
   }
@@ -295,7 +317,7 @@ class PlaceOrder extends React.Component<{
    */
   changeBankType(e: any) {
     this.setState({
-      banktype: this.state.banktype = parseInt(e.target.id),
+      banktype: this.state.banktype = e.target.id,
     });
     // console.log("banktype", this.state.banktype);
   }
@@ -306,7 +328,7 @@ class PlaceOrder extends React.Component<{
    */
   selectBank(e: any) {
     this.setState({
-      banktype: this.state.banktype = parseInt(e.target.value),
+      banktype: this.state.banktype = e.target.value,
     });
     // console.log("banktype", this.state.banktype);
   }
@@ -1144,7 +1166,7 @@ class PlaceOrder extends React.Component<{
           {this.state.paymenttype === 1 ? (
             <div className="pey-upi">
               <span className="b-tt">Choose an option</span>
-              <div className="opti1">
+              {/* <div className="opti1">
                 <label className="rdio-box1">
                   <span className="tt-radio">PhonePe</span>
                   <input
@@ -1161,7 +1183,7 @@ class PlaceOrder extends React.Component<{
                 ) : (
                   ""
                 )}
-              </div>
+              </div> */}
 
               <div className="opti1 opti2">
                 <label className="rdio-box1">
@@ -1178,7 +1200,6 @@ class PlaceOrder extends React.Component<{
                 {this.state.paytype === 2 ? (
                   <div className="box-input1">
                     <div className="form-group">
-                      <span className="verfy-tt">VERIFY</span>
                       <input
                         type="text"
                         id="from"
@@ -1207,6 +1228,42 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  changeWallet(e:any) {
+    this.setState({
+      changewallet:this.state.changewallet = parseInt(e.target.id)
+    })
+  }
+
+  payWallet(data:any) {
+    if(this.state.cartarray) {
+      var total : any =  this.state.cartarray.reduce(
+         (sum: number, i: any) => (sum += i.sellingPrice),0
+       )
+     }
+     const users: any = localStorage.getItem("user");
+     let user = JSON.parse(users);
+
+    var razorpay = new Razorpay({
+      key: 'rzp_live_5dM1OK63yl61hL'
+    });
+    // razorpay.createPayment({
+    //   amount: total,
+    //   email: user.email,
+    //   contact: this.state.walletnumber,
+    //   order_id: rendomGenerateOrderNumber(),
+    //   method: 'wallet',
+    //   wallet: data
+    // });
+    // razorpay.on('payment.success', function(resp:any) {
+    // console.log("resp",resp);
+    // }); // will pass payment ID, order ID, and Razorpay signature to success handler.
+  
+    // razorpay.on('payment.error', function(resp:any){alert(resp.error.description)});
+
+    // var razorpay = new Razorpay();
+    // razorpay.open();
+  }
+
   /** Wallet payment block */
   walletBlock() {
     return (
@@ -1229,13 +1286,51 @@ class PlaceOrder extends React.Component<{
           </div>
           {this.state.paymenttype === 2 ? (
             <div className="pey-upi">
+              {
+              this.state.freecharge === true ? (
               <div className="opti1 opti2">
                 <label className="rdio-box1">
-                  <span className="tt-radio">Paytm</span>
+                  <span className="tt-radio">FreeCharge</span>
                   <input
                     type="radio"
-                    checked={true}
-                    onChange={this.change}
+                    id="1"
+                    checked={this.state.changewallet === 1 ? true : false}
+                    onChange={this.changeWallet}
+                    name="radio"
+                  />
+                  <span className="checkmark"></span>
+                </label>
+                <div className="box-input1">
+                  <div className="form-group">
+                    <span className="verfy-tt">Link Now</span>
+                    <input
+                      type="text"
+                      id="walletnumber"
+                      name="walletnumber"
+                      className="form-control"
+                      onChange={this.onChangeEvent}
+                      maxLength={10}
+                      required
+                    />
+                    <label className="form-control-placeholder" htmlFor="from">
+                      Enter linked no.
+                    </label>
+                  </div>
+                  <button className="continue-btn" onClick={() => this.payWallet('freecharge')}>PAY</button>
+                </div>
+              </div>
+                ) : (null)
+              }
+                 {
+              this.state.olamoney === true ? (
+              <div className="opti1 opti2">
+                <label className="rdio-box1">
+                  <span className="tt-radio">Olamoney</span>
+                  <input
+                    type="radio"
+                    id="2"
+                    checked={this.state.changewallet === 2 ? true : false}
+                    onChange={this.changeWallet}
                     name="radio"
                   />
                   <span className="checkmark"></span>
@@ -1250,12 +1345,48 @@ class PlaceOrder extends React.Component<{
                       required
                     />
                     <label className="form-control-placeholder" htmlFor="from">
-                      Enter Paytm linked no.
+                      Enter linked no.
                     </label>
                   </div>
-                  <button className="continue-btn">PAY R400</button>
+                  <button className="continue-btn" onClick={() => this.payWallet('olamoney')}>PAY R400</button>
                 </div>
               </div>
+                ) : (null)
+              }
+              {
+              this.state.payzapp === true ? (
+              <div className="opti1 opti2">
+                <label className="rdio-box1">
+                  <span className="tt-radio">Payzapp</span>
+                  <input
+                    type="radio"
+                    id="3"
+                    checked={this.state.changewallet === 3 ? true : false}
+                    onChange={this.changeWallet}
+                    name="radio"
+                  />
+                  <span className="checkmark"></span>
+                </label>
+                <div className="box-input1">
+                  <div className="form-group">
+                    <span className="verfy-tt">Link Now</span>
+                    <input
+                      type="text"
+                      id="from"
+                      className="form-control"
+                      required
+                    />
+                    <label className="form-control-placeholder" htmlFor="from">
+                      Enter linked no.
+                    </label>
+                  </div>
+                  <button className="continue-btn" onClick={() => this.payWallet('payzapp')}>PAY R400</button>
+                </div>
+              </div>
+                ) : (null)
+              }
+            
+            
             </div>
           ) : (
             ""
@@ -1479,22 +1610,31 @@ class PlaceOrder extends React.Component<{
       this.setState({
         cvverror: "",
       });
+
       const users: any = localStorage.getItem("user");
       let user = JSON.parse(users);
+
       var today = new Date(),
       date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+      if(this.state.cartarray) {
+       var total : any =  this.state.cartarray.reduce(
+          (sum: number, i: any) => (sum += i.sellingPrice),0
+        )
+      }
+      
       const obj = {
         userID:user.userID,
         couponID:0,
         orderDate:date,
-        orderNo:2,
+        orderNo:4,
         // orderNo:rendomGenerateNumber(),
         paymentMethod:0,
-        orderStatus:0,
+        orderStatus:2,
         paymentStatus:0,
         distance:0,
-        totalQty:1,
-        totalAmount:10000,
+        totalQty:this.state.cartarray ? this.state.cartarray.length : 0,
+        totalAmount:total,
         discountAmount:0,
         taxAmount:0,
         deliveryAmount:0,
@@ -1582,6 +1722,12 @@ class PlaceOrder extends React.Component<{
                             }
                             onChange={this.changeCVV}
                             name="cvvid"
+                            disabled={
+                              (card.cardType.toUpperCase() === this.state.AMEX || card.cardType.toUpperCase() === this.state.BAJAJ ||
+                              card.cardType.toUpperCase() === this.state.DICL || card.cardType.toUpperCase() === this.state.JCB ||
+                              card.cardType.toUpperCase() === this.state.MAES || card.cardType.toUpperCase() === this.state.MC ||
+                              card.cardType.toUpperCase() === this.state.RUPAY || card.cardType.toUpperCase() === this.state.VISA ) ? false : true
+                            }
                           />
                           <span className="checkmark"></span>
                         </label>
@@ -1628,6 +1774,8 @@ class PlaceOrder extends React.Component<{
                             <button
                               type="button"
                               className="chk-outbtn"
+                              // onClick={this.openCheckout}
+                            
                               onClick={this.paymentWithCard}
                             >
                               Pay
@@ -1818,8 +1966,8 @@ class PlaceOrder extends React.Component<{
                   </span>
                   <input
                     type="radio"
-                    id="1"
-                    checked={this.state.banktype === 1 ? true : false}
+                    id="HDFC"
+                    checked={this.state.banktype === "HDFC" ? true : false}
                     onChange={this.changeBankType}
                     name="bank"
                   />
@@ -1835,8 +1983,8 @@ class PlaceOrder extends React.Component<{
                   </span>
                   <input
                     type="radio"
-                    id="2"
-                    checked={this.state.banktype === 2 ? true : false}
+                    id="ICIC"
+                    checked={this.state.banktype === "ICIC" ? true : false}
                     onChange={this.changeBankType}
                     name="bank"
                   />
@@ -1852,25 +2000,8 @@ class PlaceOrder extends React.Component<{
                   </span>
                   <input
                     type="radio"
-                    id="3"
-                    checked={this.state.banktype === 3 ? true : false}
-                    onChange={this.changeBankType}
-                    name="bank"
-                  />
-                  <span className="checkmark"></span>
-                </label>
-                <label className="rdio-box1">
-                  <span className="tt-radio">
-                    <img
-                      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyNCI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTYtOGg0MHY0MEgtNnoiLz48cGF0aCBmaWxsPSIjQkM0MTcwIiBkPSJNMjggMjRoLTguN0wxNCAxNWg4LjdtLTQuNC03LjZMOC43IDI0SDBMMTQgMCIvPjwvZz48L3N2Zz4="
-                      className="_2PKwvL"
-                    />
-                    Axis Bank
-                  </span>
-                  <input
-                    type="radio"
-                    id="4"
-                    checked={this.state.banktype === 4 ? true : false}
+                    id="SBIN"
+                    checked={this.state.banktype === "SBIN" ? true : false}
                     onChange={this.changeBankType}
                     name="bank"
                   />
@@ -1882,12 +2013,12 @@ class PlaceOrder extends React.Component<{
                       src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyNCIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxkZWZzPjxwYXRoIGlkPSJhIiBkPSJNMjggMEgwdjIzLjhoMjhWMHoiLz48L2RlZnM+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTYtOGg0MHY0MEgtNnoiLz48bWFzayBpZD0iYiIgZmlsbD0iI2ZmZiI+PHVzZSB4bGluazpocmVmPSIjYSIvPjwvbWFzaz48cGF0aCBmaWxsPSIjMDAzODc0IiBkPSJNMCAxMkMwIDUuMiA2LjMgMCAxNCAwczE0IDUuMyAxNCAxMmMwIDYuNS02LjMgMTEuOC0xNCAxMS44cy0xNC01LjMtMTQtMTIiIG1hc2s9InVybCgjYikiLz48cGF0aCBmaWxsPSIjRUQxQzI0IiBkPSJNMTIuMyAzLjhsMy4yLTFWMjBsLTMuMiAxLjIiIG1hc2s9InVybCgjYikiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMTQuMiAxNC43QzEyLjggMTYuMyAxMS40IDE4IDkgMThjLTMuNyAwLTUuNC0zLjQtNS40LTYuMyAwLTIuOCAxLjMtNiA0LjgtNiAxLjUgMCAzIDEgNCAyVjEwYy0xLS43LTIuNS0xLTMuNi0xLTIuMiAwLTQuMi43LTQgMyAwIDEuNCAxLjQgMi40IDMgMi40IDIuMiAwIDMuNi0yIDQuNy0zLjZMMTQgOWMxLTEuNiAyLjYtMy4yIDUtMy4yIDMgMCA0LjcgMi40IDUuMiA1SDIzYy0uNS0xLTEuNS0xLjQtMi42LTEuNC0yLjMgMC0zLjggMi01IDMuN2wtMS4yIDJ6TTI0LjUgMTNjLS4zIDIuNi0xLjcgNS00LjggNS0xLjggMC0zLjItMS00LjItMi42di0xLjdjMS4zLjYgMi40IDEuMiAzLjggMS4yIDEuNyAwIDMuMi0xIDMuOC0yaDJ6IiBtYXNrPSJ1cmwoI2IpIi8+PC9nPjwvc3ZnPg=="
                       className="_2PKwvL"
                     />
-                    Kotak Bank
+                   Kotak Bank
                   </span>
                   <input
                     type="radio"
-                    id="5"
-                    checked={this.state.banktype === 5 ? true : false}
+                    id="KKBK"
+                    checked={this.state.banktype === "KKBK" ? true : false}
                     onChange={this.changeBankType}
                     name="bank"
                   />
@@ -1899,13 +2030,15 @@ class PlaceOrder extends React.Component<{
                 <span className="b-tt">Other Banks</span>
                 <select className="_1CV081" onChange={this.selectBank}>
                   <option value="SELECT_BANK">---Select Bank---</option>
-                  {constant.placeorderPage.bankarray.map(
-                    (data: any, index: number) => (
-                      <option key={index} value={data.value}>
-                        {data.title}
+                  {
+                    this.state.bankarray ? (
+                      this.state.bankarray.map((data:any,index:number) => (
+                        <option key={index} value={data.key}>
+                        {data.value}
                       </option>
-                    )
-                  )}
+                      ))
+                    ) : ('')
+                  }
                 </select>
               </div>
 
@@ -1921,36 +2054,34 @@ class PlaceOrder extends React.Component<{
 
   /** Razerpay functionality */
   openCheckout() {
-    if(this.state.amount) {
-      let options = {
-        "key": "rzp_live_5dM1OK63yl61hL",
-        "amount": this.state.amount, // 2000 paise = INR 20, amount in paisa
-        "name": "Merchant Name",
-        "description": "Purchase Description",
-        "image": "",
-        "handler": function (response:any){
-          alert(response.razorpay_payment_id);
-        },
-        "prefill": {
-          "name": "Dax Patel",
-          "email": "dixit20051998@gmail.com"
-        },
-        "notes": {
-          "address": "Hello World"
-        },
-        "theme": {
-          "color": "#F37254"
-        }
-      };
-      
-      let rzp = new Razorpay(options);
-      rzp.open();
-
-    } else {
-      this.setState({
-        amounterror:'Please enter amount'
+      var razorpay = new Razorpay({
+        key: 'rzp_live_5dM1OK63yl61hL'
+      });
+      let _this = this;
+      razorpay.once('ready', function(response : any) {
+        console.log(response.methods);
+        var output = Object.entries(response.methods.netbanking).map(([key, value]) => ({key,value}));
+        _this.setState({
+          upiTrue:response.methods.upi,
+          cardTrue:response.methods.card,
+          netbankingTrue:true,
+          walletTrue:true,
+          freecharge:response.methods.wallet.freecharge,
+          olamoney:response.methods.wallet.olamoney,
+          payzapp:response.methods.wallet.payzapp,
+          AMEX:response.methods.card_networks.AMEX ?  "AMEERICAN-EXPRESS": "",
+          BAJAJ:response.methods.card_networks.BAJAJ ? "BAJAJ" : "",
+          DICL:response.methods.card_networks.DICL === 1 ? "DICL" : "",
+          JCB:response.methods.card_networks.JCB === 1 ? "JCB" : "",
+          MAES:response.methods.card_networks.MAES === 1 ?"MAESTRO" : "",
+          MC:response.methods.card_networks.MC === 1 ? "MASTERCARD" : "",
+          RUPAY:response.methods.card_networks.RUPAY === 1 ? "RUPAY" : "",
+          VISA:response.methods.card_networks.VISA === 1 ? "VISA" : "",
+          bankarray:output
+        })
+  
       })
-    }
+
   }
 
   /** Razerpay Block */
@@ -2286,19 +2417,27 @@ class PlaceOrder extends React.Component<{
                             </div>
                             <div className="nm-info  hidediv-1">
                               {/** UPI PAYMENT SECTION */}
-                              {this.UPIBlock()}
+                              {
+                              this.state.upiTrue === true ? this.UPIBlock() : null
+                              }
 
                               {/* <!-- wallet --> */}
-                              {this.walletBlock()}
+                              {
+                              this.state.walletTrue === true ? this.walletBlock() : null
+                              }
 
                               {/* <!-- Credit / Debit / ATM Card --> */}
-                              {this.cardBlock()}
+                              {
+                              this.state.cardTrue === true ? this.cardBlock() : null
+                              }
 
                               {/* <!-- Net Banking --> */}
-                              {this.netBankingBlock()}
+                              {
+                              this.state.netbankingTrue === true ? this.netBankingBlock() : null
+                              }
 
                                {/* <!-- RazerPay --> */}
-                               {this.rezarpay()}
+                               {/* {this.rezarpay()} */}
                             </div>
                           </div>
                           {/* <div className="dis-right">

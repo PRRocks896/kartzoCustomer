@@ -10,7 +10,7 @@ import {
 
 export default {
   /**
-   * 
+   *
    * @param data : get address data
    */
   getAddressListData: async function (data: getAddressListRequest) {
@@ -22,7 +22,7 @@ export default {
   },
 
   /**
-   * 
+   *
    * @param data : add address
    */
   addAddressData: async function (data: addAddressRequest) {
@@ -34,7 +34,7 @@ export default {
   },
 
   /**
-   * 
+   *
    * @param data : get address details
    */
   getAddressByIdDetails: async function (data: any) {
@@ -46,7 +46,7 @@ export default {
   },
 
   /**
-   * 
+   *
    * @param data : update address
    */
   updateAddress: async function (data: any) {
@@ -58,7 +58,7 @@ export default {
   },
 
   /**
-   * 
+   *
    * @param data : delete address
    */
   deleteAddress: async function (data: removeCartItemRequest) {
@@ -75,7 +75,7 @@ export default {
   },
 
   /**
-   * 
+   *
    * @param data : add card
    */
   addCardData: async function (data: any) {
@@ -87,7 +87,7 @@ export default {
   },
 
   /**
-   * 
+   *
    * @param data : get card details
    */
   getcarddata: async function (data: any) {
@@ -99,7 +99,7 @@ export default {
   },
 
   /**
-   * 
+   *
    * @param data : update card
    */
   updateCardData: async function (data: any) {
@@ -109,9 +109,9 @@ export default {
       false
     );
   },
-  
- /**
-   * 
+
+  /**
+   *
    * @param data : delete card
    */
   deletecard: async function (data: any) {
@@ -127,9 +127,9 @@ export default {
     );
   },
 
-   /**
-   * 
-   * @param data : delete card
+  /**
+   *
+   * @param data : create order
    */
   createorder: async function (data: any) {
     return WebReqUrl.post(
@@ -138,7 +138,4 @@ export default {
       false
     );
   },
-
-  
-  
 };

@@ -1,5 +1,6 @@
 import * as ACTION from "../index";
 import { PlaceOrderAPI } from "../../service/index";
+import { showSuccess } from "../../pages/utils";
 
 /** Place order service */
 export const placeOrderService = {
@@ -274,6 +275,7 @@ function createOrder(data: any) {
       .then(async (orderdata: any) => {
         console.log("orderdata", orderdata);
         if (orderdata.status === 200) {
+          showSuccess(orderdata.message);
           dispatch(success(await orderdata.data.resultObject));
         }
       })

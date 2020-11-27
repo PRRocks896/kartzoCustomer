@@ -31,7 +31,7 @@ class Footer extends React.Component<{getFooterData:any,getFooterLinkData:any}> 
 
   /** Page Render Call */
   componentDidMount() {
-    this.props.getFooterData();
+    // this.props.getFooterData();
     this.props.getFooterLinkData();
   }
 

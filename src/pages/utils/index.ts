@@ -8,7 +8,7 @@ export const scrollToTop = () => {
 };
 
 /**
- * 
+ *
  * @param msg : success message
  */
 export const showSuccess = (msg: string) => {
@@ -19,7 +19,7 @@ export const showSuccess = (msg: string) => {
 };
 
 /**
- * 
+ *
  * @param msg : error message
  */
 export const showError = (msg: string) => {
@@ -32,70 +32,73 @@ export const showError = (msg: string) => {
 /** Get App Name In URL */
 export const getAppName = () => {
   return " | Kartzoo App";
-}
+};
 
 /** Get Token Details */
-export const getHeaderDetail =  () => {
+export const getHeaderDetail = () => {
   return {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
     "Access-Control-Allow-Origin": "*",
     crossdomain: true,
   };
-}
+};
 
 /** Get Admin Token Details */
-export const getAdminDetail =  () => {
+export const getAdminDetail = () => {
   return {
     Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
     "Access-Control-Allow-Origin": "*",
     crossdomain: true,
   };
-}
+};
 
 /**
- * 
+ *
  * @param count : count
  * @param perpage : per page value
  */
-export const pageNumber = (count:string,perpage:string) => {
+export const pageNumber = (count: string, perpage: string) => {
   var pageNumbers = [];
-  for (
-    let i = 1;
-    i <=
-    Math.ceil(
-      parseInt(count) / parseInt(perpage)
-    );
-    i++
-  ) {
+  for (let i = 1; i <= Math.ceil(parseInt(count) / parseInt(perpage)); i++) {
     pageNumbers.push(i);
   }
   return pageNumbers;
-}
+};
 
 /**
- * 
+ *
  * @param text : alert message
  * @param btext : button message
  */
-export const alertMessage =  async (text:string,btext:string) => {
+export const alertMessage = async (text: string, btext: string) => {
   let response = false;
   let result = await Swal.fire({
-      title: "Are you sure?",
-      text: text,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: btext,
-      cancelButtonText: "No, keep it",
+    title: "Are you sure?",
+    text: text,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: btext,
+    cancelButtonText: "No, keep it",
   });
-  if(result.value) {
-      response = true
+  if (result.value) {
+    response = true;
   } else if (result.dismiss === Swal.DismissReason.cancel) {
-      response = false;
+    response = false;
   }
   return response;
-}
+};
 
 export const rendomGenerateNumber = () => {
   var digits = Math.floor(Math.random() * 900000000000) + 100000000000;
   return digits;
-}
+};
+
+export const rendomGenerateOrderNumber = () => {
+  const length = 12;
+  const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+  var retVal = "Order_";
+  for (var i = 0, n = charset.length; i < length; i++) {
+    retVal += charset.charAt(Math.floor(Math.random() * n));
+  }
+  return retVal;
+};

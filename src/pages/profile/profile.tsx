@@ -231,6 +231,7 @@ class Profile extends React.Component<{
    * @param data : get order listing data
    */
   getOrderDetails(data: any) {
+    console.log("data",data);
     this.setState({
       orderdata: this.state.orderdata = data.data,
     });
