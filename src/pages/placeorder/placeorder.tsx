@@ -118,6 +118,7 @@ class PlaceOrder extends React.Component<{
     VISA: "",
     bankarray: [],
     walletnumber: 0,
+    walletnumbererror: "",
   };
 
   /** Constructor call */
@@ -832,7 +833,11 @@ class PlaceOrder extends React.Component<{
                             />
                             <span className="checkmark"></span>
                           </label>
-                          <a href="#" className="chk-outbtn">
+                          <a
+                            className="chk-outbtn"
+                            id={address.addressID}
+                            onClick={this.change}
+                          >
                             CONTINUE CHECKOUT
                           </a>
                         </div>
@@ -1248,35 +1253,60 @@ class PlaceOrder extends React.Component<{
     });
   }
 
-  payWallet(data: any) {
-    if (this.state.cartarray) {
-      var total: any = this.state.cartarray.reduce(
-        (sum: number, i: any) => (sum += i.sellingPrice),
-        0
-      );
+  validateWallet() {
+    let walletnumbererror = "";
+
+    const mobileRegexe: any = /^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$/;
+    if (!this.state.walletnumber) {
+      walletnumbererror = "please enter mobile number";
+    } else if (!mobileRegexe.test(this.state.walletnumber)) {
+      walletnumbererror = "please enter valid mobile number";
     }
-    const users: any = localStorage.getItem("user");
-    let user = JSON.parse(users);
 
-    var razorpay = new Razorpay({
-      key: "rzp_live_5dM1OK63yl61hL",
-    });
-    // razorpay.createPayment({
-    //   amount: total,
-    //   email: user.email,
-    //   contact: this.state.walletnumber,
-    //   order_id: rendomGenerateOrderNumber(),
-    //   method: 'wallet',
-    //   wallet: data
-    // });
-    // razorpay.on('payment.success', function(resp:any) {
-    // console.log("resp",resp);
-    // }); // will pass payment ID, order ID, and Razorpay signature to success handler.
+    if (walletnumbererror) {
+      this.setState({
+        walletnumbererror,
+      });
+      return false;
+    }
+    return true;
+  }
 
-    // razorpay.on('payment.error', function(resp:any){alert(resp.error.description)});
+  payWallet(data: any) {
+    const isValid = this.validateWallet();
+    if (isValid) {
+      this.setState({
+        walletnumbererror: "",
+      });
+      if (this.state.cartarray) {
+        var total: any = this.state.cartarray.reduce(
+          (sum: number, i: any) => (sum += i.sellingPrice),
+          0
+        );
+      }
+      const users: any = localStorage.getItem("user");
+      let user = JSON.parse(users);
 
-    // var razorpay = new Razorpay();
-    // razorpay.open();
+      var razorpay = new Razorpay({
+        key: "rzp_live_5dM1OK63yl61hL",
+      });
+      // razorpay.createPayment({
+      //   amount: total,
+      //   email: user.email,
+      //   contact: this.state.walletnumber,
+      //   order_id: rendomGenerateOrderNumber(),
+      //   method: 'wallet',
+      //   wallet: data
+      // });
+      // razorpay.on('payment.success', function(resp:any) {
+      // console.log("resp",resp);
+      // }); // will pass payment ID, order ID, and Razorpay signature to success handler.
+
+      // razorpay.on('payment.error', function(resp:any){alert(resp.error.description)});
+
+      // var razorpay = new Razorpay();
+      // razorpay.open();
+    }
   }
 
   /** Wallet payment block */
@@ -1317,7 +1347,7 @@ class PlaceOrder extends React.Component<{
                   {this.state.changewallet === 1 ? (
                     <div className="box-input1">
                       <div className="form-group">
-                        <span className="verfy-tt">Link Now</span>
+                        {/* <span className="verfy-tt">Link Now</span> */}
                         <input
                           type="text"
                           id="walletnumber"
@@ -1329,10 +1359,13 @@ class PlaceOrder extends React.Component<{
                         />
                         <label
                           className="form-control-placeholder"
-                          htmlFor="from"
+                          htmlFor="walletnumber"
                         >
                           Enter linked no.
                         </label>
+                        <div className="text-danger">
+                          {this.state.walletnumbererror}
+                        </div>
                       </div>
                       <button
                         className="continue-btn"
@@ -1362,19 +1395,22 @@ class PlaceOrder extends React.Component<{
                   {this.state.changewallet === 2 ? (
                     <div className="box-input1">
                       <div className="form-group">
-                        <span className="verfy-tt">Link Now</span>
+                        {/* <span className="verfy-tt">Link Now</span> */}
                         <input
                           type="text"
-                          id="from"
+                          id="walletnumber2"
                           className="form-control"
                           required
                         />
                         <label
                           className="form-control-placeholder"
-                          htmlFor="from"
+                          htmlFor="walletnumber2"
                         >
                           Enter linked no.
                         </label>
+                        <div className="text-danger">
+                          {this.state.walletnumbererror}
+                        </div>
                       </div>
                       <button
                         className="continue-btn"
@@ -1404,19 +1440,22 @@ class PlaceOrder extends React.Component<{
                   {this.state.changewallet === 3 ? (
                     <div className="box-input1">
                       <div className="form-group">
-                        <span className="verfy-tt">Link Now</span>
+                        {/* <span className="verfy-tt">Link Now</span> */}
                         <input
                           type="text"
-                          id="from"
+                          id="walletnumber3"
                           className="form-control"
                           required
                         />
                         <label
                           className="form-control-placeholder"
-                          htmlFor="from"
+                          htmlFor="walletnumber3"
                         >
                           Enter linked no.
                         </label>
+                        <div className="text-danger">
+                          {this.state.walletnumbererror}
+                        </div>
                       </div>
                       <button
                         className="continue-btn"
@@ -1533,7 +1572,7 @@ class PlaceOrder extends React.Component<{
           year: 20,
         });
         this.getCard();
-      }, 250);
+      }, 300);
     }
   }
 
@@ -1721,7 +1760,10 @@ class PlaceOrder extends React.Component<{
         <div className="upi-payment">
           <div className="tt-line">
             <img src={placeorder.card} alt="" />
-            <span className="tt-radio">Credit/Debit/ATM Card (American Express,Bajaj,DICL,JCB,Maestro,MasterCard,Rupay,Visa)</span>
+            <span className="tt-radio">
+              Credit/Debit/ATM Card (American
+              Express,Bajaj,DICL,JCB,Maestro,MasterCard,Rupay,Visa)
+            </span>
           </div>
 
           {this.state.paymenttype === 3 ? (
