@@ -11,7 +11,7 @@ const apiUrl = {
         category:'category/get-category-list'
     },
     commonController: {
-        getfooterdata:'users/get-footer-city-detail',
+        getfooterdata:'users/get-footer-detail',
         getfooterlinkdata:'users/get-footer-link-detail'
     },
     findStoreController: {

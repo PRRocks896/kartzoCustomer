@@ -18,7 +18,7 @@ function getFooterData() {
     CommonAPI
       .getfooterdata()
       .then((footerdata) => {
-        // console.log("footerdata", footerdata);
+        console.log("footerdata", footerdata);
         if (footerdata.status === 200) {
           // const msg = footerdata.message;
           // showSuccess(msg);

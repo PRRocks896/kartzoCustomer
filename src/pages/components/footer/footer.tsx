@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { commonService } from "../../../redux";
 // import ProtectedRoute from 'react-protected-route-component'
 
-class Footer extends React.Component<{getFooterData:any,getFooterLinkData:any}> {
+class Footer extends React.Component<{getFooterData:any}> {
 
   /** Footer state */
   footerState : layoutStateRequest = constant.footerPage.state;
@@ -32,7 +32,7 @@ class Footer extends React.Component<{getFooterData:any,getFooterLinkData:any}> 
   /** Page Render Call */
   componentDidMount() {
     this.props.getFooterData();
-    this.props.getFooterLinkData();
+    // this.props.getFooterLinkData();
   }
 
   /**
@@ -45,9 +45,6 @@ class Footer extends React.Component<{getFooterData:any,getFooterLinkData:any}> 
     if (nextProps.footerDetail) {
       this.getFooterCityData(nextProps.footerDetail);
     }
-    if (nextProps.footerLinkDetail) {
-      this.getFooterLinksData(nextProps.footerLinkDetail);
-    }
   }
 
 /**
@@ -56,7 +53,8 @@ class Footer extends React.Component<{getFooterData:any,getFooterLinkData:any}> 
  */
   getFooterCityData(data:any) {
     this.setState({
-      footercitydata:this.state.footercitydata = data
+      footercitydata:this.state.footercitydata = data.cities ? data.cities : null,
+      footersocialdata:this.state.footersocialdata = data.links ? data.links : null
     })
   }
 
@@ -64,11 +62,11 @@ class Footer extends React.Component<{getFooterData:any,getFooterLinkData:any}> 
  * 
  * @param data : get footer link data 
  */
-getFooterLinksData(data:any) {
-  this.setState({
-    footersocialdata:this.state.footersocialdata = data
-  })
-}
+// getFooterLinksData(data:any) {
+//   this.setState({
+//     footersocialdata:this.state.footersocialdata = data
+//   })
+// }
 
 
   /** Render DOM */
@@ -149,13 +147,13 @@ getFooterLinksData(data:any) {
                     this.state.footersocialdata.length > 0 && this.state.footersocialdata.map((data:any,index:number) => (
                       <ul key={index}>
                         {
-                          data.value === "Email"  ? (
+                          data.linkName === "Email"  ? (
                             <li>
-                           <a href="mailto:support@dunzo.in">{data.value}</a>
+                           <a href="mailto:support@dunzo.in">{data.linkName}</a>
                           </li>
                           ) : (
                             <li>
-                            <Link to={`/${data.name}`} target="_blank">{data.value}</Link>
+                            <Link to={`/${data.link}`} target="_blank">{data.linkName}</Link>
                           </li>
                           )
                         }
@@ -180,8 +178,7 @@ getFooterLinksData(data:any) {
  * @param state : api call response update state
  */
 const mapStateToProps = (state: any) => ({
-  footerDetail: state.footer.footerdata,
-  footerLinkDetail: state.footer.footerlinkdata
+  footerDetail: state.footer.footerdata
 });
 
 /**
@@ -192,11 +189,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 
   /** Get Footer Data */
   getFooterData: () =>
-    dispatch(commonService.getFooterData()),
-
-    /** Get Footer Link Data */
-    getFooterLinkData: () =>
-  dispatch(commonService.getFooterLinkData())
+    dispatch(commonService.getFooterData())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Footer);

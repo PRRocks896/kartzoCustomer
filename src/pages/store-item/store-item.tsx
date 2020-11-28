@@ -56,7 +56,7 @@ class StoreItem extends React.Component<{
     isButton: this.storeItemState.isButton,
     loadingid: this.storeItemState.loadingid,
     show: this.storeItemState.show,
-    isLoading: this.storeItemState.isLoading
+    isLoading: this.storeItemState.isLoading,
   };
 
   /** Constructor call */
@@ -83,7 +83,7 @@ class StoreItem extends React.Component<{
     const slug = this.props.location.pathname.split("/")[2];
     if (slug) {
       this.setState({
-        slugname: this.state.slugname = slug,
+        slugname: (this.state.slugname = slug),
       });
     }
     EventEmitter.dispatch("isShow", true);
@@ -98,7 +98,7 @@ class StoreItem extends React.Component<{
           ? this.props.location.state.data
           : "";
       this.setState({
-        maindata: this.state.maindata = maindata,
+        maindata: (this.state.maindata = maindata),
       });
     }
     // console.log("maindata", this.state.maindata);
@@ -230,7 +230,7 @@ class StoreItem extends React.Component<{
       this.searchableDataProduct(nextProps.searchableProduct.data);
     } else {
       this.setState({
-        searchproductdatadetails: this.state.searchproductdatadetails = [],
+        searchproductdatadetails: (this.state.searchproductdatadetails = []),
       });
     }
   }
@@ -254,7 +254,7 @@ class StoreItem extends React.Component<{
    */
   getProductListingData(data: any) {
     this.setState({
-      searchproductdata: this.state.searchproductdata = data,
+      searchproductdata: (this.state.searchproductdata = data),
     });
   }
 
@@ -281,12 +281,12 @@ class StoreItem extends React.Component<{
    */
   getSubCategory(data: any) {
     this.setState({
-      categorydata: this.state.categorydata = data,
+      categorydata: (this.state.categorydata = data),
     });
     this.setState({
-      activeLink: this.state.activeLink = this.state.categorydata
+      activeLink: (this.state.activeLink = this.state.categorydata
         ? this.state.categorydata[0].value
-        : "",
+        : ""),
     });
     // console.log("link", this.state.activeLink);
   }
@@ -297,14 +297,14 @@ class StoreItem extends React.Component<{
    */
   getCartAllProductData(data: any) {
     this.setState({
-      isButton: this.state.isButton = false,
-      cartarray: this.state.cartarray = data.data,
+      isButton: (this.state.isButton = false),
+      cartarray: (this.state.cartarray = data.data),
     });
     localStorage.setItem("cartcount", data.totalcount);
     if (this.state.cartarray && this.state.cartarray.length > 0) {
       this.setState({
-        isShowCard: this.state.isShowCard = true,
-        cartarray: this.state.cartarray = data.data,
+        isShowCard: (this.state.isShowCard = true),
+        cartarray: (this.state.cartarray = data.data),
       });
       this.cardItem(true);
     } else {
@@ -320,8 +320,8 @@ class StoreItem extends React.Component<{
    */
   productData(product: any) {
     this.setState({
-      isLoading: false,
       productdata: this.state.productdata = product,
+      isLoading: false
     });
   }
 
@@ -331,7 +331,7 @@ class StoreItem extends React.Component<{
    */
   searchableDataProduct(data: any) {
     this.setState({
-      searchproductdatadetails: this.state.searchproductdatadetails = data,
+      searchproductdatadetails: (this.state.searchproductdatadetails = data),
       activeLink: null,
     });
   }
@@ -345,8 +345,8 @@ class StoreItem extends React.Component<{
       let m: any = this.state.maindata;
       if (m.merchantID === this.state.cartarray[0].merchantID) {
         this.setState({
-          isButton: this.state.isButton = true,
-          loadingid: this.state.loadingid = data.productId,
+          isButton: (this.state.isButton = true),
+          loadingid: (this.state.loadingid = data.productId),
         });
         if (
           this.state.cartarray
@@ -547,7 +547,7 @@ class StoreItem extends React.Component<{
       this.getCartData();
       localStorage.removeItem("merchantID");
       this.setState({
-        show: this.state.show = false,
+        show: (this.state.show = false),
       });
     }, 50);
   }
@@ -685,11 +685,12 @@ class StoreItem extends React.Component<{
             ""
           )}
 
+        
           {categorydata &&
             categorydata.map((cat: any, index: number) => (
               <div
-              // id={cat.name}
-              // style={{height: 135,overflow:'auto'}}
+                // id={cat.name}
+                // style={{height: 135,overflow:'auto'}}
                 ref={(el) => (this.ref[cat.value] = el)}
                 key={"item-" + index}
               >
@@ -713,8 +714,7 @@ class StoreItem extends React.Component<{
                   )}
 
                   {this.state.isLoading === false
-                    ? (
-                      productdata &&
+                    ? (productdata &&
                       productdata.map((product: any, index: number) =>
                         product.subCategoryId === cat.value ? (
                           <div key={index}>
@@ -781,33 +781,41 @@ class StoreItem extends React.Component<{
                             </div>
                           </div>
                         ) : (
-                        ""
+                          ""
                         )
                       )
-                    )
-                    :( 
-                      [1, 2, 3, 4].map((data: any, index: number) => (
-                        <div className="all-item" key={index}>
-                          <div className="item-details-1">
+                    ):([1, 2, 3, 4].map((data: any, index: number) => (
+                        <div key={index}>
                           <SkeletonTheme color="#202020" highlightColor="#444">
-                        <Skeleton count={1} />
-                        <div className="box-1">
-                          <div className="product-img">
-                            <Skeleton count={1} />
-                          </div>
-                          <div className="right-tt">
-                            <Skeleton count={1} />
-                          </div>
-                          <div className="btn-add-item">
-                            <Skeleton count={1} />
-                          </div>
+                            <Skeleton count={1}>
+                              <h3 className="tt-1"></h3>
+                            </Skeleton>
+                            <div className="box-1">
+                              <Skeleton count={1}>
+                                <Skeleton count={1}>
+                                  <div className="product-img"></div>
+                                </Skeleton>
+                                <Skeleton count={1}>
+                                  <div className="right-tt">
+                                    <Skeleton count={1}>
+                                      <h4 className="tt-2"></h4>
+                                    </Skeleton>
+                                    <Skeleton count={1}>
+                                      <span className="price"></span>
+                                    </Skeleton>
+                                    <Skeleton count={1}>
+                                      <p></p>
+                                    </Skeleton>
+                                  </div>
+                                </Skeleton>
+                                <Skeleton count={1}>
+                                  <div className="btn-add-item"></div>
+                                </Skeleton>
+                              </Skeleton>
+                            </div>
+                          </SkeletonTheme>
                         </div>
-                    </SkeletonTheme>
-                          </div>
-                        </div>
-                      ))
-                      )
-                      }
+                      )))}
                 </div>
               </div>
             ))}
@@ -948,7 +956,7 @@ class StoreItem extends React.Component<{
                                   }
                                 >
                                   {data.name}
-                                {/* </Link> */}
+                                  {/* </Link> */}
                                 </a>
                               </li>
                             )

@@ -139,7 +139,7 @@ class SearchCity extends React.Component<{
                               </div>
                             </Link>
                           ) : (
-                            <Link to={`/order/${c.slug}`}>
+                            <Link to={{pathname: `/order/${c.slug}`, state: {city:this.state.slugname,cityid:this.state.cityid}}}>
                               <div
                                 className="box-1"
                                 style={{

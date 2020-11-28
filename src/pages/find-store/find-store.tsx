@@ -449,12 +449,14 @@ class FindStore extends React.Component<{
                   <div className="small-text">{this.state.totalcount} outlets</div>
             </div>
           </div>
+          {
+            this.state.merchantdata && this.state.merchantdata.length > 0 ? (
           <div className="store-box">
             <div className="container-fluid">
               <div className="row">
                 {this.state.isLoading === false
                   ? this.state.merchantdata
-                    ? this.state.merchantdata.length > 0 &&
+                    ? (this.state.merchantdata.length > 0 &&
                       this.state.merchantdata.map(
                         (data: any, index: number) => (
                           <div
@@ -495,8 +497,8 @@ class FindStore extends React.Component<{
                             </Link>
                           </div>
                         )
-                      )
-                    : ""
+                      )) : (<h1>No Data Found</h1>)
+                    
                   : [1, 2, 3, 4].map((data: any, index: number) => (
                       <div key={index} className="col-lg-6 col-md-6 col-sm-12">
                         <SkeletonTheme color="#202020" highlightColor="#444">
@@ -532,6 +534,8 @@ class FindStore extends React.Component<{
               </div>
             </div>
           </div>
+            ) : (<h1 className="nodata">No Data Found</h1>)
+          }
         </section>
       </>
     );
