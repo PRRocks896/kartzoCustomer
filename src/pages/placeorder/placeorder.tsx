@@ -6,7 +6,8 @@ import {
   addCartRequest,
   getAddressListRequest,
   getCartListRequest,
-  placeorderStateRequest,removeCartItemRequest
+  placeorderStateRequest,
+  removeCartItemRequest,
 } from "../../modelController";
 import {
   header,
@@ -14,12 +15,12 @@ import {
   placeorder,
 } from "../../pages/components/helper/images";
 import constant from "../constant/constant";
-import { getAppName, alertMessage , rendomGenerateOrderNumber} from "../utils";
+import { getAppName, alertMessage, rendomGenerateOrderNumber } from "../utils";
 import { connect } from "react-redux";
 import "./placeorder.css";
 import { placeOrderService, productService } from "../../redux/index";
 var creditCardType = require("credit-card-type");
-declare var Razorpay: any; 
+declare var Razorpay: any;
 
 class PlaceOrder extends React.Component<{
   show: boolean;
@@ -92,31 +93,31 @@ class PlaceOrder extends React.Component<{
     cvverror: this.placeOrderState.cvverror,
     cardid: this.placeOrderState.cardid,
     cardUpdateTrue: this.placeOrderState.cardUpdateTrue,
-    cvvdesc:this.placeOrderState.cvvdesc,
-    workdisabled:this.placeOrderState.workdisabled,
-    otherdisabled:this.placeOrderState.otherdisabled,
-    homedisabled:this.placeOrderState.homedisabled,
-    changewallet:0,
-    amount:0,
-    amounterror:'',
+    cvvdesc: this.placeOrderState.cvvdesc,
+    workdisabled: this.placeOrderState.workdisabled,
+    otherdisabled: this.placeOrderState.otherdisabled,
+    homedisabled: this.placeOrderState.homedisabled,
+    changewallet: 0,
+    amount: 0,
+    amounterror: "",
 
-    upiTrue:false,
-    cardTrue:false,
-    walletTrue:false,
+    upiTrue: false,
+    cardTrue: false,
+    walletTrue: false,
     netbankingTrue: false,
-    freecharge:false,
-    olamoney:false,
-    payzapp:false,
-    AMEX:"",
-    BAJAJ:"",
-    DICL:"",
-    JCB:"",
-    MAES:"",
-    MC:"",
-    RUPAY:"",
-    VISA:"",
-    bankarray:[],
-    walletnumber:0
+    freecharge: false,
+    olamoney: false,
+    payzapp: false,
+    AMEX: "",
+    BAJAJ: "",
+    DICL: "",
+    JCB: "",
+    MAES: "",
+    MC: "",
+    RUPAY: "",
+    VISA: "",
+    bankarray: [],
+    walletnumber: 0,
   };
 
   /** Constructor call */
@@ -157,10 +158,9 @@ class PlaceOrder extends React.Component<{
 
   /** Page Render Call */
   componentDidMount() {
-    if(!localStorage.getItem("token")) {
-      this.props.history.push('/signin');
+    if (!localStorage.getItem("token")) {
+      this.props.history.push("/signin");
     } else {
-      
       document.title = constant.placeorder + getAppName();
       EventEmitter.dispatch("isShow", true);
       EventEmitter.dispatch("isShowFooter", true);
@@ -168,7 +168,7 @@ class PlaceOrder extends React.Component<{
       let user = JSON.parse(users);
       this.setState({
         usermobile: user.phone,
-        mobile: this.state.mobile = user.phone,
+        mobile: (this.state.mobile = user.phone),
         firstname: user.firstName,
         lastname: user.lastName,
       });
@@ -225,7 +225,7 @@ class PlaceOrder extends React.Component<{
    */
   change(e: any) {
     this.setState({
-      mainaddress: this.state.mainaddress = parseInt(e.target.id),
+      mainaddress: (this.state.mainaddress = parseInt(e.target.id)),
     });
   }
 
@@ -251,9 +251,9 @@ class PlaceOrder extends React.Component<{
       addresstype: "1",
       updateTrue: false,
       showSection: true,
-      homedisabled:false,
-      workdisabled:false,
-      otherdisabled:false
+      homedisabled: false,
+      workdisabled: false,
+      otherdisabled: false,
     });
   }
 
@@ -263,7 +263,7 @@ class PlaceOrder extends React.Component<{
    */
   changePaymentUPI(e: any) {
     this.setState({
-      paymenttype: this.state.paymenttype = parseInt(e.target.id),
+      paymenttype: (this.state.paymenttype = parseInt(e.target.id)),
     });
   }
 
@@ -286,7 +286,7 @@ class PlaceOrder extends React.Component<{
       size: size,
       userId: user.userID,
     };
-    if(user) {
+    if (user) {
       this.props.getAddressList(obj);
     }
   }
@@ -297,7 +297,7 @@ class PlaceOrder extends React.Component<{
    */
   changeAddress(e: any) {
     this.setState({
-      addresstype: this.state.addresstype = e.target.id,
+      addresstype: (this.state.addresstype = e.target.id),
     });
   }
 
@@ -307,7 +307,7 @@ class PlaceOrder extends React.Component<{
    */
   changePhonePay(e: any) {
     this.setState({
-      paytype: this.state.paytype = parseInt(e.target.id),
+      paytype: (this.state.paytype = parseInt(e.target.id)),
     });
   }
 
@@ -317,7 +317,7 @@ class PlaceOrder extends React.Component<{
    */
   changeBankType(e: any) {
     this.setState({
-      banktype: this.state.banktype = e.target.id,
+      banktype: (this.state.banktype = e.target.id),
     });
     // console.log("banktype", this.state.banktype);
   }
@@ -328,7 +328,7 @@ class PlaceOrder extends React.Component<{
    */
   selectBank(e: any) {
     this.setState({
-      banktype: this.state.banktype = e.target.value,
+      banktype: (this.state.banktype = e.target.value),
     });
     // console.log("banktype", this.state.banktype);
   }
@@ -344,25 +344,25 @@ class PlaceOrder extends React.Component<{
     }
     if (nextProps.addressDetails) {
       this.setState({
-        showSection: this.state.showSection = false,
+        showSection: (this.state.showSection = false),
       });
       this.getAddressDetailsData(nextProps.addressDetails);
     }
     if (nextProps.getCardDetail) {
       this.setState({
-        isCard: this.state.isCard = false,
+        isCard: (this.state.isCard = false),
       });
       this.getCardDetails(nextProps.getCardDetail);
     }
   }
 
   /**
-   * 
+   *
    * @param data : get card data
    */
   getCardDetails(data: any) {
     this.setState({
-      carddata: this.state.carddata = data,
+      carddata: (this.state.carddata = data),
     });
   }
 
@@ -372,7 +372,7 @@ class PlaceOrder extends React.Component<{
    */
   getAddressDetailsData(data: any) {
     this.setState({
-      addressarray: this.state.addressarray = data.data,
+      addressarray: (this.state.addressarray = data.data),
     });
   }
 
@@ -394,16 +394,16 @@ class PlaceOrder extends React.Component<{
    */
   getCartAllProductData(data: any) {
     this.setState({
-      cartarray: this.state.cartarray = data.data,
+      cartarray: (this.state.cartarray = data.data),
     });
     localStorage.setItem("cartcount", data.totalcount);
     if (this.state.cartarray && this.state.cartarray.length > 0) {
       this.setState({
-        cartarray: this.state.cartarray = data.data,
+        cartarray: (this.state.cartarray = data.data),
       });
     } else {
-      EventEmitter.dispatch('count', 0);
-      localStorage.setItem('cartcount','0');
+      EventEmitter.dispatch("count", 0);
+      localStorage.setItem("cartcount", "0");
     }
   }
 
@@ -564,13 +564,13 @@ class PlaceOrder extends React.Component<{
   incrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const mid : any = localStorage.getItem('merchantID');
+    const mid: any = localStorage.getItem("merchantID");
     const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity + 1,
       discountApplied: data.discountApplied,
-      merchantID:data.merchantID
+      merchantID: data.merchantID,
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {
@@ -585,13 +585,13 @@ class PlaceOrder extends React.Component<{
   decrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const mid : any = localStorage.getItem('merchantID');
+    const mid: any = localStorage.getItem("merchantID");
     const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity - 1,
       discountApplied: data.discountApplied,
-      merchantID:data.merchantID
+      merchantID: data.merchantID,
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {
@@ -625,8 +625,15 @@ class PlaceOrder extends React.Component<{
         country: this.state.country,
         pincode: parseInt(this.state.pincode),
         landmark: this.state.landmark,
-        addressType: this.state.addresstype === "1" ? "1" : (this.state.addresstype === "2" ? "2" : (this.state.addresstype === "3" ? "3" : "")),
-        isActive: true
+        addressType:
+          this.state.addresstype === "1"
+            ? "1"
+            : this.state.addresstype === "2"
+            ? "2"
+            : this.state.addresstype === "3"
+            ? "3"
+            : "",
+        isActive: true,
       };
       this.props.addAddress(obj);
 
@@ -642,25 +649,25 @@ class PlaceOrder extends React.Component<{
    */
   getAddressData(data: any) {
     // console.log("data", data);
-    if(data.addressType === "Home") {
+    if (data.addressType === "Home") {
       this.setState({
-        workdisabled:true,
-        otherdisabled:true
-      })
-    } else if(data.addressType === "Work") {
+        workdisabled: true,
+        otherdisabled: true,
+      });
+    } else if (data.addressType === "Work") {
       this.setState({
-        homedisabled:true,
-        otherdisabled:true
-      })
-    } else if(data.addressType === "Other") {
+        homedisabled: true,
+        otherdisabled: true,
+      });
+    } else if (data.addressType === "Other") {
       this.setState({
-        homedisabled:true,
-        workdisabled:true
-      })
+        homedisabled: true,
+        workdisabled: true,
+      });
     }
     this.setState({
-      showSection: this.state.showSection = true,
-      updateTrue: this.state.updateTrue = true,
+      showSection: (this.state.showSection = true),
+      updateTrue: (this.state.updateTrue = true),
       addressid: data.addressID,
       name: data.name,
       mobile: data.mobile,
@@ -670,7 +677,14 @@ class PlaceOrder extends React.Component<{
       city: data.city,
       state: data.state,
       country: data.country,
-      addresstype: data.addressType === "Home" ? "1" : (data.addressType === "Work" ? "2" : (data.addressType === "Other" ? "3" : "")),
+      addresstype:
+        data.addressType === "Home"
+          ? "1"
+          : data.addressType === "Work"
+          ? "2"
+          : data.addressType === "Other"
+          ? "3"
+          : "",
     });
   }
 
@@ -701,8 +715,15 @@ class PlaceOrder extends React.Component<{
         country: this.state.country,
         pincode: parseInt(this.state.pincode),
         landmark: this.state.landmark,
-        addressType: this.state.addresstype === "1" ? "1" : (this.state.addresstype === "2" ? "2" : (this.state.addresstype === "3" ? "3" : "")),
-        isActive: true
+        addressType:
+          this.state.addresstype === "1"
+            ? "1"
+            : this.state.addresstype === "2"
+            ? "2"
+            : this.state.addresstype === "3"
+            ? "3"
+            : "",
+        isActive: true,
       };
       this.props.updateAddress(obj);
 
@@ -722,7 +743,7 @@ class PlaceOrder extends React.Component<{
     if (await alertMessage(text, btext)) {
       let deleteArray = [];
       deleteArray.push(id);
-      const obj:removeCartItemRequest = {
+      const obj: removeCartItemRequest = {
         moduleName: "Address",
         id: deleteArray,
       };
@@ -743,8 +764,8 @@ class PlaceOrder extends React.Component<{
       cardholder: "",
       month: 1,
       year: 20,
-      cardUpdateTrue: this.state.cardUpdateTrue = false,
-      isCard: this.state.isCard = true,
+      cardUpdateTrue: (this.state.cardUpdateTrue = false),
+      isCard: (this.state.isCard = true),
     });
   }
 
@@ -1054,7 +1075,11 @@ class PlaceOrder extends React.Component<{
                                   }
                                   onChange={this.changeAddress}
                                   name="radio"
-                                  disabled={this.state.homedisabled === true ? true : false}
+                                  disabled={
+                                    this.state.homedisabled === true
+                                      ? true
+                                      : false
+                                  }
                                 />
                                 <span className="checkmark"></span>
                               </label>
@@ -1072,7 +1097,11 @@ class PlaceOrder extends React.Component<{
                                   }
                                   onChange={this.changeAddress}
                                   name="radio"
-                                  disabled={this.state.workdisabled === true ? true : false}
+                                  disabled={
+                                    this.state.workdisabled === true
+                                      ? true
+                                      : false
+                                  }
                                 />
                                 <span className="checkmark"></span>
                               </label>
@@ -1090,7 +1119,11 @@ class PlaceOrder extends React.Component<{
                                   }
                                   onChange={this.changeAddress}
                                   name="radio"
-                                  disabled={this.state.otherdisabled === true ? true : false}
+                                  disabled={
+                                    this.state.otherdisabled === true
+                                      ? true
+                                      : false
+                                  }
                                 />
                                 <span className="checkmark"></span>
                               </label>
@@ -1165,7 +1198,6 @@ class PlaceOrder extends React.Component<{
           </div>
           {this.state.paymenttype === 1 ? (
             <div className="pey-upi">
-              <span className="b-tt">Choose an option</span>
               {/* <div className="opti1">
                 <label className="rdio-box1">
                   <span className="tt-radio">PhonePe</span>
@@ -1186,38 +1218,20 @@ class PlaceOrder extends React.Component<{
               </div> */}
 
               <div className="opti1 opti2">
-                <label className="rdio-box1">
-                  <span className="tt-radio">Your UPI ID</span>
-                  <input
-                    type="radio"
-                    id="2"
-                    checked={this.state.paytype === 2 ? true : false}
-                    onChange={this.changePhonePay}
-                    name="phonepay"
-                  />
-                  <span className="checkmark"></span>
-                </label>
-                {this.state.paytype === 2 ? (
-                  <div className="box-input1">
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        id="from"
-                        className="form-control"
-                        required
-                      />
-                      <label
-                        className="form-control-placeholder"
-                        htmlFor="from"
-                      >
-                        Enter UPI ID
-                      </label>
-                    </div>
-                    <button className="continue-btn">PAY R400</button>
+                <div className="box-input1">
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      id="from"
+                      className="form-control"
+                      required
+                    />
+                    <label className="form-control-placeholder" htmlFor="from">
+                      Enter UPI ID
+                    </label>
                   </div>
-                ) : (
-                  ""
-                )}
+                  <button className="continue-btn">PAY R400</button>
+                </div>
               </div>
             </div>
           ) : (
@@ -1228,23 +1242,24 @@ class PlaceOrder extends React.Component<{
     );
   }
 
-  changeWallet(e:any) {
+  changeWallet(e: any) {
     this.setState({
-      changewallet:this.state.changewallet = parseInt(e.target.id)
-    })
+      changewallet: (this.state.changewallet = parseInt(e.target.id)),
+    });
   }
 
-  payWallet(data:any) {
-    if(this.state.cartarray) {
-      var total : any =  this.state.cartarray.reduce(
-         (sum: number, i: any) => (sum += i.sellingPrice),0
-       )
-     }
-     const users: any = localStorage.getItem("user");
-     let user = JSON.parse(users);
+  payWallet(data: any) {
+    if (this.state.cartarray) {
+      var total: any = this.state.cartarray.reduce(
+        (sum: number, i: any) => (sum += i.sellingPrice),
+        0
+      );
+    }
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
 
     var razorpay = new Razorpay({
-      key: 'rzp_live_5dM1OK63yl61hL'
+      key: "rzp_live_5dM1OK63yl61hL",
     });
     // razorpay.createPayment({
     //   amount: total,
@@ -1257,7 +1272,7 @@ class PlaceOrder extends React.Component<{
     // razorpay.on('payment.success', function(resp:any) {
     // console.log("resp",resp);
     // }); // will pass payment ID, order ID, and Razorpay signature to success handler.
-  
+
     // razorpay.on('payment.error', function(resp:any){alert(resp.error.description)});
 
     // var razorpay = new Razorpay();
@@ -1286,107 +1301,135 @@ class PlaceOrder extends React.Component<{
           </div>
           {this.state.paymenttype === 2 ? (
             <div className="pey-upi">
-              {
-              this.state.freecharge === true ? (
-              <div className="opti1 opti2">
-                <label className="rdio-box1">
-                  <span className="tt-radio">FreeCharge</span>
-                  <input
-                    type="radio"
-                    id="1"
-                    checked={this.state.changewallet === 1 ? true : false}
-                    onChange={this.changeWallet}
-                    name="radio"
-                  />
-                  <span className="checkmark"></span>
-                </label>
-                <div className="box-input1">
-                  <div className="form-group">
-                    <span className="verfy-tt">Link Now</span>
+              {this.state.freecharge === true ? (
+                <div className="opti1 opti2">
+                  <label className="rdio-box1">
+                    <span className="tt-radio">FreeCharge</span>
                     <input
-                      type="text"
-                      id="walletnumber"
-                      name="walletnumber"
-                      className="form-control"
-                      onChange={this.onChangeEvent}
-                      maxLength={10}
-                      required
+                      type="radio"
+                      id="1"
+                      checked={this.state.changewallet === 1 ? true : false}
+                      onChange={this.changeWallet}
+                      name="radio"
                     />
-                    <label className="form-control-placeholder" htmlFor="from">
-                      Enter linked no.
-                    </label>
-                  </div>
-                  <button className="continue-btn" onClick={() => this.payWallet('freecharge')}>PAY</button>
+                    <span className="checkmark"></span>
+                  </label>
+                  {this.state.changewallet === 1 ? (
+                    <div className="box-input1">
+                      <div className="form-group">
+                        <span className="verfy-tt">Link Now</span>
+                        <input
+                          type="text"
+                          id="walletnumber"
+                          name="walletnumber"
+                          className="form-control"
+                          onChange={this.onChangeEvent}
+                          maxLength={10}
+                          required
+                        />
+                        <label
+                          className="form-control-placeholder"
+                          htmlFor="from"
+                        >
+                          Enter linked no.
+                        </label>
+                      </div>
+                      <button
+                        className="continue-btn"
+                        onClick={() => this.payWallet("freecharge")}
+                      >
+                        PAY
+                      </button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
-              </div>
-                ) : (null)
-              }
-                 {
-              this.state.olamoney === true ? (
-              <div className="opti1 opti2">
-                <label className="rdio-box1">
-                  <span className="tt-radio">Olamoney</span>
-                  <input
-                    type="radio"
-                    id="2"
-                    checked={this.state.changewallet === 2 ? true : false}
-                    onChange={this.changeWallet}
-                    name="radio"
-                  />
-                  <span className="checkmark"></span>
-                </label>
-                <div className="box-input1">
-                  <div className="form-group">
-                    <span className="verfy-tt">Link Now</span>
+              ) : null}
+              {this.state.olamoney === true ? (
+                <div className="opti1 opti2">
+                  <label className="rdio-box1">
+                    <span className="tt-radio">Olamoney</span>
                     <input
-                      type="text"
-                      id="from"
-                      className="form-control"
-                      required
+                      type="radio"
+                      id="2"
+                      checked={this.state.changewallet === 2 ? true : false}
+                      onChange={this.changeWallet}
+                      name="radio"
                     />
-                    <label className="form-control-placeholder" htmlFor="from">
-                      Enter linked no.
-                    </label>
-                  </div>
-                  <button className="continue-btn" onClick={() => this.payWallet('olamoney')}>PAY R400</button>
+                    <span className="checkmark"></span>
+                  </label>
+                  {this.state.changewallet === 2 ? (
+                    <div className="box-input1">
+                      <div className="form-group">
+                        <span className="verfy-tt">Link Now</span>
+                        <input
+                          type="text"
+                          id="from"
+                          className="form-control"
+                          required
+                        />
+                        <label
+                          className="form-control-placeholder"
+                          htmlFor="from"
+                        >
+                          Enter linked no.
+                        </label>
+                      </div>
+                      <button
+                        className="continue-btn"
+                        onClick={() => this.payWallet("olamoney")}
+                      >
+                        PAY R400
+                      </button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
-              </div>
-                ) : (null)
-              }
-              {
-              this.state.payzapp === true ? (
-              <div className="opti1 opti2">
-                <label className="rdio-box1">
-                  <span className="tt-radio">Payzapp</span>
-                  <input
-                    type="radio"
-                    id="3"
-                    checked={this.state.changewallet === 3 ? true : false}
-                    onChange={this.changeWallet}
-                    name="radio"
-                  />
-                  <span className="checkmark"></span>
-                </label>
-                <div className="box-input1">
-                  <div className="form-group">
-                    <span className="verfy-tt">Link Now</span>
+              ) : null}
+              {this.state.payzapp === true ? (
+                <div className="opti1 opti2">
+                  <label className="rdio-box1">
+                    <span className="tt-radio">Payzapp</span>
                     <input
-                      type="text"
-                      id="from"
-                      className="form-control"
-                      required
+                      type="radio"
+                      id="3"
+                      checked={this.state.changewallet === 3 ? true : false}
+                      onChange={this.changeWallet}
+                      name="radio"
                     />
-                    <label className="form-control-placeholder" htmlFor="from">
-                      Enter linked no.
-                    </label>
-                  </div>
-                  <button className="continue-btn" onClick={() => this.payWallet('payzapp')}>PAY R400</button>
+                    <span className="checkmark"></span>
+                  </label>
+                  {this.state.changewallet === 3 ? (
+                    <div className="box-input1">
+                      <div className="form-group">
+                        <span className="verfy-tt">Link Now</span>
+                        <input
+                          type="text"
+                          id="from"
+                          className="form-control"
+                          required
+                        />
+                        <label
+                          className="form-control-placeholder"
+                          htmlFor="from"
+                        >
+                          Enter linked no.
+                        </label>
+                      </div>
+                      <button
+                        className="continue-btn"
+                        onClick={() => this.payWallet("payzapp")}
+                      >
+                        PAY R400
+                      </button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
-              </div>
-                ) : (null)
-              }
-            
-            
+              ) : null}
             </div>
           ) : (
             ""
@@ -1402,7 +1445,7 @@ class PlaceOrder extends React.Component<{
    */
   onMonthChange(e: any) {
     this.setState({
-      month: this.state.month = parseInt(e.target.value),
+      month: (this.state.month = parseInt(e.target.value)),
     });
     // console.log("month", this.state.month);
   }
@@ -1414,7 +1457,7 @@ class PlaceOrder extends React.Component<{
   onYearChange(e: any) {
     // console.log("year", e.target.value, this.state.year);
     this.setState({
-      year: this.state.year = parseInt(e.target.value),
+      year: (this.state.year = parseInt(e.target.value)),
     });
   }
 
@@ -1469,7 +1512,7 @@ class PlaceOrder extends React.Component<{
         var visaCards = creditCardType(this.state.cardnumber);
         // console.log("card type", visaCards[0].type);
         this.setState({
-          cardtype: this.state.cardtype = visaCards[0].type,
+          cardtype: (this.state.cardtype = visaCards[0].type),
         });
       }
       const obj = {
@@ -1500,7 +1543,7 @@ class PlaceOrder extends React.Component<{
    */
   changeCVV(e: any) {
     this.setState({
-      cvvid: this.state.cvvid = parseInt(e.target.id),
+      cvvid: (this.state.cvvid = parseInt(e.target.id)),
     });
   }
 
@@ -1511,8 +1554,8 @@ class PlaceOrder extends React.Component<{
   getCardData(data: any) {
     // console.log("data", data);
     this.setState({
-      isCard: this.state.isCard = true,
-      cardUpdateTrue: this.state.cardUpdateTrue = true,
+      isCard: (this.state.isCard = true),
+      cardUpdateTrue: (this.state.cardUpdateTrue = true),
       cardid: data.cardID,
       cardholder: data.cardName,
       cardnumber: data.cardNumber,
@@ -1536,7 +1579,7 @@ class PlaceOrder extends React.Component<{
         var visaCards = creditCardType(this.state.cardnumber);
         // console.log("card type", visaCards[0].type);
         this.setState({
-          cardtype: this.state.cardtype = visaCards[0].type,
+          cardtype: (this.state.cardtype = visaCards[0].type),
         });
       }
       const obj = {
@@ -1615,34 +1658,40 @@ class PlaceOrder extends React.Component<{
       let user = JSON.parse(users);
 
       var today = new Date(),
-      date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        date =
+          today.getFullYear() +
+          "-" +
+          (today.getMonth() + 1) +
+          "-" +
+          today.getDate();
 
-      if(this.state.cartarray) {
-       var total : any =  this.state.cartarray.reduce(
-          (sum: number, i: any) => (sum += i.sellingPrice),0
-        )
+      if (this.state.cartarray) {
+        var total: any = this.state.cartarray.reduce(
+          (sum: number, i: any) => (sum += i.sellingPrice),
+          0
+        );
       }
-      
+
       const obj = {
-        userID:user.userID,
-        couponID:0,
-        orderDate:date,
-        orderNo:4,
+        userID: user.userID,
+        couponID: 0,
+        orderDate: date,
+        orderNo: 4,
         // orderNo:rendomGenerateNumber(),
-        paymentMethod:0,
-        orderStatus:2,
-        paymentStatus:0,
-        distance:0,
-        totalQty:this.state.cartarray ? this.state.cartarray.length : 0,
-        totalAmount:total,
-        discountAmount:0,
-        taxAmount:0,
-        deliveryAmount:0,
-        couponAmount:0,
-        transactionID:24,
-        paymentMessage:"Success",
-        cardNumber:""
-      }
+        paymentMethod: 0,
+        orderStatus: 2,
+        paymentStatus: 0,
+        distance: 0,
+        totalQty: this.state.cartarray ? this.state.cartarray.length : 0,
+        totalAmount: total,
+        discountAmount: 0,
+        taxAmount: 0,
+        deliveryAmount: 0,
+        couponAmount: 0,
+        transactionID: 24,
+        paymentMessage: "Success",
+        cardNumber: "",
+      };
 
       this.props.createOrder(obj);
     }
@@ -1651,8 +1700,8 @@ class PlaceOrder extends React.Component<{
   /** Toogle cvv information block */
   toggle() {
     this.setState({
-      cvvdesc:!this.state.cvvdesc
-    })
+      cvvdesc: !this.state.cvvdesc,
+    });
   }
 
   /** Card payment block */
@@ -1672,7 +1721,7 @@ class PlaceOrder extends React.Component<{
         <div className="upi-payment">
           <div className="tt-line">
             <img src={placeorder.card} alt="" />
-            <span className="tt-radio">Credit / Debit / ATM Card</span>
+            <span className="tt-radio">Credit/Debit/ATM Card (American Express,Bajaj,DICL,JCB,Maestro,MasterCard,Rupay,Visa)</span>
           </div>
 
           {this.state.paymenttype === 3 ? (
@@ -1712,6 +1761,7 @@ class PlaceOrder extends React.Component<{
                                 4
                               )}
                           </span>{" "}
+                          <span className="cardtype">{card.cardType}</span>{" "}
                           <span className="add-type">{card.cardName}</span>{" "}
                           <input
                             type="radio"
@@ -1723,10 +1773,18 @@ class PlaceOrder extends React.Component<{
                             onChange={this.changeCVV}
                             name="cvvid"
                             disabled={
-                              (card.cardType.toUpperCase() === this.state.AMEX || card.cardType.toUpperCase() === this.state.BAJAJ ||
-                              card.cardType.toUpperCase() === this.state.DICL || card.cardType.toUpperCase() === this.state.JCB ||
-                              card.cardType.toUpperCase() === this.state.MAES || card.cardType.toUpperCase() === this.state.MC ||
-                              card.cardType.toUpperCase() === this.state.RUPAY || card.cardType.toUpperCase() === this.state.VISA ) ? false : true
+                              card.cardType.toUpperCase() === this.state.AMEX ||
+                              card.cardType.toUpperCase() ===
+                                this.state.BAJAJ ||
+                              card.cardType.toUpperCase() === this.state.DICL ||
+                              card.cardType.toUpperCase() === this.state.JCB ||
+                              card.cardType.toUpperCase() === this.state.MAES ||
+                              card.cardType.toUpperCase() === this.state.MC ||
+                              card.cardType.toUpperCase() ===
+                                this.state.RUPAY ||
+                              card.cardType.toUpperCase() === this.state.VISA
+                                ? false
+                                : true
                             }
                           />
                           <span className="checkmark"></span>
@@ -1736,21 +1794,27 @@ class PlaceOrder extends React.Component<{
                             <div className="form-group enter-cvv">
                               <div className="verfy-tt" onClick={this.toggle}>
                                 ?
-                                {
-                                  this.state.cvvdesc === true ? (
-                                    <div className="togle-box">
-                                    <img src={placeorder.cvvcard} alt="cvv-card" />
+                                {this.state.cvvdesc === true ? (
+                                  <div className="togle-box">
+                                    <img
+                                      src={placeorder.cvvcard}
+                                      alt="cvv-card"
+                                    />
                                     <h4 className="cvv-title">What is CVV?</h4>
                                     <span className="small-tt">
-                                      The CVV number is the last three digits on the
-                                      back of your card
+                                      The CVV number is the last three digits on
+                                      the back of your card
                                     </span>
-                                    <button className="close-btn" onClick={this.toggle}>Close</button>
+                                    <button
+                                      className="close-btn"
+                                      onClick={this.toggle}
+                                    >
+                                      Close
+                                    </button>
                                   </div>
-                                  ) : (
-                                    ''
-                                  )
-                                }
+                                ) : (
+                                  ""
+                                )}
                               </div>
                               <input
                                 type="text"
@@ -1775,7 +1839,7 @@ class PlaceOrder extends React.Component<{
                               type="button"
                               className="chk-outbtn"
                               // onClick={this.openCheckout}
-                            
+
                               onClick={this.paymentWithCard}
                             >
                               Pay
@@ -1785,7 +1849,7 @@ class PlaceOrder extends React.Component<{
                               className="chk-outbtn"
                               onClick={() =>
                                 this.setState({
-                                  cvvid: this.state.cvvid = 0,
+                                  cvvid: (this.state.cvvid = 0),
                                 })
                               }
                             >
@@ -1911,7 +1975,7 @@ class PlaceOrder extends React.Component<{
                               cardnumbererror: "",
                               cardholder: "",
                               cardnumber: "",
-                              isCard: this.state.isCard = false,
+                              isCard: (this.state.isCard = false),
                             })
                           }
                         >
@@ -1949,7 +2013,7 @@ class PlaceOrder extends React.Component<{
         </label>
         <div className="upi-payment">
           <div className="tt-line">
-          <img src={placeorder.net} alt="" />
+            <img src={placeorder.net} alt="" />
             <span className="tt-radio">Net Banking</span>
           </div>
           {this.state.paymenttype === 4 ? (
@@ -2013,7 +2077,7 @@ class PlaceOrder extends React.Component<{
                       src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyOCIgaGVpZ2h0PSIyNCIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxkZWZzPjxwYXRoIGlkPSJhIiBkPSJNMjggMEgwdjIzLjhoMjhWMHoiLz48L2RlZnM+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNLTYtOGg0MHY0MEgtNnoiLz48bWFzayBpZD0iYiIgZmlsbD0iI2ZmZiI+PHVzZSB4bGluazpocmVmPSIjYSIvPjwvbWFzaz48cGF0aCBmaWxsPSIjMDAzODc0IiBkPSJNMCAxMkMwIDUuMiA2LjMgMCAxNCAwczE0IDUuMyAxNCAxMmMwIDYuNS02LjMgMTEuOC0xNCAxMS44cy0xNC01LjMtMTQtMTIiIG1hc2s9InVybCgjYikiLz48cGF0aCBmaWxsPSIjRUQxQzI0IiBkPSJNMTIuMyAzLjhsMy4yLTFWMjBsLTMuMiAxLjIiIG1hc2s9InVybCgjYikiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMTQuMiAxNC43QzEyLjggMTYuMyAxMS40IDE4IDkgMThjLTMuNyAwLTUuNC0zLjQtNS40LTYuMyAwLTIuOCAxLjMtNiA0LjgtNiAxLjUgMCAzIDEgNCAyVjEwYy0xLS43LTIuNS0xLTMuNi0xLTIuMiAwLTQuMi43LTQgMyAwIDEuNCAxLjQgMi40IDMgMi40IDIuMiAwIDMuNi0yIDQuNy0zLjZMMTQgOWMxLTEuNiAyLjYtMy4yIDUtMy4yIDMgMCA0LjcgMi40IDUuMiA1SDIzYy0uNS0xLTEuNS0xLjQtMi42LTEuNC0yLjMgMC0zLjggMi01IDMuN2wtMS4yIDJ6TTI0LjUgMTNjLS4zIDIuNi0xLjcgNS00LjggNS0xLjggMC0zLjItMS00LjItMi42di0xLjdjMS4zLjYgMi40IDEuMiAzLjggMS4yIDEuNyAwIDMuMi0xIDMuOC0yaDJ6IiBtYXNrPSJ1cmwoI2IpIi8+PC9nPjwvc3ZnPg=="
                       className="_2PKwvL"
                     />
-                   Kotak Bank
+                    Kotak Bank
                   </span>
                   <input
                     type="radio"
@@ -2030,15 +2094,13 @@ class PlaceOrder extends React.Component<{
                 <span className="b-tt">Other Banks</span>
                 <select className="_1CV081" onChange={this.selectBank}>
                   <option value="SELECT_BANK">---Select Bank---</option>
-                  {
-                    this.state.bankarray ? (
-                      this.state.bankarray.map((data:any,index:number) => (
+                  {this.state.bankarray
+                    ? this.state.bankarray.map((data: any, index: number) => (
                         <option key={index} value={data.key}>
-                        {data.value}
-                      </option>
+                          {data.value}
+                        </option>
                       ))
-                    ) : ('')
-                  }
+                    : ""}
                 </select>
               </div>
 
@@ -2054,34 +2116,34 @@ class PlaceOrder extends React.Component<{
 
   /** Razerpay functionality */
   openCheckout() {
-      var razorpay = new Razorpay({
-        key: 'rzp_live_5dM1OK63yl61hL'
+    var razorpay = new Razorpay({
+      key: "rzp_live_5dM1OK63yl61hL",
+    });
+    let _this = this;
+    razorpay.once("ready", function (response: any) {
+      console.log(response.methods);
+      var output = Object.entries(
+        response.methods.netbanking
+      ).map(([key, value]) => ({ key, value }));
+      _this.setState({
+        upiTrue: response.methods.upi,
+        cardTrue: response.methods.card,
+        netbankingTrue: true,
+        walletTrue: true,
+        freecharge: response.methods.wallet.freecharge,
+        olamoney: response.methods.wallet.olamoney,
+        payzapp: response.methods.wallet.payzapp,
+        AMEX: response.methods.card_networks.AMEX ? "AMEERICAN-EXPRESS" : "",
+        BAJAJ: response.methods.card_networks.BAJAJ ? "BAJAJ" : "",
+        DICL: response.methods.card_networks.DICL === 1 ? "DICL" : "",
+        JCB: response.methods.card_networks.JCB === 1 ? "JCB" : "",
+        MAES: response.methods.card_networks.MAES === 1 ? "MAESTRO" : "",
+        MC: response.methods.card_networks.MC === 1 ? "MASTERCARD" : "",
+        RUPAY: response.methods.card_networks.RUPAY === 1 ? "RUPAY" : "",
+        VISA: response.methods.card_networks.VISA === 1 ? "VISA" : "",
+        bankarray: output,
       });
-      let _this = this;
-      razorpay.once('ready', function(response : any) {
-        console.log(response.methods);
-        var output = Object.entries(response.methods.netbanking).map(([key, value]) => ({key,value}));
-        _this.setState({
-          upiTrue:response.methods.upi,
-          cardTrue:response.methods.card,
-          netbankingTrue:true,
-          walletTrue:true,
-          freecharge:response.methods.wallet.freecharge,
-          olamoney:response.methods.wallet.olamoney,
-          payzapp:response.methods.wallet.payzapp,
-          AMEX:response.methods.card_networks.AMEX ?  "AMEERICAN-EXPRESS": "",
-          BAJAJ:response.methods.card_networks.BAJAJ ? "BAJAJ" : "",
-          DICL:response.methods.card_networks.DICL === 1 ? "DICL" : "",
-          JCB:response.methods.card_networks.JCB === 1 ? "JCB" : "",
-          MAES:response.methods.card_networks.MAES === 1 ?"MAESTRO" : "",
-          MC:response.methods.card_networks.MC === 1 ? "MASTERCARD" : "",
-          RUPAY:response.methods.card_networks.RUPAY === 1 ? "RUPAY" : "",
-          VISA:response.methods.card_networks.VISA === 1 ? "VISA" : "",
-          bankarray:output
-        })
-  
-      })
-
+    });
   }
 
   /** Razerpay Block */
@@ -2133,7 +2195,9 @@ class PlaceOrder extends React.Component<{
                     </label>
                   </div>
                   <div className="text-danger">{this.state.amounterror}</div>
-                  <button className="continue-btn" onClick={this.openCheckout}>PAY WITH RAZER-PAY</button>
+                  <button className="continue-btn" onClick={this.openCheckout}>
+                    PAY WITH RAZER-PAY
+                  </button>
                 </div>
               </div>
             </div>
@@ -2417,27 +2481,27 @@ class PlaceOrder extends React.Component<{
                             </div>
                             <div className="nm-info  hidediv-1">
                               {/** UPI PAYMENT SECTION */}
-                              {
-                              this.state.upiTrue === true ? this.UPIBlock() : null
-                              }
+                              {this.state.upiTrue === true
+                                ? this.UPIBlock()
+                                : null}
 
                               {/* <!-- wallet --> */}
-                              {
-                              this.state.walletTrue === true ? this.walletBlock() : null
-                              }
+                              {this.state.walletTrue === true
+                                ? this.walletBlock()
+                                : null}
 
                               {/* <!-- Credit / Debit / ATM Card --> */}
-                              {
-                              this.state.cardTrue === true ? this.cardBlock() : null
-                              }
+                              {this.state.cardTrue === true
+                                ? this.cardBlock()
+                                : null}
 
                               {/* <!-- Net Banking --> */}
-                              {
-                              this.state.netbankingTrue === true ? this.netBankingBlock() : null
-                              }
+                              {this.state.netbankingTrue === true
+                                ? this.netBankingBlock()
+                                : null}
 
-                               {/* <!-- RazerPay --> */}
-                               {/* {this.rezarpay()} */}
+                              {/* <!-- RazerPay --> */}
+                              {/* {this.rezarpay()} */}
                             </div>
                           </div>
                           {/* <div className="dis-right">
@@ -2462,9 +2526,8 @@ class PlaceOrder extends React.Component<{
   }
 }
 
-
 /**
- * 
+ *
  * @param state : api call response update state
  */
 const mapStateToProps = (state: any) => ({
@@ -2475,11 +2538,10 @@ const mapStateToProps = (state: any) => ({
 });
 
 /**
- * 
+ *
  * @param dispatch : call api with action
  */
 const mapDispatchToProps = (dispatch: any) => ({
-
   /** Get Address List */
   getAddressList: (data: any) =>
     dispatch(placeOrderService.getAddressList(data)),
@@ -2513,9 +2575,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   deleteCard: (data: any) => dispatch(placeOrderService.deleteCard(data)),
 
   /** Create Order */
-  createOrder: (data: any) => dispatch(placeOrderService.createOrder(data))
-  
-  
+  createOrder: (data: any) => dispatch(placeOrderService.createOrder(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrder);

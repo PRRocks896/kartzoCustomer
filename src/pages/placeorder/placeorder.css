@@ -733,7 +733,7 @@
 	margin-right: 12px;
 } 
 .tt-radio {
-	font-size: 14px;
+	font-size: 13px;
 	color: #071828;
 }
 /* pey-upi */
@@ -954,4 +954,9 @@
 	.pey-upi {
 		padding-left: 0px;
 		
+	}
+
+	.cardtype{
+		color: #f7b62b;
+		font-weight: 600;
 	}
