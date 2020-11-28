@@ -514,9 +514,6 @@ class FindStore extends React.Component<{
                                 <Skeleton count={1} />
                               </div>
                             </div>
-                            {/* <img alt="img"className="category_img">
-                            <Skeleton count={1} />
-                          </img> */}
                           </div>
                         </SkeletonTheme>
                       </div>

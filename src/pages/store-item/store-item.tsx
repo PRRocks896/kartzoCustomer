@@ -684,7 +684,6 @@ class StoreItem extends React.Component<{
           ) : (
             ""
           )}
-
         
           {categorydata &&
             categorydata.map((cat: any, index: number) => (
