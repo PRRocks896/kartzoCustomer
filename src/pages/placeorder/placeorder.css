@@ -960,3 +960,16 @@
 		color: #f7b62b;
 		font-weight: 600;
 	}
+
+	.c-btn { 
+		font-size: 10px;
+		background-color: #f5be21;
+		color: #fff;
+		font-weight: 600;
+		border: 1px solid #f5be21;
+
+		margin-left: 0px;
+		height: 30px;
+		width: 90px;
+	
+	}

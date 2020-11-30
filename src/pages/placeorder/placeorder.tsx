@@ -36,6 +36,7 @@ class PlaceOrder extends React.Component<{
   updateCard: any;
   deleteCard: any;
   createOrder: any;
+  getCouponData:any
 }> {
   /** place order state */
   placeOrderState: placeorderStateRequest = constant.placeorderPage.state;
@@ -119,6 +120,7 @@ class PlaceOrder extends React.Component<{
     bankarray: [],
     walletnumber: 0,
     walletnumbererror: "",
+    coupondetails:[]
   };
 
   /** Constructor call */
@@ -178,6 +180,7 @@ class PlaceOrder extends React.Component<{
         this.getCartData();
         this.getCard();
         this.openCheckout();
+        this.getCouponList();
       }
     }
   }
@@ -355,6 +358,20 @@ class PlaceOrder extends React.Component<{
       });
       this.getCardDetails(nextProps.getCardDetail);
     }
+    if (nextProps.getCouponDetail) {
+      this.getCouponDetails(nextProps.getCouponDetail);
+    }
+  }
+
+  /**
+   * 
+   * @param data : get coupon details
+   */
+  getCouponDetails(data:any) {
+    // console.log("data",data);
+    this.setState({
+      coupondetails:this.state.coupondetails = data
+    })
   }
 
   /**
@@ -1287,9 +1304,42 @@ class PlaceOrder extends React.Component<{
       const users: any = localStorage.getItem("user");
       let user = JSON.parse(users);
 
-      var razorpay = new Razorpay({
-        key: "rzp_live_5dM1OK63yl61hL",
-      });
+      let newCartArray: any = [];
+
+      if (this.state.cartarray) {
+        this.state.cartarray.map((data: any, index: number) => {
+          newCartArray.push({
+            productId: data.productID,
+            orderQty: data.quantity,
+            productPrice: data.sellingPrice,
+          });
+        });
+      }
+
+      const obj = {
+        userID: user.userID,
+        couponID: 0,
+        paymentMethod: 0,
+        orderStatus: 1,
+        paymentStatus: 0,
+        distance: 0,
+        totalQty: this.state.cartarray ? this.state.cartarray.length : 0,
+        totalAmount: total,
+        discountAmount: 0,
+        taxAmount: 0,
+        deliveryAmount: 0,
+        couponAmount: 0,
+        transactionID: 0,
+        paymentMessage: "",
+        cardNumber: "",
+        orderDetails: newCartArray,
+      };
+
+      this.props.createOrder(obj);
+
+      // var razorpay = new Razorpay({
+      //   key: "rzp_live_5dM1OK63yl61hL",
+      // });
       // razorpay.createPayment({
       //   amount: total,
       //   email: user.email,
@@ -2298,6 +2348,35 @@ class PlaceOrder extends React.Component<{
             : ""}
         </div>
         <div className="pay-box">
+          <div className="your-card">
+            <h3>Apply Coupon</h3>
+            <hr />
+          </div>
+          <div className="flex-box flex-box2 mt-4">
+            <input
+              type="text"
+              name="qty"
+              onChange={(e: any) => this.onChangeEvent(e)}
+            />
+            <div className="order-list1">
+              <div className="dlt-1">
+                <div className="order-food" style={{ width: "105px" }}>
+                  <button className="c-btn">Apply</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* {
+            this.state.coupondetails ? (
+              this.state.coupondetails.map((data:any,index:number) => (
+                <div>
+                  <p>{data.couponCode}</p>
+                </div> 
+              ))
+            ) : ('')
+          } */}
+        </div>
+        <div className="pay-box">
           <div className="flex-box flex-box2">
             <img src="images/edd-note.svg" alt="" />
             <textarea
@@ -2362,6 +2441,20 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /** Get Coupon List */
+  getCouponList(
+    searchText: string = "",
+    page: number = 1,
+    size: number = 20
+  ) {
+    const obj: any = {
+      searchText: searchText,
+      isActive: true,
+      page: page,
+      size: size
+    };
+    this.props.getCouponData(obj);
+  }
   /** Render DOM */
   render() {
     return (
@@ -2577,6 +2670,7 @@ const mapStateToProps = (state: any) => ({
   getCartDetail: state.product.getcartdetails,
   getaddressDetail: state.placeOrder.getaddressdata,
   getCardDetail: state.placeOrder.getcarddata,
+  getCouponDetail: state.order.coupondata
 });
 
 /**
@@ -2618,6 +2712,10 @@ const mapDispatchToProps = (dispatch: any) => ({
 
   /** Create Order */
   createOrder: (data: any) => dispatch(placeOrderService.createOrder(data)),
+
+    /** Get CouponList */
+    getCouponData: (data: any) => dispatch(placeOrderService.getCouponData(data)),
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrder);

@@ -101,8 +101,10 @@ class StoreItem extends React.Component<{
         maindata: (this.state.maindata = maindata),
       });
     }
-    // console.log("maindata", this.state.maindata);
+    console.log("maindata", this.state.maindata);
+    let datamain : any = this.state.maindata;
     if (localStorage.getItem("token")) {
+      localStorage.setItem('merchantID',datamain.merchantID)
       this.getCartData();
     }
   }

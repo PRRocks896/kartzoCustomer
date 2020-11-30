@@ -2,7 +2,8 @@ import * as ACTION from "../index";
 
 /** intial state */
 const initialState = {
-  orderdata: ""
+  orderdata: "",
+  coupondata:""
 };
 
 /**
@@ -25,6 +26,22 @@ const order = (state = initialState, action: any) => {
       return {
         ...state,
         orderdata: {},
+        error: action.error,
+      };
+
+      case ACTION.order.GET_COUPON_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.order.GET_COUPON_SUCCESS:
+      return {
+        ...state,
+        coupondata: action.coupondata
+      };
+    case ACTION.order.GET_COUPON_FAILURE:
+      return {
+        ...state,
+        coupondata: {},
         error: action.error,
       };
 

@@ -17,6 +17,7 @@ import { getAppName, alertMessage } from "../utils";
 import "./profile.css";
 import { connect } from "react-redux";
 import { Modal } from "react-bootstrap";
+import moment from "moment";
 
 class Profile extends React.Component<{
   show: boolean;
@@ -74,6 +75,7 @@ class Profile extends React.Component<{
     selectedFile: this.profileState.selectedFile,
     selectedFileerror: this.profileState.selectedFileerror,
     disable: this.profileState.disable,
+    showOrder: false,
   };
 
   /** Constructor call */
@@ -92,6 +94,8 @@ class Profile extends React.Component<{
     this.updateProfile = this.updateProfile.bind(this);
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.removeIcon = this.removeIcon.bind(this);
+    this.handelCloseOrderModle = this.handelCloseOrderModle.bind(this);
+    this.openOrderModel = this.openOrderModel.bind(this);
   }
 
   /** Page Render Call */
@@ -168,10 +172,10 @@ class Profile extends React.Component<{
    * @param nextProps : updated props
    */
   componentWillReceiveProps(nextProps: any) {
-    // console.log("props", nextProps);
+    console.log("props", nextProps);
     if (nextProps.addressDetails) {
       this.setState({
-        show: this.state.show = false,
+        show: (this.state.show = false),
       });
       this.getAddressDetailsData(nextProps.addressDetails);
     }
@@ -199,7 +203,7 @@ class Profile extends React.Component<{
    */
   getAddressDetailsData(data: any) {
     this.setState({
-      addressarray: this.state.addressarray = data.data,
+      addressarray: (this.state.addressarray = data.data),
     });
   }
 
@@ -207,10 +211,10 @@ class Profile extends React.Component<{
     this.setState({
       update: true,
       updatemodel: false,
-      firstname: this.state.firstname = data.firstName,
-      lastname: this.state.lastname = data.lastName,
-      useremail: this.state.useremail = data.email,
-      file: this.state.file = data.photoPath,
+      firstname: (this.state.firstname = data.firstName),
+      lastname: (this.state.lastname = data.lastName),
+      useremail: (this.state.useremail = data.email),
+      file: (this.state.file = data.photoPath),
     });
   }
 
@@ -219,10 +223,10 @@ class Profile extends React.Component<{
       update: true,
       disable: false,
       updatemodel: false,
-      firstname: this.state.firstname = data.firstName,
-      lastname: this.state.lastname = data.lastName,
-      useremail: this.state.useremail = data.email,
-      file: this.state.file = data.photoPath,
+      firstname: (this.state.firstname = data.firstName),
+      lastname: (this.state.lastname = data.lastName),
+      useremail: (this.state.useremail = data.email),
+      file: (this.state.file = data.photoPath),
     });
   }
 
@@ -231,9 +235,9 @@ class Profile extends React.Component<{
    * @param data : get order listing data
    */
   getOrderDetails(data: any) {
-    console.log("data",data);
+    console.log("data", data);
     this.setState({
-      orderdata: this.state.orderdata = data.data,
+      orderdata: (this.state.orderdata = data.data ? data.data : null),
     });
   }
 
@@ -520,7 +524,7 @@ class Profile extends React.Component<{
    */
   changeAddress(e: any) {
     this.setState({
-      addresstype: this.state.addresstype = e.target.id,
+      addresstype: (this.state.addresstype = e.target.id),
     });
   }
 
@@ -573,7 +577,7 @@ class Profile extends React.Component<{
   /** Update Profile */
   updateProfile() {
     this.setState({
-      disable: this.state.disable = true,
+      disable: (this.state.disable = true),
     });
     const isValid = this.validateProfile();
     if (isValid) {
@@ -609,7 +613,7 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param event : profile photo upload
    */
   onChangeHandler(event: any) {
@@ -642,8 +646,20 @@ class Profile extends React.Component<{
   /** Remove icon */
   removeIcon() {
     this.setState({
-      file: this.state.file = "",
-      selectedFile: this.state.selectedFile = "",
+      file: (this.state.file = ""),
+      selectedFile: (this.state.selectedFile = ""),
+    });
+  }
+
+  openOrderModel() {
+    this.setState({
+      showOrder: !this.state.showOrder,
+    });
+  }
+
+  handelCloseOrderModle() {
+    this.setState({
+      showOrder: !this.state.showOrder,
     });
   }
 
@@ -696,7 +712,7 @@ class Profile extends React.Component<{
                       ) : (
                         <span
                           onClick={this.updateModel}
-                          style={{ cursor: "pointer",color:'#5d75fb' }}
+                          style={{ cursor: "pointer", color: "#5d75fb" }}
                         >
                           Update-Profile
                         </span>
@@ -963,103 +979,184 @@ class Profile extends React.Component<{
                       <div className="order-list">
                         <div className="col-md-12">
                           <h3 className="dlt-tt">Past Order</h3>
-                          {/* {
-                            this.state.orderdata ? (
-                              this.state.orderdata.length > 0 && this.state.orderdata.map((order:any,index:any) => (
-                                <div className="order-list1" key={index}>
-                                <div className="dlt-1">
-                                  <div className="img-box">
-                                    <img src={profile.food} alt="" />
-                                  </div>
-                                  <div className="order-dtl1">
-                                    <h4 className="sub-tt">Sargam Food</h4>
-                                    <div className="address-nm">
-                                      Race Couse Road
-                                    </div>
-                                    <div className="shop-id">
-                                      ORDER # 85474154056 | Sun, Oct 11, 2020, 12:19
-                                      PM
-                                    </div>
-                                    <button className="view-dtl">
-                                      View Details
-                                    </button>
-                                  </div>
-                                </div>
-    
-                                <div className="order-food">
-                                  <div className="food-nm">
-                                    Paneer Tikka Masala x1
-                                  </div>
-                                  <div className="btn-box">
-                                    <button className="order-btn">REORDER</button>
-                                    <button className="help-btn">HELP</button>
-                                  </div>
-                                </div>
-                              </div>
-                              ))
-                            ) : ('')
-                          }
-                          */}
-                          <div className="order-list1">
-                            <div className="dlt-1">
-                              <div className="img-box">
-                                <img src={profile.food} alt="" />
-                              </div>
-                              <div className="order-dtl1">
-                                <h4 className="sub-tt">Sargam Food</h4>
-                                <div className="address-nm">
-                                  Race Couse Road
-                                </div>
-                                <div className="shop-id">
-                                  ORDER # 85474154056 | Sun, Oct 11, 2020, 12:19
-                                  PM
-                                </div>
-                                <button className="view-dtl">
-                                  View Details
-                                </button>
-                              </div>
-                            </div>
+                          {this.state.orderdata
+                            ? this.state.orderdata.length > 0 &&
+                              this.state.orderdata.map(
+                                (order: any, index: any) =>
+                                  order.orderDetails
+                                    ? order.orderDetails.map(
+                                        (main: any, index1: number) => (
+                                          <div
+                                            className="order-list1"
+                                            key={index1}
+                                          >
+                                            <div className="dlt-1">
+                                              <div className="img-box">
+                                                {main &&
+                                                main.productImages &&
+                                                main.productImages[0]
+                                                  .imagePath ? (
+                                                  <img
+                                                  style={{height:'79px'}}
+                                                    src={
+                                                      constant.filemerchantpath +
+                                                      main.productImages[0]
+                                                        .imagePath
+                                                    }
+                                                    alt=""
+                                                  />
+                                                ) : (
+                                                  <img
+                                                    src={profile.food}
+                                                    alt=""
+                                                  />
+                                                )}
+                                              </div>
+                                              <div className="order-dtl1">
+                                                <h4 className="sub-tt">
+                                                  {main.merchantName}
+                                                </h4>
+                                                <div className="address-nm">
+                                                  Race Course Road
+                                                </div>
+                                                <div className="shop-id">
+                                                  ORDER # {order.orderNo} |{" "}
+                                                  {moment(main.created).format(
+                                                    "LLLL"
+                                                  )}
+                                                </div>
+                                                <button
+                                                  className="view-dtl"
+                                                  onClick={this.openOrderModel}
+                                                >
+                                                  View Details
+                                                </button>
+                                              </div>
+                                            </div>
 
-                            <div className="order-food">
-                              <div className="food-nm">
-                                Paneer Tikka Masala x1
-                              </div>
-                              <div className="btn-box">
-                                <button className="order-btn">REORDER</button>
-                                <button className="help-btn">HELP</button>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="order-list1">
-                            <div className="dlt-1">
-                              <div className="img-box">
-                                <img src={profile.food} alt="" />
-                              </div>
-                              <div className="order-dtl1">
-                                <h4 className="sub-tt">Sargam Food</h4>
-                                <div className="address-nm">
-                                  Race Couse Road
-                                </div>
-                                <div className="shop-id">
-                                  ORDER # 85474154056 | Sun, Oct 11, 2020, 12:19
-                                  PM
-                                </div>
-                                <button className="view-dtl">
-                                  View Details
-                                </button>
-                              </div>
-                            </div>
+                                            <div className="order-food">
+                                              <div className="food-nm">
+                                                {main.productName}
+                                              </div>
+                                              <div className="btn-box">
+                                                <button className="order-btn">
+                                                  REORDER
+                                                </button>
+                                                <button className="help-btn">
+                                                  HELP
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        )
+                                      )
+                                    : ""
+                              )
+                            : ""}
+                          <Modal
+                            className="modal-dialog-centered"
+                            show={this.state.showOrder}
+                            onHide={this.handelCloseOrderModle}
+                          >
+                            <Modal.Header closeButton>
+                              <Modal.Title>Order Details</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                              <section className="send-packages">
+                                <div className="container-fluid">
+                                  <div className="row">
+                                    <div className="col-md-12">
+                                      <div className="main-flex">
+                                        <div className="left-box">
+                                          <div className="card-item123">
+                                            <h1 className="my-cart-item">
+                                              Order #8282828282{" "}
+                                            </h1>
+                                            {/* <p className="mt-3">Your on demand local courier </p> */}
+                                          </div>
 
-                            <div className="order-food">
-                              <div className="food-nm">
-                                Paneer Tikka Masala x1
+                                          <div className="add-address">
+                                            <div className="bdr-left"></div>
+                                            <div className="address-box1">
+                                              <div className="small-tt mt-4">
+                                                Pizza Studio
+                                              </div>
+                                              <div className="pickup-location">
+                                                Kalawad Road
+                                              </div>
+                                          
+                                              <div className="circle-box">
+                                                <div className="icon-dot-bg">
+                                                  <svg
+                                                    version="1.1"
+                                                    id="Layer_1"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    x="0px"
+                                                    y="0px"
+                                                    viewBox="0 0 319 318"
+                                                  >
+                                                    <g>
+                                                      <path d="M159.8,8.68c82.77,0.05,150.08,67.18,150.01,149.59c-0.07,83.76-67.4,151.54-150.41,151.43   C76.4,309.59,8.27,241.72,8.26,159.11C8.24,75.32,75.43,8.63,159.8,8.68z M124.36,146.18c1.32-1.45,2.09-2.36,2.92-3.21   c5.91-5.93,11.91-11.78,17.74-17.79c4.8-4.94,4.71-11.2,0.01-16.01c-4.79-4.91-11.33-5.14-16.28-0.24   c-13.94,13.8-27.82,27.67-41.63,41.61c-5.01,5.06-5.03,11.59-0.07,16.72c13.46,13.93,27,27.79,40.58,41.59   c4.78,4.86,11.19,4.86,16.04,0.29c5.04-4.75,5.32-11.12,0.45-16.27c-5.83-6.18-11.85-12.19-17.77-18.28   c-0.72-0.75-1.35-1.59-2.43-2.86c2.03,0,3.37,0,4.72,0c30.75-0.01,61.5-0.01,92.24-0.02c6.54,0,11.45-3.41,13.17-9.05   c2.59-8.48-3.71-16.46-13.15-16.47c-30.62-0.04-61.25-0.02-91.87-0.02C127.73,146.18,126.41,146.18,124.36,146.18z" />
+                                                    </g>
+                                                  </svg>
+                                                </div>
+                                              </div>
+                                              <div className="line-dot-1">
+                                                {" "}
+                                              </div>
+                                            </div>
+
+                                            <div className="address-box1">
+                                              <div className="small-tt">
+                                                Home
+                                              </div>
+                                              <div className="pickup-location">
+                                                near bus station
+                                              </div>
+
+                                            
+                                              <div className="circle-box">
+                                                <div className="icon-dot-bg2">
+                                                  <svg
+                                                    version="1.1"
+                                                    id="Layer_1"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    x="0px"
+                                                    y="0px"
+                                                    viewBox="0 0 319 318"
+                                                  >
+                                                    <g>
+                                                      <path d="M159.8,8.68c82.77,0.05,150.08,67.18,150.01,149.59c-0.07,83.76-67.4,151.54-150.41,151.43   C76.4,309.59,8.27,241.72,8.26,159.11C8.24,75.32,75.43,8.63,159.8,8.68z M124.36,146.18c1.32-1.45,2.09-2.36,2.92-3.21   c5.91-5.93,11.91-11.78,17.74-17.79c4.8-4.94,4.71-11.2,0.01-16.01c-4.79-4.91-11.33-5.14-16.28-0.24   c-13.94,13.8-27.82,27.67-41.63,41.61c-5.01,5.06-5.03,11.59-0.07,16.72c13.46,13.93,27,27.79,40.58,41.59   c4.78,4.86,11.19,4.86,16.04,0.29c5.04-4.75,5.32-11.12,0.45-16.27c-5.83-6.18-11.85-12.19-17.77-18.28   c-0.72-0.75-1.35-1.59-2.43-2.86c2.03,0,3.37,0,4.72,0c30.75-0.01,61.5-0.01,92.24-0.02c6.54,0,11.45-3.41,13.17-9.05   c2.59-8.48-3.71-16.46-13.15-16.47c-30.62-0.04-61.25-0.02-91.87-0.02C127.73,146.18,126.41,146.18,124.36,146.18z" />
+                                                    </g>
+                                                  </svg>
+                                                </div>
+                                              </div>
+                                              <div className="line-dot-2">
+                                                {" "}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </section>
+                            </Modal.Body>
+                            <Modal.Footer>
+                              <div className="col-md-12">
+                                <div className="deliver">
+                                  <button
+                                    type="button"
+                                    className="btb-text"
+                                    onClick={this.handelCloseOrderModle}
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
                               </div>
-                              <div className="btn-box">
-                                <button className="order-btn">REORDER</button>
-                                <button className="help-btn">HELP</button>
-                              </div>
-                            </div>
-                          </div>
+                            </Modal.Footer>
+                          </Modal>
                         </div>
                       </div>
                     </div>

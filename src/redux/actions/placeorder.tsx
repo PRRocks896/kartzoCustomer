@@ -12,7 +12,8 @@ export const placeOrderService = {
   getcard,
   updateCard,
   deleteCard,
-  createOrder
+  createOrder,
+  getCouponData
 };
 
 /**
@@ -273,7 +274,7 @@ function createOrder(data: any) {
 
     PlaceOrderAPI.createorder(data)
       .then(async (orderdata: any) => {
-        console.log("orderdata", orderdata);
+        // console.log("orderdata", orderdata);
         if (orderdata.status === 200) {
           showSuccess(orderdata.message);
           dispatch(success(await orderdata.data.resultObject));
@@ -292,6 +293,37 @@ function createOrder(data: any) {
   }
   function failure(error: any) {
     return { type: ACTION.order.CREATE_ORDER_FAILURE, error };
+  }
+}
+
+/**
+ * 
+ * @param data : delete card
+ */
+function getCouponData(data: any) {
+  return (dispatch: any) => {
+    dispatch(request({ data }));
+
+    PlaceOrderAPI.getCouponList(data)
+      .then(async (coupondata: any) => {
+        // console.log("coupondata", coupondata);
+        if (coupondata.status === 200) {
+           dispatch(success(await coupondata.resultObject.data));
+        }
+      })
+      .catch((err: any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(coupondata: any) {
+    return { type: ACTION.order.GET_COUPON_REQUEST, coupondata };
+  }
+  function success(coupondata: any) {
+    return { type: ACTION.order.GET_COUPON_SUCCESS, coupondata };
+  }
+  function failure(error: any) {
+    return { type: ACTION.order.GET_COUPON_FAILURE, error };
   }
 }
 

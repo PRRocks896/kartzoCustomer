@@ -107,14 +107,14 @@ class Categories extends React.Component<{ getCategoryData: any }> {
                                     background: `${constant.categoryColor[index].bclr}`,
                                   }}
                                 ></div>
-                                {c.imagePath ? (
+                                { c.imagePath ? (
                                   <img
                                     className="category_img"
                                     src={constant.filepath + c.imagePath}
                                     alt={c.category}
                                   />
                                 ) : (
-                                  ""
+                                  null
                                 )}
                                 <div className="tt-1">{c.category}</div>
                               </div>
@@ -140,7 +140,7 @@ class Categories extends React.Component<{ getCategoryData: any }> {
                                     alt={c.category}
                                   />
                                 ) : (
-                                  ""
+                                  null
                                 )}
                                 <div className="tt-1">{c.category}</div>
                               </div>

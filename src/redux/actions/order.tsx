@@ -18,7 +18,7 @@ function getOrderList(data: any) {
       .then(async (getorderdata: any) => {
         // console.log("getorderdata", getorderdata);
         if (getorderdata.status === 200) {
-          dispatch(success(await getorderdata.resultObject.data));
+          dispatch(success(await getorderdata.resultObject));
         }
       })
       .catch((err: any) => {

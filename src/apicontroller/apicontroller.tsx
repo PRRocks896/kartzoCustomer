@@ -46,7 +46,8 @@ const apiUrl = {
         getaddressbyid:'address/',
         updatecard:'card/',
         deleteData:'delete',
-        createorder:'order'
+        createorder:'order',
+        getcoupon:'coupon/get-coupon-list'
     },
     packageController: {
         getaddress:'address/get-address'

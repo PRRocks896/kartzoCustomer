@@ -138,4 +138,18 @@ export default {
       false
     );
   },
+
+    /**
+   *
+   * @param data : get coupon list
+   */
+  getCouponList: async function (data: any) {
+    return WebReqUrl.post(
+      Constant.apiUrlAdmin + apiUrl.orderController.getcoupon,
+      data,
+      true
+    );
+  },
+
+  
 };
