@@ -145,6 +145,7 @@
 .order-list .order-list1 .order-food .food-nm{
 	font-size: 14px;
 	color:#071828;
+	margin-left: 10px;
 
 }
 .order-list .order-list1 .order-food .btn-box {
@@ -752,3 +753,164 @@ img.picture {
 	width: 100%;
 	height: 100%;
 }
+
+.view-order-dtl {
+
+}
+
+.view-order-dtl .order-id {
+	font-size: 20px;
+	text-align: left;
+	position: relative;
+	font-weight: 600;
+	margin-top: 20px;
+}
+.view-order-dtl .order-id::after {
+	height: 5px;
+	position: absolute;
+	content: "";
+	background: #071828;
+	width: 51px;
+	display: block;
+	border-radius: 4px;
+	margin: 0px;
+	top: 31px;
+}
+.view-order-dtl .left-box .card-item p {
+	padding-top: 12px;
+}
+.view-order-dtl .add-address {
+	position: relative;
+	border-bottom: 1px solid antiquewhite;
+}
+.view-order-dtl .address-box1 {
+	padding-left: 50px;
+	position: relative;
+	padding-bottom: 25px;
+}
+.view-order-dtl .small-tt {
+	font-size: 14px;
+	text-transform: uppercase;
+	color: #071828;
+}
+.view-order-dtl .pickup-location {
+	font-size: 14px;
+	color: #5C6978;
+}
+.view-order-dtl .circle-box {
+	position: absolute;
+	width: 35px;
+	height: 35px;
+	background: #fff;
+	border-radius: 30px;
+	border: 2px solid #f7b62b;
+	top: 0px;
+	left: 0px;
+	z-index: 2;
+}
+.view-order-dtl .icon-dot-bg {
+	position: absolute;
+	top: 1px;
+	width: 15px;
+	left: 8px;
+}
+.view-order-dtl .delivery-day .icon-right {
+	display: flex;
+	align-items: center;
+}
+.view-order-dtl .delivery-dt {
+	font-size: 12px;
+	padding-left: 10px;
+}
+.view-order-dtl svg {
+	fill: #f7b62b;
+}
+.view-order-dtl .btn-line {
+	height: 1px;
+	width: 100%;
+	background: #f7b62b;
+	margin: 6px 0px;
+}
+.view-order-dtl .icon-dot-bg2 {
+	position: absolute;
+	top: -6px;
+	width: 20px;
+	left: -5px;
+	transform: rotate(-90deg);
+}
+.view-order-dtl .add-address .line-dot-1 {
+	box-sizing: border-box;
+	position: absolute;
+	border-right: 2px dashed #f7b62b;
+	left: 17px;
+	bottom: 0px;
+	top: 0px;
+}
+.view-order-dtl .add-address .line-dot-2 {
+	box-sizing: border-box;
+	position: absolute;
+	border-right: 2px dashed #f7b62b;
+	left: 9px;
+	top: 2px;
+	height: 34px;
+	bottom: auto;
+}
+.view-order-dtl .top-title {
+	padding-bottom: 30px;
+}
+
+.view-order-dtl .p-total-item {
+	margin-top: 10px;
+	color: #fbb132;
+	font-weight: bold;
+	font-size: 14px;
+}
+.view-order-dtl .p-item-list {
+	padding: 5px 0px;
+	
+	border-bottom: 1px dotted #fbb132;
+}
+.view-order-dtl .p-flex-box {
+	display: flex;
+	position: relative;
+	justify-content: space-between;
+	padding: 3px 0px;
+}
+.view-order-dtl .p-list-1 h4 {
+	font-size: 15px;
+	margin: 0px;
+}
+.view-order-dtl .p-descri-1 {
+	font-size: 14px;
+}
+.view-order-dtl .p-item-price {
+	font-size: 15px;
+	text-align: right;
+}
+.view-order-dtl .p-item-ttl {
+	font-size: 15px;
+	color: #071828;
+}
+.view-order-dtl .p-list-total-rupee {
+	font-size: 15px;
+ }
+ .view-order-dtl .p-paid-total {
+	padding: 10px 0px;
+	border-top: 1px solid #071828;
+}
+.view-order-dtl .p-list-total-rupee {
+	font-size: 15px;
+	padding: 10px 0px;
+}
+.view-order-dtl .p-dis-flx {
+	display: flex;
+	justify-content: space-between;
+}
+.view-order-dtl .p-paid-viya {
+	font-size: 12px;
+}
+.view-order-dtl .p-bill-ttl, .p-bill-rupee {
+	font-weight: 600;
+	color: #071828;
+}
+/* view-order-dtl end */

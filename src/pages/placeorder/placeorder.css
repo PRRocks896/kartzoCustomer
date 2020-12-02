@@ -961,8 +961,15 @@
 		font-weight: 600;
 	}
 
-	.c-btn { 
-		font-size: 10px;
+	.cccc-btn { 
+	    margin-top: 10px;
+    width: 190px;
+    background-color: #f2c21a;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 5px;
+		/* font-size: 10px;
 		background-color: #f5be21;
 		color: #fff;
 		font-weight: 600;
@@ -970,6 +977,103 @@
 
 		margin-left: 0px;
 		height: 30px;
-		width: 90px;
+		width: 90px; */
 	
 	}
+	.view-order-dtl .order-id {
+		font-size: 20px;
+		text-align: left;
+		position: relative;
+		font-weight: 600;
+		margin-top: 20px;
+	}
+	.view-order-dtl .order-id::after {
+		height: 5px;
+		position: absolute;
+		content: "";
+		background: #071828;
+		width: 51px;
+		display: block;
+		border-radius: 4px;
+		margin: 0px;
+		top: 31px;
+	}
+	.src-coupon-code .serch-box {
+		display: flex;
+	}
+	.src-coupon-code .serch-box input {
+		height: 40px;
+		border-radius: 4px 0px 0px 4px;
+		border: 1px solid #fbb132;
+		padding-left: 15px;
+		font-size: 14px;
+		width: 210px;
+	}
+	.apply-code {
+		color: #fff;
+		background-image: linear-gradient(to bottom, #FBB034, #ECCE09);
+		font-size: 16px;
+		line-height: 38px;
+		padding: 0px 25px;
+		border-radius: 0px 4px 4px 0px;
+		margin-right: 15px;
+		font-weight: 500;
+		border: 1px solid #FBB034;
+		margin-left: -7px;
+	}
+	.serch-box {
+		display: flex;
+		margin-top: 30px;
+	}
+	.coupon-box {
+		margin-top: 20px;
+	}
+	.coupon-box .box {
+		border: 1px solid #eaeaea;
+		padding: 20px;
+		margin-bottom: 10px;
+		border-radius: 4px;
+	}
+	.coupon-box .coupon-code {
+		font-weight: 600;
+		color: #071828;
+		padding: 10px 20px;
+		display: inline-block;
+		border-radius: 4px;
+		border: 2px solid #fbb132;
+		background: #e6e0d5;
+	}
+	.coupon-box  .off-price {
+		font-size: 18px;
+		margin-top: 20px;
+	}
+	.coupon-box  .text-1 {
+		font-size: 14px;
+	}
+	.coupon-box  .also-get {
+		margin-top: 12px;
+	}
+	.coupon-box  .also-get .list-tt {
+		font-size: 16px;
+	}
+	.coupon-box  .also-get ul {
+		padding: 0px;
+		padding-left: 15px;
+	}
+	.coupon-box .also-get ul li {
+		font-size: 14px;
+		margin-top: 8px;
+	}
+	.coupon-box  .also-get .off-title {
+		color: #071828;
+	}
+	.apply-btn {
+		font-weight: 600;
+		color: #f6ad31;
+		padding: 10px 20px;
+		display: inline-block;
+		border-radius: 4px;
+		border: 2px solid #fbb132;
+		background: white;
+	}
+	/* view-order-dtl end */

@@ -18,6 +18,7 @@ import constant from "../constant/constant";
 import { getAppName, alertMessage, rendomGenerateOrderNumber } from "../utils";
 import { connect } from "react-redux";
 import "./placeorder.css";
+import { Modal } from "react-bootstrap";
 import { placeOrderService, productService } from "../../redux/index";
 var creditCardType = require("credit-card-type");
 declare var Razorpay: any;
@@ -36,7 +37,7 @@ class PlaceOrder extends React.Component<{
   updateCard: any;
   deleteCard: any;
   createOrder: any;
-  getCouponData:any
+  getCouponData: any;
 }> {
   /** place order state */
   placeOrderState: placeorderStateRequest = constant.placeorderPage.state;
@@ -120,7 +121,8 @@ class PlaceOrder extends React.Component<{
     bankarray: [],
     walletnumber: 0,
     walletnumbererror: "",
-    coupondetails:[]
+    coupondetails: [],
+    openModel: false,
   };
 
   /** Constructor call */
@@ -157,6 +159,8 @@ class PlaceOrder extends React.Component<{
     this.openCheckout = this.openCheckout.bind(this);
     this.changeWallet = this.changeWallet.bind(this);
     this.payWallet = this.payWallet.bind(this);
+    this.openApplyModel = this.openApplyModel.bind(this);
+    this.handleCloseModel = this.handleCloseModel.bind(this);
   }
 
   /** Page Render Call */
@@ -364,14 +368,14 @@ class PlaceOrder extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : get coupon details
    */
-  getCouponDetails(data:any) {
+  getCouponDetails(data: any) {
     // console.log("data",data);
     this.setState({
-      coupondetails:this.state.coupondetails = data
-    })
+      coupondetails: (this.state.coupondetails = data),
+    });
   }
 
   /**
@@ -1293,7 +1297,7 @@ class PlaceOrder extends React.Component<{
     const isValid = this.validateWallet();
     if (isValid) {
       this.setState({
-        walletnumbererror: "",
+        walletnumbererror: (this.state.walletnumbererror = ""),
       });
       if (this.state.cartarray) {
         var total: any = this.state.cartarray.reduce(
@@ -1320,7 +1324,7 @@ class PlaceOrder extends React.Component<{
         userID: user.userID,
         couponID: 0,
         paymentMethod: 0,
-        orderStatus: 1,
+        orderStatus: 0,
         paymentStatus: 0,
         distance: 0,
         totalQty: this.state.cartarray ? this.state.cartarray.length : 0,
@@ -1333,29 +1337,21 @@ class PlaceOrder extends React.Component<{
         paymentMessage: "",
         cardNumber: "",
         orderDetails: newCartArray,
+        addressID: this.state.mainaddress,
       };
-
       this.props.createOrder(obj);
 
-      // var razorpay = new Razorpay({
-      //   key: "rzp_live_5dM1OK63yl61hL",
-      // });
-      // razorpay.createPayment({
-      //   amount: total,
-      //   email: user.email,
-      //   contact: this.state.walletnumber,
-      //   order_id: rendomGenerateOrderNumber(),
-      //   method: 'wallet',
-      //   wallet: data
-      // });
-      // razorpay.on('payment.success', function(resp:any) {
-      // console.log("resp",resp);
-      // }); // will pass payment ID, order ID, and Razorpay signature to success handler.
-
-      // razorpay.on('payment.error', function(resp:any){alert(resp.error.description)});
-
-      // var razorpay = new Razorpay();
-      // razorpay.open();
+      setTimeout(() => {
+        if (
+          data === "freecharge" ||
+          data === "olamoney" ||
+          data === "payzapp"
+        ) {
+          this.setState({
+            changewallet: 0,
+          });
+        }
+      }, 200);
     }
   }
 
@@ -1449,7 +1445,10 @@ class PlaceOrder extends React.Component<{
                         <input
                           type="text"
                           id="walletnumber2"
+                          name="walletnumber"
                           className="form-control"
+                          onChange={this.onChangeEvent}
+                          maxLength={10}
                           required
                         />
                         <label
@@ -1494,7 +1493,10 @@ class PlaceOrder extends React.Component<{
                         <input
                           type="text"
                           id="walletnumber3"
+                          name="walletnumber"
                           className="form-control"
+                          onChange={this.onChangeEvent}
+                          maxLength={10}
                           required
                         />
                         <label
@@ -2301,6 +2303,18 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  openApplyModel() {
+    this.setState({
+      openModel: !this.state.openModel,
+    });
+  }
+
+  handleCloseModel() {
+    this.setState({
+      openModel: !this.state.openModel,
+    });
+  }
+
   /** Card item block */
   cardItemsBlock() {
     return (
@@ -2352,19 +2366,139 @@ class PlaceOrder extends React.Component<{
             <h3>Apply Coupon</h3>
             <hr />
           </div>
-          <div className="flex-box flex-box2 mt-4">
-            <input
-              type="text"
-              name="qty"
-              onChange={(e: any) => this.onChangeEvent(e)}
-            />
-            <div className="order-list1">
-              <div className="dlt-1">
-                <div className="order-food" style={{ width: "105px" }}>
-                  <button className="c-btn">Apply</button>
+
+          <div className="text-center">
+            <button className="cccc-btn" onClick={this.openApplyModel}>
+              <svg
+                version="1.1"
+                id="Capa_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                x="0px"
+                y="0px"
+                viewBox="0 0 512.003 512.003"
+                xmlSpace="preserve"
+                fill="#fff"
+                height="15px"
+                width="15px"
+                style={{ marginRight: "5px" }}
+              >
+                <g>
+                  <g>
+                    <path d="M477.958,262.633c-2.06-4.215-2.06-9.049,0-13.263l19.096-39.065c10.632-21.751,2.208-47.676-19.178-59.023l-38.41-20.38 c-4.144-2.198-6.985-6.11-7.796-10.729l-7.512-42.829c-4.183-23.846-26.241-39.87-50.208-36.479l-43.053,6.09 c-4.647,0.656-9.242-0.838-12.613-4.099l-31.251-30.232c-17.401-16.834-44.661-16.835-62.061,0L193.72,42.859 c-3.372,3.262-7.967,4.753-12.613,4.099l-43.053-6.09c-23.975-3.393-46.025,12.633-50.208,36.479l-7.512,42.827 c-0.811,4.62-3.652,8.531-7.795,10.73l-38.41,20.38c-21.386,11.346-29.81,37.273-19.178,59.024l19.095,39.064 c2.06,4.215,2.06,9.049,0,13.263l-19.096,39.064c-10.632,21.751-2.208,47.676,19.178,59.023l38.41,20.38 c4.144,2.198,6.985,6.11,7.796,10.729l7.512,42.829c3.808,21.708,22.422,36.932,43.815,36.93c2.107,0,4.245-0.148,6.394-0.452 l43.053-6.09c4.643-0.659,9.241,0.838,12.613,4.099l31.251,30.232c8.702,8.418,19.864,12.626,31.03,12.625 c11.163-0.001,22.332-4.209,31.03-12.625l31.252-30.232c3.372-3.261,7.968-4.751,12.613-4.099l43.053,6.09 c23.978,3.392,46.025-12.633,50.208-36.479l7.513-42.827c0.811-4.62,3.652-8.531,7.795-10.73l38.41-20.38 c21.386-11.346,29.81-37.273,19.178-59.024L477.958,262.633z M196.941,123.116c29.852,0,54.139,24.287,54.139,54.139 s-24.287,54.139-54.139,54.139s-54.139-24.287-54.139-54.139S167.089,123.116,196.941,123.116z M168.997,363.886 c-2.883,2.883-6.662,4.325-10.44,4.325s-7.558-1.441-10.44-4.325c-5.766-5.766-5.766-15.115,0-20.881l194.889-194.889 c5.765-5.766,15.115-5.766,20.881,0c5.766,5.766,5.766,15.115,0,20.881L168.997,363.886z M315.061,388.888 c-29.852,0-54.139-24.287-54.139-54.139s24.287-54.139,54.139-54.139c29.852,0,54.139,24.287,54.139,54.139 S344.913,388.888,315.061,388.888z" />
+                  </g>
+                </g>
+                <g>
+                  <g>
+                    <path d="M315.061,310.141c-13.569,0-24.609,11.039-24.609,24.608s11.039,24.608,24.609,24.608 c13.569,0,24.608-11.039,24.608-24.608S328.63,310.141,315.061,310.141z" />
+                  </g>
+                </g>
+                <g>
+                  <g>
+                    <path d="M196.941,152.646c-13.569,0-24.608,11.039-24.608,24.608c0,13.569,11.039,24.609,24.608,24.609 c13.569,0,24.609-11.039,24.609-24.609C221.549,163.686,210.51,152.646,196.941,152.646z" />
+                  </g>
+                </g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+                <g></g>
+              </svg>
+              Apply Coupon
+            </button>
+            <Modal
+              className="modal-dialog-centered"
+              show={this.state.openModel}
+              onHide={this.handleCloseModel}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Coupon Details</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <section className="view-order-dtl">
+                  <div className="fix-width">
+                    <div className="top-title">
+                      <h1 className="order-id">Available Coupons </h1>
+                    </div>
+                    <div className="src-coupon-code">
+                      <div className="serch-box">
+                        <input
+                          type="text"
+                          name="text"
+                          placeholder="Enter coupon code"
+                        />
+                        <button className="apply-code">Apply</button>
+                      </div>
+                    </div>
+                    <div className="coupon-box">
+                      {
+                        this.state.coupondetails ? (
+                          this.state.coupondetails.map((data:any,index:number) => (
+                      <div className="box" key={index}>
+                        <div className="coupon-code">{data.couponCode}</div>
+                        <h4 className="off-price">Get {(((data.minAmountOrder) - (data.sellingPrice))/data.minAmountOrder * 100).toFixed(2)}% Off</h4>
+                        <span className="text-1">
+                          Use code Kartzo123 & get {(((data.minAmountOrder) - (data.sellingPrice))/data.minAmountOrder * 100).toFixed(2)}% off on orders above R129
+                          Maximum discount: 75.
+                        </span>
+                        {/* <div className="also-get">
+                          <span className="list-tt">Also get.</span>
+                          <ul className="">
+                            <li>
+                              <div className="off-title">
+                                Extra R30 cashback with PhonePe
+                              </div>
+                              <div className="off-text">
+                                Pay with PhonePe Wallet to get an additional
+                                cashback of R30 in your PhanePe Wallet
+                              </div>
+                            </li>
+                            <li>
+                              <div className="off-title">
+                                Extra R30 cashback with PhonePe
+                              </div>
+                              <div className="off-text">
+                                Pay with PhonePe Wallet to get an additional
+                                cashback of R30 in your PhanePe Wallet
+                              </div>
+                            </li>
+                          </ul>
+                        </div> */}
+                        <button className="apply-btn">Apply Coupon</button>
+                      </div>
+                          ))
+                        ) : ('')
+                      }
+
+                      
+                    </div>
+                  </div>
+                </section>
+              </Modal.Body>
+              <Modal.Footer>
+                <div className="col-md-12">
+                  <div className="deliver">
+                    <button
+                      type="button"
+                      className="btb-text"
+                      onClick={this.handleCloseModel}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </Modal.Footer>
+            </Modal>
           </div>
           {/* {
             this.state.coupondetails ? (
@@ -2442,16 +2576,12 @@ class PlaceOrder extends React.Component<{
   }
 
   /** Get Coupon List */
-  getCouponList(
-    searchText: string = "",
-    page: number = 1,
-    size: number = 20
-  ) {
+  getCouponList(searchText: string = "", page: number = 1, size: number = 20) {
     const obj: any = {
       searchText: searchText,
       isActive: true,
       page: page,
-      size: size
+      size: size,
     };
     this.props.getCouponData(obj);
   }
@@ -2670,7 +2800,7 @@ const mapStateToProps = (state: any) => ({
   getCartDetail: state.product.getcartdetails,
   getaddressDetail: state.placeOrder.getaddressdata,
   getCardDetail: state.placeOrder.getcarddata,
-  getCouponDetail: state.order.coupondata
+  getCouponDetail: state.order.coupondata,
 });
 
 /**
@@ -2713,9 +2843,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   /** Create Order */
   createOrder: (data: any) => dispatch(placeOrderService.createOrder(data)),
 
-    /** Get CouponList */
-    getCouponData: (data: any) => dispatch(placeOrderService.getCouponData(data)),
-  
+  /** Get CouponList */
+  getCouponData: (data: any) => dispatch(placeOrderService.getCouponData(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrder);

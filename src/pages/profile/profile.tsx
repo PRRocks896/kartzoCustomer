@@ -3,14 +3,17 @@ import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
 import {
   getAddressListRequest,
+  getCartListRequest,
   placeorderStateRequest,
   profileStateRequest,
+  removeCartItemRequest,
 } from "../../modelController";
 import { profile } from "../../pages/components/helper/images";
 import {
   placeOrderService,
   orderService,
   loginService,
+  productService,
 } from "../../redux/index";
 import constant from "../constant/constant";
 import { getAppName, alertMessage } from "../utils";
@@ -28,6 +31,8 @@ class Profile extends React.Component<{
   getOrderList: any;
   updateProfileData: any;
   getProfile: any;
+  getcartData:any;
+  removeProductFromCart:any
 }> {
   /** Profile Page State */
   profileState: profileStateRequest = constant.profilePage.state;
@@ -76,6 +81,17 @@ class Profile extends React.Component<{
     selectedFileerror: this.profileState.selectedFileerror,
     disable: this.profileState.disable,
     showOrder: false,
+    ordernumber:0,
+    addressName:'',
+    fulladdress:'',
+    merchantname:'',
+    orderdate:'',
+    productdetail:[],
+    totalprice:'',
+    cartarray:[],
+    clearModel:false,
+    reorderdata:''
+
   };
 
   /** Constructor call */
@@ -96,6 +112,9 @@ class Profile extends React.Component<{
     this.removeIcon = this.removeIcon.bind(this);
     this.handelCloseOrderModle = this.handelCloseOrderModle.bind(this);
     this.openOrderModel = this.openOrderModel.bind(this);
+    this.reOrder = this.reOrder.bind(this);
+    this.clearOldCart = this.clearOldCart.bind(this);
+    this.handleClearModel = this.handleClearModel.bind(this);
   }
 
   /** Page Render Call */
@@ -186,6 +205,10 @@ class Profile extends React.Component<{
       this.getProfileData(nextProps.profileData);
     }
 
+    if (nextProps.getCartDetail) {
+      this.getCartAllProductData(nextProps.getCartDetail);
+    }
+
     if (nextProps.updateProfileData) {
       this.setState({
         disable: false,
@@ -195,6 +218,29 @@ class Profile extends React.Component<{
       this.setState({
         disable: false,
       });
+    }
+  }
+
+  
+  /**
+   * 
+   * @param data : get all cart data
+   */
+  getCartAllProductData(data: any) {
+    this.setState({
+      cartarray: this.state.cartarray = data.data
+    });
+    console.log("cart",this.state.cartarray);
+
+    if(this.state.cartarray && this.state.cartarray.length > 0) {
+      this.setState({
+        clearModel: !this.state.clearModel
+      });
+    } else {
+    //    this.props.history.push({
+    //    pathname: "/cart",
+    //    state: { order: this.state.reorderdata }
+    // })
     }
   }
 
@@ -651,8 +697,15 @@ class Profile extends React.Component<{
     });
   }
 
-  openOrderModel() {
+  openOrderModel(data:any) {
     this.setState({
+      ordernumber:data.orderNo,
+      addressName:data.addressDetail[0].addressType,
+      fulladdress:data.addressDetail[0].address,
+      merchantname:data.orderDetails[0].merchantName,
+      orderdate:data.orderDetails[0].created,
+      productdetail:data.orderDetails,
+      totalprice:data.totalAmount,
       showOrder: !this.state.showOrder,
     });
   }
@@ -661,6 +714,93 @@ class Profile extends React.Component<{
     this.setState({
       showOrder: !this.state.showOrder,
     });
+  }
+
+  handleClearModel() {
+    this.setState({
+      clearModel: !this.state.clearModel,
+    });
+  }
+
+    /** Clear old cart */
+    clearOldCart() {
+      let cartdeletearray = [];
+      let oldarray : any = this.state.cartarray;
+      for (var i = 0; i < oldarray.length; i++) {
+        cartdeletearray.push(oldarray[i].orderCartID);
+      }
+      const obj: removeCartItemRequest = {
+        moduleName: "OrderCart",
+        id: cartdeletearray,
+      };
+      this.props.removeProductFromCart(obj);
+  
+      setTimeout(() => {
+        localStorage.removeItem("merchantID");
+        this.setState({
+          clearModel: (this.state.clearModel = false),
+        });
+        this.props.history.push({
+          pathname: "/cart",
+          state: { order: this.state.reorderdata }
+       })
+      }, 50);
+    }
+
+  clearModel() {
+
+    return(
+      <Modal
+      className="modal-dialog-centered d-ct"
+      show={this.state.clearModel}
+      onHide={this.handleClearModel}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title></Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="clear-cart">
+          <img
+            src={require("../../assets/images/cart-icon.svg")}
+            alt="cart icon"
+          />
+          <h1>Clear cart?</h1>
+          <p>
+            <strong>
+              Do you want to clear the cart and add items from{" "}
+              <strong>another cart?</strong>
+            </strong>
+          </p>
+          <div className="flex-btn">
+            <button className="cencel-btn" onClick={this.handleClearModel}>
+              Cancel
+            </button>
+            <button className="clear-btn" onClick={this.clearOldCart}>
+              Clear cart
+            </button>
+          </div>
+        </div>
+      </Modal.Body>
+      <Modal.Footer></Modal.Footer>
+    </Modal>
+    )
+  }
+
+  reOrder(data:any) {
+    this.setState({
+      reorderdata:data
+    })
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const obj : getCartListRequest = {
+      searchText: '',
+      isActive: true,
+      page: 1,
+      size: 10,
+      userId:user.userID
+    };
+    this.props.getcartData(obj);
+   
   }
 
   /** Render DOM */
@@ -983,76 +1123,65 @@ class Profile extends React.Component<{
                             ? this.state.orderdata.length > 0 &&
                               this.state.orderdata.map(
                                 (order: any, index: any) =>
-                                  order.orderDetails
-                                    ? order.orderDetails.map(
-                                        (main: any, index1: number) => (
-                                          <div
-                                            className="order-list1"
-                                            key={index1}
-                                          >
-                                            <div className="dlt-1">
-                                              <div className="img-box">
-                                                {main &&
-                                                main.productImages &&
-                                                main.productImages[0]
-                                                  .imagePath ? (
-                                                  <img
-                                                  style={{height:'79px'}}
-                                                    src={
-                                                      constant.filemerchantpath +
-                                                      main.productImages[0]
-                                                        .imagePath
-                                                    }
-                                                    alt=""
-                                                  />
-                                                ) : (
-                                                  <img
-                                                    src={profile.food}
-                                                    alt=""
-                                                  />
-                                                )}
-                                              </div>
-                                              <div className="order-dtl1">
-                                                <h4 className="sub-tt">
-                                                  {main.merchantName}
-                                                </h4>
-                                                <div className="address-nm">
-                                                  Race Course Road
-                                                </div>
-                                                <div className="shop-id">
-                                                  ORDER # {order.orderNo} |{" "}
-                                                  {moment(main.created).format(
-                                                    "LLLL"
-                                                  )}
-                                                </div>
-                                                <button
-                                                  className="view-dtl"
-                                                  onClick={this.openOrderModel}
-                                                >
-                                                  View Details
-                                                </button>
-                                              </div>
-                                            </div>
+                                <div
+                                className="order-list1"
+                                key={index}
+                              >
+                                <div className="dlt-1">
+                                  <div className="img-box">
+                                  <img
+                                        src={profile.food}
+                                        alt=""
+                                      />
+                                  </div>
+                                  <div className="order-dtl1">
+                                    <h4 className="sub-tt">
+                                      {order.orderDetails[0].merchantName}
+                                    </h4>
+                                    <div className="address-nm">
+                                      Race Course Road
+                                    </div>
+                                    <div className="shop-id">
+                                      ORDER # {order.orderNo} |{" "}
+                                      {moment(order.orderDate).format(
+                                        "LLLL"
+                                      )}
+                                    </div>
+                                    <button
+                                      className="view-dtl"
+                                      onClick={() => this.openOrderModel(order)}
+                                    >
+                                      View Details
+                                    </button>
+                                  </div>
+                                </div>
 
-                                            <div className="order-food">
-                                              <div className="food-nm">
-                                                {main.productName}
-                                              </div>
-                                              <div className="btn-box">
-                                                <button className="order-btn">
-                                                  REORDER
-                                                </button>
-                                                <button className="help-btn">
-                                                  HELP
-                                                </button>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        )
-                                      )
-                                    : ""
+                                <div className="order-food">
+                                  <div className="btn-box">
+                                    {
+                                      order.orderDetails ? (
+                                        order.orderDetails.map((item:any,index1:number) => (
+                                  <div className="food-nm" key={index1}>
+                                    {item.quantity}-{item.productName}
+                                  </div>
+                                        ))
+                                      ) : ('')
+                                    }
+                                    <div className="mt-4">
+
+                                    <button className="order-btn" onClick={() => this.reOrder(order)}>
+                                      REORDER
+                                    </button>
+                                    <button className="help-btn">
+                                      HELP
+                                    </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                               )
                             : ""}
+                            {this.clearModel()}
                           <Modal
                             className="modal-dialog-centered"
                             show={this.state.showOrder}
@@ -1062,81 +1191,184 @@ class Profile extends React.Component<{
                               <Modal.Title>Order Details</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
-                              <section className="send-packages">
-                                <div className="container-fluid">
-                                  <div className="row">
-                                    <div className="col-md-12">
-                                      <div className="main-flex">
-                                        <div className="left-box">
-                                          <div className="card-item123">
-                                            <h1 className="my-cart-item">
-                                              Order #8282828282{" "}
-                                            </h1>
-                                            {/* <p className="mt-3">Your on demand local courier </p> */}
-                                          </div>
-
-                                          <div className="add-address">
-                                            <div className="bdr-left"></div>
-                                            <div className="address-box1">
-                                              <div className="small-tt mt-4">
-                                                Pizza Studio
-                                              </div>
-                                              <div className="pickup-location">
-                                                Kalawad Road
-                                              </div>
-                                          
-                                              <div className="circle-box">
-                                                <div className="icon-dot-bg">
-                                                  <svg
-                                                    version="1.1"
-                                                    id="Layer_1"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    x="0px"
-                                                    y="0px"
-                                                    viewBox="0 0 319 318"
-                                                  >
-                                                    <g>
-                                                      <path d="M159.8,8.68c82.77,0.05,150.08,67.18,150.01,149.59c-0.07,83.76-67.4,151.54-150.41,151.43   C76.4,309.59,8.27,241.72,8.26,159.11C8.24,75.32,75.43,8.63,159.8,8.68z M124.36,146.18c1.32-1.45,2.09-2.36,2.92-3.21   c5.91-5.93,11.91-11.78,17.74-17.79c4.8-4.94,4.71-11.2,0.01-16.01c-4.79-4.91-11.33-5.14-16.28-0.24   c-13.94,13.8-27.82,27.67-41.63,41.61c-5.01,5.06-5.03,11.59-0.07,16.72c13.46,13.93,27,27.79,40.58,41.59   c4.78,4.86,11.19,4.86,16.04,0.29c5.04-4.75,5.32-11.12,0.45-16.27c-5.83-6.18-11.85-12.19-17.77-18.28   c-0.72-0.75-1.35-1.59-2.43-2.86c2.03,0,3.37,0,4.72,0c30.75-0.01,61.5-0.01,92.24-0.02c6.54,0,11.45-3.41,13.17-9.05   c2.59-8.48-3.71-16.46-13.15-16.47c-30.62-0.04-61.25-0.02-91.87-0.02C127.73,146.18,126.41,146.18,124.36,146.18z" />
-                                                    </g>
-                                                  </svg>
-                                                </div>
-                                              </div>
-                                              <div className="line-dot-1">
-                                                {" "}
-                                              </div>
-                                            </div>
-
-                                            <div className="address-box1">
-                                              <div className="small-tt">
-                                                Home
-                                              </div>
-                                              <div className="pickup-location">
-                                                near bus station
-                                              </div>
-
-                                            
-                                              <div className="circle-box">
-                                                <div className="icon-dot-bg2">
-                                                  <svg
-                                                    version="1.1"
-                                                    id="Layer_1"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    x="0px"
-                                                    y="0px"
-                                                    viewBox="0 0 319 318"
-                                                  >
-                                                    <g>
-                                                      <path d="M159.8,8.68c82.77,0.05,150.08,67.18,150.01,149.59c-0.07,83.76-67.4,151.54-150.41,151.43   C76.4,309.59,8.27,241.72,8.26,159.11C8.24,75.32,75.43,8.63,159.8,8.68z M124.36,146.18c1.32-1.45,2.09-2.36,2.92-3.21   c5.91-5.93,11.91-11.78,17.74-17.79c4.8-4.94,4.71-11.2,0.01-16.01c-4.79-4.91-11.33-5.14-16.28-0.24   c-13.94,13.8-27.82,27.67-41.63,41.61c-5.01,5.06-5.03,11.59-0.07,16.72c13.46,13.93,27,27.79,40.58,41.59   c4.78,4.86,11.19,4.86,16.04,0.29c5.04-4.75,5.32-11.12,0.45-16.27c-5.83-6.18-11.85-12.19-17.77-18.28   c-0.72-0.75-1.35-1.59-2.43-2.86c2.03,0,3.37,0,4.72,0c30.75-0.01,61.5-0.01,92.24-0.02c6.54,0,11.45-3.41,13.17-9.05   c2.59-8.48-3.71-16.46-13.15-16.47c-30.62-0.04-61.25-0.02-91.87-0.02C127.73,146.18,126.41,146.18,124.36,146.18z" />
-                                                    </g>
-                                                  </svg>
-                                                </div>
-                                              </div>
-                                              <div className="line-dot-2">
-                                                {" "}
-                                              </div>
-                                            </div>
-                                          </div>
+                              <section className="view-order-dtl">
+                                <div className="fix-width">
+                                  <div className="top-title">
+                                    <h1 className="order-id">
+                                                  Order #{this.state.ordernumber}{" "}
+                                    </h1>
+                                  </div>
+                                  <div className="add-address">
+                                    <div className="address-box1">
+                                      <div className="small-tt">
+                                      {this.state.merchantname}
+                                      </div>
+                                      <div className="pickup-location">
+                                        Kalawad Road
+                                      </div>
+                                      <div className="circle-box">
+                                        <div className="icon-dot-bg">
+                                          <svg
+                                            version="1.1"
+                                            id="Capa_1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                                            x="0px"
+                                            y="0px"
+                                            viewBox="0 0 512 512"
+                                            xmlSpace="preserve"
+                                          >
+                                            <g>
+                                              <g>
+                                                <path d="M256,0C156.748,0,76,80.748,76,180c0,33.534,9.289,66.26,26.869,94.652l142.885,230.257    c2.737,4.411,7.559,7.091,12.745,7.091c0.04,0,0.079,0,0.119,0c5.231-0.041,10.063-2.804,12.75-7.292L410.611,272.22    C427.221,244.428,436,212.539,436,180C436,80.748,355.252,0,256,0z M384.866,256.818L258.272,468.186l-129.905-209.34    C113.734,235.214,105.8,207.95,105.8,180c0-82.71,67.49-150.2,150.2-150.2S406.1,97.29,406.1,180    C406.1,207.121,398.689,233.688,384.866,256.818z" />
+                                              </g>
+                                            </g>
+                                            <g>
+                                              <g>
+                                                <path d="M256,90c-49.626,0-90,40.374-90,90c0,49.309,39.717,90,90,90c50.903,0,90-41.233,90-90C346,130.374,305.626,90,256,90z     M256,240.2c-33.257,0-60.2-27.033-60.2-60.2c0-33.084,27.116-60.2,60.2-60.2s60.1,27.116,60.1,60.2    C316.1,212.683,289.784,240.2,256,240.2z" />
+                                              </g>
+                                            </g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                          </svg>
                                         </div>
+                                      </div>
+                                      <div className="line-dot-1"></div>
+                                    </div>
+                                    <div className="address-box1">
+                                                  <div className="small-tt">{this.state.addressName}</div>
+                                      <div className="pickup-location">
+                                       {this.state.fulladdress}
+                                      </div>
+                                      <div className="btn-line"></div>
+                                      <div className="delivery-day">
+                                        <div className="icon-right">
+                                          <svg
+                                            height="16px"
+                                            viewBox="0 -46 417.81333 417"
+                                            width="16px"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                          >
+                                            <path
+                                              d="m159.988281 318.582031c-3.988281 4.011719-9.429687 6.25-15.082031 6.25s-11.09375-2.238281-15.082031-6.25l-120.449219-120.46875c-12.5-12.5-12.5-32.769531 0-45.246093l15.082031-15.085938c12.503907-12.5 32.75-12.5 45.25 0l75.199219 75.203125 203.199219-203.203125c12.503906-12.5 32.769531-12.5 45.25 0l15.082031 15.085938c12.5 12.5 12.5 32.765624 0 45.246093zm0 0"
+                                              fill="#071828"
+                                            />
+                                          </svg>
+                                          <span className="delivery-dt">
+                                            Delivered on {moment(this.state.orderdate).format('LLLL')} by yuvraj kashmiri chand
+                                          </span>
+                                        </div>
+                                      </div>
+                                      <div className="circle-box">
+                                        <div className="icon-dot-bg">
+                                          <svg
+                                            version="1.1"
+                                            id="Capa_1"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                                            x="0px"
+                                            y="0px"
+                                            viewBox="0 0 477.846 477.846"
+                                            xmlSpace="preserve"
+                                          >
+                                            <g>
+                                              <g>
+                                                <path d="M472.847,226.846l-34.116-34.116L250.998,4.997c-6.664-6.663-17.468-6.663-24.132,0L39.132,192.73L4.999,226.864    c-6.548,6.78-6.361,17.584,0.419,24.132c6.614,6.388,17.099,6.388,23.713,0l4.983-5.018v214.801    c0,9.426,7.641,17.067,17.067,17.067h375.467c9.426,0,17.067-7.641,17.067-17.067V245.978l5,5.001    c6.78,6.548,17.584,6.36,24.132-0.419C479.235,243.946,479.235,233.46,472.847,226.846z M290.115,443.713h-102.4V307.179h102.4    V443.713z M409.581,443.713h-85.333v-153.6c0-9.426-7.641-17.067-17.067-17.067H170.648c-9.426,0-17.067,7.641-17.067,17.067    v153.6H68.248V211.845L238.914,41.178l170.667,170.667V443.713z" />
+                                              </g>
+                                            </g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                            <g></g>
+                                          </svg>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="p-item-dtl">
+                                    <div className="p-total-item"> {this.state.productdetail.length} ITEM </div>
+                                    {
+                                      this.state.productdetail ? (
+                                        this.state.productdetail.map((data:any,index:number) => (
+
+                                    <div className="p-item-list" key={index}>
+                                      <div className="p-flex-box">
+                                        <div className="p-list-1">
+                                        <h4>{data.productName}</h4>
+                                          <span className="p-descri-1">
+                                            {/* 9" Inch */}
+                                          </span>
+                                        </div>
+                                        <div className="p-item-price">
+                                          &#x20B9;{data.sellingPrice}
+                                        </div>
+                                      </div>
+                                    </div>
+                                        ))
+                                      ) : ('')
+                                    }
+                                    <div className="p-list-total-rupee">
+                                      <div className="p-flex-box">
+                                        <div className="p-item-ttl">
+                                          Item Total
+                                        </div>
+                                        <div className="p-item-price">
+                                          &#x20B9;{this.state.totalprice}
+                                        </div>
+                                      </div>
+                                      {/* <div className="p-flex-box">
+                                        <div className="p-delivery-prtner">
+                                          Delivery partner fee
+                                        </div>
+                                        <div className="p-item-price">
+                                          &#x20B9;15.00
+                                        </div>
+                                      </div>
+                                      <div className="p-flex-box">
+                                        <div className="p-discount-aply clr-0">
+                                          Discount Applied
+                                        </div>
+                                        <div className="p-item-price clr-0">
+                                          -&#x20B9;54.00
+                                        </div>
+                                      </div> */}
+                                    </div>
+                                    <div className="p-paid-total">
+                                      <div className="p-dis-flx">
+                                        <span className="p-paid-viya">
+                                          Paid Via Credit/Debit card
+                                        </span>
+                                        <span className="p-bill-ttl">
+                                          BILL TOTAL
+                                        </span>
+                                        <span className="p-bill-rupee">
+                                          &#x20B9;{this.state.totalprice}
+                                        </span>
                                       </div>
                                     </div>
                                   </div>
@@ -1598,7 +1830,7 @@ class Profile extends React.Component<{
                             <div className="wallet-1">
                               <div className="img-flex">
                                 <img src={profile.simple} alt="" />
-                                <div className="pay-tt">Simpl</div>
+                                <div className="pay-tt">Simple</div>
                               </div>
                               <button className="edit-btn">LINK</button>
                             </div>
@@ -1785,6 +2017,7 @@ const mapStateToProps = (state: any) => ({
   orderDetails: state.order.orderdata,
   profileData: state.auth.profiledata,
   updateProfileData: state.auth.updateprofiledata,
+  getCartDetail: state.product.getcartdetails,
 });
 
 /**
@@ -1810,6 +2043,13 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(loginService.updateProfileData(data)),
 
   getProfile: (data: any) => dispatch(loginService.getProfile(data)),
+
+    /** Get Cart */
+    getcartData: (data: any) => dispatch(productService.getcartData(data)),
+
+     /** Remove Product */
+  removeProductFromCart: (data: any) =>
+  dispatch(productService.removeProductFromCart(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

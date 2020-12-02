@@ -29,6 +29,8 @@ class Cart extends React.Component<{
     isShowCard: this.cartState.isShowCard,
     cartarray: this.cartState.cartarray,
     isOpen: this.cartState.isOpen,
+    clear:false,
+    updtearray:[]
   };
   constructor(props: any) {
     super(props);
@@ -46,9 +48,21 @@ class Cart extends React.Component<{
     document.title = constant.cart + getAppName();
     EventEmitter.dispatch("isShow", true);
     EventEmitter.dispatch("isShowFooter", true);
-    if (localStorage.getItem("token")) {
+    
+    if (localStorage.getItem("token") && this.state.clear === false) {
       this.getCartData();
     }
+    console.log("props",this.props);
+    let reorderdata:any = this.props;
+    if(reorderdata && reorderdata.location && reorderdata.location.state && reorderdata.location.state.order && reorderdata.location.state.order.orderDetails) {
+      this.setState({
+        clear:this.state.clear === true,
+        updtearray:this.state.updtearray = reorderdata.location.state.order.orderDetails
+      })
+      console.log("updtearray",this.state.updtearray);
+    }
+
+
   }
 
   /**
@@ -86,8 +100,9 @@ class Cart extends React.Component<{
    * @param data : get all cart data
    */
   getCartAllProductData(data: any) {
+    console.log("data",data)
     this.setState({
-      cartarray: this.state.cartarray = data.data,
+      cartarray: this.state.cartarray = data.data && data.data.length > 0 ? data.data : null
     });
     if (this.state.cartarray && this.state.cartarray.length > 0) {
       this.setState({
@@ -250,86 +265,170 @@ class Cart extends React.Component<{
                         My Cart ({localStorage.getItem("cartcount")})
                       </h1>
                     </div>
-                    {this.state.cartarray
-                      ? this.state.cartarray.length > 0 &&
-                        this.state.cartarray.map(
-                          (cartdata: any, index: any) => (
-                            <div className="card-list" key={index}>
-                              <div className="card-item-1">
-                                <div className="content-box1">
-                                  <div className="img-box">
-                                    {
-                                      cartdata.productImages && cartdata.productImages[0].imagePath ? (
-                                        <img src={constant.filemerchantpath + cartdata.productImages[0].imagePath} alt="" />
-                                      ) : (
-                                        <img src={findstore.store} alt="" />
-                                      )
-                                    }
-                                  </div>
-                                  <div className="right-content">
-                                    <div className="list-tt">
-                                      {cartdata.productName}{" "}
+                    {
+                      this.state.clear === false ? (
+                        this.state.cartarray
+                          ? (this.state.cartarray.length > 0 &&
+                            this.state.cartarray.map(
+                              (cartdata: any, index: any) => (
+                                <div className="card-list" key={index}>
+                                  <div className="card-item-1">
+                                    <div className="content-box1">
+                                      <div className="img-box">
+                                        {
+                                          cartdata.productImages && cartdata.productImages[0].imagePath ? (
+                                            <img src={constant.filemerchantpath + cartdata.productImages[0].imagePath} alt="" />
+                                          ) : (
+                                            <img src={findstore.store} alt="" />
+                                          )
+                                        }
+                                      </div>
+                                      <div className="right-content">
+                                        <div className="list-tt">
+                                          {cartdata.productName}{" "}
+                                        </div>
+                                        <div className="dicrip-1">
+                                          Number of quantity - {cartdata.quantity}
+                                        </div>
+                                        {/* <div className="saller-nm">
+                                          Seller: DIGIONICS
+                                        </div> */}
+                                        <div className="price">
+                                          R{cartdata.sellingPrice}
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div className="dicrip-1">
-                                      Number of quantity - {cartdata.quantity}
-                                    </div>
-                                    {/* <div className="saller-nm">
-                                      Seller: DIGIONICS
-                                    </div> */}
-                                    <div className="price">
-                                      R{cartdata.sellingPrice}
+                                    <div className="btm-content">
+                                      <div className="number">
+                                        <span
+                                          className="minus"
+                                          onClick={() =>
+                                            this.decrementQty(cartdata)
+                                          }
+                                        >
+                                          -
+                                        </span>
+                                        <input
+                                          type="text"
+                                          name="qty"
+                                          value={
+                                            cartdata.quantity
+                                              ? cartdata.quantity
+                                              : ""
+                                          }
+                                          onChange={(e: any) =>
+                                            this.onChangeEvent(e, index)
+                                          }
+                                        />
+                                        <span
+                                          className="plus"
+                                          onClick={() =>
+                                            this.incrementQty(cartdata)
+                                          }
+                                        >
+                                          +
+                                        </span>
+                                      </div>
+                                      <button>Save for later</button>
+                                      <button
+                                        onClick={() =>
+                                          this.removeItemFromCart(
+                                            cartdata.orderCartID,
+                                            "You should be Remove product from cart",
+                                            "Yes, Remove it"
+                                          )
+                                        }
+                                      >
+                                        Remove
+                                      </button>
                                     </div>
                                   </div>
                                 </div>
-                                <div className="btm-content">
-                                  <div className="number">
-                                    <span
-                                      className="minus"
-                                      onClick={() =>
-                                        this.decrementQty(cartdata)
+                              )
+                            )) : ('')
+                      
+                      ) : (
+                        this.state.updtearray
+                        ? (this.state.updtearray.length > 0 &&
+                          this.state.updtearray.map(
+                            (cartdata: any, index: any) => (
+                              <div className="card-list" key={index}>
+                                <div className="card-item-1">
+                                  <div className="content-box1">
+                                    <div className="img-box">
+                                      {
+                                        cartdata.productImages && cartdata.productImages[0].imagePath ? (
+                                          <img src={constant.filemerchantpath + cartdata.productImages[0].imagePath} alt="" />
+                                        ) : (
+                                          <img src={findstore.store} alt="" />
+                                        )
                                       }
-                                    >
-                                      -
-                                    </span>
-                                    <input
-                                      type="text"
-                                      name="qty"
-                                      value={
-                                        cartdata.quantity
-                                          ? cartdata.quantity
-                                          : ""
-                                      }
-                                      onChange={(e: any) =>
-                                        this.onChangeEvent(e, index)
-                                      }
-                                    />
-                                    <span
-                                      className="plus"
-                                      onClick={() =>
-                                        this.incrementQty(cartdata)
-                                      }
-                                    >
-                                      +
-                                    </span>
+                                    </div>
+                                    <div className="right-content">
+                                      <div className="list-tt">
+                                        {cartdata.productName}{" "}
+                                      </div>
+                                      <div className="dicrip-1">
+                                        Number of quantity - {cartdata.quantity}
+                                      </div>
+                                      {/* <div className="saller-nm">
+                                        Seller: DIGIONICS
+                                      </div> */}
+                                      <div className="price">
+                                        R{cartdata.sellingPrice}
+                                      </div>
+                                    </div>
                                   </div>
-                                  <button>Save for later</button>
-                                  <button
-                                    onClick={() =>
-                                      this.removeItemFromCart(
-                                        cartdata.orderCartID,
-                                        "You should be Remove product from cart",
-                                        "Yes, Remove it"
-                                      )
-                                    }
-                                  >
-                                    Remove
-                                  </button>
+                                  <div className="btm-content">
+                                    <div className="number">
+                                      <span
+                                        className="minus"
+                                        onClick={() =>
+                                          this.decrementQty(cartdata)
+                                        }
+                                      >
+                                        -
+                                      </span>
+                                      <input
+                                        type="text"
+                                        name="qty"
+                                        value={
+                                          cartdata.quantity
+                                            ? cartdata.quantity
+                                            : ""
+                                        }
+                                        onChange={(e: any) =>
+                                          this.onChangeEvent(e, index)
+                                        }
+                                      />
+                                      <span
+                                        className="plus"
+                                        onClick={() =>
+                                          this.incrementQty(cartdata)
+                                        }
+                                      >
+                                        +
+                                      </span>
+                                    </div>
+                                    <button>Save for later</button>
+                                    <button
+                                      onClick={() =>
+                                        this.removeItemFromCart(
+                                          cartdata.orderCartID,
+                                          "You should be Remove product from cart",
+                                          "Yes, Remove it"
+                                        )
+                                      }
+                                    >
+                                      Remove
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          )
-                        )
-                      : ""}
+                            )
+                          )) : ('')
+                      )
+                    }
                     {
                       localStorage.getItem('token') ? (
                         <div className="place-btn">
