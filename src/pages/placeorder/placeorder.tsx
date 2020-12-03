@@ -38,6 +38,7 @@ class PlaceOrder extends React.Component<{
   deleteCard: any;
   createOrder: any;
   getCouponData: any;
+  applyCoupon:any;
 }> {
   /** place order state */
   placeOrderState: placeorderStateRequest = constant.placeorderPage.state;
@@ -123,6 +124,7 @@ class PlaceOrder extends React.Component<{
     walletnumbererror: "",
     coupondetails: [],
     openModel: false,
+    couponShow:false
   };
 
   /** Constructor call */
@@ -161,6 +163,7 @@ class PlaceOrder extends React.Component<{
     this.payWallet = this.payWallet.bind(this);
     this.openApplyModel = this.openApplyModel.bind(this);
     this.handleCloseModel = this.handleCloseModel.bind(this);
+    this.couponApply = this.couponApply.bind(this);
   }
 
   /** Page Render Call */
@@ -346,7 +349,7 @@ class PlaceOrder extends React.Component<{
    * @param nextProps : get updated props value
    */
   componentWillReceiveProps(nextProps: any, newState: any) {
-    // console.log("props", nextProps);
+    console.log("props", nextProps);
     if (nextProps.getCartDetail) {
       this.getCartAllProductData(nextProps.getCartDetail);
     }
@@ -364,6 +367,17 @@ class PlaceOrder extends React.Component<{
     }
     if (nextProps.getCouponDetail) {
       this.getCouponDetails(nextProps.getCouponDetail);
+    }
+    if (nextProps.applycoupon) {
+      this.CouponappliedDetails(nextProps.applycoupon);
+    }
+  }
+
+  CouponappliedDetails(data:any) {
+    if(data.status === 200) {
+      this.setState({
+        couponShow:this.state.couponShow = true
+      })
     }
   }
 
@@ -2315,6 +2329,23 @@ class PlaceOrder extends React.Component<{
     });
   }
 
+  couponApply(data:any) {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const obj = {
+      userID:user.userID,
+      couponID:data.couponId
+    }
+    this.props.applyCoupon(obj);
+    setTimeout(() => {
+            var numVal1 = data.minAmountOrder;
+            var numVal2 =  (data.sellingPrice)/ 100;
+            var totalValue = numVal1 - (numVal1 * numVal2);
+            console.log("totalvalue",totalValue.toFixed(2));
+    }, 200);
+
+  }
+
   /** Card item block */
   cardItemsBlock() {
     return (
@@ -2367,7 +2398,10 @@ class PlaceOrder extends React.Component<{
             <hr />
           </div>
 
-          <div className="text-center">
+          <div className="apply-c">
+            {
+              this.state.couponShow === false ? (
+                <>
             <button className="cccc-btn" onClick={this.openApplyModel}>
               <svg
                 version="1.1"
@@ -2378,10 +2412,10 @@ class PlaceOrder extends React.Component<{
                 y="0px"
                 viewBox="0 0 512.003 512.003"
                 xmlSpace="preserve"
-                fill="#fff"
+                fill="#F7B62B"
                 height="15px"
                 width="15px"
-                style={{ marginRight: "5px" }}
+                style={{ marginRight: "15px" }}
               >
                 <g>
                   <g>
@@ -2416,14 +2450,38 @@ class PlaceOrder extends React.Component<{
               </svg>
               Apply Coupon
             </button>
+            <div className="offer-applied">
+                <div className="offer-applied-main-flex">
+                    <div className="coupon-code">
+                        <div className="code-1">
+                          FCH5013
+                        </div>
+                        <div className="offer-small-text">
+                            Offers applied on the bill
+                        </div>
+
+                    </div>
+                    <button className="remove-coupon">Remove</button>
+                </div>
+            </div>
+            </>
+                            
+
+              ) : (
+                <button className="cccc-btn" onClick={this.openApplyModel}>
+                  <i className="fa fa-trash"></i>
+                  Coupon Applied
+              </button>
+              )
+            }
             <Modal
-              className="modal-dialog-centered"
+              className="modal-dialog-centered coupon"
               show={this.state.openModel}
               onHide={this.handleCloseModel}
             >
               <Modal.Header closeButton>
-                <Modal.Title>Coupon Details</Modal.Title>
-              </Modal.Header>
+                  <Modal.Title></Modal.Title>
+                </Modal.Header>
               <Modal.Body>
                 <section className="view-order-dtl">
                   <div className="fix-width">
@@ -2431,7 +2489,7 @@ class PlaceOrder extends React.Component<{
                       <h1 className="order-id">Available Coupons </h1>
                     </div>
                     <div className="src-coupon-code">
-                      <div className="serch-box">
+                      <div className="serch-coupon-box">
                         <input
                           type="text"
                           name="text"
@@ -2448,8 +2506,7 @@ class PlaceOrder extends React.Component<{
                         <div className="coupon-code">{data.couponCode}</div>
                         <h4 className="off-price">Get {(((data.minAmountOrder) - (data.sellingPrice))/data.minAmountOrder * 100).toFixed(2)}% Off</h4>
                         <span className="text-1">
-                          Use code Kartzo123 & get {(((data.minAmountOrder) - (data.sellingPrice))/data.minAmountOrder * 100).toFixed(2)}% off on orders above R129
-                          Maximum discount: 75.
+                          Use code {data.couponCode} & get {(((data.minAmountOrder) - (data.sellingPrice))/data.minAmountOrder * 100).toFixed(2)}% off on orders above R{data.minAmountOrder} Maximum discount: {data.sellingPrice}.
                         </span>
                         {/* <div className="also-get">
                           <span className="list-tt">Also get.</span>
@@ -2474,13 +2531,12 @@ class PlaceOrder extends React.Component<{
                             </li>
                           </ul>
                         </div> */}
-                        <button className="apply-btn">Apply Coupon</button>
+                        <button className="apply-btn mt-3" onClick={() => this.couponApply(data)}>Apply Coupon</button>
                       </div>
                           ))
                         ) : ('')
                       }
 
-                      
                     </div>
                   </div>
                 </section>
@@ -2801,6 +2857,7 @@ const mapStateToProps = (state: any) => ({
   getaddressDetail: state.placeOrder.getaddressdata,
   getCardDetail: state.placeOrder.getcarddata,
   getCouponDetail: state.order.coupondata,
+  applycoupon:state.placeOrder.applycoupon
 });
 
 /**
@@ -2845,6 +2902,11 @@ const mapDispatchToProps = (dispatch: any) => ({
 
   /** Get CouponList */
   getCouponData: (data: any) => dispatch(placeOrderService.getCouponData(data)),
+
+    /** Get CouponList */
+    applyCoupon: (data: any) => dispatch(placeOrderService.applyCoupon(data)),
+
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrder);

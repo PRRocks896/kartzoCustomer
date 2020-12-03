@@ -9,7 +9,8 @@ export const productService = {
   updateToCart,
   removeProductFromCart,
   getSearchProduct,
-  getProductDataWithSearching
+  getProductDataWithSearching,
+  reOrder
 };
 
 /**
@@ -229,3 +230,36 @@ function getProductDataWithSearching(data: any) {
     return { type: ACTION.product.SEARCH_PRODUCT_DETAILS_FAILURE, error };
   }
 }
+
+
+/**
+ * 
+ * @param data : get product with searching
+ */
+function reOrder(data: any) {
+  return (dispatch: any) => {
+    dispatch(request({ data }));
+
+    StoreAPI.reOrder(data)
+      .then(async (reOrder: any) => {
+        console.log("reOrder", reOrder);
+        if (reOrder.status === 200) {
+          dispatch(success(await reOrder.data.resultObject));
+        }
+      })
+      .catch((err: any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(reOrder: any) {
+    return { type: ACTION.product.ADD_REORDER_REQUEST, reOrder };
+  }
+  function success(reOrder: any) {
+    return { type: ACTION.product.ADD_REORDER_SUCCESS, reOrder };
+  }
+  function failure(error: any) {
+    return { type: ACTION.product.ADD_REORDER_FAILURE, error };
+  }
+}
+

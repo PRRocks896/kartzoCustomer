@@ -151,5 +151,15 @@ export default {
     );
   },
 
-  
+      /**
+   *
+   * @param data : get coupon list
+   */
+  applyCoupon: async function (data: any) {
+    return WebReqUrl.post(
+      Constant.apiUrl + apiUrl.orderController.applycoupon,
+      data,
+      false
+    );
+  }
 };

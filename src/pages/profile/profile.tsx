@@ -32,7 +32,8 @@ class Profile extends React.Component<{
   updateProfileData: any;
   getProfile: any;
   getcartData:any;
-  removeProductFromCart:any
+  removeProductFromCart:any;
+  reOrder:any;
 }> {
   /** Profile Page State */
   profileState: profileStateRequest = constant.profilePage.state;
@@ -119,6 +120,7 @@ class Profile extends React.Component<{
 
   /** Page Render Call */
   componentDidMount() {
+    console.log("clearModel",this.state.clearModel)
     document.title = constant.profile + getAppName();
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
@@ -227,21 +229,19 @@ class Profile extends React.Component<{
    * @param data : get all cart data
    */
   getCartAllProductData(data: any) {
-    this.setState({
-      cartarray: this.state.cartarray = data.data
-    });
-    console.log("cart",this.state.cartarray);
-
-    if(this.state.cartarray && this.state.cartarray.length > 0) {
+    console.log("enter")
+    if(data.data) {
       this.setState({
-        clearModel: !this.state.clearModel
+        cartarray: this.state.cartarray = data.data,
       });
-    } else {
-    //    this.props.history.push({
-    //    pathname: "/cart",
-    //    state: { order: this.state.reorderdata }
-    // })
     }
+    // console.log("cart",this.state.cartarray);
+
+    // if(this.state.cartarray && this.state.cartarray.length > 0) {
+    
+    // } else {
+  
+    // }
   }
 
   /**
@@ -718,7 +718,7 @@ class Profile extends React.Component<{
 
   handleClearModel() {
     this.setState({
-      clearModel: !this.state.clearModel,
+      clearModel: (this.state.clearModel = false),
     });
   }
 
@@ -740,15 +740,46 @@ class Profile extends React.Component<{
         this.setState({
           clearModel: (this.state.clearModel = false),
         });
-        this.props.history.push({
-          pathname: "/cart",
-          state: { order: this.state.reorderdata }
-       })
+        this.addToCart(this.state.reorderdata);
+      //   this.props.history.push({
+      //     pathname: "/cart",
+      //     state: { order: this.state.reorderdata }
+      //  })
       }, 50);
     }
 
-  clearModel() {
+    addToCart(cart:any) {
+      console.log("cart",cart);
+      let reorder:any = [];
 
+      if(cart.orderDetails) {
+        cart.orderDetails.map((data:any,index:number) =>{
+          reorder.push({
+            orderCartID:data.orderCartID,
+            userID:cart.userID,
+            productID:data.productID,
+            merchantID:cart.merchantID,
+            quantity:data.quantity,
+            sellingPrice:data.sellingPrice,
+            discountApplied:data.discountApplied
+          })
+        })
+      }
+      // console.log("reorder",reorder);
+      const obj = {
+        orderCartDetail:reorder ? reorder: null
+      };
+      this.props.reOrder(obj);
+      setTimeout(() => {
+        this.setState({
+          clearModel: (this.state.clearModel = false),
+        });
+        this.props.history.push('/cart')
+      }, 100);
+
+    }
+
+  clearModel() {
     return(
       <Modal
       className="modal-dialog-centered d-ct"
@@ -800,8 +831,22 @@ class Profile extends React.Component<{
       userId:user.userID
     };
     this.props.getcartData(obj);
+    setTimeout(() => {
    
-  }
+      if(this.state.cartarray && this.state.cartarray.length > 0) {
+        this.setState({
+          clearModel:this.state.clearModel = true
+        });
+      } else {
+      //  this.props.history.push({
+      //    pathname: "/cart",
+      //    state: { order: this.state.reorderdata }
+      // })
+    }
+    },150);
+
+
+    }
 
   /** Render DOM */
   render() {
@@ -1181,7 +1226,11 @@ class Profile extends React.Component<{
                               </div>
                               )
                             : ""}
-                            {this.clearModel()}
+                            {
+                              this.state.clearModel === true ? (
+                                this.clearModel()
+                              ) : ('')
+                            }
                           <Modal
                             className="modal-dialog-centered"
                             show={this.state.showOrder}
@@ -2050,6 +2099,9 @@ const mapDispatchToProps = (dispatch: any) => ({
      /** Remove Product */
   removeProductFromCart: (data: any) =>
   dispatch(productService.removeProductFromCart(data)),
+
+  reOrder: (data: any) =>
+  dispatch(productService.reOrder(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

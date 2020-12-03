@@ -13,7 +13,8 @@ export const placeOrderService = {
   updateCard,
   deleteCard,
   createOrder,
-  getCouponData
+  getCouponData,
+  applyCoupon
 };
 
 /**
@@ -326,4 +327,37 @@ function getCouponData(data: any) {
     return { type: ACTION.order.GET_COUPON_FAILURE, error };
   }
 }
+
+/**
+ * 
+ * @param data : apply coupon 
+ */
+function applyCoupon(data: any) {
+  return (dispatch: any) => {
+    dispatch(request({ data }));
+
+    PlaceOrderAPI.applyCoupon(data)
+      .then(async (applyCoupon: any) => {
+        console.log("applyCoupon", applyCoupon);
+        if (applyCoupon.status === 200) {
+            // showSuccess(applyCoupon.message);
+           dispatch(success(await applyCoupon));
+        }
+      })
+      .catch((err: any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(applyCoupon: any) {
+    return { type: ACTION.order.APPLY_COUPON_REQUEST, applyCoupon };
+  }
+  function success(applyCoupon: any) {
+    return { type: ACTION.order.APPLY_COUPON_SUCCESS, applyCoupon };
+  }
+  function failure(error: any) {
+    return { type: ACTION.order.APPLY_COUPON_FAILURE, error };
+  }
+}
+
 

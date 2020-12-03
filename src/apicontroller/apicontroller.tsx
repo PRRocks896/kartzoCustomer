@@ -31,7 +31,8 @@ const apiUrl = {
         getcartdata:'ordercart/get-card-list',
         updatecart:'ordercart/',
         deleteData:'delete',
-        getsearchproduct:'address/get-product-list'
+        getsearchproduct:'address/get-product-list',
+        addreorder:'ordercart/re-ordercart'
     },
     cardController: {
         getcard:'card/get-card-list',
@@ -47,7 +48,8 @@ const apiUrl = {
         updatecard:'card/',
         deleteData:'delete',
         createorder:'order',
-        getcoupon:'coupon/get-coupon-list'
+        getcoupon:'coupon/get-coupon-list',
+        applycoupon:'RedeemCoupon'
     },
     packageController: {
         getaddress:'address/get-address'

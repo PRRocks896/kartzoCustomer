@@ -961,24 +961,17 @@
 		font-weight: 600;
 	}
 
-	.cccc-btn { 
-	    margin-top: 10px;
-    width: 190px;
-    background-color: #f2c21a;
-    color: #fff;
-    border: none;
-    border-radius: 30px;
-    padding: 5px;
-		/* font-size: 10px;
-		background-color: #f5be21;
-		color: #fff;
-		font-weight: 600;
-		border: 1px solid #f5be21;
-
-		margin-left: 0px;
-		height: 30px;
-		width: 90px; */
-	
+	.cccc-btn {
+		margin-top: 10px;
+		width: 100%;
+		background-color: #ffffff;
+		color: #071828;
+		border: none;
+		border-radius: 10px;
+		height: 55px;
+		border: 1px dashed #f7b62b;
+		text-align: inherit;
+		padding-left: 14px;
 	}
 	.view-order-dtl .order-id {
 		font-size: 20px;
@@ -998,10 +991,10 @@
 		margin: 0px;
 		top: 31px;
 	}
-	.src-coupon-code .serch-box {
+	.src-coupon-code .serch-coupon-box {
 		display: flex;
 	}
-	.src-coupon-code .serch-box input {
+	.src-coupon-code .serch-coupon-box input {
 		height: 40px;
 		border-radius: 4px 0px 0px 4px;
 		border: 1px solid #fbb132;
@@ -1021,7 +1014,7 @@
 		border: 1px solid #FBB034;
 		margin-left: -7px;
 	}
-	.serch-box {
+	.serch-coupon-box {
 		display: flex;
 		margin-top: 30px;
 	}
@@ -1075,5 +1068,58 @@
 		border-radius: 4px;
 		border: 2px solid #fbb132;
 		background: white;
+		font-size: 14px;
+	}
+
+	.fade.modal-dialog-centered.coupon.modal.show {
+		display: block !important;
+	}
+	.fade.modal-dialog-centered.coupon.modal.show .close {
+		position: absolute;
+		right: 24px;
+	}
+
+	.apply-c {
+		margin-top: 14px;
+		margin-bottom: 10px;
+	}
+	svg#Capa_1 {
+		width: 20px;
+		height: 20px;
+	}
+
+	.offer-applied {
+		margin-top: 10px;
+		width: 100%;
+		background-color: #ffffff;
+		color: #071828;
+		border: none;
+		border-radius: 10px;
+		height: 55px;
+		border: 1px dashed #f7b62b;
+		padding-left: 14px;
+		padding-right: 14px;
+		
+	}
+	.offer-applied-main-flex {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 100%;
+	}
+	.code-1 {
+		font-size: 14px;
+	}
+	.offer-small-text {
+		font-size: 12px;
+	}
+	button.remove-coupon {
+		background: none;
+		margin: 0px;
+		padding: 0px;
+		border: none;
+		color: #f7b62b;
+		font-size: 14px;
+		font-weight: 600;
 	}
 	/* view-order-dtl end */

@@ -84,5 +84,15 @@ export default {
       Constant.apiUrl + apiUrl.storeProductController.getsearchproduct + `?name=${data.name}&merchantid=${data.merchantid}`
     );
   },
+
+    /**
+   * 
+   * @param data : re-order 
+   */
+  reOrder: async function (data: any) {
+    return WebReqUrl.post(
+      Constant.apiUrl + apiUrl.storeProductController.addreorder,data,false
+    );
+  },
   
 };
