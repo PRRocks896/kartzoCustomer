@@ -2440,7 +2440,7 @@ class PlaceOrder extends React.Component<{
           this.couponApply(data);
         } else {
           this.setState({
-            couponerror: "coupon is not available",
+            couponerror: "Please enter valid coupon code",
           });
         }
       });

@@ -808,12 +808,13 @@ img.picture {
 	left: 0px;
 	z-index: 2;
 }
-.view-order-dtl .icon-dot-bg {
+.view-order-dtl .icon-dot-bg1 {
 	position: absolute;
-	top: 1px;
-	width: 15px;
-	left: 8px;
+    top: 2px;
+    width: 15px;
+    left: 6px
 }
+
 .view-order-dtl .delivery-day .icon-right {
 	display: flex;
 	align-items: center;

@@ -1224,6 +1224,7 @@ class Profile extends React.Component<{
                                               )
                                             )
                                           : ""}
+                                      </div>
                                         <div className="mt-4">
                                           <button
                                             className="order-btn"
@@ -1240,7 +1241,6 @@ class Profile extends React.Component<{
                                             HELP
                                           </button>
                                         </div>
-                                      </div>
                                     </div>
                                   </div>
                                 )
@@ -1346,13 +1346,14 @@ class Profile extends React.Component<{
                                     {reorderhelp.orderDetails
                                       ? reorderhelp.orderDetails.map(
                                           (data: any, index: number) => (
-                                            <div
+                                            <span
                                               className="item-nm"
                                               key={index}
+                                              style={{marginLeft:'10px'}}
                                             >
                                               {data.productName} x{" "}
                                               {data.quantity}
-                                            </div>
+                                            </span>
                                           )
                                         )
                                       : ""}
@@ -1468,7 +1469,7 @@ class Profile extends React.Component<{
                                         Kalawad Road
                                       </div>
                                       <div className="circle-box">
-                                        <div className="icon-dot-bg">
+                                        <div className="icon-dot-bg1">
                                           <svg
                                             version="1.1"
                                             id="Capa_1"
@@ -1540,7 +1541,7 @@ class Profile extends React.Component<{
                                         </div>
                                       </div>
                                       <div className="circle-box">
-                                        <div className="icon-dot-bg">
+                                        <div className="icon-dot-bg1">
                                           <svg
                                             version="1.1"
                                             id="Capa_1"

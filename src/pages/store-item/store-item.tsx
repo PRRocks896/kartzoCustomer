@@ -610,7 +610,7 @@ class StoreItem extends React.Component<{
                         </div>
                         <div className="right-tt">
                           <h4 className="tt-2">{product.productName}</h4>
-                          <span className="price">R {product.price}</span>
+                          <span className="price"><i className="fa fa-rupee"></i> {product.price}</span>
                           <p
                             dangerouslySetInnerHTML={{
                               __html: product.productDesc,
@@ -742,7 +742,7 @@ class StoreItem extends React.Component<{
                               </div>
                               <div className="right-tt">
                                 <h4 className="tt-2">{product.productName}</h4>
-                                <span className="price">R {product.price}</span>
+                                <span className="price"><i className="fa fa-rupee"></i> {product.price}</span>
                                 <p
                                   dangerouslySetInnerHTML={{
                                     __html: product.productDesc,
