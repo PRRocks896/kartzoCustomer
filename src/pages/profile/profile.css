@@ -913,4 +913,112 @@ img.picture {
 	font-weight: 600;
 	color: #071828;
 }
+
+.profile-helptab .dlt-tt {
+    font-size: 20px;
+    font-weight: 600;
+}
+.profile-helptab .dlt-1 {
+	display: flex;
+	margin-top: 20px;
+}
+.profile-helptab .img-box {
+	width: 100px;
+	height: 100px;
+	overflow: hidden;
+}
+.profile-helptab .img-box img {
+	max-width: 100%;
+}
+.profile-helptab .order-dtl1 {
+	margin-left: 15px;
+}
+.profile-helptab .sub-tt {
+	font-size: 16px;
+	font-weight: 600;
+	margin: 0px;
+	margin-bottom: 4px;
+}
+.profile-helptab .address-nm {
+	font-size: 12px;
+}
+.profile-helptab .shop-id {
+	font-size: 14px;
+}
+.profile-helptab .view-dtl {
+	border: none;
+	background: no-repeat;
+	color: #f9b231;
+	padding: 0px;
+	font-size: 12px;
+	font-weight: 600;
+}
+.profile-helptab .deliver-day {
+	font-size: 14px;
+	margin-left: 10px;
+}
+.profile-helptab .deliver-item {
+	margin-top: 10px;
+}
+.profile-helptab .total-item {
+	border-top: 1px dashed #eca630;
+	border-bottom: 1px dashed #eca630;
+	padding: 10px 0px;
+	margin-top: 10px;
+	display: flex;
+	justify-content: space-between;
+	font-size: 14px;
+}
+
+/* help me with this order */
+.help-order .row{
+	margin: 0px;
+}
+.help-order .mb-0 > a {
+	display: block;
+	position: relative;
+	font-size: 14px;
+	color: #071828;
+}
+.help-order .mb-0 > a:after {
+	content: "\f078"; /* fa-chevron-down */
+	font-weight: 600;
+	font-family: "Font Awesome 5 Free";
+	position: absolute;
+	right: 0;
+  }
+.help-order .mb-0 > a[aria-expanded="true"]:after {
+	content: "\f077"; /* fa-chevron-up */
+  }
+.help-order .dlt-tt {
+	font-size: 20px;
+	font-weight: 600;
+}
+.help-order .card {
+	margin-top: 10px;
+}
+.help-order #accordion {
+	margin-top: 20px;
+}
+.help-order .card {
+	margin-bottom: 10px;
+}
+.help-order .card-header {
+	background: #fff;
+}
+.help-order .card-body {
+	font-size: 12px;
+	padding: 10px 19px;
+}
+.help-order .dlt-tt {
+	font-size: 20px;
+	font-weight: 600;
+	margin-bottom: 0px;
+	margin-top: 20px;
+}
+ .arrow-back {
+	width: 20px;
+	float: left;
+	margin-right: 15px;
+}
 /* view-order-dtl end */

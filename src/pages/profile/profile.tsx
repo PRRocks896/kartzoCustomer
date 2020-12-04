@@ -16,7 +16,7 @@ import {
   productService,
 } from "../../redux/index";
 import constant from "../constant/constant";
-import { getAppName, alertMessage } from "../utils";
+import { getAppName, alertMessage,scrollToTop } from "../utils";
 import "./profile.css";
 import { connect } from "react-redux";
 import { Modal } from "react-bootstrap";
@@ -31,9 +31,9 @@ class Profile extends React.Component<{
   getOrderList: any;
   updateProfileData: any;
   getProfile: any;
-  getcartData:any;
-  removeProductFromCart:any;
-  reOrder:any;
+  getcartData: any;
+  removeProductFromCart: any;
+  reOrder: any;
 }> {
   /** Profile Page State */
   profileState: profileStateRequest = constant.profilePage.state;
@@ -82,17 +82,18 @@ class Profile extends React.Component<{
     selectedFileerror: this.profileState.selectedFileerror,
     disable: this.profileState.disable,
     showOrder: false,
-    ordernumber:0,
-    addressName:'',
-    fulladdress:'',
-    merchantname:'',
-    orderdate:'',
-    productdetail:[],
-    totalprice:'',
-    cartarray:[],
-    clearModel:false,
-    reorderdata:''
-
+    ordernumber: 0,
+    addressName: "",
+    fulladdress: "",
+    merchantname: "",
+    orderdate: "",
+    productdetail: [],
+    totalprice: "",
+    cartarray: [],
+    clearModel: false,
+    reorderdata: "",
+    isShowHelp: false,
+    updateOrder: "",
   };
 
   /** Constructor call */
@@ -116,11 +117,12 @@ class Profile extends React.Component<{
     this.reOrder = this.reOrder.bind(this);
     this.clearOldCart = this.clearOldCart.bind(this);
     this.handleClearModel = this.handleClearModel.bind(this);
+    this.helpOrder = this.helpOrder.bind(this);
   }
 
   /** Page Render Call */
   componentDidMount() {
-    console.log("clearModel",this.state.clearModel)
+    console.log("clearModel", this.state.clearModel);
     document.title = constant.profile + getAppName();
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
@@ -133,6 +135,7 @@ class Profile extends React.Component<{
     this.getAddressDetails();
     this.getOrderList();
     this.getProfile();
+    scrollToTop();
   }
 
   /**
@@ -223,24 +226,23 @@ class Profile extends React.Component<{
     }
   }
 
-  
   /**
-   * 
+   *
    * @param data : get all cart data
    */
   getCartAllProductData(data: any) {
-    console.log("enter")
-    if(data.data) {
+    console.log("enter");
+    if (data.data) {
       this.setState({
-        cartarray: this.state.cartarray = data.data,
+        cartarray: (this.state.cartarray = data.data),
       });
     }
     // console.log("cart",this.state.cartarray);
 
     // if(this.state.cartarray && this.state.cartarray.length > 0) {
-    
+
     // } else {
-  
+
     // }
   }
 
@@ -697,15 +699,15 @@ class Profile extends React.Component<{
     });
   }
 
-  openOrderModel(data:any) {
+  openOrderModel(data: any) {
     this.setState({
-      ordernumber:data.orderNo,
-      addressName:data.addressDetail[0].addressType,
-      fulladdress:data.addressDetail[0].address,
-      merchantname:data.orderDetails[0].merchantName,
-      orderdate:data.orderDetails[0].created,
-      productdetail:data.orderDetails,
-      totalprice:data.totalAmount,
+      ordernumber: data.orderNo,
+      addressName: data.addressDetail[0].addressType,
+      fulladdress: data.addressDetail[0].address,
+      merchantname: data.orderDetails[0].merchantName,
+      orderdate: data.orderDetails[0].created,
+      productdetail: data.orderDetails,
+      totalprice: data.totalAmount,
       showOrder: !this.state.showOrder,
     });
   }
@@ -722,134 +724,139 @@ class Profile extends React.Component<{
     });
   }
 
-    /** Clear old cart */
-    clearOldCart() {
-      let cartdeletearray = [];
-      let oldarray : any = this.state.cartarray;
-      for (var i = 0; i < oldarray.length; i++) {
-        cartdeletearray.push(oldarray[i].orderCartID);
-      }
-      const obj: removeCartItemRequest = {
-        moduleName: "OrderCart",
-        id: cartdeletearray,
-      };
-      this.props.removeProductFromCart(obj);
-  
-      setTimeout(() => {
-        localStorage.removeItem("merchantID");
-        this.setState({
-          clearModel: (this.state.clearModel = false),
-        });
-        this.addToCart(this.state.reorderdata);
+  /** Clear old cart */
+  clearOldCart() {
+    let cartdeletearray = [];
+    let oldarray: any = this.state.cartarray;
+    for (var i = 0; i < oldarray.length; i++) {
+      cartdeletearray.push(oldarray[i].orderCartID);
+    }
+    const obj: removeCartItemRequest = {
+      moduleName: "OrderCart",
+      id: cartdeletearray,
+    };
+    this.props.removeProductFromCart(obj);
+
+    setTimeout(() => {
+      localStorage.removeItem("merchantID");
+      this.setState({
+        clearModel: (this.state.clearModel = false),
+      });
+      this.addToCart(this.state.reorderdata);
       //   this.props.history.push({
       //     pathname: "/cart",
       //     state: { order: this.state.reorderdata }
       //  })
-      }, 50);
-    }
-
-    addToCart(cart:any) {
-      console.log("cart",cart);
-      let reorder:any = [];
-
-      if(cart.orderDetails) {
-        cart.orderDetails.map((data:any,index:number) =>{
-          reorder.push({
-            orderCartID:data.orderCartID,
-            userID:cart.userID,
-            productID:data.productID,
-            merchantID:cart.merchantID,
-            quantity:data.quantity,
-            sellingPrice:data.sellingPrice,
-            discountApplied:data.discountApplied
-          })
-        })
-      }
-      // console.log("reorder",reorder);
-      const obj = {
-        orderCartDetail:reorder ? reorder: null
-      };
-      this.props.reOrder(obj);
-      setTimeout(() => {
-        this.setState({
-          clearModel: (this.state.clearModel = false),
-        });
-        this.props.history.push('/cart')
-      }, 100);
-
-    }
-
-  clearModel() {
-    return(
-      <Modal
-      className="modal-dialog-centered d-ct"
-      show={this.state.clearModel}
-      onHide={this.handleClearModel}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title></Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div className="clear-cart">
-          <img
-            src={require("../../assets/images/cart-icon.svg")}
-            alt="cart icon"
-          />
-          <h1>Clear cart?</h1>
-          <p>
-            <strong>
-              Do you want to clear the cart and add items from{" "}
-              <strong>another cart?</strong>
-            </strong>
-          </p>
-          <div className="flex-btn">
-            <button className="cencel-btn" onClick={this.handleClearModel}>
-              Cancel
-            </button>
-            <button className="clear-btn" onClick={this.clearOldCart}>
-              Clear cart
-            </button>
-          </div>
-        </div>
-      </Modal.Body>
-      <Modal.Footer></Modal.Footer>
-    </Modal>
-    )
+    }, 50);
   }
 
-  reOrder(data:any) {
+  addToCart(cart: any) {
+    console.log("cart", cart);
+    let reorder: any = [];
+
+    if (cart.orderDetails) {
+      cart.orderDetails.map((data: any, index: number) => {
+        reorder.push({
+          orderCartID: data.orderCartID,
+          userID: cart.userID,
+          productID: data.productID,
+          merchantID: cart.merchantID,
+          quantity: data.quantity,
+          sellingPrice: data.sellingPrice,
+          discountApplied: data.discountApplied,
+        });
+      });
+    }
+    // console.log("reorder",reorder);
+    const obj = {
+      orderCartDetail: reorder ? reorder : null,
+    };
+    this.props.reOrder(obj);
+    setTimeout(() => {
+      this.setState({
+        clearModel: (this.state.clearModel = false),
+      });
+      this.props.history.push("/cart");
+    }, 100);
+  }
+
+  clearModel() {
+    return (
+      <Modal
+        className="modal-dialog-centered d-ct"
+        show={this.state.clearModel}
+        onHide={this.handleClearModel}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="clear-cart">
+            <img
+              src={require("../../assets/images/cart-icon.svg")}
+              alt="cart icon"
+            />
+            <h1>Clear cart?</h1>
+            <p>
+              <strong>
+                Do you want to clear the cart and add items from{" "}
+                <strong>another cart?</strong>
+              </strong>
+            </p>
+            <div className="flex-btn">
+              <button className="cencel-btn" onClick={this.handleClearModel}>
+                Cancel
+              </button>
+              <button className="clear-btn" onClick={this.clearOldCart}>
+                Clear cart
+              </button>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
+    );
+  }
+
+  reOrder(data: any) {
     this.setState({
-      reorderdata:data
-    })
+      reorderdata: data,
+    });
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj : getCartListRequest = {
-      searchText: '',
+    const obj: getCartListRequest = {
+      searchText: "",
       isActive: true,
       page: 1,
       size: 10,
-      userId:user.userID
+      userId: user.userID,
     };
     this.props.getcartData(obj);
     setTimeout(() => {
-   
-      if(this.state.cartarray && this.state.cartarray.length > 0) {
+      if (this.state.cartarray && this.state.cartarray.length > 0) {
         this.setState({
-          clearModel:this.state.clearModel = true
+          clearModel: (this.state.clearModel = true),
         });
       } else {
-      //  this.props.history.push({
-      //    pathname: "/cart",
-      //    state: { order: this.state.reorderdata }
-      // })
-    }
-    },150);
+        //  this.props.history.push({
+        //    pathname: "/cart",
+        //    state: { order: this.state.reorderdata }
+        // })
+      }
+    }, 150);
+  }
 
-
-    }
+  helpOrder(data: any) {
+    console.log("data", data);
+    this.setState({
+      isShowHelp: true,
+      updateOrder: data,
+    });
+  }
 
   /** Render DOM */
   render() {
+    var reorderhelp: any = this.state.updateOrder ? this.state.updateOrder : "";
     return (
       <>
         <section className="profile-page">
@@ -1163,74 +1170,279 @@ class Profile extends React.Component<{
                     >
                       <div className="order-list">
                         <div className="col-md-12">
-                          <h3 className="dlt-tt">Past Order</h3>
-                          {this.state.orderdata
-                            ? this.state.orderdata.length > 0 &&
+                          {this.state.isShowHelp === false ? (
+                            <h3 className="dlt-tt">Past Order</h3>
+                          ) : (
+                            ""
+                          )}
+                          {this.state.isShowHelp === false ? (
+                            this.state.orderdata ? (
+                              this.state.orderdata.length > 0 &&
                               this.state.orderdata.map(
-                                (order: any, index: any) =>
-                                <div
-                                className="order-list1"
-                                key={index}
-                              >
+                                (order: any, index: any) => (
+                                  <div className="order-list1" key={index}>
+                                    <div className="dlt-1">
+                                      <div className="img-box">
+                                        <img src={profile.food} alt="" />
+                                      </div>
+                                      <div className="order-dtl1">
+                                        <h4 className="sub-tt">
+                                          {order.orderDetails[0].merchantName}
+                                        </h4>
+                                        <div className="address-nm">
+                                          Race Course Road
+                                        </div>
+                                        <div className="shop-id">
+                                          ORDER # {order.orderNo} |{" "}
+                                          {moment(order.orderDate).format(
+                                            "LLLL"
+                                          )}
+                                        </div>
+                                        <button
+                                          className="view-dtl"
+                                          onClick={() =>
+                                            this.openOrderModel(order)
+                                          }
+                                        >
+                                          View Details
+                                        </button>
+                                      </div>
+                                    </div>
+
+                                    <div className="order-food">
+                                      <div className="btn-box">
+                                        {order.orderDetails
+                                          ? order.orderDetails.map(
+                                              (item: any, index1: number) => (
+                                                <div
+                                                  className="food-nm"
+                                                  key={index1}
+                                                >
+                                                  {item.quantity}-
+                                                  {item.productName}
+                                                </div>
+                                              )
+                                            )
+                                          : ""}
+                                        <div className="mt-4">
+                                          <button
+                                            className="order-btn"
+                                            onClick={() => this.reOrder(order)}
+                                          >
+                                            REORDER
+                                          </button>
+                                          <button
+                                            className="help-btn"
+                                            onClick={() =>
+                                              this.helpOrder(order)
+                                            }
+                                          >
+                                            HELP
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )
+                              )
+                            ) : (
+                              ""
+                            )
+                          ) : (
+                            <div className="profile-helptab">
+                              <div className="col-md-12">
+                                <div className="back-order">
+                                  <div
+                                    className="arrow-back"
+                                    onClick={() =>
+                                      this.setState({
+                                        isShowHelp: false,
+                                      })
+                                    }
+                                  >
+                                    <svg
+                                      version="1.1"
+                                      id="Layer_1"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      xmlnsXlink="http://www.w3.org/1999/xlink"
+                                      x="0px"
+                                      y="0px"
+                                      viewBox="0 0 492 492"
+                                      xmlSpace="preserve"
+                                    >
+                                      <g>
+                                        <g>
+                                          <path d="M464.344,207.418l0.768,0.168H135.888l103.496-103.724c5.068-5.064,7.848-11.924,7.848-19.124    c0-7.2-2.78-14.012-7.848-19.088L223.28,49.538c-5.064-5.064-11.812-7.864-19.008-7.864c-7.2,0-13.952,2.78-19.016,7.844    L7.844,226.914C2.76,231.998-0.02,238.77,0,245.974c-0.02,7.244,2.76,14.02,7.844,19.096l177.412,177.412    c5.064,5.06,11.812,7.844,19.016,7.844c7.196,0,13.944-2.788,19.008-7.844l16.104-16.112c5.068-5.056,7.848-11.808,7.848-19.008    c0-7.196-2.78-13.592-7.848-18.652L134.72,284.406h329.992c14.828,0,27.288-12.78,27.288-27.6v-22.788    C492,219.198,479.172,207.418,464.344,207.418z" />
+                                        </g>
+                                      </g>
+                                      <g></g>
+                                      <g></g>
+                                      <g></g>
+                                      <g></g>
+                                      <g></g>
+                                      <g></g>
+                                      <g></g>
+                                      <g></g>
+                                      <g></g>
+                                      <g></g>
+                                      <g></g>
+                                      <g></g>
+                                      <g></g>
+                                      <g></g>
+                                      <g></g>
+                                    </svg>
+                                  </div>
+                                  <h3 className="dlt-tt">Back to all Orders</h3>
+                                </div>
                                 <div className="dlt-1">
                                   <div className="img-box">
-                                  <img
-                                        src={profile.food}
-                                        alt=""
-                                      />
+                                    <img src={profile.food} alt="" />
                                   </div>
                                   <div className="order-dtl1">
                                     <h4 className="sub-tt">
-                                      {order.orderDetails[0].merchantName}
+                                      {reorderhelp.orderDetails[0].merchantName}
                                     </h4>
                                     <div className="address-nm">
-                                      Race Course Road
+                                      Race Couse Road
                                     </div>
                                     <div className="shop-id">
-                                      ORDER # {order.orderNo} |{" "}
-                                      {moment(order.orderDate).format(
+                                      ORDER # {reorderhelp.orderNo} |{" "}
+                                      {moment(reorderhelp.orderDate).format(
                                         "LLLL"
                                       )}
                                     </div>
                                     <button
-                                      className="view-dtl"
-                                      onClick={() => this.openOrderModel(order)}
-                                    >
-                                      View Details
-                                    </button>
+                                          className="view-dtl"
+                                          onClick={() =>
+                                            this.openOrderModel(reorderhelp)
+                                          }
+                                        >
+                                          View Details
+                                        </button>
                                   </div>
                                 </div>
 
-                                <div className="order-food">
-                                  <div className="btn-box">
-                                    {
-                                      order.orderDetails ? (
-                                        order.orderDetails.map((item:any,index1:number) => (
-                                  <div className="food-nm" key={index1}>
-                                    {item.quantity}-{item.productName}
+                                <div className="deliver-item">
+                                  <svg
+                                    height="16px"
+                                    viewBox="0 0 512 512"
+                                    width="20px"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm129.75 201.75-138.667969 138.664062c-4.160156 4.160157-9.621093 6.253907-15.082031 6.253907s-10.921875-2.09375-15.082031-6.253907l-69.332031-69.332031c-8.34375-8.339843-8.34375-21.824219 0-30.164062 8.339843-8.34375 21.820312-8.34375 30.164062 0l54.25 54.25 123.585938-123.582031c8.339843-8.34375 21.820312-8.34375 30.164062 0 8.339844 8.339843 8.339844 21.820312 0 30.164062zm0 0"
+                                      fill="#60b246"
+                                    />
+                                  </svg>
+                                  <span className="deliver-day">
+                                    Delivered on{" "}
+                                    {moment(reorderhelp.orderDate).format(
+                                      "LLLL"
+                                    )}
+                                  </span>
+                                </div>
+                                <div className="total-item">
+                                  <div className="item-box1">
+                                    {reorderhelp.orderDetails
+                                      ? reorderhelp.orderDetails.map(
+                                          (data: any, index: number) => (
+                                            <div
+                                              className="item-nm"
+                                              key={index}
+                                            >
+                                              {data.productName} x{" "}
+                                              {data.quantity}
+                                            </div>
+                                          )
+                                        )
+                                      : ""}
                                   </div>
-                                        ))
-                                      ) : ('')
-                                    }
-                                    <div className="mt-4">
+                                  <div className="total-paid">
+                                    Total Paid: <i className="fa fa-rupee"></i>{" "}
+                                    {reorderhelp.totalAmount}
+                                  </div>
+                                </div>
+                              </div>
 
-                                    <button className="order-btn" onClick={() => this.reOrder(order)}>
-                                      REORDER
-                                    </button>
-                                    <button className="help-btn">
-                                      HELP
-                                    </button>
+                              <div className="help-order">
+                                <div className="row">
+                                  <div className="col-md-12">
+                                    <h3 className="dlt-tt">
+                                      Help me with this order
+                                    </h3>
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col-md-12">
+                                    <div id="accordion">
+                                      <div className="card">
+                                        <div
+                                          className="card-header"
+                                          id="heading-2"
+                                        >
+                                          <h5 className="mb-0">
+                                            <a
+                                              className="collapsed"
+                                              role="button"
+                                              data-toggle="collapse"
+                                              href="#collapse-1"
+                                              aria-expanded="false"
+                                              aria-controls="collapse-2"
+                                            >
+                                              I haven't receved this order
+                                            </a>
+                                          </h5>
+                                        </div>
+                                        <div
+                                          id="collapse-1"
+                                          className="collapse"
+                                          data-parent="#accordion"
+                                          aria-labelledby="heading-2"
+                                        >
+                                          <div className="card-body">
+                                            Please let us know how we may help
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="card">
+                                        <div
+                                          className="card-header"
+                                          id="heading-3"
+                                        >
+                                          <h5 className="mb-0">
+                                            <a
+                                              className="collapsed"
+                                              role="button"
+                                              data-toggle="collapse"
+                                              href="#collapse-2"
+                                              aria-expanded="false"
+                                              aria-controls="collapse-3"
+                                            >
+                                              Items are missing from my order
+                                            </a>
+                                          </h5>
+                                        </div>
+                                        <div
+                                          id="collapse-2"
+                                          className="collapse"
+                                          data-parent="#accordion"
+                                          aria-labelledby="heading-3"
+                                        >
+                                          <div className="card-body">
+                                            Please let us know how we may help.
+                                          </div>
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                              )
+                            </div>
+                          )}
+
+                          {this.state.clearModel === true
+                            ? this.clearModel()
                             : ""}
-                            {
-                              this.state.clearModel === true ? (
-                                this.clearModel()
-                              ) : ('')
-                            }
                           <Modal
                             className="modal-dialog-centered"
                             show={this.state.showOrder}
@@ -1244,13 +1456,13 @@ class Profile extends React.Component<{
                                 <div className="fix-width">
                                   <div className="top-title">
                                     <h1 className="order-id">
-                                                  Order #{this.state.ordernumber}{" "}
+                                      Order #{this.state.ordernumber}{" "}
                                     </h1>
                                   </div>
                                   <div className="add-address">
                                     <div className="address-box1">
                                       <div className="small-tt">
-                                      {this.state.merchantname}
+                                        {this.state.merchantname}
                                       </div>
                                       <div className="pickup-location">
                                         Kalawad Road
@@ -1298,9 +1510,11 @@ class Profile extends React.Component<{
                                       <div className="line-dot-1"></div>
                                     </div>
                                     <div className="address-box1">
-                                                  <div className="small-tt">{this.state.addressName}</div>
+                                      <div className="small-tt">
+                                        {this.state.addressName}
+                                      </div>
                                       <div className="pickup-location">
-                                       {this.state.fulladdress}
+                                        {this.state.fulladdress}
                                       </div>
                                       <div className="btn-line"></div>
                                       <div className="delivery-day">
@@ -1317,7 +1531,11 @@ class Profile extends React.Component<{
                                             />
                                           </svg>
                                           <span className="delivery-dt">
-                                            Delivered on {moment(this.state.orderdate).format('LLLL')} by yuvraj kashmiri chand
+                                            Delivered on{" "}
+                                            {moment(
+                                              this.state.orderdate
+                                            ).format("LLLL")}{" "}
+                                            by yuvraj kashmiri chand
                                           </span>
                                         </div>
                                       </div>
@@ -1360,27 +1578,34 @@ class Profile extends React.Component<{
                                   </div>
 
                                   <div className="p-item-dtl">
-                                    <div className="p-total-item"> {this.state.productdetail.length} ITEM </div>
-                                    {
-                                      this.state.productdetail ? (
-                                        this.state.productdetail.map((data:any,index:number) => (
-
-                                    <div className="p-item-list" key={index}>
-                                      <div className="p-flex-box">
-                                        <div className="p-list-1">
-                                        <h4>{data.productName}</h4>
-                                          <span className="p-descri-1">
-                                            {/* 9" Inch */}
-                                          </span>
-                                        </div>
-                                        <div className="p-item-price">
-                                          &#x20B9;{data.sellingPrice}
-                                        </div>
-                                      </div>
+                                    <div className="p-total-item">
+                                      {" "}
+                                      {
+                                        this.state.productdetail.length
+                                      } ITEM{" "}
                                     </div>
-                                        ))
-                                      ) : ('')
-                                    }
+                                    {this.state.productdetail
+                                      ? this.state.productdetail.map(
+                                          (data: any, index: number) => (
+                                            <div
+                                              className="p-item-list"
+                                              key={index}
+                                            >
+                                              <div className="p-flex-box">
+                                                <div className="p-list-1">
+                                                  <h4>{data.productName}</h4>
+                                                  <span className="p-descri-1">
+                                                    {/* 9" Inch */}
+                                                  </span>
+                                                </div>
+                                                <div className="p-item-price">
+                                                  &#x20B9;{data.sellingPrice}
+                                                </div>
+                                              </div>
+                                            </div>
+                                          )
+                                        )
+                                      : ""}
                                     <div className="p-list-total-rupee">
                                       <div className="p-flex-box">
                                         <div className="p-item-ttl">
@@ -2093,15 +2318,14 @@ const mapDispatchToProps = (dispatch: any) => ({
 
   getProfile: (data: any) => dispatch(loginService.getProfile(data)),
 
-    /** Get Cart */
-    getcartData: (data: any) => dispatch(productService.getcartData(data)),
+  /** Get Cart */
+  getcartData: (data: any) => dispatch(productService.getcartData(data)),
 
-     /** Remove Product */
+  /** Remove Product */
   removeProductFromCart: (data: any) =>
-  dispatch(productService.removeProductFromCart(data)),
+    dispatch(productService.removeProductFromCart(data)),
 
-  reOrder: (data: any) =>
-  dispatch(productService.reOrder(data)),
+  reOrder: (data: any) => dispatch(productService.reOrder(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

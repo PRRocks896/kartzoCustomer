@@ -105,6 +105,7 @@ class PlaceOrder extends React.Component<{
     changewallet: 0,
     amount: 0,
     amounterror: "",
+    codename:'',
 
     upiTrue: false,
     cardTrue: false,
@@ -130,7 +131,8 @@ class PlaceOrder extends React.Component<{
     couponid: 0,
     couponapplieddata:'',
     discount:'0',
-    totalpay:'0'
+    totalpay:'0',
+    couponerror:''
   };
 
   /** Constructor call */
@@ -171,6 +173,7 @@ class PlaceOrder extends React.Component<{
     this.handleCloseModel = this.handleCloseModel.bind(this);
     this.couponApply = this.couponApply.bind(this);
     this.removeCoupon = this.removeCoupon.bind(this);
+    this.applyCoupon = this.applyCoupon.bind(this);
   }
 
   /** Page Render Call */
@@ -2422,13 +2425,23 @@ class PlaceOrder extends React.Component<{
       discount:this.state.discount = '0',
       totalpay:(newData.toFixed(2))
     });
-    // const users: any = localStorage.getItem("user");
-    // let user = JSON.parse(users);
-    // const obj = {
-    //   CouponId: data.couponId,
-    //   userid: user.userID,
-    // };
-    // this.props.removeCoupon(obj);
+  }
+
+  applyCoupon() {
+    if(this.state.coupondetails) {
+      this.state.coupondetails.map((data:any,index:number) => {
+        if(this.state.codename === data.couponCode) {
+          this.setState({
+            couponerror:""
+          })
+          this.couponApply(data);
+        } else {
+          this.setState({
+            couponerror:"coupon is not available"
+          })
+        }
+      })
+    }
   }
 
   /** Card item block */
@@ -2567,11 +2580,17 @@ class PlaceOrder extends React.Component<{
                       <div className="serch-coupon-box">
                         <input
                           type="text"
-                          name="text"
+                          id="coupon"
+                          name="codename"
+                          className="form-control"
+                          onChange={this.onChangeEvent}
                           placeholder="Enter coupon code"
                         />
-                        <button className="apply-code">Apply</button>
+                        <button className="apply-code" onClick={this.applyCoupon}>Apply</button>
                       </div>
+                      <div className="text-danger">
+                                        {this.state.couponerror}
+                                      </div>
                     </div>
                     <div className="coupon-box">
                       {this.state.coupondetails
