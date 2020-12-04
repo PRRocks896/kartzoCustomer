@@ -16,7 +16,7 @@ import {
   productService,
 } from "../../redux/index";
 import constant from "../constant/constant";
-import { getAppName, alertMessage,scrollToTop } from "../utils";
+import { getAppName, alertMessage, scrollToTop } from "../utils";
 import "./profile.css";
 import { connect } from "react-redux";
 import { Modal } from "react-bootstrap";
@@ -1312,13 +1312,13 @@ class Profile extends React.Component<{
                                       )}
                                     </div>
                                     <button
-                                          className="view-dtl"
-                                          onClick={() =>
-                                            this.openOrderModel(reorderhelp)
-                                          }
-                                        >
-                                          View Details
-                                        </button>
+                                      className="view-dtl"
+                                      onClick={() =>
+                                        this.openOrderModel(reorderhelp)
+                                      }
+                                    >
+                                      View Details
+                                    </button>
                                   </div>
                                 </div>
 

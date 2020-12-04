@@ -12,7 +12,11 @@ import constant from "../constant/constant";
 import { alertMessage, getAppName } from "../utils";
 import "./cart.css";
 import { connect } from "react-redux";
-import { addCartRequest, getCartListRequest, removeCartItemRequest } from "../../modelController";
+import {
+  addCartRequest,
+  getCartListRequest,
+  removeCartItemRequest,
+} from "../../modelController";
 import { cartStateRequest } from "../../modelController/c artModel";
 
 class Cart extends React.Component<{
@@ -23,12 +27,12 @@ class Cart extends React.Component<{
   removeProductFromCart: any;
 }> {
   /** Cart State */
-  cartState : cartStateRequest = constant.cartPage.state;
+  cartState: cartStateRequest = constant.cartPage.state;
   state = {
     activeLink: this.cartState.activeLink,
     isShowCard: this.cartState.isShowCard,
     cartarray: this.cartState.cartarray,
-    isOpen: this.cartState.isOpen
+    isOpen: this.cartState.isOpen,
   };
   constructor(props: any) {
     super(props);
@@ -46,15 +50,14 @@ class Cart extends React.Component<{
     document.title = constant.cart + getAppName();
     EventEmitter.dispatch("isShow", true);
     EventEmitter.dispatch("isShowFooter", true);
-    
+
     if (localStorage.getItem("token")) {
       this.getCartData();
     }
-
   }
 
   /**
-   * 
+   *
    * @param searchText : search value
    * @param page : page number
    * @param size : per page display
@@ -62,18 +65,18 @@ class Cart extends React.Component<{
   getCartData(searchText: string = "", page: number = 1, size: number = 20) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const obj : getCartListRequest = {
+    const obj: getCartListRequest = {
       searchText: searchText,
       isActive: true,
       page: page,
       size: size,
-      userId:user.userID
+      userId: user.userID,
     };
     this.props.getcartData(obj);
   }
 
   /**
-   * 
+   *
    * @param nextProps : get updated props
    */
   componentWillReceiveProps(nextProps: any) {
@@ -84,40 +87,41 @@ class Cart extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : get all cart data
    */
   getCartAllProductData(data: any) {
-    console.log("data",data)
+    console.log("data", data);
     this.setState({
-      cartarray: this.state.cartarray = data.data && data.data.length > 0 ? data.data : null
+      cartarray: (this.state.cartarray =
+        data.data && data.data.length > 0 ? data.data : null),
     });
     if (this.state.cartarray && this.state.cartarray.length > 0) {
       this.setState({
-        cartarray: this.state.cartarray = data.data,
+        cartarray: (this.state.cartarray = data.data),
       });
-      localStorage.setItem('cartcount',this.state.cartarray.length);
+      localStorage.setItem("cartcount", this.state.cartarray.length);
     } else {
-      EventEmitter.dispatch('count', 0);
-      localStorage.setItem('cartcount','0');
+      EventEmitter.dispatch("count", 0);
+      localStorage.setItem("cartcount", "0");
     }
   }
 
   /**
-   * 
+   *
    * @param id : active id
    */
   handleClick = (id: any) => {
     this.setState({ activeLink: id });
   };
 
-/** Redirect to previous page */
+  /** Redirect to previous page */
   goBack() {
     this.props.history.goBack();
   }
 
   /**
-   * 
+   *
    * @param event : update state value onchange event
    * @param index : index  number
    */
@@ -129,21 +133,21 @@ class Cart extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : cart item quantity increment
    */
   incrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const mid : any = localStorage.getItem('merchantID');
-    const obj : addCartRequest = {
+    const mid: any = localStorage.getItem("merchantID");
+    const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity + 1,
       discountApplied: data.discountApplied,
-      merchantID:data.merchantID
+      merchantID: data.merchantID,
     };
-    
+
     this.props.updateToCart(obj, data.orderCartID);
 
     setTimeout(() => {
@@ -155,19 +159,19 @@ class Cart extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : cart item quantity decrement
    */
   decrementQty(data: any) {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-    const mid : any = localStorage.getItem('merchantID');
-    const obj : addCartRequest = {
+    const mid: any = localStorage.getItem("merchantID");
+    const obj: addCartRequest = {
       userID: user.userID,
       productID: data.productID,
       quantity: data.quantity - 1,
       discountApplied: data.discountApplied,
-      merchantID:data.merchantID
+      merchantID: data.merchantID,
     };
     this.props.updateToCart(obj, data.orderCartID);
     setTimeout(() => {
@@ -178,12 +182,12 @@ class Cart extends React.Component<{
   /** Open block */
   open() {
     this.setState({
-      isOpen: this.state.isOpen = true,
+      isOpen: (this.state.isOpen = true),
     });
   }
 
   /**
-   * 
+   *
    * @param id : cart item id
    * @param text : message cart
    * @param btext : button cart message
@@ -192,7 +196,7 @@ class Cart extends React.Component<{
     if (await alertMessage(text, btext)) {
       let idArray = [];
       idArray.push(id);
-      const obj : removeCartItemRequest = {
+      const obj: removeCartItemRequest = {
         moduleName: "OrderCart",
         id: idArray,
       };
@@ -253,22 +257,26 @@ class Cart extends React.Component<{
                         My Cart ({localStorage.getItem("cartcount")})
                       </h1>
                     </div>
-                   {
-                      this.state.cartarray
-                      ? (this.state.cartarray.length > 0 &&
+                    {this.state.cartarray
+                      ? this.state.cartarray.length > 0 &&
                         this.state.cartarray.map(
                           (cartdata: any, index: any) => (
                             <div className="card-list" key={index}>
                               <div className="card-item-1">
                                 <div className="content-box1">
                                   <div className="img-box">
-                                    {
-                                      cartdata.productImages && cartdata.productImages[0].imagePath ? (
-                                        <img src={constant.filemerchantpath + cartdata.productImages[0].imagePath} alt="" />
-                                      ) : (
-                                        <img src={findstore.store} alt="" />
-                                      )
-                                    }
+                                    {cartdata.productImages &&
+                                    cartdata.productImages[0].imagePath ? (
+                                      <img
+                                        src={
+                                          constant.filemerchantpath +
+                                          cartdata.productImages[0].imagePath
+                                        }
+                                        alt=""
+                                      />
+                                    ) : (
+                                      <img src={findstore.store} alt="" />
+                                    )}
                                   </div>
                                   <div className="right-content">
                                     <div className="list-tt">
@@ -281,7 +289,8 @@ class Cart extends React.Component<{
                                       Seller: DIGIONICS
                                     </div> */}
                                     <div className="price">
-                                      R{cartdata.sellingPrice}
+                                      <i className="fa fa-rupee"></i>
+                                      {cartdata.sellingPrice}
                                     </div>
                                   </div>
                                 </div>
@@ -332,88 +341,24 @@ class Cart extends React.Component<{
                               </div>
                             </div>
                           )
-                        )) : ('')
-                   }
-                    {
-                      localStorage.getItem('token') ? (
-                        <div className="place-btn">
+                        )
+                      : ""}
+                    {localStorage.getItem("token") ? (
+                      <div className="place-btn">
                         <Link to="/placeorder">
                           <button>Place Order</button>
                         </Link>
                       </div>
-                      ) : (
-                        <div className="place-btn">
+                    ) : (
+                      <div className="place-btn">
                         <Link to="/signin">
                           <button>Sign In</button>
                         </Link>
                       </div>
-                      )
-                    }
-                   
+                    )}
                   </div>
 
                   <div className="right-box">
-                    {/* <div className="pay-box">
-                      <div className="your-card">
-                        <h3>
-                          Your Cart ({localStorage.getItem("cartcount")} Items)
-                        </h3>
-                        <hr />
-                      </div>
-                      <div className="market-name">
-                        From <a href="#">Bhatia Super Market</a>
-                      </div>
-                      {this.state.cartarray
-                        ? this.state.cartarray.length > 0 &&
-                          this.state.cartarray.map(
-                            (cartdata: any, index: number) => (
-                              <div className="flex-box" key={index}>
-                                <div className="bdr-roud"></div>
-                                <div className="item-title">
-                                  <h4>{cartdata.productName} </h4>
-                                </div>
-
-                                <div className="number">
-                                  <span
-                                    className="minus"
-                                    onClick={() => this.decrementQty(cartdata)}
-                                  >
-                                    -
-                                  </span>
-                                  <input
-                                    type="text"
-                                    name="qty"
-                                    value={
-                                      cartdata.quantity ? cartdata.quantity : ""
-                                    }
-                                    onChange={(e: any) =>
-                                      this.onChangeEvent(e, index)
-                                    }
-                                  />
-                                  <span
-                                    className="plus"
-                                    onClick={() => this.incrementQty(cartdata)}
-                                  >
-                                    +
-                                  </span>
-                                </div>
-
-                                <span className="price">
-                                  R{cartdata.sellingPrice}
-                                </span>
-                              </div>
-                            )
-                          )
-                        : ""}
-                    </div> */}
-                    {/* <div className="pay-box">
-                      <div className="flex-box flex-box2">
-                        <img src={findstore.store} alt="" />
-                        <textarea value="Any instructions for the delivery partner?" onChange={this.handleChange}>
-                          Any instructions for the delivery partner?
-                        </textarea>
-                      </div>
-                    </div> */}
                     <div className="pay-box">
                       <div className="your-card">
                         <h3>Invoice</h3>
@@ -425,7 +370,7 @@ class Cart extends React.Component<{
                       <div className="invoice-box">
                         <div className="tilte">Item total price</div>
                         <div className="price">
-                          R{" "}
+                          <i className="fa fa-rupee"></i>{" "}
                           {this.state.cartarray
                             ? this.state.cartarray.reduce(
                                 (sum: number, i: any) =>
@@ -442,7 +387,7 @@ class Cart extends React.Component<{
                       <div className="invoice-box total-pay ">
                         <div className="tilte">To pay</div>
                         <div className="price">
-                          R{" "}
+                          <i className="fa fa-rupee"></i>{" "}
                           {this.state.cartarray
                             ? this.state.cartarray.reduce(
                                 (sum: number, i: any) =>
@@ -465,7 +410,7 @@ class Cart extends React.Component<{
 }
 
 /**
- * 
+ *
  * @param state : api call response update state
  */
 const mapStateToProps = (state: any) => ({
@@ -474,18 +419,17 @@ const mapStateToProps = (state: any) => ({
 });
 
 /**
- * 
+ *
  * @param dispatch : call api with action
  */
 const mapDispatchToProps = (dispatch: any) => ({
-  
   /** Update Cart */
   updateToCart: (data: any, id: any) =>
     dispatch(productService.updateToCart(data, id)),
 
   /** Get Cart */
   getcartData: (data: any) => dispatch(productService.getcartData(data)),
-  
+
   /** Remove Product */
   removeProductFromCart: (data: any) =>
     dispatch(productService.removeProductFromCart(data)),

@@ -40,7 +40,7 @@ class PlaceOrder extends React.Component<{
   getCouponData: any;
   applyCoupon: any;
   getApplyList: any;
-  removeCoupon:any;
+  removeCoupon: any;
 }> {
   /** place order state */
   placeOrderState: placeorderStateRequest = constant.placeorderPage.state;
@@ -105,7 +105,7 @@ class PlaceOrder extends React.Component<{
     changewallet: 0,
     amount: 0,
     amounterror: "",
-    codename:'',
+    codename: "",
 
     upiTrue: false,
     cardTrue: false,
@@ -129,10 +129,10 @@ class PlaceOrder extends React.Component<{
     openModel: false,
     couponShow: false,
     couponid: 0,
-    couponapplieddata:'',
-    discount:'0',
-    totalpay:'0',
-    couponerror:''
+    couponapplieddata: "",
+    discount: "0",
+    totalpay: "0",
+    couponerror: "",
   };
 
   /** Constructor call */
@@ -385,14 +385,13 @@ class PlaceOrder extends React.Component<{
     if (nextProps.getApplyCouponData) {
       this.getApplyCouponDetails(nextProps.getApplyCouponData);
     }
-    if(nextProps.removeCouponData) {
+    if (nextProps.removeCouponData) {
       this.removeCouponApplied(nextProps.removeCouponData);
     }
   }
 
   CouponappliedDetails(data: any) {
     if (data.status === 200) {
-    
     }
   }
 
@@ -406,11 +405,11 @@ class PlaceOrder extends React.Component<{
     }
   }
 
-  removeCouponApplied(data:any) {
-    console.log("data",data);
+  removeCouponApplied(data: any) {
+    console.log("data", data);
     if (data.status === 200) {
       this.setState({
-        couponShow: (this.state.couponShow = false)
+        couponShow: (this.state.couponShow = false),
       });
     }
   }
@@ -468,15 +467,15 @@ class PlaceOrder extends React.Component<{
     });
     localStorage.setItem("cartcount", data.totalcount);
     if (this.state.cartarray && this.state.cartarray.length > 0) {
-      var total:any =  this.state.cartarray
+      var total: any = this.state.cartarray
         ? this.state.cartarray.reduce(
             (sum: number, i: any) => (sum += i.sellingPrice),
             0
           )
-        : 0
+        : 0;
       this.setState({
         cartarray: (this.state.cartarray = data.data),
-        totalpay:(total.toFixed(2))
+        totalpay: total.toFixed(2),
       });
     } else {
       EventEmitter.dispatch("count", 0);
@@ -2265,34 +2264,34 @@ class PlaceOrder extends React.Component<{
 
   /** Razerpay functionality */
   openCheckout() {
-    // var razorpay = new Razorpay({
-    //   key: "rzp_live_5dM1OK63yl61hL",
-    // });
-    // let _this = this;
-    // razorpay.once("ready", function (response: any) {
-    //   console.log(response.methods);
-    //   var output = Object.entries(
-    //     response.methods.netbanking
-    //   ).map(([key, value]) => ({ key, value }));
-    //   _this.setState({
-    //     upiTrue: response.methods.upi,
-    //     cardTrue: response.methods.card,
-    //     netbankingTrue: true,
-    //     walletTrue: true,
-    //     freecharge: response.methods.wallet.freecharge,
-    //     olamoney: response.methods.wallet.olamoney,
-    //     payzapp: response.methods.wallet.payzapp,
-    //     AMEX: response.methods.card_networks.AMEX ? "AMEERICAN-EXPRESS" : "",
-    //     BAJAJ: response.methods.card_networks.BAJAJ ? "BAJAJ" : "",
-    //     DICL: response.methods.card_networks.DICL === 1 ? "DICL" : "",
-    //     JCB: response.methods.card_networks.JCB === 1 ? "JCB" : "",
-    //     MAES: response.methods.card_networks.MAES === 1 ? "MAESTRO" : "",
-    //     MC: response.methods.card_networks.MC === 1 ? "MASTERCARD" : "",
-    //     RUPAY: response.methods.card_networks.RUPAY === 1 ? "RUPAY" : "",
-    //     VISA: response.methods.card_networks.VISA === 1 ? "VISA" : "",
-    //     bankarray: output,
-    //   });
-    // });
+    var razorpay = new Razorpay({
+      key: "rzp_live_5dM1OK63yl61hL",
+    });
+    let _this = this;
+    razorpay.once("ready", function (response: any) {
+      console.log(response.methods);
+      var output = Object.entries(
+        response.methods.netbanking
+      ).map(([key, value]) => ({ key, value }));
+      _this.setState({
+        upiTrue: response.methods.upi,
+        cardTrue: response.methods.card,
+        netbankingTrue: true,
+        walletTrue: true,
+        freecharge: response.methods.wallet.freecharge,
+        olamoney: response.methods.wallet.olamoney,
+        payzapp: response.methods.wallet.payzapp,
+        AMEX: response.methods.card_networks.AMEX ? "AMEERICAN-EXPRESS" : "",
+        BAJAJ: response.methods.card_networks.BAJAJ ? "BAJAJ" : "",
+        DICL: response.methods.card_networks.DICL === 1 ? "DICL" : "",
+        JCB: response.methods.card_networks.JCB === 1 ? "JCB" : "",
+        MAES: response.methods.card_networks.MAES === 1 ? "MAESTRO" : "",
+        MC: response.methods.card_networks.MC === 1 ? "MASTERCARD" : "",
+        RUPAY: response.methods.card_networks.RUPAY === 1 ? "RUPAY" : "",
+        VISA: response.methods.card_networks.VISA === 1 ? "VISA" : "",
+        bankarray: output,
+      });
+    });
   }
 
   /** Razerpay Block */
@@ -2371,37 +2370,41 @@ class PlaceOrder extends React.Component<{
   }
 
   couponApply(data: any) {
-    let coupondata:any = data;
+    let coupondata: any = data;
     this.setState({
-      couponapplieddata:data,
-      openModel:this.state.openModel = false,
+      couponapplieddata: data,
+      openModel: (this.state.openModel = false),
       couponShow: (this.state.couponShow = true),
-      couponid: data.couponId
+      couponid: data.couponId,
     });
-    var total: any =  this.state.cartarray
+    var total: any = this.state.cartarray
       ? this.state.cartarray.reduce(
           (sum: number, i: any) => (sum += i.sellingPrice),
           0
         )
-      : 0
-            var numVal1:any = total;
-            console.log("numVal1",numVal1);
-            var numVal2:any = (((coupondata.minAmountOrder) - (coupondata.sellingPrice))/coupondata.minAmountOrder * 100).toFixed(2);
-            console.log("numVal2",numVal2);
-            var numval3:any = (numVal2)/100;
-            var totalValue = numVal1 - (numVal1 * numval3);
-            this.setState({
-              discount:this.state.discount = (numVal1 * numval3).toFixed(2),
-              totalpay:this.state.totalpay = (totalValue.toFixed(2))
-            })
-            console.log("totalvalue",totalValue.toFixed(2));
+      : 0;
+    var numVal1: any = total;
+    console.log("numVal1", numVal1);
+    var numVal2: any = (
+      ((coupondata.minAmountOrder - coupondata.sellingPrice) /
+        coupondata.minAmountOrder) *
+      100
+    ).toFixed(2);
+    console.log("numVal2", numVal2);
+    var numval3: any = numVal2 / 100;
+    var totalValue = numVal1 - numVal1 * numval3;
+    this.setState({
+      discount: (this.state.discount = (numVal1 * numval3).toFixed(2)),
+      totalpay: (this.state.totalpay = totalValue.toFixed(2)),
+    });
+    console.log("totalvalue", totalValue.toFixed(2));
   }
 
   getCouponApply() {
     this.setState({
-      couponapplieddata:'',
+      couponapplieddata: "",
       couponShow: (this.state.couponShow = false),
-      couponid: 0
+      couponid: 0,
     });
     // const users: any = localStorage.getItem("user");
     // let user = JSON.parse(users);
@@ -2411,42 +2414,42 @@ class PlaceOrder extends React.Component<{
     // this.props.getApplyList(obj);
   }
 
-  removeCoupon(data:any) {
-    var newData : any =  this.state.cartarray
-    ? this.state.cartarray.reduce(
-        (sum: number, i: any) => (sum += i.sellingPrice),
-        0
-      )
-    : 0
+  removeCoupon(data: any) {
+    var newData: any = this.state.cartarray
+      ? this.state.cartarray.reduce(
+          (sum: number, i: any) => (sum += i.sellingPrice),
+          0
+        )
+      : 0;
     this.setState({
-      couponapplieddata:'',
+      couponapplieddata: "",
       couponShow: (this.state.couponShow = false),
       couponid: 0,
-      discount:this.state.discount = '0',
-      totalpay:(newData.toFixed(2))
+      discount: (this.state.discount = "0"),
+      totalpay: newData.toFixed(2),
     });
   }
 
   applyCoupon() {
-    if(this.state.coupondetails) {
-      this.state.coupondetails.map((data:any,index:number) => {
-        if(this.state.codename === data.couponCode) {
+    if (this.state.coupondetails) {
+      this.state.coupondetails.map((data: any, index: number) => {
+        if (this.state.codename === data.couponCode) {
           this.setState({
-            couponerror:""
-          })
+            couponerror: "",
+          });
           this.couponApply(data);
         } else {
           this.setState({
-            couponerror:"coupon is not available"
-          })
+            couponerror: "coupon is not available",
+          });
         }
-      })
+      });
     }
   }
 
   /** Card item block */
   cardItemsBlock() {
-    var coupon:any = this.state.couponapplieddata;
+    var coupon: any = this.state.couponapplieddata;
     return (
       <div className="right-box order">
         <div className="pay-box">
@@ -2547,20 +2550,25 @@ class PlaceOrder extends React.Component<{
                 </svg>
                 Apply Coupon
               </button>
-            ) : (
-              coupon ? (
+            ) : coupon ? (
               <div className="offer-applied">
-              <div className="offer-applied-main-flex">
-                <div className="coupon-code">
-          <div className="code-1">{coupon.couponCode}</div>
-                  <div className="offer-small-text">
-                    Offers applied on the bill
+                <div className="offer-applied-main-flex">
+                  <div className="coupon-code">
+                    <div className="code-1">{coupon.couponCode}</div>
+                    <div className="offer-small-text">
+                      Offers applied on the bill
+                    </div>
                   </div>
+                  <button
+                    className="remove-coupon"
+                    onClick={() => this.removeCoupon(coupon)}
+                  >
+                    Remove
+                  </button>
                 </div>
-                <button className="remove-coupon" onClick={() => this.removeCoupon(coupon)}>Remove</button>
               </div>
-            </div>
-              ) : ('')
+            ) : (
+              ""
             )}
             <Modal
               className="modal-dialog-centered coupon"
@@ -2586,11 +2594,16 @@ class PlaceOrder extends React.Component<{
                           onChange={this.onChangeEvent}
                           placeholder="Enter coupon code"
                         />
-                        <button className="apply-code" onClick={this.applyCoupon}>Apply</button>
+                        <button
+                          className="apply-code"
+                          onClick={this.applyCoupon}
+                        >
+                          Apply
+                        </button>
                       </div>
                       <div className="text-danger">
-                                        {this.state.couponerror}
-                                      </div>
+                        {this.state.couponerror}
+                      </div>
                     </div>
                     <div className="coupon-box">
                       {this.state.coupondetails
@@ -2703,15 +2716,13 @@ class PlaceOrder extends React.Component<{
           <div className="invoice-box">
             <div className="tilte">Item total price</div>
             <div className="price">
-            <i className="fa fa-rupee" aria-hidden="true"></i>{" "}
-           {
-             this.state.cartarray
-             ? this.state.cartarray.reduce(
-                 (sum: number, i: any) => (sum += i.sellingPrice),
-                 0
-               )
-             : 0
-           }
+              <i className="fa fa-rupee" aria-hidden="true"></i>{" "}
+              {this.state.cartarray
+                ? this.state.cartarray.reduce(
+                    (sum: number, i: any) => (sum += i.sellingPrice),
+                    0
+                  )
+                : 0}
             </div>
           </div>
           {/* <div className="invoice-box">
@@ -2720,12 +2731,12 @@ class PlaceOrder extends React.Component<{
           </div> */}
           <div className="invoice-box">
             <div className="tilte">Item discount</div>
-        <div className="price free">{this.state.discount}</div>
+            <div className="price free">{this.state.discount}</div>
           </div>
           <div className="invoice-box total-pay ">
             <div className="tilte">To pay</div>
             <div className="price">
-            <i className="fa fa-rupee" aria-hidden="true"></i>{" "}
+              <i className="fa fa-rupee" aria-hidden="true"></i>{" "}
               {this.state.totalpay}
             </div>
           </div>
@@ -2975,7 +2986,7 @@ const mapStateToProps = (state: any) => ({
   getCouponDetail: state.order.coupondata,
   applycoupon: state.placeOrder.applycoupon,
   getApplyCouponData: state.placeOrder.getcouponapply,
-  removeCouponData: state.placeOrder.removecoupon
+  removeCouponData: state.placeOrder.removecoupon,
 });
 
 /**
@@ -3027,9 +3038,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   /** Get CouponList */
   getApplyList: (data: any) => dispatch(placeOrderService.getApplyList(data)),
 
-   /** Get CouponList */
-   removeCoupon: (data: any) => dispatch(placeOrderService.removeCoupon(data)),
-  
+  /** Get CouponList */
+  removeCoupon: (data: any) => dispatch(placeOrderService.removeCoupon(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrder);
