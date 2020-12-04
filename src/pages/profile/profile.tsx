@@ -838,10 +838,6 @@ class Profile extends React.Component<{
           clearModel: (this.state.clearModel = true),
         });
       } else {
-        //  this.props.history.push({
-        //    pathname: "/cart",
-        //    state: { order: this.state.reorderdata }
-        // })
       }
     }, 150);
   }
