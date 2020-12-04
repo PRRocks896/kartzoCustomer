@@ -14,7 +14,9 @@ export const placeOrderService = {
   deleteCard,
   createOrder,
   getCouponData,
-  applyCoupon
+  applyCoupon,
+  getApplyList,
+  removeCoupon
 };
 
 /**
@@ -359,5 +361,71 @@ function applyCoupon(data: any) {
     return { type: ACTION.order.APPLY_COUPON_FAILURE, error };
   }
 }
+
+
+/**
+ * 
+ * @param data : apply coupon 
+ */
+function getApplyList(data: any) {
+  return (dispatch: any) => {
+    dispatch(request({ data }));
+
+    PlaceOrderAPI.getApplyCoupon(data)
+      .then(async (getApplyCoupon: any) => {
+        console.log("getApplyCoupon", getApplyCoupon);
+        if (getApplyCoupon.status === 200) {
+           dispatch(success(await getApplyCoupon));
+        }
+      })
+      .catch((err: any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(getApplyCoupon: any) {
+    return { type: ACTION.order.GET_COUPON_APPLY_REQUEST, getApplyCoupon };
+  }
+  function success(getApplyCoupon: any) {
+    return { type: ACTION.order.GET_COUPON_APPLY_SUCCESS, getApplyCoupon };
+  }
+  function failure(error: any) {
+    return { type: ACTION.order.GET_COUPON_APPLY_FAILURE, error };
+  }
+}
+
+
+
+/**
+ * 
+ * @param data : apply coupon 
+ */
+function removeCoupon(data: any) {
+  return (dispatch: any) => {
+    dispatch(request({ data }));
+
+    PlaceOrderAPI.removeAppliedCoupon(data)
+      .then(async (removeApplyCoupon: any) => {
+        console.log("removeApplyCoupon", removeApplyCoupon);
+        if (removeApplyCoupon.status === 200) {
+           dispatch(success(await removeApplyCoupon));
+        }
+      })
+      .catch((err: any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(removeApplyCoupon: any) {
+    return { type: ACTION.order.REMOVE_APPLY_COUPON_REQUEST, removeApplyCoupon };
+  }
+  function success(removeApplyCoupon: any) {
+    return { type: ACTION.order.REMOVE_APPLY_COUPON_SUCCESS, removeApplyCoupon };
+  }
+  function failure(error: any) {
+    return { type: ACTION.order.REMOVE_APPLY_COUPON_FAILURE, error };
+  }
+}
+
 
 

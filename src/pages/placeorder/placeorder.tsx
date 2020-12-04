@@ -38,7 +38,9 @@ class PlaceOrder extends React.Component<{
   deleteCard: any;
   createOrder: any;
   getCouponData: any;
-  applyCoupon:any;
+  applyCoupon: any;
+  getApplyList: any;
+  removeCoupon:any;
 }> {
   /** place order state */
   placeOrderState: placeorderStateRequest = constant.placeorderPage.state;
@@ -124,7 +126,11 @@ class PlaceOrder extends React.Component<{
     walletnumbererror: "",
     coupondetails: [],
     openModel: false,
-    couponShow:false
+    couponShow: false,
+    couponid: 0,
+    couponapplieddata:'',
+    discount:'0',
+    totalpay:'0'
   };
 
   /** Constructor call */
@@ -164,6 +170,7 @@ class PlaceOrder extends React.Component<{
     this.openApplyModel = this.openApplyModel.bind(this);
     this.handleCloseModel = this.handleCloseModel.bind(this);
     this.couponApply = this.couponApply.bind(this);
+    this.removeCoupon = this.removeCoupon.bind(this);
   }
 
   /** Page Render Call */
@@ -188,6 +195,7 @@ class PlaceOrder extends React.Component<{
         this.getCard();
         this.openCheckout();
         this.getCouponList();
+        // this.getCouponApply();
       }
     }
   }
@@ -371,13 +379,36 @@ class PlaceOrder extends React.Component<{
     if (nextProps.applycoupon) {
       this.CouponappliedDetails(nextProps.applycoupon);
     }
+    if (nextProps.getApplyCouponData) {
+      this.getApplyCouponDetails(nextProps.getApplyCouponData);
+    }
+    if(nextProps.removeCouponData) {
+      this.removeCouponApplied(nextProps.removeCouponData);
+    }
   }
 
-  CouponappliedDetails(data:any) {
-    if(data.status === 200) {
+  CouponappliedDetails(data: any) {
+    if (data.status === 200) {
+    
+    }
+  }
+
+  getApplyCouponDetails(data: any) {
+    console.log("getApplyCouponDetails", data);
+    if (data.status === 200) {
       this.setState({
-        couponShow:this.state.couponShow = true
-      })
+        couponShow: (this.state.couponShow = true),
+        couponid: data.resultObject.couponID,
+      });
+    }
+  }
+
+  removeCouponApplied(data:any) {
+    console.log("data",data);
+    if (data.status === 200) {
+      this.setState({
+        couponShow: (this.state.couponShow = false)
+      });
     }
   }
 
@@ -434,8 +465,15 @@ class PlaceOrder extends React.Component<{
     });
     localStorage.setItem("cartcount", data.totalcount);
     if (this.state.cartarray && this.state.cartarray.length > 0) {
+      var total:any =  this.state.cartarray
+        ? this.state.cartarray.reduce(
+            (sum: number, i: any) => (sum += i.sellingPrice),
+            0
+          )
+        : 0
       this.setState({
         cartarray: (this.state.cartarray = data.data),
+        totalpay:(total.toFixed(2))
       });
     } else {
       EventEmitter.dispatch("count", 0);
@@ -2224,34 +2262,34 @@ class PlaceOrder extends React.Component<{
 
   /** Razerpay functionality */
   openCheckout() {
-    var razorpay = new Razorpay({
-      key: "rzp_live_5dM1OK63yl61hL",
-    });
-    let _this = this;
-    razorpay.once("ready", function (response: any) {
-      console.log(response.methods);
-      var output = Object.entries(
-        response.methods.netbanking
-      ).map(([key, value]) => ({ key, value }));
-      _this.setState({
-        upiTrue: response.methods.upi,
-        cardTrue: response.methods.card,
-        netbankingTrue: true,
-        walletTrue: true,
-        freecharge: response.methods.wallet.freecharge,
-        olamoney: response.methods.wallet.olamoney,
-        payzapp: response.methods.wallet.payzapp,
-        AMEX: response.methods.card_networks.AMEX ? "AMEERICAN-EXPRESS" : "",
-        BAJAJ: response.methods.card_networks.BAJAJ ? "BAJAJ" : "",
-        DICL: response.methods.card_networks.DICL === 1 ? "DICL" : "",
-        JCB: response.methods.card_networks.JCB === 1 ? "JCB" : "",
-        MAES: response.methods.card_networks.MAES === 1 ? "MAESTRO" : "",
-        MC: response.methods.card_networks.MC === 1 ? "MASTERCARD" : "",
-        RUPAY: response.methods.card_networks.RUPAY === 1 ? "RUPAY" : "",
-        VISA: response.methods.card_networks.VISA === 1 ? "VISA" : "",
-        bankarray: output,
-      });
-    });
+    // var razorpay = new Razorpay({
+    //   key: "rzp_live_5dM1OK63yl61hL",
+    // });
+    // let _this = this;
+    // razorpay.once("ready", function (response: any) {
+    //   console.log(response.methods);
+    //   var output = Object.entries(
+    //     response.methods.netbanking
+    //   ).map(([key, value]) => ({ key, value }));
+    //   _this.setState({
+    //     upiTrue: response.methods.upi,
+    //     cardTrue: response.methods.card,
+    //     netbankingTrue: true,
+    //     walletTrue: true,
+    //     freecharge: response.methods.wallet.freecharge,
+    //     olamoney: response.methods.wallet.olamoney,
+    //     payzapp: response.methods.wallet.payzapp,
+    //     AMEX: response.methods.card_networks.AMEX ? "AMEERICAN-EXPRESS" : "",
+    //     BAJAJ: response.methods.card_networks.BAJAJ ? "BAJAJ" : "",
+    //     DICL: response.methods.card_networks.DICL === 1 ? "DICL" : "",
+    //     JCB: response.methods.card_networks.JCB === 1 ? "JCB" : "",
+    //     MAES: response.methods.card_networks.MAES === 1 ? "MAESTRO" : "",
+    //     MC: response.methods.card_networks.MC === 1 ? "MASTERCARD" : "",
+    //     RUPAY: response.methods.card_networks.RUPAY === 1 ? "RUPAY" : "",
+    //     VISA: response.methods.card_networks.VISA === 1 ? "VISA" : "",
+    //     bankarray: output,
+    //   });
+    // });
   }
 
   /** Razerpay Block */
@@ -2329,25 +2367,73 @@ class PlaceOrder extends React.Component<{
     });
   }
 
-  couponApply(data:any) {
-    const users: any = localStorage.getItem("user");
-    let user = JSON.parse(users);
-    const obj = {
-      userID:user.userID,
-      couponID:data.couponId
-    }
-    this.props.applyCoupon(obj);
-    setTimeout(() => {
-            var numVal1 = data.minAmountOrder;
-            var numVal2 =  (data.sellingPrice)/ 100;
-            var totalValue = numVal1 - (numVal1 * numVal2);
+  couponApply(data: any) {
+    let coupondata:any = data;
+    this.setState({
+      couponapplieddata:data,
+      openModel:this.state.openModel = false,
+      couponShow: (this.state.couponShow = true),
+      couponid: data.couponId
+    });
+    var total: any =  this.state.cartarray
+      ? this.state.cartarray.reduce(
+          (sum: number, i: any) => (sum += i.sellingPrice),
+          0
+        )
+      : 0
+            var numVal1:any = total;
+            console.log("numVal1",numVal1);
+            var numVal2:any = (((coupondata.minAmountOrder) - (coupondata.sellingPrice))/coupondata.minAmountOrder * 100).toFixed(2);
+            console.log("numVal2",numVal2);
+            var numval3:any = (numVal2)/100;
+            var totalValue = numVal1 - (numVal1 * numval3);
+            this.setState({
+              discount:this.state.discount = (numVal1 * numval3).toFixed(2),
+              totalpay:this.state.totalpay = (totalValue.toFixed(2))
+            })
             console.log("totalvalue",totalValue.toFixed(2));
-    }, 200);
+  }
 
+  getCouponApply() {
+    this.setState({
+      couponapplieddata:'',
+      couponShow: (this.state.couponShow = false),
+      couponid: 0
+    });
+    // const users: any = localStorage.getItem("user");
+    // let user = JSON.parse(users);
+    // const obj = {
+    //   userID: user.userID,
+    // };
+    // this.props.getApplyList(obj);
+  }
+
+  removeCoupon(data:any) {
+    var newData : any =  this.state.cartarray
+    ? this.state.cartarray.reduce(
+        (sum: number, i: any) => (sum += i.sellingPrice),
+        0
+      )
+    : 0
+    this.setState({
+      couponapplieddata:'',
+      couponShow: (this.state.couponShow = false),
+      couponid: 0,
+      discount:this.state.discount = '0',
+      totalpay:(newData.toFixed(2))
+    });
+    // const users: any = localStorage.getItem("user");
+    // let user = JSON.parse(users);
+    // const obj = {
+    //   CouponId: data.couponId,
+    //   userid: user.userID,
+    // };
+    // this.props.removeCoupon(obj);
   }
 
   /** Card item block */
   cardItemsBlock() {
+    var coupon:any = this.state.couponapplieddata;
     return (
       <div className="right-box order">
         <div className="pay-box">
@@ -2399,89 +2485,78 @@ class PlaceOrder extends React.Component<{
           </div>
 
           <div className="apply-c">
-            {
-              this.state.couponShow === false ? (
-                <>
-            <button className="cccc-btn" onClick={this.openApplyModel}>
-              <svg
-                version="1.1"
-                id="Capa_1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-                x="0px"
-                y="0px"
-                viewBox="0 0 512.003 512.003"
-                xmlSpace="preserve"
-                fill="#F7B62B"
-                height="15px"
-                width="15px"
-                style={{ marginRight: "15px" }}
-              >
-                <g>
+            {this.state.couponShow === false ? (
+              <button className="cccc-btn" onClick={this.openApplyModel}>
+                <svg
+                  version="1.1"
+                  id="Capa_1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 512.003 512.003"
+                  xmlSpace="preserve"
+                  fill="#F7B62B"
+                  height="15px"
+                  width="15px"
+                  style={{ marginRight: "15px" }}
+                >
                   <g>
-                    <path d="M477.958,262.633c-2.06-4.215-2.06-9.049,0-13.263l19.096-39.065c10.632-21.751,2.208-47.676-19.178-59.023l-38.41-20.38 c-4.144-2.198-6.985-6.11-7.796-10.729l-7.512-42.829c-4.183-23.846-26.241-39.87-50.208-36.479l-43.053,6.09 c-4.647,0.656-9.242-0.838-12.613-4.099l-31.251-30.232c-17.401-16.834-44.661-16.835-62.061,0L193.72,42.859 c-3.372,3.262-7.967,4.753-12.613,4.099l-43.053-6.09c-23.975-3.393-46.025,12.633-50.208,36.479l-7.512,42.827 c-0.811,4.62-3.652,8.531-7.795,10.73l-38.41,20.38c-21.386,11.346-29.81,37.273-19.178,59.024l19.095,39.064 c2.06,4.215,2.06,9.049,0,13.263l-19.096,39.064c-10.632,21.751-2.208,47.676,19.178,59.023l38.41,20.38 c4.144,2.198,6.985,6.11,7.796,10.729l7.512,42.829c3.808,21.708,22.422,36.932,43.815,36.93c2.107,0,4.245-0.148,6.394-0.452 l43.053-6.09c4.643-0.659,9.241,0.838,12.613,4.099l31.251,30.232c8.702,8.418,19.864,12.626,31.03,12.625 c11.163-0.001,22.332-4.209,31.03-12.625l31.252-30.232c3.372-3.261,7.968-4.751,12.613-4.099l43.053,6.09 c23.978,3.392,46.025-12.633,50.208-36.479l7.513-42.827c0.811-4.62,3.652-8.531,7.795-10.73l38.41-20.38 c21.386-11.346,29.81-37.273,19.178-59.024L477.958,262.633z M196.941,123.116c29.852,0,54.139,24.287,54.139,54.139 s-24.287,54.139-54.139,54.139s-54.139-24.287-54.139-54.139S167.089,123.116,196.941,123.116z M168.997,363.886 c-2.883,2.883-6.662,4.325-10.44,4.325s-7.558-1.441-10.44-4.325c-5.766-5.766-5.766-15.115,0-20.881l194.889-194.889 c5.765-5.766,15.115-5.766,20.881,0c5.766,5.766,5.766,15.115,0,20.881L168.997,363.886z M315.061,388.888 c-29.852,0-54.139-24.287-54.139-54.139s24.287-54.139,54.139-54.139c29.852,0,54.139,24.287,54.139,54.139 S344.913,388.888,315.061,388.888z" />
+                    <g>
+                      <path d="M477.958,262.633c-2.06-4.215-2.06-9.049,0-13.263l19.096-39.065c10.632-21.751,2.208-47.676-19.178-59.023l-38.41-20.38 c-4.144-2.198-6.985-6.11-7.796-10.729l-7.512-42.829c-4.183-23.846-26.241-39.87-50.208-36.479l-43.053,6.09 c-4.647,0.656-9.242-0.838-12.613-4.099l-31.251-30.232c-17.401-16.834-44.661-16.835-62.061,0L193.72,42.859 c-3.372,3.262-7.967,4.753-12.613,4.099l-43.053-6.09c-23.975-3.393-46.025,12.633-50.208,36.479l-7.512,42.827 c-0.811,4.62-3.652,8.531-7.795,10.73l-38.41,20.38c-21.386,11.346-29.81,37.273-19.178,59.024l19.095,39.064 c2.06,4.215,2.06,9.049,0,13.263l-19.096,39.064c-10.632,21.751-2.208,47.676,19.178,59.023l38.41,20.38 c4.144,2.198,6.985,6.11,7.796,10.729l7.512,42.829c3.808,21.708,22.422,36.932,43.815,36.93c2.107,0,4.245-0.148,6.394-0.452 l43.053-6.09c4.643-0.659,9.241,0.838,12.613,4.099l31.251,30.232c8.702,8.418,19.864,12.626,31.03,12.625 c11.163-0.001,22.332-4.209,31.03-12.625l31.252-30.232c3.372-3.261,7.968-4.751,12.613-4.099l43.053,6.09 c23.978,3.392,46.025-12.633,50.208-36.479l7.513-42.827c0.811-4.62,3.652-8.531,7.795-10.73l38.41-20.38 c21.386-11.346,29.81-37.273,19.178-59.024L477.958,262.633z M196.941,123.116c29.852,0,54.139,24.287,54.139,54.139 s-24.287,54.139-54.139,54.139s-54.139-24.287-54.139-54.139S167.089,123.116,196.941,123.116z M168.997,363.886 c-2.883,2.883-6.662,4.325-10.44,4.325s-7.558-1.441-10.44-4.325c-5.766-5.766-5.766-15.115,0-20.881l194.889-194.889 c5.765-5.766,15.115-5.766,20.881,0c5.766,5.766,5.766,15.115,0,20.881L168.997,363.886z M315.061,388.888 c-29.852,0-54.139-24.287-54.139-54.139s24.287-54.139,54.139-54.139c29.852,0,54.139,24.287,54.139,54.139 S344.913,388.888,315.061,388.888z" />
+                    </g>
                   </g>
-                </g>
-                <g>
                   <g>
-                    <path d="M315.061,310.141c-13.569,0-24.609,11.039-24.609,24.608s11.039,24.608,24.609,24.608 c13.569,0,24.608-11.039,24.608-24.608S328.63,310.141,315.061,310.141z" />
+                    <g>
+                      <path d="M315.061,310.141c-13.569,0-24.609,11.039-24.609,24.608s11.039,24.608,24.609,24.608 c13.569,0,24.608-11.039,24.608-24.608S328.63,310.141,315.061,310.141z" />
+                    </g>
                   </g>
-                </g>
-                <g>
                   <g>
-                    <path d="M196.941,152.646c-13.569,0-24.608,11.039-24.608,24.608c0,13.569,11.039,24.609,24.608,24.609 c13.569,0,24.609-11.039,24.609-24.609C221.549,163.686,210.51,152.646,196.941,152.646z" />
+                    <g>
+                      <path d="M196.941,152.646c-13.569,0-24.608,11.039-24.608,24.608c0,13.569,11.039,24.609,24.608,24.609 c13.569,0,24.609-11.039,24.609-24.609C221.549,163.686,210.51,152.646,196.941,152.646z" />
+                    </g>
                   </g>
-                </g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-                <g></g>
-              </svg>
-              Apply Coupon
-            </button>
-            <div className="offer-applied">
-                <div className="offer-applied-main-flex">
-                    <div className="coupon-code">
-                        <div className="code-1">
-                          FCH5013
-                        </div>
-                        <div className="offer-small-text">
-                            Offers applied on the bill
-                        </div>
-
-                    </div>
-                    <button className="remove-coupon">Remove</button>
-                </div>
-            </div>
-            </>
-                            
-
-              ) : (
-                <button className="cccc-btn" onClick={this.openApplyModel}>
-                  <i className="fa fa-trash"></i>
-                  Coupon Applied
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                  <g></g>
+                </svg>
+                Apply Coupon
               </button>
-              )
-            }
+            ) : (
+              coupon ? (
+              <div className="offer-applied">
+              <div className="offer-applied-main-flex">
+                <div className="coupon-code">
+          <div className="code-1">{coupon.couponCode}</div>
+                  <div className="offer-small-text">
+                    Offers applied on the bill
+                  </div>
+                </div>
+                <button className="remove-coupon" onClick={() => this.removeCoupon(coupon)}>Remove</button>
+              </div>
+            </div>
+              ) : ('')
+            )}
             <Modal
               className="modal-dialog-centered coupon"
               show={this.state.openModel}
               onHide={this.handleCloseModel}
             >
               <Modal.Header closeButton>
-                  <Modal.Title></Modal.Title>
-                </Modal.Header>
+                <Modal.Title></Modal.Title>
+              </Modal.Header>
               <Modal.Body>
                 <section className="view-order-dtl">
                   <div className="fix-width">
@@ -2499,16 +2574,33 @@ class PlaceOrder extends React.Component<{
                       </div>
                     </div>
                     <div className="coupon-box">
-                      {
-                        this.state.coupondetails ? (
-                          this.state.coupondetails.map((data:any,index:number) => (
-                      <div className="box" key={index}>
-                        <div className="coupon-code">{data.couponCode}</div>
-                        <h4 className="off-price">Get {(((data.minAmountOrder) - (data.sellingPrice))/data.minAmountOrder * 100).toFixed(2)}% Off</h4>
-                        <span className="text-1">
-                          Use code {data.couponCode} & get {(((data.minAmountOrder) - (data.sellingPrice))/data.minAmountOrder * 100).toFixed(2)}% off on orders above R{data.minAmountOrder} Maximum discount: {data.sellingPrice}.
-                        </span>
-                        {/* <div className="also-get">
+                      {this.state.coupondetails
+                        ? this.state.coupondetails.map(
+                            (data: any, index: number) => (
+                              <div className="box" key={index}>
+                                <div className="coupon-code">
+                                  {data.couponCode}
+                                </div>
+                                <h4 className="off-price">
+                                  Get{" "}
+                                  {(
+                                    ((data.minAmountOrder - data.sellingPrice) /
+                                      data.minAmountOrder) *
+                                    100
+                                  ).toFixed(2)}
+                                  % Off
+                                </h4>
+                                <span className="text-1">
+                                  Use code {data.couponCode} & get{" "}
+                                  {(
+                                    ((data.minAmountOrder - data.sellingPrice) /
+                                      data.minAmountOrder) *
+                                    100
+                                  ).toFixed(2)}
+                                  % off on orders above R{data.minAmountOrder}{" "}
+                                  Maximum discount: {data.sellingPrice}.
+                                </span>
+                                {/* <div className="also-get">
                           <span className="list-tt">Also get.</span>
                           <ul className="">
                             <li>
@@ -2531,12 +2623,16 @@ class PlaceOrder extends React.Component<{
                             </li>
                           </ul>
                         </div> */}
-                        <button className="apply-btn mt-3" onClick={() => this.couponApply(data)}>Apply Coupon</button>
-                      </div>
-                          ))
-                        ) : ('')
-                      }
-
+                                <button
+                                  className="apply-btn mt-3"
+                                  onClick={() => this.couponApply(data)}
+                                >
+                                  Apply Coupon
+                                </button>
+                              </div>
+                            )
+                          )
+                        : ""}
                     </div>
                   </div>
                 </section>
@@ -2588,29 +2684,30 @@ class PlaceOrder extends React.Component<{
           <div className="invoice-box">
             <div className="tilte">Item total price</div>
             <div className="price">
-              R{" "}
-              {this.state.cartarray
-                ? this.state.cartarray.reduce(
-                    (sum: number, i: any) => (sum += i.sellingPrice),
-                    0
-                  )
-                : 0}
+            <i className="fa fa-rupee" aria-hidden="true"></i>{" "}
+           {
+             this.state.cartarray
+             ? this.state.cartarray.reduce(
+                 (sum: number, i: any) => (sum += i.sellingPrice),
+                 0
+               )
+             : 0
+           }
             </div>
           </div>
-          <div className="invoice-box">
+          {/* <div className="invoice-box">
             <div className="tilte">Item total</div>
             <div className="price free">Free</div>
+          </div> */}
+          <div className="invoice-box">
+            <div className="tilte">Item discount</div>
+        <div className="price free">{this.state.discount}</div>
           </div>
           <div className="invoice-box total-pay ">
             <div className="tilte">To pay</div>
             <div className="price">
-              R{" "}
-              {this.state.cartarray
-                ? this.state.cartarray.reduce(
-                    (sum: number, i: any) => (sum += i.sellingPrice),
-                    0
-                  )
-                : 0}
+            <i className="fa fa-rupee" aria-hidden="true"></i>{" "}
+              {this.state.totalpay}
             </div>
           </div>
         </div>
@@ -2857,7 +2954,9 @@ const mapStateToProps = (state: any) => ({
   getaddressDetail: state.placeOrder.getaddressdata,
   getCardDetail: state.placeOrder.getcarddata,
   getCouponDetail: state.order.coupondata,
-  applycoupon:state.placeOrder.applycoupon
+  applycoupon: state.placeOrder.applycoupon,
+  getApplyCouponData: state.placeOrder.getcouponapply,
+  removeCouponData: state.placeOrder.removecoupon
 });
 
 /**
@@ -2903,9 +3002,14 @@ const mapDispatchToProps = (dispatch: any) => ({
   /** Get CouponList */
   getCouponData: (data: any) => dispatch(placeOrderService.getCouponData(data)),
 
-    /** Get CouponList */
-    applyCoupon: (data: any) => dispatch(placeOrderService.applyCoupon(data)),
+  /** Get CouponList */
+  applyCoupon: (data: any) => dispatch(placeOrderService.applyCoupon(data)),
 
+  /** Get CouponList */
+  getApplyList: (data: any) => dispatch(placeOrderService.getApplyList(data)),
+
+   /** Get CouponList */
+   removeCoupon: (data: any) => dispatch(placeOrderService.removeCoupon(data)),
   
 });
 

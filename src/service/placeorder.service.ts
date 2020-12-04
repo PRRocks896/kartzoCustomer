@@ -161,5 +161,30 @@ export default {
       data,
       false
     );
+  },
+
+  
+      /**
+   *
+   * @param data : get coupon list
+   */
+  getApplyCoupon: async function (data: any) {
+    return WebReqUrl.get(
+      Constant.apiUrl + apiUrl.orderController.getapplycoupon + data.userID,
+      false
+    );
+  },
+
+    
+      /**
+   *
+   * @param data : get coupon list
+   */
+  removeAppliedCoupon: async function (data: any) {
+    return await WebReqUrl.delete(
+      Constant.apiUrl +
+        apiUrl.storeProductController.deletecouponData +
+        `?CouponId=${data.CouponId}&userid=${data.userid}`,false
+    );
   }
 };

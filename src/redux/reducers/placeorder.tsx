@@ -7,7 +7,9 @@ const initialState = {
   getaddressdata: "",
   deletedata: "",
   getcarddata:"",
-  applycoupon:""
+  applycoupon:"",
+  getcouponapply:"",
+  removecoupon:""
 };
 
 /**
@@ -139,6 +141,36 @@ const placeOrder = (state = initialState, action: any) => {
                 ...state,
                 error: action.error,
               };
+
+              case ACTION.order.GET_COUPON_APPLY_REQUEST:
+                return {
+                  ...state,
+                };
+              case ACTION.order.GET_COUPON_APPLY_SUCCESS:
+                return {
+                  ...state,
+                  getcouponapply: action.getApplyCoupon
+                };
+              case ACTION.order.GET_COUPON_APPLY_FAILURE:
+                return {
+                  ...state,
+                  error: action.error,
+                };
+
+                case ACTION.order.REMOVE_APPLY_COUPON_REQUEST:
+                  return {
+                    ...state,
+                  };
+                case ACTION.order.REMOVE_APPLY_COUPON_SUCCESS:
+                  return {
+                    ...state,
+                    removecoupon: action.removeApplyCoupon
+                  };
+                case ACTION.order.REMOVE_APPLY_COUPON_FAILURE:
+                  return {
+                    ...state,
+                    error: action.error,
+                  };
 
     default:
       return state;
