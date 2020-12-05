@@ -799,8 +799,8 @@ img.picture {
 }
 .view-order-dtl .circle-box {
 	position: absolute;
-	width: 35px;
-	height: 35px;
+    width: 25px;
+    height: 25px;
 	background: #fff;
 	border-radius: 30px;
 	border: 2px solid #f7b62b;
@@ -810,9 +810,9 @@ img.picture {
 }
 .view-order-dtl .icon-dot-bg1 {
 	position: absolute;
-    top: 2px;
-    width: 15px;
-    left: 6px
+    top: -2px;
+    width: 10px;
+    left: 5px;
 }
 
 .view-order-dtl .delivery-day .icon-right {
@@ -843,7 +843,7 @@ img.picture {
 	box-sizing: border-box;
 	position: absolute;
 	border-right: 2px dashed #f7b62b;
-	left: 17px;
+	left: 12px;
 	bottom: 0px;
 	top: 0px;
 }
@@ -1021,5 +1021,10 @@ img.picture {
 	width: 20px;
 	float: left;
 	margin-right: 15px;
+}
+
+svg#Capa_2 {
+    width: 12px;
+    height: 12px;
 }
 /* view-order-dtl end */

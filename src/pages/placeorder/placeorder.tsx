@@ -390,11 +390,19 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param data : coupon applied details
+   */
   CouponappliedDetails(data: any) {
     if (data.status === 200) {
     }
   }
 
+  /**
+   * 
+   * @param data : get apply coupon details
+   */
   getApplyCouponDetails(data: any) {
     console.log("getApplyCouponDetails", data);
     if (data.status === 200) {
@@ -405,6 +413,10 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param data : remove apply coupon
+   */
   removeCouponApplied(data: any) {
     console.log("data", data);
     if (data.status === 200) {
@@ -1322,12 +1334,17 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  /**
+   * 
+   * @param e : wallet id
+   */
   changeWallet(e: any) {
     this.setState({
       changewallet: (this.state.changewallet = parseInt(e.target.id)),
     });
   }
 
+  /** Validate Id */
   validateWallet() {
     let walletnumbererror = "";
 

@@ -94,6 +94,7 @@ class Profile extends React.Component<{
     reorderdata: "",
     isShowHelp: false,
     updateOrder: "",
+    merchantaddress:""
   };
 
   /** Constructor call */
@@ -255,6 +256,10 @@ class Profile extends React.Component<{
     });
   }
 
+  /**
+   * 
+   * @param data : get profile data
+   */
   getProfileData(data: any) {
     this.setState({
       update: true,
@@ -266,6 +271,10 @@ class Profile extends React.Component<{
     });
   }
 
+  /**
+   * 
+   * @param data : update profile data
+   */
   updateProfileData(data: any) {
     this.setState({
       update: true,
@@ -699,6 +708,10 @@ class Profile extends React.Component<{
     });
   }
 
+  /**
+   * 
+   * @param data : open order listing model
+   */
   openOrderModel(data: any) {
     this.setState({
       ordernumber: data.orderNo,
@@ -709,15 +722,18 @@ class Profile extends React.Component<{
       productdetail: data.orderDetails,
       totalprice: data.totalAmount,
       showOrder: !this.state.showOrder,
+      merchantaddress: data.merchantAddress
     });
   }
 
+  /** Close order model */
   handelCloseOrderModle() {
     this.setState({
       showOrder: !this.state.showOrder,
     });
   }
 
+  /** clear model */
   handleClearModel() {
     this.setState({
       clearModel: (this.state.clearModel = false),
@@ -750,6 +766,10 @@ class Profile extends React.Component<{
     }, 50);
   }
 
+  /**
+   * 
+   * @param cart : add to cart functionality
+   */
   addToCart(cart: any) {
     console.log("cart", cart);
     let reorder: any = [];
@@ -780,6 +800,7 @@ class Profile extends React.Component<{
     }, 100);
   }
 
+  /** clear model */
   clearModel() {
     return (
       <Modal
@@ -818,6 +839,10 @@ class Profile extends React.Component<{
     );
   }
 
+  /**
+   * 
+   * @param data : repet order functionality 
+   */
   reOrder(data: any) {
     this.setState({
       reorderdata: data,
@@ -842,6 +867,10 @@ class Profile extends React.Component<{
     }, 150);
   }
 
+  /**
+   * 
+   * @param data : click on help buttop open help features
+   */
   helpOrder(data: any) {
     console.log("data", data);
     this.setState({
@@ -1186,7 +1215,7 @@ class Profile extends React.Component<{
                                           {order.orderDetails[0].merchantName}
                                         </h4>
                                         <div className="address-nm">
-                                          Race Course Road
+                                          {order.merchantAddress}
                                         </div>
                                         <div className="shop-id">
                                           ORDER # {order.orderNo} |{" "}
@@ -1299,7 +1328,7 @@ class Profile extends React.Component<{
                                       {reorderhelp.orderDetails[0].merchantName}
                                     </h4>
                                     <div className="address-nm">
-                                      Race Couse Road
+                                    {reorderhelp.merchantAddress}
                                     </div>
                                     <div className="shop-id">
                                       ORDER # {reorderhelp.orderNo} |{" "}
@@ -1462,13 +1491,13 @@ class Profile extends React.Component<{
                                         {this.state.merchantname}
                                       </div>
                                       <div className="pickup-location">
-                                        Kalawad Road
+                                       {this.state.merchantaddress}
                                       </div>
                                       <div className="circle-box">
                                         <div className="icon-dot-bg1">
                                           <svg
                                             version="1.1"
-                                            id="Capa_1"
+                                            id="Capa_2"
                                             xmlns="http://www.w3.org/2000/svg"
                                             xmlnsXlink="http://www.w3.org/1999/xlink"
                                             x="0px"
@@ -1540,7 +1569,7 @@ class Profile extends React.Component<{
                                         <div className="icon-dot-bg1">
                                           <svg
                                             version="1.1"
-                                            id="Capa_1"
+                                            id="Capa_2"
                                             xmlns="http://www.w3.org/2000/svg"
                                             xmlnsXlink="http://www.w3.org/1999/xlink"
                                             x="0px"
@@ -2322,6 +2351,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   removeProductFromCart: (data: any) =>
     dispatch(productService.removeProductFromCart(data)),
 
+  /** Reorder */
   reOrder: (data: any) => dispatch(productService.reOrder(data)),
 });
 
