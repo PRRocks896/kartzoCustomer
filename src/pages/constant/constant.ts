@@ -46,7 +46,7 @@ export default {
   apiUrl: "http://api-customer.kartzoapp.com/v1/api/",
   filepath: "http://api.kartzoapp.com/",
   filemerchantpath: "http://api-merchant.kartzoapp.com/",
-  fileuserpath:"http://api-customer.kartzoapp.com/",
+  fileuserpath: "http://api-customer.kartzoapp.com/",
   apiUrlAdmin: "http://api.kartzoapp.com/v1/api/",
   apiUrlMerchant: "http://api-merchant.kartzoapp.com/v1/api/",
   home: "Get free online delivery for food,medicines,groceries and more | ...",
@@ -91,8 +91,8 @@ export default {
     title: {},
     state: {
       isShow: false,
-      footercitydata:[],
-      footersocialdata:[]
+      footercitydata: [],
+      footersocialdata: [],
     },
   },
   profilePage: {
@@ -138,7 +138,7 @@ export default {
       slugname: "",
       categorydata: [],
       isLoading: true,
-      cityid:3
+      cityid: 3,
     },
   },
   findStorePage: {
@@ -191,7 +191,7 @@ export default {
       isButton: false,
       loadingid: "",
       show: false,
-      isLoading:true
+      isLoading: true,
     },
   },
   cartPage: {
@@ -443,8 +443,8 @@ export default {
     title: {},
     state: {
       mobile: "",
-    mobileerror: "",
-    hide: false,
+      mobileerror: "",
+      hide: false,
     },
   },
 };
