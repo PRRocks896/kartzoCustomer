@@ -20,8 +20,10 @@ import { connect } from "react-redux";
 import "./placeorder.css";
 import { Modal } from "react-bootstrap";
 import { placeOrderService, productService } from "../../redux/index";
+// import $ from "jquery";
 var creditCardType = require("credit-card-type");
 declare var Razorpay: any;
+var $ = require( "jquery" );
 
 class PlaceOrder extends React.Component<{
   show: boolean;
@@ -489,7 +491,25 @@ class PlaceOrder extends React.Component<{
         cartarray: (this.state.cartarray = data.data),
         totalpay: total.toFixed(2),
       });
+      var numVal1: any = total ? total : 0;
+      var coupon:any = this.state.couponapplieddata ? this.state.couponapplieddata : '';
+      var numVal2: any = (
+        ((coupon.minAmountOrder - coupon.sellingPrice) /
+        coupon.minAmountOrder) *
+        100
+      ).toFixed(2);
+      // console.log("numVal2", numVal2);
+      var numval3: any = numVal2 / 100;
+      var totalValue = numVal1 - numVal1 * numval3;
+      this.setState({
+        discount: (this.state.discount = this.state.couponapplieddata ? (numVal1 * numval3).toFixed(2) : '0'),
+        totalpay: (this.state.totalpay = this.state.couponapplieddata ? totalValue.toFixed(2) : total),
+      });
     } else {
+      this.setState({
+        discount: (this.state.discount = '0'),
+        totalpay: (this.state.totalpay =  '0'),
+      });
       EventEmitter.dispatch("count", 0);
       localStorage.setItem("cartcount", "0");
     }
@@ -1365,65 +1385,107 @@ class PlaceOrder extends React.Component<{
   }
 
   payWallet(data: any) {
-    const isValid = this.validateWallet();
-    if (isValid) {
-      this.setState({
-        walletnumbererror: (this.state.walletnumbererror = ""),
-      });
-      if (this.state.cartarray) {
-        var total: any = this.state.cartarray.reduce(
-          (sum: number, i: any) => (sum += i.sellingPrice),
-          0
-        );
+    // const isValid = this.validateWallet();
+    // if (isValid) {
+    //   this.setState({
+    //     walletnumbererror: (this.state.walletnumbererror = ""),
+    //   });
+    //   if (this.state.cartarray) {
+    //     var total: any = this.state.cartarray.reduce(
+    //       (sum: number, i: any) => (sum += i.sellingPrice),
+    //       0
+    //     );
+    //   }
+    //   const users: any = localStorage.getItem("user");
+    //   let user = JSON.parse(users);
+
+    //   let newCartArray: any = [];
+
+    //   if (this.state.cartarray) {
+    //     this.state.cartarray.map((data: any, index: number) => {
+    //       newCartArray.push({
+    //         productId: data.productID,
+    //         orderQty: data.quantity,
+    //         productPrice: data.sellingPrice,
+    //       });
+    //     });
+    //   }
+
+    //   const obj = {
+    //     userID: user.userID,
+    //     couponID: 0,
+    //     paymentMethod: 0,
+    //     orderStatus: 0,
+    //     paymentStatus: 0,
+    //     distance: 0,
+    //     totalQty: this.state.cartarray ? this.state.cartarray.length : 0,
+    //     totalAmount: total,
+    //     discountAmount: 0,
+    //     taxAmount: 0,
+    //     deliveryAmount: 0,
+    //     couponAmount: 0,
+    //     transactionID: 0,
+    //     paymentMessage: "",
+    //     cardNumber: "",
+    //     orderDetails: newCartArray,
+    //     addressID: this.state.mainaddress,
+    //   };
+    //   this.props.createOrder(obj);
+
+    //   setTimeout(() => {
+    //     if (
+    //       data === "freecharge" ||
+    //       data === "olamoney" ||
+    //       data === "payzapp"
+    //     ) {
+    //       this.setState({
+    //         changewallet: 0,
+    //       });
+    //     }
+    //   }, 200);
+    // }
+    console.log("enter");
+    var options = {
+      "key": "rzp_live_5dM1OK63yl61hL", // Enter the Key ID generated from the Dashboard
+      "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "Acme Corp",
+      "description": "Test Transaction",
+      "image": "https://example.com/your_logo",
+      "order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "handler": function (response:any){
+          alert(response.razorpay_payment_id);
+          alert(response.razorpay_order_id);
+          alert(response.razorpay_signature)
+      },
+      "prefill": {
+          "name": "Gaurav Kumar",
+          "email": "gaurav.kumar@example.com",
+          "contact": "9999999999"
+      },
+      "notes": {
+          "address": "Razorpay Corporate Office"
+      },
+      "theme": {
+          "color": "#3399cc"
       }
-      const users: any = localStorage.getItem("user");
-      let user = JSON.parse(users);
-
-      let newCartArray: any = [];
-
-      if (this.state.cartarray) {
-        this.state.cartarray.map((data: any, index: number) => {
-          newCartArray.push({
-            productId: data.productID,
-            orderQty: data.quantity,
-            productPrice: data.sellingPrice,
-          });
-        });
-      }
-
-      const obj = {
-        userID: user.userID,
-        couponID: 0,
-        paymentMethod: 0,
-        orderStatus: 0,
-        paymentStatus: 0,
-        distance: 0,
-        totalQty: this.state.cartarray ? this.state.cartarray.length : 0,
-        totalAmount: total,
-        discountAmount: 0,
-        taxAmount: 0,
-        deliveryAmount: 0,
-        couponAmount: 0,
-        transactionID: 0,
-        paymentMessage: "",
-        cardNumber: "",
-        orderDetails: newCartArray,
-        addressID: this.state.mainaddress,
-      };
-      this.props.createOrder(obj);
-
-      setTimeout(() => {
-        if (
-          data === "freecharge" ||
-          data === "olamoney" ||
-          data === "payzapp"
-        ) {
-          this.setState({
-            changewallet: 0,
-          });
-        }
-      }, 200);
-    }
+  };
+  var rzp1 = new Razorpay(options);
+  rzp1.on('payment.failed', function (response:any){
+          alert(response.error.code);
+          alert(response.error.description);
+          alert(response.error.source);
+          alert(response.error.step);
+          alert(response.error.reason);
+          alert(response.error.metadata.order_id);
+          alert(response.error.metadata.payment_id);
+  });
+  console.log("rzp1",rzp1);
+  $( "#rzp-button1" ).click(function(e:any) {
+  // document.getElementById('rzp-button1').onclick = function(e){
+      rzp1.open();
+      e.preventDefault();
+  });
   }
 
   /** Wallet payment block */
@@ -1485,6 +1547,7 @@ class PlaceOrder extends React.Component<{
                         </div>
                       </div>
                       <button
+                       id="rzp-button1"
                         className="continue-btn"
                         onClick={() => this.payWallet("freecharge")}
                       >
@@ -1533,6 +1596,7 @@ class PlaceOrder extends React.Component<{
                         </div>
                       </div>
                       <button
+                        id="rzp-button1"
                         className="continue-btn"
                         onClick={() => this.payWallet("olamoney")}
                       >
@@ -2429,15 +2493,16 @@ class PlaceOrder extends React.Component<{
         )
       : 0;
     var numVal1: any = total;
-    // console.log("numVal1", numVal1);
+    console.log("numVal1", numVal1);
     var numVal2: any = (
       ((coupondata.minAmountOrder - coupondata.sellingPrice) /
         coupondata.minAmountOrder) *
       100
     ).toFixed(2);
-    // console.log("numVal2", numVal2);
+    console.log("numVal2", numVal2);
     var numval3: any = numVal2 / 100;
     var totalValue = numVal1 - numVal1 * numval3;
+    console.log("totalValue", totalValue);
     this.setState({
       discount: (this.state.discount = (numVal1 * numval3).toFixed(2)),
       totalpay: (this.state.totalpay = totalValue.toFixed(2)),
