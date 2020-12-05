@@ -102,37 +102,37 @@ class PlaceOrder extends React.Component<{
     workdisabled: this.placeOrderState.workdisabled,
     otherdisabled: this.placeOrderState.otherdisabled,
     homedisabled: this.placeOrderState.homedisabled,
-    changewallet: 0,
-    amount: 0,
-    amounterror: "",
-    codename: "",
-
-    upiTrue: false,
-    cardTrue: false,
-    walletTrue: false,
-    netbankingTrue: false,
-    freecharge: false,
-    olamoney: false,
-    payzapp: false,
-    AMEX: "",
-    BAJAJ: "",
-    DICL: "",
-    JCB: "",
-    MAES: "",
-    MC: "",
-    RUPAY: "",
-    VISA: "",
-    bankarray: [],
-    walletnumber: 0,
-    walletnumbererror: "",
-    coupondetails: [],
-    openModel: false,
-    couponShow: false,
-    couponid: 0,
-    couponapplieddata: "",
-    discount: "0",
-    totalpay: "0",
-    couponerror: "",
+    montherror:this.placeOrderState.montherror,
+    changewallet: this.placeOrderState.changewallet,
+    amount: this.placeOrderState.amount,
+    amounterror: this.placeOrderState.amounterror,
+    codename: this.placeOrderState.codename,
+    upiTrue: this.placeOrderState.upiTrue,
+    cardTrue: this.placeOrderState.cardTrue,
+    walletTrue: this.placeOrderState.walletTrue,
+    netbankingTrue: this.placeOrderState.netbankingTrue,
+    freecharge: this.placeOrderState.freecharge,
+    olamoney: this.placeOrderState.olamoney,
+    payzapp: this.placeOrderState.payzapp,
+    AMEX: this.placeOrderState.AMEX,
+    BAJAJ: this.placeOrderState.BAJAJ,
+    DICL: this.placeOrderState.DICL,
+    JCB: this.placeOrderState.JCB,
+    MAES: this.placeOrderState.MAES,
+    MC: this.placeOrderState.MC,
+    RUPAY: this.placeOrderState.RUPAY,
+    VISA: this.placeOrderState.VISA,
+    bankarray: this.placeOrderState.bankarray,
+    walletnumber: this.placeOrderState.walletnumber,
+    walletnumbererror: this.placeOrderState.walletnumbererror,
+    coupondetails: this.placeOrderState.coupondetails,
+    openModel: this.placeOrderState.openModel,
+    couponShow: this.placeOrderState.couponShow,
+    couponid: this.placeOrderState.couponid,
+    couponapplieddata: this.placeOrderState.couponapplieddata,
+    discount: this.placeOrderState.discount,
+    totalpay: this.placeOrderState.totalpay,
+    couponerror: this.placeOrderState.couponerror,
   };
 
   /** Constructor call */
@@ -1638,6 +1638,7 @@ class PlaceOrder extends React.Component<{
   validateCard() {
     let cardnumbererror = "";
     let cardholdererror = "";
+    let montherror = "";
 
     var regex = /^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/;
     if (!this.state.cardnumber) {
@@ -1646,14 +1647,35 @@ class PlaceOrder extends React.Component<{
       cardnumbererror = "please enter valid card number";
     }
 
+    var namee = /[A-Za-z]$/;
     if (!this.state.cardholder) {
       cardholdererror = "please enter card holder name";
+    } else if (!namee.test(this.state.cardholder)) {
+      cardholdererror = "please enter valid card holder number";
     }
 
-    if (cardnumbererror || cardholdererror) {
+    const tempMonth:any = this.state.month;
+    console.log(tempMonth);
+    const tempYear:any = this.state.year;
+    console.log(tempYear);
+    let isValid1 = true;
+    if (new Date().getFullYear() === tempYear) {
+    if (tempMonth < new Date().getMonth() + 1) {
+    isValid1 = false;
+    }
+    }
+
+    console.log(isValid1);
+
+    if(isValid1 === false) {
+      montherror = "please select enter valid date or year"
+    }
+
+    if (cardnumbererror || cardholdererror || montherror) {
       this.setState({
         cardnumbererror,
         cardholdererror,
+        montherror
       });
       return false;
     }
@@ -1667,9 +1689,11 @@ class PlaceOrder extends React.Component<{
       this.setState({
         cardnumbererror: "",
         cardholdererror: "",
+        montherror: ""
       });
       const users: any = localStorage.getItem("user");
       let user = JSON.parse(users);
+    
       if (this.state.cardnumber) {
         var visaCards = creditCardType(this.state.cardnumber);
         // console.log("card type", visaCards[0].type);
@@ -1677,25 +1701,26 @@ class PlaceOrder extends React.Component<{
           cardtype: (this.state.cardtype = visaCards[0].type),
         });
       }
-      const obj = {
-        id: user.userID,
-        cardNumber: this.state.cardnumber,
-        cardName: this.state.cardholder,
-        cardType: this.state.cardtype,
-        expiryMonth: this.state.month,
-        expiryYear: this.state.year,
-        isActive: true,
-      };
-      this.props.addCard(obj);
-      setTimeout(() => {
-        this.setState({
-          cardnumber: "",
-          cardholder: "",
-          month: 1,
-          year: 20,
-        });
-        this.getCard();
-      }, 300);
+     
+        const obj = {
+          id: user.userID,
+          cardNumber: this.state.cardnumber,
+          cardName: this.state.cardholder,
+          cardType: this.state.cardtype,
+          expiryMonth: this.state.month,
+          expiryYear: this.state.year,
+          isActive: true,
+        };
+        this.props.addCard(obj);
+        setTimeout(() => {
+          this.setState({
+            cardnumber: "",
+            cardholder: "",
+            month: 1,
+            year: 20,
+          });
+          this.getCard();
+        }, 300);
     }
   }
 
@@ -2114,6 +2139,9 @@ class PlaceOrder extends React.Component<{
                             )}
                           </select>
                         </div>
+                        <div className="text-danger">
+                          {this.state.montherror}
+                        </div>
                       </div>
                       <div>
                         {this.state.cardUpdateTrue === true ? (
@@ -2401,20 +2429,20 @@ class PlaceOrder extends React.Component<{
         )
       : 0;
     var numVal1: any = total;
-    console.log("numVal1", numVal1);
+    // console.log("numVal1", numVal1);
     var numVal2: any = (
       ((coupondata.minAmountOrder - coupondata.sellingPrice) /
         coupondata.minAmountOrder) *
       100
     ).toFixed(2);
-    console.log("numVal2", numVal2);
+    // console.log("numVal2", numVal2);
     var numval3: any = numVal2 / 100;
     var totalValue = numVal1 - numVal1 * numval3;
     this.setState({
       discount: (this.state.discount = (numVal1 * numval3).toFixed(2)),
       totalpay: (this.state.totalpay = totalValue.toFixed(2)),
     });
-    console.log("totalvalue", totalValue.toFixed(2));
+    // console.log("totalvalue", totalValue.toFixed(2));
   }
 
   getCouponApply() {
