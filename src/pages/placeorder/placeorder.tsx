@@ -519,6 +519,8 @@ class PlaceOrder extends React.Component<{
           ? totalValue.toFixed(2)
           : total),
       });
+      // console.log("coupon",coupon)
+      // console.log("minamount",coupon.minAmountOrder,total)
       if (coupon.minAmountOrder > total) {
         this.setState({
           isShowApplied: (this.state.isShowApplied = true),
@@ -2512,8 +2514,20 @@ class PlaceOrder extends React.Component<{
   }
 
   openApplyModel() {
+    var newData1: any = this.state.cartarray
+    ? this.state.cartarray.reduce(
+        (sum: number, i: any) => (sum += i.sellingPrice),
+        0
+      )
+    : 0;
     this.setState({
       openModel: !this.state.openModel,
+      couponapplieddata: "",
+      couponShow: (this.state.couponShow = false),
+      couponid: 0,
+      discount: (this.state.discount = "0"),
+      totalpay: newData1.toFixed(2),
+      isShowApplied:false
     });
   }
 
@@ -2525,8 +2539,9 @@ class PlaceOrder extends React.Component<{
 
   couponApply(data: any) {
     let coupondata: any = data;
+    console.log("data",coupondata);
     this.setState({
-      couponapplieddata: data,
+      couponapplieddata:this.state.couponapplieddata =  data,
       openModel: (this.state.openModel = false),
       couponShow: (this.state.couponShow = true),
       couponid: data.couponId,
@@ -2602,8 +2617,9 @@ class PlaceOrder extends React.Component<{
     }
   }
 
-  notapply() {
+  notapply(data:any) {
     this.setState({
+      couponapplieddata:this.state.couponapplieddata =  data,
       openModel: (this.state.openModel = false),
       couponShow: (this.state.couponShow = true),
       isShowApplied: (this.state.isShowApplied = true),
@@ -2665,6 +2681,8 @@ class PlaceOrder extends React.Component<{
               ))
             : ""}
         </div>
+        {
+          this.state.cartarray && this.state.cartarray.length > 0 ? (
         <div className="pay-box">
           <div className="your-card">
             <h3>Apply Coupon</h3>
@@ -2843,7 +2861,7 @@ class PlaceOrder extends React.Component<{
                                 {data.minAmountOrder > maxtotal ? (
                                   <button
                                     className="apply-btn mt-3"
-                                    onClick={this.notapply}
+                                    onClick={() => this.notapply(data)}
                                   >
                                     Apply Coupon
                                   </button>
@@ -2888,6 +2906,8 @@ class PlaceOrder extends React.Component<{
             ) : ('')
           } */}
         </div>
+          ) : ('')
+        }
         <div className="pay-box">
           <div className="flex-box flex-box2">
             <img src="images/edd-note.svg" alt="" />
