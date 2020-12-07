@@ -19,7 +19,9 @@ import { getAppName, alertMessage, rendomGenerateOrderNumber } from "../utils";
 import { connect } from "react-redux";
 import "./placeorder.css";
 import { Modal } from "react-bootstrap";
-import { placeOrderService, productService } from "../../redux/index";
+import { orderService, placeOrderService, productService } from "../../redux/index";
+import axios from 'axios';
+import { OrderAPI } from "../../service";
 // import $ from "jquery";
 var creditCardType = require("credit-card-type");
 declare var Razorpay: any;
@@ -134,7 +136,7 @@ class PlaceOrder extends React.Component<{
     couponapplieddata: this.placeOrderState.couponapplieddata,
     discount: this.placeOrderState.discount,
     totalpay: this.placeOrderState.totalpay,
-    couponerror: this.placeOrderState.couponerror,
+    couponerror: this.placeOrderState.couponerror
   };
 
   /** Constructor call */
@@ -176,6 +178,7 @@ class PlaceOrder extends React.Component<{
     this.couponApply = this.couponApply.bind(this);
     this.removeCoupon = this.removeCoupon.bind(this);
     this.applyCoupon = this.applyCoupon.bind(this);
+    this.notapply = this.notapply.bind(this);
   }
 
   /** Page Render Call */
@@ -1444,48 +1447,63 @@ class PlaceOrder extends React.Component<{
     //     }
     //   }, 200);
     // }
-    console.log("enter");
-    var options = {
-      "key": "rzp_live_5dM1OK63yl61hL", // Enter the Key ID generated from the Dashboard
-      "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-      "currency": "INR",
-      "name": "Acme Corp",
-      "description": "Test Transaction",
-      "image": "https://example.com/your_logo",
-      "order_id": "order_9A33XWu170gUtm", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      "handler": function (response:any){
-          alert(response.razorpay_payment_id);
-          alert(response.razorpay_order_id);
-          alert(response.razorpay_signature)
+    var razorpay = new Razorpay({
+      key: 'rzp_test_WnyFW6axxBffc1',
+        // logo, displayed in the popup
+      image: 'https://i.imgur.com/n5tjHFD.png',
+    });
+    var data:any = {
+      amount: 1000000, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+      currency: "INR",// Default is INR. We support more than 90 currencies.
+      email: 'dax@gmail.com',
+      contact: '7016231822',
+      notes: {
+        address: 'Ground Floor, SJR Cyber, Laskar Hosur Road, Bengaluru',
       },
-      "prefill": {
-          "name": "Gaurav Kumar",
-          "email": "gaurav.kumar@example.com",
-          "contact": "9999999999"
-      },
-      "notes": {
-          "address": "Razorpay Corporate Office"
-      },
-      "theme": {
-          "color": "#3399cc"
-      }
-  };
-  var rzp1 = new Razorpay(options);
-  rzp1.on('payment.failed', function (response:any){
-          alert(response.error.code);
-          alert(response.error.description);
-          alert(response.error.source);
-          alert(response.error.step);
-          alert(response.error.reason);
-          alert(response.error.metadata.order_id);
-          alert(response.error.metadata.payment_id);
-  });
-  console.log("rzp1",rzp1);
-  $( "#rzp-button1" ).click(function(e:any) {
-  // document.getElementById('rzp-button1').onclick = function(e){
-      rzp1.open();
-      e.preventDefault();
-  });
+      order_id: 'order_GA2OZVu9lrQcaI',// Replace with Order ID generated in Step 4
+      method: 'card',
+  'card[name]': 'Dixit savaliya',
+  'card[number]': '4111111111111111',
+  'card[cvv]': '566',
+  'card[expiry_month]': '10',
+  'card[expiry_year]': '21'
+    };
+    razorpay.createPayment(data);
+  
+    razorpay.on('payment.success', function(resp:any) {
+      console.log("resp",resp);
+    }); // will pass payment ID, order ID, and Razorpay signature to success handler.
+  
+    razorpay.on('payment.error', function(resp:any){alert(resp.error.description)}); // will pass error object to error handler
+    
+    // var btn:any = document.querySelector('#rzp-button1');
+    // btn.addEventListener('click', function(){
+    //   // has to be placed within user initiated context, such as click, in order for popup to open.
+    
+    // })
+//   var btn:any = document.querySelector('#btn');
+// btn.addEventListener('click', function(){
+//   // has to be placed within user initiated context, such as click, in order for popup to open.
+
+// })
+  // var rzp1 = new Razorpay(options);
+  // rzp1.on('payment.failed', function (response:any){
+  //   console.log("response",response);
+  //         alert(response.error.code);
+  //         alert(response.error.description);
+  //         alert(response.error.source);
+  //         alert(response.error.step);
+  //         alert(response.error.reason);
+  //         alert(response.error.metadata.order_id);
+  //         alert(response.error.metadata.payment_id);
+  // });
+  // rzp1.open();
+  // e.preventDefault();
+  // console.log("rzp1",rzp1);
+  // $( "#rzp-button1" ).click(function(e:any) {
+  //   console.log("button click",e)
+  // // document.getElementById('rzp-button1').onclick = function(e){
+  // });
   }
 
   /** Wallet payment block */
@@ -1898,7 +1916,7 @@ class PlaceOrder extends React.Component<{
     return true;
   }
 
-  paymentWithCard() {
+  async paymentWithCard() {
     const isValid = this.validateCVV();
     if (isValid) {
       this.setState({
@@ -1908,14 +1926,6 @@ class PlaceOrder extends React.Component<{
       const users: any = localStorage.getItem("user");
       let user = JSON.parse(users);
 
-      var today = new Date(),
-        date =
-          today.getFullYear() +
-          "-" +
-          (today.getMonth() + 1) +
-          "-" +
-          today.getDate();
-
       if (this.state.cartarray) {
         var total: any = this.state.cartarray.reduce(
           (sum: number, i: any) => (sum += i.sellingPrice),
@@ -1923,29 +1933,42 @@ class PlaceOrder extends React.Component<{
         );
       }
 
-      const obj = {
-        userID: user.userID,
-        couponID: 0,
-        orderDate: date,
-        orderNo: 4,
-        // orderNo:rendomGenerateNumber(),
-        paymentMethod: 0,
-        orderStatus: 2,
-        paymentStatus: 0,
-        distance: 0,
-        totalQty: this.state.cartarray ? this.state.cartarray.length : 0,
-        totalAmount: total,
-        discountAmount: 0,
-        taxAmount: 0,
-        deliveryAmount: 0,
-        couponAmount: 0,
-        transactionID: 24,
-        paymentMessage: "Success",
-        cardNumber: "",
-      };
+      var razorpay = new Razorpay({
+        key: 'rzp_test_WnyFW6axxBffc1',
+          // logo, displayed in the popup
+        image: 'https://i.imgur.com/n5tjHFD.png',
+      });
 
-      this.props.createOrder(obj);
+      const obj: any = {
+        amount: total,
+        currency:"INR"
+      };
+      const getOrderData: any = await OrderAPI.getOrderData(obj);
+      console.log("getOrderData", getOrderData);
+
+    //   var data:any = {
+    //     amount: total, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+    //     currency: "INR",// Default is INR. We support more than 90 currencies.
+    //     email: user.email,
+    //     contact: user.phone,
+    //     order_id: 'order_GA3EGMJM1OVadP',// Replace with Order ID generated in Step 4
+    //     method: 'card',
+    // 'card[name]': `${this.state.cardholder}`,
+    // 'card[number]': `${this.state.cardnumber}`,
+    // 'card[cvv]': `${this.state.cvv}`,
+    // 'card[expiry_month]': `${this.state.month}`,
+    // 'card[expiry_year]': `${this.state.year}`
+    //   };
+    //   razorpay.createPayment(data);
+    
+    //   razorpay.on('payment.success', function(resp:any) {
+    //     console.log("resp",resp);
+    //   }); // will pass payment ID, order ID, and Razorpay signature to success handler.
+    
+    //   razorpay.on('payment.error', function(resp:any){alert(resp.error.description)}); // will pass error object to error handler
     }
+
+   
   }
 
   /** Toogle cvv information block */
@@ -2493,16 +2516,16 @@ class PlaceOrder extends React.Component<{
         )
       : 0;
     var numVal1: any = total;
-    console.log("numVal1", numVal1);
+    // console.log("numVal1", numVal1);
     var numVal2: any = (
       ((coupondata.minAmountOrder - coupondata.sellingPrice) /
         coupondata.minAmountOrder) *
       100
     ).toFixed(2);
-    console.log("numVal2", numVal2);
+    // console.log("numVal2", numVal2);
     var numval3: any = numVal2 / 100;
     var totalValue = numVal1 - numVal1 * numval3;
-    console.log("totalValue", totalValue);
+    // console.log("totalValue", totalValue);
     this.setState({
       discount: (this.state.discount = (numVal1 * numval3).toFixed(2)),
       totalpay: (this.state.totalpay = totalValue.toFixed(2)),
@@ -2557,9 +2580,22 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  notapply() {
+    this.setState({
+      openModel: (this.state.openModel = false),
+      couponShow: (this.state.couponShow = true)
+    });
+  }
+
   /** Card item block */
   cardItemsBlock() {
     var coupon: any = this.state.couponapplieddata;
+    var maxtotal:any = this.state.cartarray
+      ? this.state.cartarray.reduce(
+          (sum: number, i: any) => (sum += i.sellingPrice),
+          0
+        )
+      : 0
     return (
       <div className="right-box order">
         <div className="pay-box">
@@ -2660,8 +2696,9 @@ class PlaceOrder extends React.Component<{
                 </svg>
                 Apply Coupon
               </button>
-            ) : coupon ? (
-              <div className="offer-applied">
+            ) : (coupon ? (
+       
+                <div className="offer-applied">
                 <div className="offer-applied-main-flex">
                   <div className="coupon-code">
                     <div className="code-1">{coupon.couponCode}</div>
@@ -2678,8 +2715,23 @@ class PlaceOrder extends React.Component<{
                 </div>
               </div>
             ) : (
-              ""
-            )}
+              <div className="offer-applied">
+              <div className="offer-applied-main-flex">
+                <div className="coupon-code">
+                  <div className="code-1" style={{color:'red'}}>Promo Code is Invalid</div>
+                  <div className="offer-small-text">
+                   Oops! Add More items to apply this promo.
+                  </div>
+                </div>
+                <button
+                  className="notapply"
+                  onClick={this.openApplyModel}
+                >
+                Try Again
+                </button>
+              </div>
+            </div>
+            ))}
             <Modal
               className="modal-dialog-centered coupon"
               show={this.state.openModel}
@@ -2765,12 +2817,24 @@ class PlaceOrder extends React.Component<{
                             </li>
                           </ul>
                         </div> */}
+                                {
+                                  data.minAmountOrder > maxtotal  ? (
+                                    <button
+                                    className="apply-btn mt-3"
+                                    onClick={this.notapply}
+                                  >
+                                    Apply Coupon
+                                  </button>
+                                  ) : (
+
                                 <button
                                   className="apply-btn mt-3"
                                   onClick={() => this.couponApply(data)}
                                 >
                                   Apply Coupon
                                 </button>
+                                  )
+                                }
                               </div>
                             )
                           )
