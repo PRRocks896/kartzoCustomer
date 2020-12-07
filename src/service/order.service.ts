@@ -4,6 +4,7 @@ import WebReqUrl from "../web-req/web-req";
 import axios from "axios";
 // import * as btoa from 'btoa';
 import { getAddressListRequest } from "../modelController";
+import constant from "../pages/constant/constant";
 const btoa = require('btoa')
 
 export default {
@@ -28,14 +29,14 @@ export default {
       //   Username: 'rzp_test_WnyFW6axxBffc1',
       //   Password: 'ZpQQylsVyOUcfejR53v12vVC'
       // }
-       const config = {     
-            headers: { 
-                Authorization: 'Basic ' + btoa('rzp_test_WnyFW6axxBffc1 : ZpQQylsVyOUcfejR53v12vVC'),
-                'Access-Control-Allow-Origin': true,
-                "Content-Type": "application/json",
+      //  const config = {     
+      //       headers: { 
+      //           Authorization: 'Basic ' + btoa('rzp_test_WnyFW6axxBffc1 : ZpQQylsVyOUcfejR53v12vVC'),
+      //           'Access-Control-Allow-Origin': true,
+      //           "Content-Type": "application/json",
 
-            }
-        }
-        return await axios.post('https://api.razorpay.com/v1/orders',data,config);
+      //       }
+      //   }
+        return await axios.post(constant.apiUrl + 'order/razorpay-create-order',data);
   }
 };
