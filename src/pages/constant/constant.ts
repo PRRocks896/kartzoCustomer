@@ -262,8 +262,8 @@ export default {
       workdisabled: false,
       otherdisabled: false,
       homedisabled: false,
-      
-      montherror:'',
+
+      montherror: "",
       changewallet: 0,
       amount: 0,
       amounterror: "",
@@ -294,6 +294,7 @@ export default {
       discount: "0",
       totalpay: "0",
       couponerror: "",
+      isShowApplied: false,
     },
     bankarray: [
       { title: "Airtel Payments Bank", value: "6" },

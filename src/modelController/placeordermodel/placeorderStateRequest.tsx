@@ -87,4 +87,5 @@ export interface placeorderStateRequest {
   discount: string,
   totalpay: string,
   couponerror: string,
+  isShowApplied: boolean,
 }
