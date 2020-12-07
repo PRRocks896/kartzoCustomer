@@ -136,7 +136,8 @@ class PlaceOrder extends React.Component<{
     couponapplieddata: this.placeOrderState.couponapplieddata,
     discount: this.placeOrderState.discount,
     totalpay: this.placeOrderState.totalpay,
-    couponerror: this.placeOrderState.couponerror
+    couponerror: this.placeOrderState.couponerror,
+    isShowApplied:false
   };
 
   /** Constructor call */
@@ -508,6 +509,17 @@ class PlaceOrder extends React.Component<{
         discount: (this.state.discount = this.state.couponapplieddata ? (numVal1 * numval3).toFixed(2) : '0'),
         totalpay: (this.state.totalpay = this.state.couponapplieddata ? totalValue.toFixed(2) : total),
       });
+      if(coupon.minAmountOrder > total) {
+        this.setState({
+          isShowApplied:this.state.isShowApplied = true,
+          discount: (this.state.discount = '0'),
+          totalpay: (this.state.totalpay = total),
+        })
+      } else {
+        this.setState({
+          isShowApplied:this.state.isShowApplied = false
+        })
+      }
     } else {
       this.setState({
         discount: (this.state.discount = '0'),
@@ -1933,18 +1945,19 @@ class PlaceOrder extends React.Component<{
         );
       }
 
-      var razorpay = new Razorpay({
-        key: 'rzp_test_WnyFW6axxBffc1',
-          // logo, displayed in the popup
-        image: 'https://i.imgur.com/n5tjHFD.png',
-      });
-
       const obj: any = {
         amount: total,
         currency:"INR"
       };
       const getOrderData: any = await OrderAPI.getOrderData(obj);
       console.log("getOrderData", getOrderData);
+
+
+      var razorpay = new Razorpay({
+        key: 'rzp_test_WnyFW6axxBffc1',
+          // logo, displayed in the popup
+        image: 'https://i.imgur.com/n5tjHFD.png',
+      });
 
     //   var data:any = {
     //     amount: total, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
@@ -2528,7 +2541,7 @@ class PlaceOrder extends React.Component<{
     // console.log("totalValue", totalValue);
     this.setState({
       discount: (this.state.discount = (numVal1 * numval3).toFixed(2)),
-      totalpay: (this.state.totalpay = totalValue.toFixed(2)),
+      totalpay: (this.state.totalpay = totalValue.toFixed(2))
     });
     // console.log("totalvalue", totalValue.toFixed(2));
   }
@@ -2583,7 +2596,8 @@ class PlaceOrder extends React.Component<{
   notapply() {
     this.setState({
       openModel: (this.state.openModel = false),
-      couponShow: (this.state.couponShow = true)
+      couponShow: (this.state.couponShow = true),
+      isShowApplied: this.state.isShowApplied = true
     });
   }
 
@@ -2696,7 +2710,7 @@ class PlaceOrder extends React.Component<{
                 </svg>
                 Apply Coupon
               </button>
-            ) : (coupon ? (
+            ) : (this.state.isShowApplied === false ? (
        
                 <div className="offer-applied">
                 <div className="offer-applied-main-flex">
