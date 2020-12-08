@@ -157,9 +157,7 @@ export default {
    */
   applyCoupon: async function (data: any) {
     return WebReqUrl.post(
-      Constant.apiUrl + apiUrl.orderController.applycoupon,
-      data,
-      false
+      Constant.apiUrl + apiUrl.orderController.applycoupon + `?Code=${data.Code}&UserID=${data.UserID}`,{},false
     );
   },
 

@@ -11,6 +11,6 @@ export default {
      * @param data : get category data
      */
     getCategoryData: async function (data:getCategoryListRequest) {
-        return axios.post(Constant.apiUrlAdmin + apiUrl.categoryController.category,data);
+        return WebReqUrl.post(Constant.apiUrlAdmin + apiUrl.categoryController.category,data,true);
     }
 }

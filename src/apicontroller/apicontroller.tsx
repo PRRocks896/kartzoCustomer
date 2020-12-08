@@ -5,7 +5,8 @@ const apiUrl = {
         adminToken:'token/get-admin-token',
         getapplink:'user/get-app-link',
         updateprofile:'user/update-profile',
-        getprofile:'user/'
+        getprofile:'user/',
+        getcommontoken:'token/get-common-token'
     },
     categoryController: {
         category:'category/get-category-list'
@@ -50,7 +51,7 @@ const apiUrl = {
         deleteData:'delete',
         createorder:'order',
         getcoupon:'coupon/get-coupon-list',
-        applycoupon:'RedeemCoupon',
+        applycoupon:'RedeemCoupon/coupon-availabel',
         getapplycoupon:'RedeemCoupon/'
     },
     packageController: {

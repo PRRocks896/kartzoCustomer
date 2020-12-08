@@ -61,6 +61,14 @@ export default {
      */
     getprofile: async function (data:any) {
         return WebReqUrl.get(Constant.apiUrl + apiUrl.userController.getprofile + data.id,false);
+    },
+
+        /**
+     * 
+     * @param data : get common token
+     */
+    getCommonTokenData: async function (data:any) {
+        return await axios.post(Constant.apiUrl + apiUrl.userController.getcommontoken,data);
     }
     
 }

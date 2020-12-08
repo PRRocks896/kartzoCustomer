@@ -10,14 +10,14 @@ export default {
      * @param data : get category data
      */
     getfooterdata: async function () {
-        return axios.get(Constant.apiUrlAdmin + apiUrl.commonController.getfooterdata);
+        return WebReqUrl.get(Constant.apiUrlAdmin + apiUrl.commonController.getfooterdata,true);
     },
        /**
      * 
      * @param data : get category data
      */
     getfooterlinkdata: async function () {
-        return axios.get(Constant.apiUrlAdmin + apiUrl.commonController.getfooterlinkdata);
+        return WebReqUrl.get(Constant.apiUrlAdmin + apiUrl.commonController.getfooterlinkdata,true);
     },
     
 }

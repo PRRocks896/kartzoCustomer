@@ -10,7 +10,7 @@ export default {
      * @param data : get merchant data
      */
     getMerchantData: async function (data:getMerchantListRequest) {
-        return axios.post(Constant.apiUrl + apiUrl.findStoreController.getStore,data);
+        return WebReqUrl.post(Constant.apiUrl + apiUrl.findStoreController.getStore,data,true);
     },
 
     /**
@@ -18,7 +18,7 @@ export default {
      * @param data : get location data
      */
     getlocationData: async function (data:searchCityListRequest) {
-        return axios.get(Constant.apiUrl + apiUrl.findStoreController.getLocation + `?name=${data.value}`);
+        return WebReqUrl.get(Constant.apiUrl + apiUrl.findStoreController.getLocation + `?name=${data.value}`,true);
     },
     
 }

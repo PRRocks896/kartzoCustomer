@@ -403,7 +403,37 @@ class PlaceOrder extends React.Component<{
    * @param data : coupon applied details
    */
   CouponappliedDetails(data: any) {
+    console.log("data",data);
     if (data.status === 200) {
+       this.setState({
+      couponapplieddata: (this.state.couponapplieddata = data.resultObject),
+      openModel: (this.state.openModel = false),
+      couponShow: (this.state.couponShow = true),
+      couponid: data.resultObject.couponId,
+    });
+    var total: any = this.state.cartarray
+      ? this.state.cartarray.reduce(
+          (sum: number, i: any) => (sum += i.sellingPrice),
+          0
+        )
+      : 0;
+      let coupondata: any = this.state.couponapplieddata;
+      console.log("data", coupondata);
+    var numVal1: any = total;
+    // console.log("numVal1", numVal1);
+    var numVal2: any = (
+      ((coupondata.minAmountOrder - coupondata.sellingPrice) /
+        coupondata.minAmountOrder) *
+      100
+    ).toFixed(2);
+    // console.log("numVal2", numVal2);
+    var numval3: any = numVal2 / 100;
+    var totalValue = numVal1 - numVal1 * numval3;
+    // console.log("totalValue", totalValue);
+    this.setState({
+      discount: (this.state.discount = (numVal1 * numval3).toFixed(2)),
+      totalpay: (this.state.totalpay = totalValue.toFixed(2)),
+    });
     }
   }
 
@@ -2633,34 +2663,14 @@ class PlaceOrder extends React.Component<{
   couponApply(data: any) {
     let coupondata: any = data;
     console.log("data", coupondata);
-    this.setState({
-      couponapplieddata: (this.state.couponapplieddata = data),
-      openModel: (this.state.openModel = false),
-      couponShow: (this.state.couponShow = true),
-      couponid: data.couponId,
-    });
-    var total: any = this.state.cartarray
-      ? this.state.cartarray.reduce(
-          (sum: number, i: any) => (sum += i.sellingPrice),
-          0
-        )
-      : 0;
-    var numVal1: any = total;
-    // console.log("numVal1", numVal1);
-    var numVal2: any = (
-      ((coupondata.minAmountOrder - coupondata.sellingPrice) /
-        coupondata.minAmountOrder) *
-      100
-    ).toFixed(2);
-    // console.log("numVal2", numVal2);
-    var numval3: any = numVal2 / 100;
-    var totalValue = numVal1 - numVal1 * numval3;
-    // console.log("totalValue", totalValue);
-    this.setState({
-      discount: (this.state.discount = (numVal1 * numval3).toFixed(2)),
-      totalpay: (this.state.totalpay = totalValue.toFixed(2)),
-    });
-    // console.log("totalvalue", totalValue.toFixed(2));
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+   
+    const obj = {
+      Code:data.couponCode,
+      UserID:user.userID
+    }
+    this.props.applyCoupon(obj);
   }
 
   getCouponApply() {
@@ -2694,18 +2704,21 @@ class PlaceOrder extends React.Component<{
   }
 
   applyCoupon() {
-    if (this.state.coupondetails) {
-      this.state.coupondetails.map((data: any, index: number) => {
-        if (this.state.codename === data.couponCode) {
-          this.setState({
-            couponerror: "",
-          });
-          this.couponApply(data);
-        } else {
-          this.setState({
-            couponerror: "Please enter valid coupon code",
-          });
-        }
+    if(this.state.codename) {
+      this.setState({
+                couponerror: "",
+              });
+      const users: any = localStorage.getItem("user");
+      let user = JSON.parse(users);
+     
+      const obj = {
+        Code:this.state.codename.toUpperCase(),
+        UserID:user.userID
+      }
+      this.props.applyCoupon(obj);
+    } else {
+      this.setState({
+        couponerror: "Please enter valid coupon code",
       });
     }
   }

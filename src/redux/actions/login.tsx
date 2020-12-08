@@ -8,7 +8,8 @@ export const loginService = {
   getAdminToken,
   getAppLink,
   updateProfileData,
-  getProfile
+  getProfile,
+  getCommonToken
 };
 
 /**
@@ -96,7 +97,7 @@ function getAdminToken(data:any) {
       .then(async (token:any) => {
         // console.log("token", token);
         if (token.status === 200) {
-          localStorage.setItem('adminToken',token.data.token);
+          // localStorage.setItem('adminToken',token.data.token);
           // const msg = otpdata.message;
           // showSuccess(msg);
           dispatch(success(await token));
@@ -228,6 +229,43 @@ function getProfile(data:any) {
     return { type: ACTION.login.GET_PROFILE_FAILURE, error };
   }
 }
+
+/**
+ * 
+ * @param data : update profile
+ */
+function getCommonToken(data:any) {
+  return (dispatch: any) => {
+    dispatch(request({data}));
+
+    UserAPI
+      .getCommonTokenData(data)
+      .then(async (getcommontoken:any) => {
+        console.log("getcommontoken", getcommontoken);
+        if (getcommontoken.status === 200) {
+          // const msg = otpdata.message;
+          // showSuccess(msg);
+          dispatch(success(await getcommontoken.resultObject));
+        } else {
+          dispatch(failure(getcommontoken));
+        }
+      })
+      .catch((err:any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(getcommontoken: any) {
+    return { type: ACTION.login.GET_COMMON_TOKEN_REQUEST, getcommontoken };
+  }
+  function success(getcommontoken: any) {
+    return { type: ACTION.login.GET_COMMON_TOKEN_SUCESS, getcommontoken };
+  }
+  function failure(error: any) {
+    return { type: ACTION.login.GET_COMMON_TOKEN_SUCESS, error };
+  }
+}
+
 
 
 

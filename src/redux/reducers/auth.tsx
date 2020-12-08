@@ -5,7 +5,8 @@ const initialState = {
   user: "",
   otpdetail:"",
   profiledata:"",
-  updateprofiledata:""
+  updateprofiledata:"",
+  commontoken:""
 };
 
 /**
@@ -88,6 +89,25 @@ const auth = (state = initialState, action: any) => {
           ...state,
           error: action.error,
         };
+
+        case ACTION.login.GET_COMMON_TOKEN_REQUEST:
+          return {
+            ...state,
+          };
+        case ACTION.login.GET_COMMON_TOKEN_SUCESS:
+          // Auth.setAuth(action.response.data);
+          return {
+            ...state,
+            commontoken: action.getcommontoken
+          };
+        case ACTION.login.GET_COMMON_TOKEN_FAILURE:
+          // Auth.removeAuth();
+          // Auth.removeAuthenticateUser();
+          return {
+            ...state,
+            error: action.error,
+          };
+  
 
     default:
       return state;

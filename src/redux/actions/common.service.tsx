@@ -18,11 +18,11 @@ function getFooterData() {
     CommonAPI
       .getfooterdata()
       .then((footerdata) => {
-        console.log("footerdata", footerdata);
+        // console.log("footerdata", footerdata);
         if (footerdata.status === 200) {
           // const msg = footerdata.message;
           // showSuccess(msg);
-          dispatch(success(footerdata.data.resultObject));
+          dispatch(success(footerdata.resultObject));
         }
       })
       .catch((err) => {
@@ -52,11 +52,11 @@ function getFooterLinkData() {
     CommonAPI
       .getfooterlinkdata()
       .then((footerlinkdata:any) => {
-        console.log("footerdata", footerlinkdata);
+        // console.log("footerdata", footerlinkdata);
         if (footerlinkdata.status === 200) {
           // const msg = footerlinkdata.message;
           // showSuccess(msg);
-          dispatch(success(footerlinkdata.data.resultObject));
+          dispatch(success(footerlinkdata.resultObject.data));
         }
       })
       .catch((err:any) => {

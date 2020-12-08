@@ -21,7 +21,7 @@ function getCategoryData(data: any) {
         if (categorydata.status === 200) {
           // const msg = categorydata.message;
           // showSuccess(msg);
-          const res = await categorydata.data.resultObject.data;
+          const res = await categorydata.resultObject.data;
           dispatch(success(res));
         }
       })
