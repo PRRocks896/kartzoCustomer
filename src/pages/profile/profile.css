@@ -106,30 +106,31 @@
 }
 .order-list .img-box {
 	width: 100px;
-	height: 100px;
-	overflow: hidden;
+    height: 75px;
+    overflow: hidden;
+    border-radius: 4px;
 }
 .order-list .order-dtl1 {
 	margin-left: 15px;
 }
 .order-list .sub-tt {
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: 600;
 	margin: 0px;
 	margin-bottom: 4px;
 }
 .order-list .address-nm {
-	font-size: 12px;
+	font-size: 11px;
 }
 .order-list .shop-id {
-	font-size: 14px;
+	font-size: 12px;
 }
 .order-list .view-dtl {
 	border: none;
 	background: no-repeat;
 	color: #f9b231;
 	padding: 0px;
-	font-size: 12px;
+	font-size: 11px;
 	font-weight: 600;
 }
 .order-list .order-list1 {
@@ -138,9 +139,10 @@
 	border: 1px solid #e1e1e1;
 	margin-top: 20px;
 	border-radius: 4px;
+	position: relative;
 }
 .order-list .order-list1 .order-food {
-	margin-top: 20px;
+	margin-top: 4px;
 }
 .order-list .order-list1 .order-food .food-nm{
 	font-size: 14px;
@@ -150,26 +152,25 @@
 }
 .order-list .order-list1 .order-food .btn-box {
 	display: flex;
-	margin-top: 15px;
 }
 .order-list .order-list1 .order-food .order-btn{
-	height: 38px;
-	color: #fff;
-	background-image: linear-gradient(to bottom, #FBB034, #ECCE09);
-	font-size: 14px;
-	line-height: 38px;
-	padding: 0px 25px;
-	border-radius: 38px;
-	margin-right: 15px;
-	font-weight: 500;
-	border: 1px solid #FBB034;
+	height: 30px;
+    color: #fff;
+    background-image: linear-gradient(to bottom, #FBB034, #ECCE09);
+    font-size: 12px;
+    line-height: 30px;
+    padding: 0px 25px;
+    border-radius: 38px;
+    margin-right: 15px;
+    font-weight: 500;
+    border: 1px solid #FBB034;
 }
 .order-list .order-list1 .help-btn {
-	height: 38px;
+	height: 30px;
 	color: #FBB034;
 	background:none;
-	font-size: 16px;
-	line-height: 38px;
+	font-size: 12px;
+	line-height: 30px;
 	padding: 0px 25px;
 	border-radius: 38px;
 	margin-right: 14px;
@@ -1026,5 +1027,15 @@ img.picture {
 svg#Capa_2 {
     width: 12px;
     height: 12px;
+}
+
+.order-list {
+    height: 709px;
+    overflow: auto;
+}
+.order-list .mt-2.fix-btn-12 {
+    position: absolute;
+    right: 0px;
+    bottom: 12px;
 }
 /* view-order-dtl end */

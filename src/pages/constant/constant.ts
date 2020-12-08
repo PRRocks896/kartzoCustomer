@@ -370,7 +370,7 @@ export default {
       { title: "12", value: "12" },
     ],
     yeararray: [
-      { title: "2020", value: "2020" },
+      { title: "20", value: "2020" },
       { title: "21", value: "2021" },
       { title: "22", value: "2022" },
       { title: "23", value: "2023" },

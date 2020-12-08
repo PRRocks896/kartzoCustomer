@@ -9,7 +9,8 @@ const initialState = {
   getcarddata:"",
   applycoupon:"",
   getcouponapply:"",
-  removecoupon:""
+  removecoupon:"",
+  orderdata:""
 };
 
 /**
@@ -171,6 +172,23 @@ const placeOrder = (state = initialState, action: any) => {
                     ...state,
                     error: action.error,
                   };
+
+
+                  case ACTION.order.CREATE_ORDER_REQUEST:
+                    return {
+                      ...state,
+                    };
+                  case ACTION.order.CREATE_ORDER_SUCCESS:
+                    return {
+                      ...state,
+                      orderdata: action.orderdata
+                    };
+                  case ACTION.order.CREATE_ORDER_FAILURE:
+                    return {
+                      ...state,
+                      error: action.error,
+                    };
+  
 
     default:
       return state;

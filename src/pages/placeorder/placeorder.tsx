@@ -140,6 +140,8 @@ class PlaceOrder extends React.Component<{
     totalpay: this.placeOrderState.totalpay,
     couponerror: this.placeOrderState.couponerror,
     isShowApplied: this.placeOrderState.isShowApplied,
+    upiid: "",
+    upiiderror: "",
   };
 
   /** Constructor call */
@@ -182,6 +184,8 @@ class PlaceOrder extends React.Component<{
     this.removeCoupon = this.removeCoupon.bind(this);
     this.applyCoupon = this.applyCoupon.bind(this);
     this.notapply = this.notapply.bind(this);
+    this.payWithNetBanking = this.payWithNetBanking.bind(this);
+    this.payWithUPI = this.payWithUPI.bind(this);
   }
 
   /** Page Render Call */
@@ -396,6 +400,16 @@ class PlaceOrder extends React.Component<{
     if (nextProps.removeCouponData) {
       this.removeCouponApplied(nextProps.removeCouponData);
     }
+    if (nextProps.orderDetail) {
+      this.orderSuccess(nextProps.orderDetail);
+    }
+  }
+
+  orderSuccess(data:any) {
+    if(data.status === 200) {
+      window.location.href = "/payment"
+      // this.props.history.push('/payment');
+    }
   }
 
   /**
@@ -403,37 +417,37 @@ class PlaceOrder extends React.Component<{
    * @param data : coupon applied details
    */
   CouponappliedDetails(data: any) {
-    console.log("data",data);
+    console.log("data", data);
     if (data.status === 200) {
-       this.setState({
-      couponapplieddata: (this.state.couponapplieddata = data.resultObject),
-      openModel: (this.state.openModel = false),
-      couponShow: (this.state.couponShow = true),
-      couponid: data.resultObject.couponId,
-    });
-    var total: any = this.state.cartarray
-      ? this.state.cartarray.reduce(
-          (sum: number, i: any) => (sum += i.sellingPrice),
-          0
-        )
-      : 0;
+      this.setState({
+        couponapplieddata: (this.state.couponapplieddata = data.resultObject),
+        openModel: (this.state.openModel = false),
+        couponShow: (this.state.couponShow = true),
+        couponid: data.resultObject.couponId,
+      });
+      var total: any = this.state.cartarray
+        ? this.state.cartarray.reduce(
+            (sum: number, i: any) => (sum += i.sellingPrice),
+            0
+          )
+        : 0;
       let coupondata: any = this.state.couponapplieddata;
       console.log("data", coupondata);
-    var numVal1: any = total;
-    // console.log("numVal1", numVal1);
-    var numVal2: any = (
-      ((coupondata.minAmountOrder - coupondata.sellingPrice) /
-        coupondata.minAmountOrder) *
-      100
-    ).toFixed(2);
-    // console.log("numVal2", numVal2);
-    var numval3: any = numVal2 / 100;
-    var totalValue = numVal1 - numVal1 * numval3;
-    // console.log("totalValue", totalValue);
-    this.setState({
-      discount: (this.state.discount = (numVal1 * numval3).toFixed(2)),
-      totalpay: (this.state.totalpay = totalValue.toFixed(2)),
-    });
+      var numVal1: any = total;
+      // console.log("numVal1", numVal1);
+      var numVal2: any = (
+        ((coupondata.minAmountOrder - coupondata.sellingPrice) /
+          coupondata.minAmountOrder) *
+        100
+      ).toFixed(2);
+      // console.log("numVal2", numVal2);
+      var numval3: any = numVal2 / 100;
+      var totalValue = numVal1 - numVal1 * numval3;
+      // console.log("totalValue", totalValue);
+      this.setState({
+        discount: (this.state.discount = (numVal1 * numval3).toFixed(2)),
+        totalpay: (this.state.totalpay = totalValue.toFixed(2)),
+      });
     }
   }
 
@@ -1344,6 +1358,110 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  validateUPI() {
+    let upiiderror = "";
+
+    var regex = /^.+@.+$/;
+    if (!this.state.upiid) {
+      upiiderror = "please enter upi id";
+    } else if (!regex.test(this.state.upiid)) {
+      upiiderror = "please enter valid upi id";
+    }
+
+    if (upiiderror) {
+      this.setState({
+        upiiderror,
+      });
+      return false;
+    }
+    return true;
+  }
+
+  async payWithUPI() {
+    const isValid = this.validateUPI();
+    if (isValid) {
+      this.setState({
+        upiiderror: "",
+      });
+      let _this:any = this;
+      let order: any = [];
+      if (this.state.cartarray) {
+        this.state.cartarray.map((cart: any, index: number) => {
+          order.push({
+            productId: cart.productID,
+            orderQty: cart.quantity,
+            productPrice: cart.sellingPrice,
+          });
+        });
+      }
+
+      const users: any = localStorage.getItem("user");
+      let user = JSON.parse(users);
+      var total: any = this.state.cartarray.reduce(
+        (sum: number, i: any) => (sum += i.sellingPrice),
+        0
+      );
+      const obj: any = {
+        amount: total,
+        currency: "INR",
+      };
+      const getOrderData: any = await OrderAPI.getOrderData(obj);
+      console.log("getOrderData", getOrderData);
+
+      if (getOrderData.data.resultObject) {
+        var razorpay = new Razorpay({
+          key: "rzp_test_c9r1dW7E0qCBz5",
+          // logo, displayed in the popup
+          image: "https://i.imgur.com/n5tjHFD.png",
+        });
+
+        var data: any = {
+          amount: total, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+          currency: "INR", // Default is INR. We support more than 90 currencies.
+          email: user.email,
+          contact: user.phone,
+          order_id: getOrderData.data.resultObject
+            ? getOrderData.data.resultObject.id
+            : "0000", // Replace with Order ID generated in Step 4
+          method: "upi",
+          upi: {
+            vpa: this.state.upiid,
+            flow: "collect",
+          },
+        };
+        razorpay.createPayment(data);
+
+        razorpay.on("payment.success", function (resp: any) {
+          console.log("resp", resp);
+          const obj = {
+            userID: user.userID,
+            couponID: _this.state.couponid ? _this.state.couponid : 0,
+            addressID: _this.state.mainaddress ? _this.state.mainaddress : 0,
+            paymentMethod: "UPI",
+            paymentStatus: "Success",
+            distance: 0,
+            totalQty: _this.state.cartarray ? _this.state.cartarray.length : 0,
+            totalAmount: parseInt(_this.state.totalpay),
+            discountAmount: _this.state.discount
+              ? parseInt(_this.state.discount)
+              : 0,
+            taxAmount: 0,
+            deliveryAmount: 0,
+            razorpayPaymentID: resp.razorpay_payment_id,
+            razorpayOrderID: resp.razorpay_order_id,
+            razorpaySignature: resp.razorpay_signature,
+            orderDetails: order
+          };
+          _this.props.createOrder(obj);
+        }); // will pass payment ID, order ID, and Razorpay signature to success handler.
+
+        razorpay.on("payment.error", function (resp: any) {
+          alert(resp.error.description);
+        }); // will pass error object to error handler
+      }
+    }
+  }
+
   /** UPI payment block */
   UPIBlock() {
     return (
@@ -1365,39 +1483,25 @@ class PlaceOrder extends React.Component<{
           </div>
           {this.state.paymenttype === 1 ? (
             <div className="pey-upi">
-              {/* <div className="opti1">
-                <label className="rdio-box1">
-                  <span className="tt-radio">PhonePe</span>
-                  <input
-                    type="radio"
-                    id="1"
-                    checked={this.state.paytype === 1 ? true : false}
-                    onChange={this.changePhonePay}
-                    name="phonepay"
-                  />
-                  <span className="checkmark"></span>
-                </label>
-                {this.state.paytype === 1 ? (
-                  <button className="continue-btn">CONTINUE</button>
-                ) : (
-                  ""
-                )}
-              </div> */}
-
               <div className="opti1 opti2">
                 <div className="box-input1">
                   <div className="form-group">
                     <input
                       type="text"
                       id="from"
+                      name="upiid"
                       className="form-control"
+                      onChange={this.onChangeEvent}
                       required
                     />
                     <label className="form-control-placeholder" htmlFor="from">
                       Enter UPI ID
                     </label>
                   </div>
-                  <button className="continue-btn">PAY R400</button>
+                  <button className="continue-btn" onClick={this.payWithUPI}>
+                    PAY
+                  </button>
+                  <div className="text-danger">{this.state.upiiderror}</div>
                 </div>
               </div>
             </div>
@@ -1440,65 +1544,6 @@ class PlaceOrder extends React.Component<{
   }
 
   async payWallet(data: any) {
-    // const isValid = this.validateWallet();
-    // if (isValid) {
-    //   this.setState({
-    //     walletnumbererror: (this.state.walletnumbererror = ""),
-    //   });
-    //   if (this.state.cartarray) {
-    //     var total: any = this.state.cartarray.reduce(
-    //       (sum: number, i: any) => (sum += i.sellingPrice),
-    //       0
-    //     );
-    //   }
-    //   const users: any = localStorage.getItem("user");
-    //   let user = JSON.parse(users);
-
-    //   let newCartArray: any = [];
-
-    //   if (this.state.cartarray) {
-    //     this.state.cartarray.map((data: any, index: number) => {
-    //       newCartArray.push({
-    //         productId: data.productID,
-    //         orderQty: data.quantity,
-    //         productPrice: data.sellingPrice,
-    //       });
-    //     });
-    //   }
-
-    //   const obj = {
-    //     userID: user.userID,
-    //     couponID: 0,
-    //     paymentMethod: 0,
-    //     orderStatus: 0,
-    //     paymentStatus: 0,
-    //     distance: 0,
-    //     totalQty: this.state.cartarray ? this.state.cartarray.length : 0,
-    //     totalAmount: total,
-    //     discountAmount: 0,
-    //     taxAmount: 0,
-    //     deliveryAmount: 0,
-    //     couponAmount: 0,
-    //     transactionID: 0,
-    //     paymentMessage: "",
-    //     cardNumber: "",
-    //     orderDetails: newCartArray,
-    //     addressID: this.state.mainaddress,
-    //   };
-    //   this.props.createOrder(obj);
-
-    //   setTimeout(() => {
-    //     if (
-    //       data === "freecharge" ||
-    //       data === "olamoney" ||
-    //       data === "payzapp"
-    //     ) {
-    //       this.setState({
-    //         changewallet: 0,
-    //       });
-    //     }
-    //   }, 200);
-    // }
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     var total: any = this.state.cartarray.reduce(
@@ -1509,6 +1554,18 @@ class PlaceOrder extends React.Component<{
       amount: total,
       currency: "INR",
     };
+
+    let _this:any = this;
+      let order: any = [];
+      if (this.state.cartarray) {
+        this.state.cartarray.map((cart: any, index: number) => {
+          order.push({
+            productId: cart.productID,
+            orderQty: cart.quantity,
+            productPrice: cart.sellingPrice,
+          });
+        });
+      }
     const getOrderData: any = await OrderAPI.getOrderData(obj);
     console.log("getOrderData", getOrderData);
 
@@ -1527,87 +1584,39 @@ class PlaceOrder extends React.Component<{
         order_id: getOrderData.data.resultObject
           ? getOrderData.data.resultObject.id
           : "0000", // Replace with Order ID generated in Step 4
-        method: "card",
-        "card[name]": "Nirav",
-        "card[number]": "4111111111111111",
-        "card[cvv]": "123",
-        "card[expiry_month]": "1",
-        "card[expiry_year]": "23",
-        // 'card[name]': `${this.state.cardholder}`,
-        // 'card[number]': `${this.state.cardnumber}`,
-        // 'card[cvv]': `${this.state.cvv}`,
-        // 'card[expiry_month]': `${this.state.month}`,
-        // 'card[expiry_year]': `${this.state.year}`
+        method: "wallet",
+        wallet: data,
       };
       razorpay.createPayment(data);
 
       razorpay.on("payment.success", function (resp: any) {
         console.log("resp", resp);
+        const obj = {
+          userID: user.userID,
+          couponID: _this.state.couponid ? _this.state.couponid : 0,
+          addressID: _this.state.mainaddress ? _this.state.mainaddress : 0,
+          paymentMethod: "Wallet",
+          paymentStatus: "Success",
+          distance: 0,
+          totalQty: _this.state.cartarray ? _this.state.cartarray.length : 0,
+          totalAmount: parseInt(_this.state.totalpay),
+          discountAmount: _this.state.discount
+            ? parseInt(_this.state.discount)
+            : 0,
+          taxAmount: 0,
+          deliveryAmount: 0,
+          razorpayPaymentID: resp.razorpay_payment_id,
+          razorpayOrderID: resp.razorpay_order_id,
+          razorpaySignature: resp.razorpay_signature,
+          orderDetails: order
+        };
+        _this.props.createOrder(obj);
       }); // will pass payment ID, order ID, and Razorpay signature to success handler.
 
       razorpay.on("payment.error", function (resp: any) {
         alert(resp.error.description);
       }); // will pass error object to error handler
     }
-    // var razorpay = new Razorpay({
-    //   key: "rzp_test_WnyFW6axxBffc1",
-    //   // logo, displayed in the popup
-    //   image: "https://i.imgur.com/n5tjHFD.png",
-    // });
-    // var data: any = {
-    //   amount: 1000000, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
-    //   currency: "INR", // Default is INR. We support more than 90 currencies.
-    //   email: "dax@gmail.com",
-    //   contact: "7016231822",
-    //   notes: {
-    //     address: "Ground Floor, SJR Cyber, Laskar Hosur Road, Bengaluru",
-    //   },
-    //   order_id: "order_GA2OZVu9lrQcaI", // Replace with Order ID generated in Step 4
-    //   method: "card",
-    //   "card[name]": "Dixit savaliya",
-    //   "card[number]": "4111111111111111",
-    //   "card[cvv]": "566",
-    //   "card[expiry_month]": "10",
-    //   "card[expiry_year]": "21",
-    // };
-    // razorpay.createPayment(data);
-
-    // razorpay.on("payment.success", function (resp: any) {
-    //   console.log("resp", resp);
-    // }); // will pass payment ID, order ID, and Razorpay signature to success handler.
-
-    // razorpay.on("payment.error", function (resp: any) {
-    //   alert(resp.error.description);
-    // }); // will pass error object to error handler
-
-    // var btn:any = document.querySelector('#rzp-button1');
-    // btn.addEventListener('click', function(){
-    //   // has to be placed within user initiated context, such as click, in order for popup to open.
-
-    // })
-    //   var btn:any = document.querySelector('#btn');
-    // btn.addEventListener('click', function(){
-    //   // has to be placed within user initiated context, such as click, in order for popup to open.
-
-    // })
-    // var rzp1 = new Razorpay(options);
-    // rzp1.on('payment.failed', function (response:any){
-    //   console.log("response",response);
-    //         alert(response.error.code);
-    //         alert(response.error.description);
-    //         alert(response.error.source);
-    //         alert(response.error.step);
-    //         alert(response.error.reason);
-    //         alert(response.error.metadata.order_id);
-    //         alert(response.error.metadata.payment_id);
-    // });
-    // rzp1.open();
-    // e.preventDefault();
-    // console.log("rzp1",rzp1);
-    // $( "#rzp-button1" ).click(function(e:any) {
-    //   console.log("button click",e)
-    // // document.getElementById('rzp-button1').onclick = function(e){
-    // });
   }
 
   /** Wallet payment block */
@@ -1722,7 +1731,7 @@ class PlaceOrder extends React.Component<{
                         className="continue-btn"
                         onClick={() => this.payWallet("olamoney")}
                       >
-                        PAY R400
+                        PAY
                       </button>
                     </div>
                   ) : (
@@ -1770,7 +1779,7 @@ class PlaceOrder extends React.Component<{
                         className="continue-btn"
                         onClick={() => this.payWallet("payzapp")}
                       >
-                        PAY R400
+                        PAY
                       </button>
                     </div>
                   ) : (
@@ -2091,22 +2100,23 @@ class PlaceOrder extends React.Component<{
             userID: user.userID,
             couponID: _this.state.couponid ? _this.state.couponid : 0,
             addressID: _this.state.mainaddress ? _this.state.mainaddress : 0,
-            paymentMethod: 0,
-            orderStatus: 0,
-            paymentStatus: 0,
+            paymentMethod: "Card",
+            paymentStatus: "Success",
             distance: 0,
             totalQty: _this.state.cartarray ? _this.state.cartarray.length : 0,
-            totalAmount: total,
+            totalAmount: parseInt(_this.state.totalpay),
+            cardNumber:_this.state.cardnumber,
+            cardExpiryMonth:_this.state.month,
+            cardExpiryYear:_this.state.year,
             discountAmount: _this.state.discount
               ? parseInt(_this.state.discount)
               : 0,
             taxAmount: 0,
             deliveryAmount: 0,
-            couponAmount: 0,
-            transactionID: 0,
-            paymentMessage: "Success",
-            cardNumber: _this.state.cardnumber,
-            orderDetails: order,
+            razorpayPaymentID: resp.razorpay_payment_id,
+            razorpayOrderID: resp.razorpay_order_id,
+            razorpaySignature: resp.razorpay_signature,
+            orderDetails: order
           };
           _this.props.createOrder(obj);
         }); // will pass payment ID, order ID, and Razorpay signature to success handler.
@@ -2424,6 +2434,83 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  async payWithNetBanking() {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    var total: any = this.state.cartarray.reduce(
+      (sum: number, i: any) => (sum += i.sellingPrice),
+      0
+    );
+    const obj: any = {
+      amount: total,
+      currency: "INR",
+    };
+
+    let order: any = [];
+    if (this.state.cartarray) {
+      this.state.cartarray.map((cart: any, index: number) => {
+        order.push({
+          productId: cart.productID,
+          orderQty: cart.quantity,
+          productPrice: cart.sellingPrice,
+        });
+      });
+    }
+
+    const getOrderData: any = await OrderAPI.getOrderData(obj);
+    console.log("getOrderData", getOrderData);
+
+    if (getOrderData.data.resultObject) {
+      let _this: any = this;
+      var razorpay = new Razorpay({
+        key: "rzp_test_c9r1dW7E0qCBz5",
+        // logo, displayed in the popup
+        image: "https://i.imgur.com/n5tjHFD.png",
+      });
+
+      var data: any = {
+        amount: total, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+        currency: "INR", // Default is INR. We support more than 90 currencies.
+        email: user.email,
+        contact: user.phone,
+        order_id: getOrderData.data.resultObject
+          ? getOrderData.data.resultObject.id
+          : "0000", // Replace with Order ID generated in Step 4
+        method: "netbanking",
+        bank: this.state.banktype,
+      };
+      razorpay.createPayment(data);
+
+      razorpay.on("payment.success", function (resp: any) {
+        console.log("resp", resp);
+        const obj = {
+          userID: user.userID,
+          couponID: _this.state.couponid ? _this.state.couponid : 0,
+          addressID: _this.state.mainaddress ? _this.state.mainaddress : 0,
+          paymentMethod: "NetBanking",
+          paymentStatus: "Success",
+          distance: 0,
+          totalQty: _this.state.cartarray ? _this.state.cartarray.length : 0,
+          totalAmount: parseInt(_this.state.totalpay),
+          discountAmount: _this.state.discount
+            ? parseInt(_this.state.discount)
+            : 0,
+          taxAmount: 0,
+          deliveryAmount: 0,
+          razorpayPaymentID: resp.razorpay_payment_id,
+          razorpayOrderID: resp.razorpay_order_id,
+          razorpaySignature: resp.razorpay_signature,
+          orderDetails: order
+        };
+        _this.props.createOrder(obj);
+      }); // will pass payment ID, order ID, and Razorpay signature to success handler.
+
+      razorpay.on("payment.error", function (resp: any) {
+        alert(resp.error.description);
+      }); // will pass error object to error handler
+    }
+  }
+
   /** Net banking block */
   netBankingBlock() {
     return (
@@ -2531,7 +2618,9 @@ class PlaceOrder extends React.Component<{
                 </select>
               </div>
 
-              <button className="continue-btn">PAY R400</button>
+              <button className="continue-btn" onClick={this.payWithNetBanking}>
+                PAY
+              </button>
             </div>
           ) : (
             ""
@@ -2665,11 +2754,11 @@ class PlaceOrder extends React.Component<{
     console.log("data", coupondata);
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
-   
+
     const obj = {
-      Code:data.couponCode,
-      UserID:user.userID
-    }
+      Code: data.couponCode,
+      UserID: user.userID,
+    };
     this.props.applyCoupon(obj);
   }
 
@@ -2704,17 +2793,17 @@ class PlaceOrder extends React.Component<{
   }
 
   applyCoupon() {
-    if(this.state.codename) {
+    if (this.state.codename) {
       this.setState({
-                couponerror: "",
-              });
+        couponerror: "",
+      });
       const users: any = localStorage.getItem("user");
       let user = JSON.parse(users);
-     
+
       const obj = {
-        Code:this.state.codename.toUpperCase(),
-        UserID:user.userID
-      }
+        Code: this.state.codename.toUpperCase(),
+        UserID: user.userID,
+      };
       this.props.applyCoupon(obj);
     } else {
       this.setState({
@@ -3309,6 +3398,7 @@ const mapStateToProps = (state: any) => ({
   applycoupon: state.placeOrder.applycoupon,
   getApplyCouponData: state.placeOrder.getcouponapply,
   removeCouponData: state.placeOrder.removecoupon,
+  orderDetail:state.placeOrder.orderdata
 });
 
 /**

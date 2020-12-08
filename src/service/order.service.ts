@@ -5,7 +5,7 @@ import axios from "axios";
 // import * as btoa from 'btoa';
 import { getAddressListRequest } from "../modelController";
 import constant from "../pages/constant/constant";
-const btoa = require('btoa')
+const btoa = require("btoa");
 
 export default {
   /**
@@ -20,23 +20,26 @@ export default {
     );
   },
 
-    /**
+  /**
    *
    * @param data : get order data
    */
   getOrderData: async function (data: any) {
-      // const authMain = {
-      //   Username: 'rzp_test_WnyFW6axxBffc1',
-      //   Password: 'ZpQQylsVyOUcfejR53v12vVC'
-      // }
-      //  const config = {     
-      //       headers: { 
-      //           Authorization: 'Basic ' + btoa('rzp_test_WnyFW6axxBffc1 : ZpQQylsVyOUcfejR53v12vVC'),
-      //           'Access-Control-Allow-Origin': true,
-      //           "Content-Type": "application/json",
+    // const authMain = {
+    //   Username: 'rzp_test_WnyFW6axxBffc1',
+    //   Password: 'ZpQQylsVyOUcfejR53v12vVC'
+    // }
+    //  const config = {
+    //       headers: {
+    //           Authorization: 'Basic ' + btoa('rzp_test_WnyFW6axxBffc1 : ZpQQylsVyOUcfejR53v12vVC'),
+    //           'Access-Control-Allow-Origin': true,
+    //           "Content-Type": "application/json",
 
-      //       }
-      //   }
-        return await axios.post(constant.apiUrl + 'order/razorpay-create-order',data);
-  }
+    //       }
+    //   }
+    return await axios.post(
+      constant.apiUrl + "order/razorpay-create-order",
+      data
+    );
+  },
 };

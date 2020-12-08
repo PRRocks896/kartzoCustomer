@@ -277,10 +277,10 @@ function createOrder(data: any) {
 
     PlaceOrderAPI.createorder(data)
       .then(async (orderdata: any) => {
-        // console.log("orderdata", orderdata);
+        console.log("orderdata", orderdata);
         if (orderdata.status === 200) {
           showSuccess(orderdata.message);
-          dispatch(success(await orderdata.data.resultObject));
+          dispatch(success(await orderdata));
         }
       })
       .catch((err: any) => {

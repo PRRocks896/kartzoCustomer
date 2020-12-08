@@ -1250,7 +1250,7 @@ class Profile extends React.Component<{
                                             )
                                           : ""}
                                       </div>
-                                        <div className="mt-4">
+                                        <div className="mt-2 fix-btn-12">
                                           <button
                                             className="order-btn"
                                             onClick={() => this.reOrder(order)}
