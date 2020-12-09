@@ -1402,7 +1402,7 @@ class PlaceOrder extends React.Component<{
         0
       );
       const obj: any = {
-        amount: total,
+        amount: (total * 100),
         currency: "INR",
       };
       const getOrderData: any = await OrderAPI.getOrderData(obj);
@@ -1416,7 +1416,7 @@ class PlaceOrder extends React.Component<{
         });
 
         var data: any = {
-          amount: total, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+          amount: (total * 100), // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
           currency: "INR", // Default is INR. We support more than 90 currencies.
           email: user.email,
           contact: user.phone,
@@ -2606,7 +2606,7 @@ class PlaceOrder extends React.Component<{
 
               <div className="select-bank">
                 <span className="b-tt">Other Banks</span>
-                <select className="_1CV081" onChange={this.selectBank}>
+                <select className="_1CV081" onChange={this.selectBank} value={this.state.banktype ? this.state.banktype : ''}>
                   <option value="SELECT_BANK">---Select Bank---</option>
                   {this.state.bankarray
                     ? this.state.bankarray.map((data: any, index: number) => (

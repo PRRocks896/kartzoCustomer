@@ -6,9 +6,21 @@ import Layout from "../components/layout/layout";
 import constant from "../constant/constant";
 import { getAppName } from "../utils";
 import './trackorder.css';
+import { withScriptjs } from "react-google-maps";
+import TrackingMap from "../track-map/track-map";
 
 class TrackOrder extends React.Component<{show: boolean}> {
 
+  state = {
+    isMarkerShown: false,
+    lat: 22.2856,
+    long: 70.7561,
+    origin:[
+        {lat: 26.4669, lng:  73.4503},
+        {lat: 22.1573, lng:  70.7991},
+        {lat: 22.1574, lng:  70.7992}
+    ]
+  }
   /** Constuctor call */
   constructor(props: any) {
     super(props);
@@ -18,6 +30,62 @@ class TrackOrder extends React.Component<{show: boolean}> {
   componentDidMount() {
     document.title = constant.trackorder + getAppName();
     EventEmitter.dispatch('isShow', true);
+
+    let len = this.state.origin.length;
+        setInterval(() => {
+            if(len !== 0) {
+                this.getMap(len - 1);
+                len--;
+            }
+        },5000)
+  }
+
+  liveMap(originIndex: number) {
+    console.log("Index: ", originIndex);
+    // const directionsService = new google.maps.DirectionsService();
+
+    const origin = this.state.origin[originIndex];
+    // const destination = { lat: 26.4667, lng:  73.4500};
+
+    // directionsService.route(
+    //     {
+    //         origin: origin,
+    //         destination: destination,
+    //         travelMode: google.maps.TravelMode.DRIVING,
+    //         waypoints: [
+                
+    //         ]
+    //     },
+    //     (result:any, status:any) => {
+    //         console.log("result",result);
+    //         if (status === google.maps.DirectionsStatus.OK) {
+    //             console.log(result)
+    //             this.setState({
+    //                 directions: result
+    //             });
+    //         } else {
+    //             console.error(`error fetching directions ${result}`);
+    //         }
+    //     }
+    // );
+    // this.startTimer();
+}
+
+  getMap(originIndex: number) {
+    console.log("Index: ", originIndex);
+    const origin = this.state.origin[originIndex];
+    console.log("origin: ", origin);
+    // const MapLoader = withScriptjs(TrackingMap);
+    return (
+      <TrackingMap
+      isMarkerShown={true}
+      latlong={origin}
+    />
+    // <MapLoader
+    //     googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAyBoIK3-3psCrVDMpZCKj5zaMmDAPp0I"
+    //     loadingElement={<div style={{ height: `100%` }} />}
+    // />
+    );
   }
 
   /** Render DOM */
@@ -32,12 +100,12 @@ class TrackOrder extends React.Component<{show: boolean}> {
                     <Link to = '/'>
                   <img src={header.logo} alt="logo" />
                     </Link>
-                  <a href="#">
+                  {/* <a href="#">
                     <div className="search-box">
                       <img src={trackorder.location} alt="location" />
                       <span className="search-text"> Pretoria</span>
                     </div>
-                  </a>
+                  </a> */}
                 </div>
                 <div className="right-content">
                   <div className="cart-icon">
@@ -54,7 +122,8 @@ class TrackOrder extends React.Component<{show: boolean}> {
           <div className="container-fluid">
             <div className="main-flex">
               <div className="left-box">
-                <img src={trackorder.track} alt="" />
+                {this.getMap(0)}
+                {/* <img src={trackorder.track} alt="" /> */}
               </div>
               <div className="right-box">
                 <div className="track-box">
