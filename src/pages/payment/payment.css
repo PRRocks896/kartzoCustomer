@@ -1,46 +1,46 @@
-.container-fluid {
+.order-confirm .container-fluid {
 	max-width: 800px;
 }
 .order-confirm {
 	padding-top: 50px;
 }
-.user-name {
+.order-confirm .user-name {
 	color: #071828;
 	font-size: 18px;
 }
-.bg-box {
+.order-confirm .bg-box {
 	background: #fff;
 	box-shadow: 0px 0px 2px #c1c1c1;
 	padding: 30px 0px;
 	padding-bottom: 0px;
 }
-.order-content {
+.order-confirm .order-content {
 	padding: 0px 30px;
 }
-.order-content2 {
+.order-confirm .order-content2 {
 	padding: 20px 30px;
 	background: #fafafa;
 	display: flex;
 	justify-content: space-between;	
 }
-.order-tt {
+.order-confirm .order-tt {
 	display: flex;
 	flex-direction: column;
 }
-.order-confm {
+.order-confirm .order-confm {
 	font-size: 20px;
 	font-weight: normal;
 	color: #fbb132;
 	margin-top: 15px;
 	margin-bottom: 15px;
 }
-.order-confm svg {
+.order-confirm .order-confm svg {
 	fill: #fbb132;
 	width: 20px;
 	margin-right: 11px;
 	height: 20px;
 }
-.manage-order-btn {
+.order-confirm .manage-order-btn {
 	height: 38px;
 	color: #fff;
 	background-image: linear-gradient(to bottom, #FBB034, #ECCE09);
@@ -54,68 +54,78 @@
 	width: 260px;
 	margin-top: 14px;
 }
-.order-tt2 {
+.order-confirm .order-tt2 {
 	display: flex;
 	flex-direction: column;
 	flex-basis: 35%;
 }
-.text-box1 {
+.order-confirm .text-box1 {
 	display: flex;
 	justify-content: space-between;
 }
-.text1 {
+.order-confirm .text1 {
 	flex-basis: 50%;
 	text-align: end;
 }
-.text-box2 {
+.order-confirm .text-box2 {
 	color: #071828;
 	font-weight: 600;
 }
-.order-content3 {
+.order-confirm .order-content3 {
 	padding: 20px 30px;
 	background: #fafafa;
 }
-.order-content3 {
+.order-confirm .order-content3 {
 	padding: 20px 30px;
 	background: #fafafa;
 	height: 400px;
 	overflow: auto;
 }
-.img-product {
+.order-confirm .img-product {
 	width: 80px;
 	height: 80px;
 	float: left;
 	margin-right: 15px;
 }
-.product-tt {
+.order-confirm .product-tt {
 	margin: 0px;
 }
-.img-product img{
+.order-confirm .img-product img{
 	max-width: 100%;
 	border-radius: 5px;
 }
-.price-box {
+.order-confirm .price-box {
 	color: #f9b22f;
 	font-weight: bold;
 }
-.product-1 {
+.order-confirm .product-1 {
 	border-top: 1px solid #cecece;
 	padding: 15px 0px;
+	clear: both;
+}
+.order-confirm .right-content {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+.content-product {
+	position: relative;
 }
 @media only screen and (max-width: 768px) {
-	.order-content2 {
+	.order-confirm .order-content2 {
 		display: block;
 	}
-	.text1 {
+	.order-confirm .text1 {
 		flex-basis: auto;
 		text-align: end;
 	}
-	.order-tt2 {
+	.order-confirm .order-tt2 {
 		margin-top: 20px;
 	}
-	.text-box1 {
+	.order-confirm .text-box1 {
 		padding-bottom: 10px;
 		
 	}
+	
 }
 /* You order is confirmed */

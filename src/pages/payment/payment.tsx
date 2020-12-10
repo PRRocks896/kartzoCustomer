@@ -78,15 +78,15 @@ class Payment extends React.Component {
                 <div className="order-tt2">
                   <div className="text-box1">
                     <span className="text1">Sub-total</span>
-                    <span className="text1">{maindata.finalAmount}</span>
+                    <span className="text1"><i className="fa fa-rupee"></i> {maindata.finalAmount}</span>
                   </div>
                   <div className="text-box1">
                     <span className="text1">+ Discount</span>
-                    <span className="text1">{maindata.discountAmount}</span>
+                    <span className="text1"><i className="fa fa-rupee"></i> {maindata.discountAmount}</span>
                   </div>
                   <div className="text-box1 text-box2">
                     <span className="text1">Total</span>
-                    <span className="text1">{maindata.totalAmount}</span>
+                    <span className="text1"><i className="fa fa-rupee"></i> {maindata.totalAmount}</span>
                   </div>
                 </div>
               </div>
@@ -108,13 +108,14 @@ class Payment extends React.Component {
                           <div className="left-cotent">
                             <h6 className="product-tt">{data.productName}</h6>
                             <span className="sold-text">Sold by:</span>
-                            <a href="#" className=" link-tt sold-product-nm">
-                              Osprey
-                            </a>
+                            <span className="sold-text ml-2" style={{color:'#007bff'}}>{data.merchantName}</span>
+                            {/* <a href="#" className=" link-tt sold-product-nm">
+                              
+                            </a> */}
                           </div>
                           <div className="right-content">
                             <span className="price-box">
-                              {data.sellingPrice}
+                            <i className="fa fa-rupee"></i> {data.sellingPrice}
                             </span>
                           </div>
                         </div>
