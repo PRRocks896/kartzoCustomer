@@ -31,7 +31,9 @@ class Footer extends React.Component<{getFooterData:any}> {
 
   /** Page Render Call */
   componentDidMount() {
-    this.props.getFooterData();
+    if(localStorage.getItem('adminToken')) {
+      this.props.getFooterData();
+    }
     // this.props.getFooterLinkData();
   }
 

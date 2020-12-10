@@ -27,7 +27,9 @@ class Categories extends React.Component<{ getCategoryData: any }> {
 
   /** Page Render Call */
   componentDidMount() {
-    this.getCategory();
+    if(localStorage.getItem('adminToken')) {
+      this.getCategory();
+    }
   }
 
   /**

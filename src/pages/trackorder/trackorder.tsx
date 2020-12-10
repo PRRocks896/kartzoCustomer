@@ -122,7 +122,7 @@ class TrackOrder extends React.Component<{show: boolean}> {
           <div className="container-fluid">
             <div className="main-flex">
               <div className="left-box">
-                {this.getMap(0)}
+                {this.getMap}
                 {/* <img src={trackorder.track} alt="" /> */}
               </div>
               <div className="right-box">

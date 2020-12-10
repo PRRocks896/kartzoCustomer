@@ -4,6 +4,7 @@ import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
+  Polyline,
   Marker
 } from "react-google-maps";
 import EventEmitter from "../../event";
@@ -46,9 +47,18 @@ const TrackingMap:any = compose(
 )((props:any) => (
     /** Google Map */
 
-    <GoogleMap defaultZoom={8} defaultCenter={{ lat:  props.latlong.lat, lng: props.latlong.lng }} options={{streetViewControl: false,fullscreenControl:false,mapTypeControl:false}}>
+    <GoogleMap defaultZoom={8} defaultCenter={{ lat: props.latlong.lat, lng: props.latlong.lng }} options={{streetViewControl: false,fullscreenControl:false,mapTypeControl:false}}>
     {props.isMarkerShown && (
         <>
+        {/* <Polyline
+               path={[{ lat:21.9612, lng: 70.7939 }, { lat: 21.9614, lng: 70.7940 }]}
+               
+                options={{
+                    strokeColor: "#ff2527",
+                    strokeOpacity: 0.75,
+                    strokeWeight: 2
+                }}
+            /> */}
         <Marker
          position={{ lat:21.9612, lng: 70.7939 }}
          draggable={true}

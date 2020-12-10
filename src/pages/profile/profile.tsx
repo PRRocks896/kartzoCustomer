@@ -1265,6 +1265,7 @@ class Profile extends React.Component<{
                                           >
                                             HELP
                                           </button>
+                                         
                                         </div>
                                     </div>
                                   </div>

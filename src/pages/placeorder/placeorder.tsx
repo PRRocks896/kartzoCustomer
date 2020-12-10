@@ -407,8 +407,12 @@ class PlaceOrder extends React.Component<{
 
   orderSuccess(data:any) {
     if(data.status === 200) {
-      window.location.href = "/payment"
-      // this.props.history.push('/payment');
+      console.log("payment",data)
+      // window.location.href = "/payment"
+      this.props.history.push({
+        pathname: "/payment",
+      state: { data: data.resultObject },
+      });
     }
   }
 
@@ -1551,7 +1555,7 @@ class PlaceOrder extends React.Component<{
       0
     );
     const obj: any = {
-      amount: total,
+      amount: (total * 100),
       currency: "INR",
     };
 
@@ -1577,7 +1581,7 @@ class PlaceOrder extends React.Component<{
       });
 
       var data: any = {
-        amount: total, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+        amount: (total * 100),// in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
         currency: "INR", // Default is INR. We support more than 90 currencies.
         email: user.email,
         contact: user.phone,
@@ -2052,7 +2056,7 @@ class PlaceOrder extends React.Component<{
       }
 
       const obj: any = {
-        amount: total,
+        amount: (total * 100),
         currency: "INR",
       };
       const getOrderData: any = await OrderAPI.getOrderData(obj);
@@ -2078,7 +2082,7 @@ class PlaceOrder extends React.Component<{
         });
 
         var data: any = {
-          amount: total, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+          amount: (total * 100), // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
           currency: "INR", // Default is INR. We support more than 90 currencies.
           email: user.email,
           contact: user.phone,
@@ -2442,7 +2446,7 @@ class PlaceOrder extends React.Component<{
       0
     );
     const obj: any = {
-      amount: total,
+      amount: (total * 100),
       currency: "INR",
     };
 
@@ -2469,7 +2473,7 @@ class PlaceOrder extends React.Component<{
       });
 
       var data: any = {
-        amount: total, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+        amount: (total * 100), // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
         currency: "INR", // Default is INR. We support more than 90 currencies.
         email: user.email,
         contact: user.phone,
