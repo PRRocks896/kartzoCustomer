@@ -34,16 +34,17 @@ class Categories extends React.Component<{ getCategoryData: any }> {
 
   /**
    *
-   * @param nextProps : get updated props value
+   * @param prevProps : get updated props value
    */
-  componentWillReceiveProps(nextProps: any) {
-    // console.log("componentWillReceiveProps category", nextProps);
-    if (nextProps.categoryDetail && nextProps.categoryDetail.length > 0) {
-      if (nextProps.categoryDetail) {
+
+  componentDidUpdate(prevProps:any) {
+    const categories:any = this.props;
+    if (prevProps.categoryDetail !== categories.categoryDetail) {
+      if (categories.categoryDetail) {
         this.setState({
           isLoading: false,
         });
-        this.getCategoryResponse(nextProps.categoryDetail);
+        this.getCategoryResponse(categories.categoryDetail);
       }
     }
   }

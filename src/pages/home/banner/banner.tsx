@@ -51,12 +51,13 @@ class Banner extends React.Component<{ history: any,searchLocationResponse:any }
 
   /**
    * 
-   * @param nextProps : get updated props value
+   * @param prevProps : get updated props value
    */
-  componentWillReceiveProps(nextProps: any) {
-    // console.log("props", nextProps);
-    if (nextProps.locationDetail) {
-      this.locationdetails(nextProps.locationDetail);
+
+  componentDidUpdate(prevProps:any) {
+    const banner:any = this.props;
+    if (prevProps.locationDetail !== banner.locationDetail) {
+      this.locationdetails(banner.locationDetail);
     }
   }
 

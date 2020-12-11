@@ -72,12 +72,13 @@ class Home extends React.Component<{
 
   /**
    *
-   * @param nextProps : get updated props
+   * @param prevProps : get updated props
    */
-  componentWillReceiveProps(nextProps: any) {
-    // console.log("props", nextProps);
-    if (nextProps.getCartDetail) {
-      this.getCartAllProductData(nextProps.getCartDetail);
+
+  componentDidUpdate(prevProps:any) {
+    const home:any = this.props;
+    if (prevProps.getCartDetail !== home.getCartDetail) {
+      this.getCartAllProductData(home.getCartDetail);
     }
   }
 

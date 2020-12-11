@@ -116,18 +116,25 @@ class FindStore extends React.Component<{
    */
   componentWillReceiveProps(nextProps: any) {
     // console.log("props", nextProps);
-    if (nextProps.merchantDetail) {
-      this.setState({
-        isLoading: false,
-      });
-      this.getMerchantList(nextProps.merchantDetail);
-    }
     if (nextProps.locationDetail) {
       this.locationdetails(nextProps.locationDetail);
     } else {
       this.setState({
         locationData: this.state.locationData = [],
       });
+    }
+  }
+
+  componentDidUpdate(prevProps:any) {
+    const findstore:any = this.props;
+    if (prevProps.merchantDetail !== findstore.merchantDetail) {
+      this.setState({
+        isLoading: false,
+      });
+      this.getMerchantList(findstore.merchantDetail);
+    }
+    if (prevProps.locationDetail !== findstore.locationDetail) {
+      this.locationdetails(findstore.locationDetail);
     }
   }
 

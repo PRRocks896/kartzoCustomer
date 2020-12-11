@@ -40,12 +40,13 @@ class Footer extends React.Component<{getFooterData:any}> {
   /**
    * 
    *
-   * @param nextProps : get updated props value
+   * @param prevProps : get updated props value
    */
-  componentWillReceiveProps(nextProps: any) {
-    console.log("props", nextProps);
-    if (nextProps.footerDetail) {
-      this.getFooterCityData(nextProps.footerDetail);
+
+  componentDidUpdate(prevProps:any) {
+    const footerdata:any = this.props;
+    if (prevProps.footerDetail !== footerdata.footerDetail) {
+      this.getFooterCityData(footerdata.footerDetail);
     }
   }
 

@@ -61,16 +61,17 @@ class SearchCity extends React.Component<{
 
   /**
    *
-   * @param nextProps : get updated props value
+   * @param prevProps : get updated props value
    */
-  componentWillReceiveProps(nextProps: any) {
-    // console.log("componentWillReceiveProps category", nextProps);
-    if (nextProps.categoryDetail && nextProps.categoryDetail.length > 0) {
-      if (nextProps.categoryDetail) {
+
+  componentDidUpdate(prevProps:any) {
+    const searchcity:any = this.props;
+    if (prevProps.categoryDetail !== searchcity.categoryDetail) {
+      if (searchcity.categoryDetail) {
         this.setState({
-          isLoading: false
+          isLoading: false,
         });
-        this.getCategoryResponse(nextProps.categoryDetail);
+        this.getCategoryResponse(searchcity.categoryDetail);
       }
     }
   }
