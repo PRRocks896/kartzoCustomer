@@ -172,7 +172,7 @@ function updateProfileData(data:any) {
         if (getprofiledata.status === 200) {
           // const msg = otpdata.message;
           // showSuccess(msg);
-          dispatch(success(await getprofiledata.data.resultObject));
+          dispatch(success(await getprofiledata.data));
         } else {
           dispatch(failure(getprofiledata));
         }

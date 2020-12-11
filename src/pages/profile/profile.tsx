@@ -232,6 +232,17 @@ class Profile extends React.Component<{
     if (prevProps.deletedata !== profile.deletedata) {
       this.deleteAddress(profile.deletedata);
     }
+    if (prevProps.updateprofiledata !== profile.updateprofiledata) {
+      this.updateProfiledata(profile.updateprofiledata);
+    }
+
+    
+  }
+
+  updateProfiledata(data:any) {
+    if(data.status === 200) {
+      this.getProfile();
+    }
   }
 
   deleteAddress(data:any) {
@@ -645,7 +656,7 @@ class Profile extends React.Component<{
   }
 
   /** Update Profile */
-  updateProfile() {
+  async updateProfile() {
     this.setState({
       disable: (this.state.disable = true),
     });
@@ -670,11 +681,11 @@ class Profile extends React.Component<{
         this.state.selectedFile ? this.state.selectedFile[0] : ""
       );
       formData.append("UserId", "0");
-      this.props.updateProfileData(formData);
+      await this.props.updateProfileData(formData);
 
-      setTimeout(() => {
-        this.getProfile();
-      }, 300);
+      // setTimeout(() => {
+      //   this.getProfile();
+      // }, 300);
     } else {
       this.setState({
         disable: false,
@@ -2341,7 +2352,8 @@ const mapStateToProps = (state: any) => ({
   updateProfileData: state.auth.updateprofiledata,
   getCartDetail: state.product.getcartdetails,
   updateaddress:state.placeOrder.updateaddress,
-  deletedata:state.placeOrder.deletedata
+  deletedata:state.placeOrder.deletedata,
+  updateprofiledata:state.auth.updateprofiledata
 });
 
 /**
