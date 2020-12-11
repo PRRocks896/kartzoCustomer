@@ -57,7 +57,8 @@ class StoreItem extends React.Component<{
     loadingid: this.storeItemState.loadingid,
     show: this.storeItemState.show,
     isLoading: this.storeItemState.isLoading,
-    qtydisable:false
+    loading: true,
+    qtydisable: false,
   };
 
   /** Constructor call */
@@ -103,9 +104,9 @@ class StoreItem extends React.Component<{
       });
     }
     console.log("maindata", this.state.maindata);
-    let datamain : any = this.state.maindata;
+    let datamain: any = this.state.maindata;
     if (localStorage.getItem("token")) {
-      localStorage.setItem('merchantID',datamain.merchantID)
+      localStorage.setItem("merchantID", datamain.merchantID);
       this.getCartData();
     }
   }
@@ -140,8 +141,8 @@ class StoreItem extends React.Component<{
    */
   async incrementQty(data: any) {
     this.setState({
-      qtydisable:true
-    })
+      qtydisable: true,
+    });
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -167,8 +168,8 @@ class StoreItem extends React.Component<{
    */
   async decrementQty(data: any) {
     this.setState({
-      qtydisable:true
-    })
+      qtydisable: true,
+    });
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -247,17 +248,17 @@ class StoreItem extends React.Component<{
   //   }
   // }
 
-  componentDidUpdate(prevProps:any) {
-      let cart:any = this.props;
-      if (prevProps.productDetail !== cart.productDetail) {
-        this.getSubCategory(cart.productDetail.subcategory);
+  componentDidUpdate(prevProps: any) {
+    let cart: any = this.props;
+    if (prevProps.productDetail !== cart.productDetail) {
+      this.getSubCategory(cart.productDetail.subcategory);
 
-        this.productData(cart.productDetail.data);
-      }
-      if (prevProps.searchDetail !== cart.searchDetail) {
-        this.getProductListingData(cart.searchDetail);
-      }
-    if(prevProps.getCartDetail !== cart.getCartDetail) {
+      this.productData(cart.productDetail.data);
+    }
+    if (prevProps.searchDetail !== cart.searchDetail) {
+      this.getProductListingData(cart.searchDetail);
+    }
+    if (prevProps.getCartDetail !== cart.getCartDetail) {
       this.getCartAllProductData(cart.getCartDetail);
     }
     if (prevProps.updateCart !== cart.updateCart) {
@@ -265,7 +266,7 @@ class StoreItem extends React.Component<{
     }
     if (prevProps.searchableProduct !== cart.searchableProduct) {
       this.searchableDataProduct(cart.searchableProduct.data);
-    } 
+    }
     if (prevProps.addToCartDetail !== cart.addToCartDetail) {
       this.addCart(cart.addToCartDetail);
     }
@@ -274,8 +275,8 @@ class StoreItem extends React.Component<{
     }
   }
 
-  deleteCart(data:any) {
-    if(data.status === 200) {
+  deleteCart(data: any) {
+    if (data.status === 200) {
       this.getCartData();
       localStorage.removeItem("merchantID");
       this.setState({
@@ -284,14 +285,14 @@ class StoreItem extends React.Component<{
     }
   }
 
-  addCart(data:any) {
-    if(data.status === 200) {
+  addCart(data: any) {
+    if (data.status === 200) {
       this.getCartData();
     }
   }
 
-  updateCart(data:any) {
-    if(data.status === 200) {
+  updateCart(data: any) {
+    if (data.status === 200) {
       this.getCartData();
     }
   }
@@ -358,7 +359,8 @@ class StoreItem extends React.Component<{
    */
   getCartAllProductData(data: any) {
     this.setState({
-      qtydisable:this.state.qtydisable = false,
+      loading: false,
+      qtydisable: (this.state.qtydisable = false),
       isButton: (this.state.isButton = false),
       cartarray: (this.state.cartarray = data.data),
     });
@@ -382,8 +384,8 @@ class StoreItem extends React.Component<{
    */
   productData(product: any) {
     this.setState({
-      productdata: this.state.productdata = product,
-      isLoading: false
+      isLoading: false,
+      productdata: (this.state.productdata = product),
     });
   }
 
@@ -535,43 +537,59 @@ class StoreItem extends React.Component<{
           </div>
           <div className="card-price-item">
             <div className="itemcardlist">
-              {this.state.cartarray
-                ? this.state.cartarray.length > 0 &&
-                  this.state.cartarray.map((cartdata: any, index: number) => (
-                    <div className="flex-box" key={index}  style={{
-                      pointerEvents: this.state.qtydisable === true ? "none" : "visible",
-                    }}>
-                      <div className="bdr-roud"></div>
-                      <div className="item-title">
-                        <h4>{cartdata.productName}</h4>
-                        {/* <span className="pak">Pack of 20</span> */}
+              {this.state.loading === false
+                ? (this.state.cartarray
+                  ? this.state.cartarray.length > 0 &&
+                    this.state.cartarray.map((cartdata: any, index: number) => (
+                      <div
+                        className="flex-box"
+                        key={index}
+                        style={{
+                          pointerEvents:
+                            this.state.qtydisable === true ? "none" : "visible",
+                        }}
+                      >
+                        <div className="bdr-roud"></div>
+                        <div className="item-title">
+                          <h4>{cartdata.productName}</h4>
+                          {/* <span className="pak">Pack of 20</span> */}
+                        </div>
+                        <div className="number">
+                          <span
+                            className="minus"
+                            onClick={() => this.decrementQty(cartdata)}
+                          >
+                            -
+                          </span>
+                          <input
+                            type="text"
+                            name="qty"
+                            value={cartdata.quantity ? cartdata.quantity : ""}
+                            onChange={(e: any) => this.onChangeEvent(e)}
+                            disabled={
+                              this.state.qtydisable === true ? true : false
+                            }
+                          />
+                          <span
+                            className="plus"
+                            onClick={() => this.incrementQty(cartdata)}
+                          >
+                            +
+                          </span>
+                        </div>
+                        <span className="price">R{cartdata.sellingPrice}</span>
                       </div>
-                      <div className="number">
-                        <span
-                          className="minus"
-                          onClick={() => this.decrementQty(cartdata)}
-                        
-                        >
-                          -
-                        </span>
-                        <input
-                          type="text"
-                          name="qty"
-                          value={cartdata.quantity ? cartdata.quantity : ""}
-                          onChange={(e: any) => this.onChangeEvent(e)}
-                          disabled={this.state.qtydisable === true ? true : false}
-                        />
-                        <span
-                          className="plus"
-                          onClick={() => this.incrementQty(cartdata)}
-                        >
-                          +
-                        </span>
-                      </div>
-                      <span className="price">R{cartdata.sellingPrice}</span>
+                    ))
+                  : ""
+                ):([1, 2, 3, 4].map((data: any, index: number) => (
+                    <div key={index}>
+                      <SkeletonTheme color="black" highlightColor="black">
+                        <p>
+                          <Skeleton count={3} />
+                        </p>
+                      </SkeletonTheme>
                     </div>
-                  ))
-                : ""}
+                  )))}
             </div>
           </div>
 
@@ -632,146 +650,38 @@ class StoreItem extends React.Component<{
           />
         </div>
         <div className="all-item">
-          {this.state.searchproductdatadetails ? (
-            <div className="item-details-1">
-              {this.state.searchproductdatadetails.length > 0 ? (
-                <div className="item-nm-tt">Other</div>
-              ) : (
-                ""
-              )}
-              {this.state.searchproductdatadetails.length > 0 &&
-                this.state.searchproductdatadetails.map(
-                  (product: any, index: number) => (
-                    <div key={index}>
-                      <h3 className="tt-1"></h3>
-                      <div className="box-1">
-                        <div className="product-img">
-                          {product.productImages &&
-                          product.productImages[0].imagePath ? (
-                            <img
-                              className="product_img_size"
-                              src={
-                                constant.filemerchantpath +
-                                product.productImages[0].imagePath
-                              }
-                              alt=""
-                            />
-                          ) : (
-                            <img
-                              className="product_img_size"
-                              src={findstore.store}
-                              alt=""
-                            />
-                          )}
-                        </div>
-                        <div className="right-tt">
-                          <h4 className="tt-2">{product.productName}</h4>
-                          <span className="price"><i className="fa fa-rupee"></i> {product.price}</span>
-                          <p
-                            dangerouslySetInnerHTML={{
-                              __html: product.productDesc,
-                            }}
-                          ></p>
-                        </div>
-                        <div className="btn-add-item">
-                          {localStorage.getItem("token") ? (
-                            this.state.isButton === false ? (
-                              <button
-                                className="addproduct"
-                                onClick={() => this.additem(product)}
-                              >
-                                + Add
-                              </button>
-                            ) : (
-                              <div className="spinerButton2">
-                                <button className="addproduct" disabled>
-                                  + Add
-                                </button>
-                                {this.state.loadingid === product.productId ? (
-                                  <div className="spinners2"></div>
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                            )
-                          ) : (
-                            <Link to="/signin">
-                              <button className="addproduct">+ Add</button>
-                            </Link>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )
-                )}
+          {/** Search Item */}
+          {this.searchItem()}
 
-              <Modal
-                className="modal-dialog-centered d-ct"
-                show={this.state.show}
-                onHide={this.handleClose}
-              >
-                <Modal.Header closeButton>
-                  <Modal.Title></Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <div className="clear-cart">
-                    <img
-                      src={require("../../assets/images/cart-icon.svg")}
-                      alt="cart icon"
-                    />
-                    <h1>Clear cart?</h1>
-                    <p>
-                      <strong>
-                        Do you want to clear the cart and add items from{" "}
-                        <strong>another cart?</strong>
-                      </strong>
-                    </p>
-                    <div className="flex-btn">
-                      <button className="cencel-btn" onClick={this.handleClose}>
-                        Cancel
-                      </button>
-                      <button className="clear-btn" onClick={this.clearOldCart}>
-                        Clear cart
-                      </button>
-                    </div>
-                  </div>
-                </Modal.Body>
-                <Modal.Footer></Modal.Footer>
-              </Modal>
-            </div>
-          ) : (
-            ""
-          )}
-        
-          {categorydata &&
-            categorydata.map((cat: any, index: number) => (
-              <div
-                // id={cat.name}
-                // style={{height: 135,overflow:'auto'}}
-                ref={(el) => (this.ref[cat.value] = el)}
-                key={"item-" + index}
-              >
-                <div className="item-details-1">
-                  <div className="item-nm-tt">{cat.name}</div>
-                  {productdata.length === 0 ? (
-                    <p className="text-center mt-4">No Product Avaliable</p>
-                  ) : (
-                    //   productdata &&
-                    //   productdata.map((product: any, index: number) =>
-                    //     product.subCategoryId !== cat.value ? (
-                    //       <p className="text-center mt-4" key={index}>
-                    //         No Product Avaliable
-                    //       </p>
-                    //     ) : (
-                    //       ""
-                    //     )
-                    //   )
-                    // )
-                    ""
-                  )}
+          {this.state.isLoading === false
+            ? categorydata &&
+              categorydata.map((cat: any, index: number) => (
+                <div
+                  // id={cat.name}
+                  // style={{height: 135,overflow:'auto'}}
+                  ref={(el) => (this.ref[cat.value] = el)}
+                  key={"item-" + index}
+                >
+                  <div className="item-details-1">
+                    <div className="item-nm-tt">{cat.name}</div>
+                    {productdata.length === 0 ? (
+                      <p className="text-center mt-4">No Product Avaliable</p>
+                    ) : (
+                      //   productdata &&
+                      //   productdata.map((product: any, index: number) =>
+                      //     product.subCategoryId !== cat.value ? (
+                      //       <p className="text-center mt-4" key={index}>
+                      //         No Product Avaliable
+                      //       </p>
+                      //     ) : (
+                      //       ""
+                      //     )
+                      //   )
+                      // )
+                      ""
+                    )}
 
-                  {this.state.isLoading === false
-                    ? (productdata &&
+                    {productdata &&
                       productdata.map((product: any, index: number) =>
                         product.subCategoryId === cat.value ? (
                           <div key={index}>
@@ -798,7 +708,10 @@ class StoreItem extends React.Component<{
                               </div>
                               <div className="right-tt">
                                 <h4 className="tt-2">{product.productName}</h4>
-                                <span className="price"><i className="fa fa-rupee"></i> {product.price}</span>
+                                <span className="price">
+                                  <i className="fa fa-rupee"></i>{" "}
+                                  {product.price}
+                                </span>
                                 <p
                                   dangerouslySetInnerHTML={{
                                     __html: product.productDesc,
@@ -840,44 +753,182 @@ class StoreItem extends React.Component<{
                         ) : (
                           ""
                         )
-                      )
-                    ):([1, 2, 3, 4].map((data: any, index: number) => (
-                        <div key={index}>
-                          <SkeletonTheme color="#202020" highlightColor="#444">
-                            <Skeleton count={1}>
-                              <h3 className="tt-1"></h3>
-                            </Skeleton>
-                            <div className="box-1">
-                              <Skeleton count={1}>
-                                <Skeleton count={1}>
-                                  <div className="product-img"></div>
-                                </Skeleton>
-                                <Skeleton count={1}>
-                                  <div className="right-tt">
-                                    <Skeleton count={1}>
-                                      <h4 className="tt-2"></h4>
-                                    </Skeleton>
-                                    <Skeleton count={1}>
-                                      <span className="price"></span>
-                                    </Skeleton>
-                                    <Skeleton count={1}>
-                                      <p></p>
-                                    </Skeleton>
-                                  </div>
-                                </Skeleton>
-                                <Skeleton count={1}>
-                                  <div className="btn-add-item"></div>
-                                </Skeleton>
-                              </Skeleton>
-                            </div>
-                          </SkeletonTheme>
-                        </div>
-                      )))}
+                      )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            : [1, 2, 3, 4].map((data: any, index: number) => (
+                <div key={index}>
+                  <SkeletonTheme color="#202020" highlightColor="#444">
+                      <h3 className="tt-1">
+                    <Skeleton count={1}>
+
+                    </Skeleton>
+                      </h3>
+                    <p>
+                      <Skeleton count={3} />
+                    </p>
+                    {/* <div className="box-1">
+                    <Skeleton count={1}>
+                        <div className="product-img">
+                      <Skeleton count={1}>
+
+                      </Skeleton>
+                        </div>
+                        <div className="right-tt">
+                      <Skeleton count={1}>
+                            <h4 className="tt-2">
+                          <Skeleton count={1}>
+
+                          </Skeleton>
+                            </h4>
+                           
+                            <span className="price">
+                          <Skeleton count={1}>
+
+
+                          </Skeleton>
+                            </span>
+                           
+                            <p>
+                          <Skeleton count={1}>
+
+                          </Skeleton>
+                            </p>
+                           
+                      </Skeleton>
+                        </div>
+                        <div className="btn-add-item">
+                      <Skeleton count={1}>
+
+                      </Skeleton>
+                        </div>
+                    </Skeleton>
+                  </div> */}
+                  </SkeletonTheme>
+                </div>
+              ))}
         </div>
       </div>
+    );
+  }
+
+  searchItem() {
+    return (
+      <>
+        {this.state.searchproductdatadetails ? (
+          <div className="item-details-1">
+            {this.state.searchproductdatadetails.length > 0 ? (
+              <div className="item-nm-tt">Other</div>
+            ) : (
+              ""
+            )}
+            {this.state.searchproductdatadetails.length > 0 &&
+              this.state.searchproductdatadetails.map(
+                (product: any, index: number) => (
+                  <div key={index}>
+                    <h3 className="tt-1"></h3>
+                    <div className="box-1">
+                      <div className="product-img">
+                        {product.productImages &&
+                        product.productImages[0].imagePath ? (
+                          <img
+                            className="product_img_size"
+                            src={
+                              constant.filemerchantpath +
+                              product.productImages[0].imagePath
+                            }
+                            alt=""
+                          />
+                        ) : (
+                          <img
+                            className="product_img_size"
+                            src={findstore.store}
+                            alt=""
+                          />
+                        )}
+                      </div>
+                      <div className="right-tt">
+                        <h4 className="tt-2">{product.productName}</h4>
+                        <span className="price">
+                          <i className="fa fa-rupee"></i> {product.price}
+                        </span>
+                        <p
+                          dangerouslySetInnerHTML={{
+                            __html: product.productDesc,
+                          }}
+                        ></p>
+                      </div>
+                      <div className="btn-add-item">
+                        {localStorage.getItem("token") ? (
+                          this.state.isButton === false ? (
+                            <button
+                              className="addproduct"
+                              onClick={() => this.additem(product)}
+                            >
+                              + Add
+                            </button>
+                          ) : (
+                            <div className="spinerButton2">
+                              <button className="addproduct" disabled>
+                                + Add
+                              </button>
+                              {this.state.loadingid === product.productId ? (
+                                <div className="spinners2"></div>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                          )
+                        ) : (
+                          <Link to="/signin">
+                            <button className="addproduct">+ Add</button>
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )
+              )}
+
+            <Modal
+              className="modal-dialog-centered d-ct"
+              show={this.state.show}
+              onHide={this.handleClose}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title></Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <div className="clear-cart">
+                  <img
+                    src={require("../../assets/images/cart-icon.svg")}
+                    alt="cart icon"
+                  />
+                  <h1>Clear cart?</h1>
+                  <p>
+                    <strong>
+                      Do you want to clear the cart and add items from{" "}
+                      <strong>another cart?</strong>
+                    </strong>
+                  </p>
+                  <div className="flex-btn">
+                    <button className="cencel-btn" onClick={this.handleClose}>
+                      Cancel
+                    </button>
+                    <button className="clear-btn" onClick={this.clearOldCart}>
+                      Clear cart
+                    </button>
+                  </div>
+                </div>
+              </Modal.Body>
+              <Modal.Footer></Modal.Footer>
+            </Modal>
+          </div>
+        ) : (
+          ""
+        )}
+      </>
     );
   }
 
@@ -1050,7 +1101,7 @@ const mapStateToProps = (state: any) => ({
   searchDetail: state.product.searchdata,
   searchableProduct: state.product.searchproduct,
   updateCart: state.product.updatecart,
-  deleteCart:state.product.deletecart
+  deleteCart: state.product.deletecart,
 });
 
 /**

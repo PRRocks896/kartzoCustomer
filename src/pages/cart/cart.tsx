@@ -18,6 +18,7 @@ import {
   removeCartItemRequest,
 } from "../../modelController";
 import { cartStateRequest } from "../../modelController/c artModel";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 class Cart extends React.Component<{
   show: boolean;
@@ -33,7 +34,8 @@ class Cart extends React.Component<{
     isShowCard: this.cartState.isShowCard,
     cartarray: this.cartState.cartarray,
     isOpen: this.cartState.isOpen,
-    qtydisable:false
+    qtydisable:false,
+    isLoading:true
   };
   constructor(props: any) {
     super(props);
@@ -113,6 +115,7 @@ class Cart extends React.Component<{
   getCartAllProductData(data: any) {
     console.log("data", data);
     this.setState({
+      isLoading:false,
       qtydisable:this.state.qtydisable = false,
       cartarray: (this.state.cartarray =
         data.data && data.data.length > 0 ? data.data : null),
@@ -284,95 +287,113 @@ class Cart extends React.Component<{
                         My Cart ({localStorage.getItem("cartcount")})
                       </h1>
                     </div>
-                    {this.state.cartarray
-                      ? this.state.cartarray.length > 0 &&
-                        this.state.cartarray.map(
-                          (cartdata: any, index: any) => (
-                            <div className="card-list" key={index} style={{
-                              pointerEvents: this.state.qtydisable === true ? "none" : "visible",
-                            }}>
-                              <div className="card-item-1">
-                                <div className="content-box1">
-                                  <div className="img-box">
-                                    {cartdata.productImages &&
-                                    cartdata.productImages[0].imagePath ? (
-                                      <img
-                                        src={
-                                          constant.filemerchantpath +
-                                          cartdata.productImages[0].imagePath
+                    {
+                      this.state.isLoading === false ? (
+                        this.state.cartarray
+                          ? (this.state.cartarray.length > 0 &&
+                            this.state.cartarray.map(
+                              (cartdata: any, index: any) => (
+                                <div className="card-list" key={index} style={{
+                                  pointerEvents: this.state.qtydisable === true ? "none" : "visible",
+                                }}>
+                                  <div className="card-item-1">
+                                    <div className="content-box1">
+                                      <div className="img-box">
+                                        {cartdata.productImages &&
+                                        cartdata.productImages[0].imagePath ? (
+                                          <img
+                                            src={
+                                              constant.filemerchantpath +
+                                              cartdata.productImages[0].imagePath
+                                            }
+                                            alt=""
+                                          />
+                                        ) : (
+                                          <img src={findstore.store} alt="" />
+                                        )}
+                                      </div>
+                                      <div className="right-content">
+                                        <div className="list-tt">
+                                          {cartdata.productName}{" "}
+                                        </div>
+                                        <div className="dicrip-1">
+                                          Number of quantity - {cartdata.quantity}
+                                        </div>
+                                        {/* <div className="saller-nm">
+                                          Seller: DIGIONICS
+                                        </div> */}
+                                        <div className="price">
+                                          <i className="fa fa-rupee"></i>
+                                          {cartdata.sellingPrice}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="btm-content">
+                                      <div className="number">
+                                        <span
+                                          className="minus"
+                                          onClick={() =>
+                                            this.decrementQty(cartdata)
+                                          }
+                                        >
+                                          -
+                                        </span>
+                                        <input
+                                          type="text"
+                                          name="qty"
+                                          value={
+                                            cartdata.quantity
+                                              ? cartdata.quantity
+                                              : ""
+                                          }
+                                          onChange={(e: any) =>
+                                            this.onChangeEvent(e, index)
+                                          }
+                                          disabled={this.state.qtydisable === true ? true : false}
+                                        />
+                                        <span
+                                          className="plus"
+                                          onClick={() =>
+                                            this.incrementQty(cartdata)
+                                          }
+                                        >
+                                          +
+                                        </span>
+                                      </div>
+                                      <button>Save for later</button>
+                                      <button
+                                        onClick={() =>
+                                          this.removeItemFromCart(
+                                            cartdata.orderCartID,
+                                            "You should be Remove product from cart",
+                                            "Yes, Remove it"
+                                          )
                                         }
-                                        alt=""
-                                      />
-                                    ) : (
-                                      <img src={findstore.store} alt="" />
-                                    )}
-                                  </div>
-                                  <div className="right-content">
-                                    <div className="list-tt">
-                                      {cartdata.productName}{" "}
-                                    </div>
-                                    <div className="dicrip-1">
-                                      Number of quantity - {cartdata.quantity}
-                                    </div>
-                                    {/* <div className="saller-nm">
-                                      Seller: DIGIONICS
-                                    </div> */}
-                                    <div className="price">
-                                      <i className="fa fa-rupee"></i>
-                                      {cartdata.sellingPrice}
+                                      >
+                                        Remove
+                                      </button>
                                     </div>
                                   </div>
                                 </div>
-                                <div className="btm-content">
-                                  <div className="number">
-                                    <span
-                                      className="minus"
-                                      onClick={() =>
-                                        this.decrementQty(cartdata)
-                                      }
-                                    >
-                                      -
-                                    </span>
-                                    <input
-                                      type="text"
-                                      name="qty"
-                                      value={
-                                        cartdata.quantity
-                                          ? cartdata.quantity
-                                          : ""
-                                      }
-                                      onChange={(e: any) =>
-                                        this.onChangeEvent(e, index)
-                                      }
-                                      disabled={this.state.qtydisable === true ? true : false}
-                                    />
-                                    <span
-                                      className="plus"
-                                      onClick={() =>
-                                        this.incrementQty(cartdata)
-                                      }
-                                    >
-                                      +
-                                    </span>
-                                  </div>
-                                  <button>Save for later</button>
-                                  <button
-                                    onClick={() =>
-                                      this.removeItemFromCart(
-                                        cartdata.orderCartID,
-                                        "You should be Remove product from cart",
-                                        "Yes, Remove it"
-                                      )
-                                    }
-                                  >
-                                    Remove
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          )
-                        )
-                      : ""}
+                              )
+                            )
+                   ) : (
+                       ''
+                      )
+                      ) : (
+                        [1, 2, 3, 4].map((data: any, index: number) => (
+                          <div key={index}>
+                             <SkeletonTheme color="#202020" highlightColor="#444">
+                              <p>
+                                <Skeleton count={3} />
+                              </p>
+                            </SkeletonTheme>
+                          </div>
+                        ))
+                      )}
+                      
+                    
+                   
                     {localStorage.getItem("token") ? (
                       <div className="place-btn">
                         <Link to="/placeorder">

@@ -192,6 +192,7 @@ export default {
       loadingid: "",
       show: false,
       isLoading: true,
+      loading:false
     },
   },
   cartPage: {

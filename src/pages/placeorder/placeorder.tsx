@@ -26,6 +26,7 @@ import {
 } from "../../redux/index";
 import { OrderAPI } from "../../service";
 import creditCardType from "credit-card-type";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 declare var Razorpay: any;
 var $ = require("jquery");
 
@@ -143,7 +144,8 @@ class PlaceOrder extends React.Component<{
     upiid: "",
     upiiderror: "",
     qtydisable:false,
-    banktypeerror:""
+    banktypeerror:"",
+    isLoading:true
   };
 
   /** Constructor call */
@@ -580,6 +582,7 @@ class PlaceOrder extends React.Component<{
    */
   getAddressDetailsData(data: any) {
     this.setState({
+      isLoading:false,
       addressarray: (this.state.addressarray = data.data),
     });
   }
@@ -1043,65 +1046,86 @@ class PlaceOrder extends React.Component<{
                     </div> --> */}
             <div className="nm-info">
               <div className="main0adress">
-                {this.state.addressarray
-                  ? this.state.addressarray.length > 0 &&
-                    this.state.addressarray.map(
-                      (address: any, index: number) => (
-                        <div className="adrss-1" key={index}>
-                          <div
-                            className="row"
-                            style={{ justifyContent: "flex-end" }}
-                          >
-                            <i
-                              className="fas fa-edit edit-adres"
-                              onClick={() => this.getAddressData(address)}
-                            ></i>
-                            <i
-                              className="fas fa-trash edit-adres ml-4"
-                              onClick={() =>
-                                this.deleteAddressData(
-                                  address.addressID,
-                                  "You should be Remove address?",
-                                  "Yes, Remove it"
-                                )
-                              }
-                            ></i>
-                          </div>
-                          <label className="rdio-box1">
-                            <span className="b-tt">{address.name}</span>{" "}
-                            <span className="add-type">
-                              {address.addressType}
-                            </span>{" "}
-                            <span className="b-tt">{address.mobile}</span>
-                            <span className="adress-rdio">
-                              {address.address}
-                              <span className="b-tt"> - {address.pincode}</span>
-                            </span>
-                            <input
-                              type="radio"
-                              id={address.addressID}
-                              className="form-control"
-                              checked={
-                                this.state.mainaddress === address.addressID
-                                  ? true
-                                  : false
-                              }
-                              onChange={this.change}
-                              name="main"
-                            />
-                            <span className="checkmark"></span>
-                          </label>
-                          <a
-                            className="chk-outbtn"
-                            id={address.addressID}
-                            onClick={this.change}
-                          >
-                            CONTINUE CHECKOUT
-                          </a>
-                        </div>
-                      )
-                    )
-                  : ""}
+                {
+                  this.state.isLoading === false ? (
+
+                    this.state.addressarray
+                      ? (this.state.addressarray.length > 0 &&
+                        this.state.addressarray.map(
+                          (address: any, index: number) => (
+                            <div className="adrss-1" key={index}>
+                              <div
+                                className="row"
+                                style={{ justifyContent: "flex-end" }}
+                              >
+                                <i
+                                  className="fas fa-edit edit-adres"
+                                  onClick={() => this.getAddressData(address)}
+                                ></i>
+                                <i
+                                  className="fas fa-trash edit-adres ml-4"
+                                  onClick={() =>
+                                    this.deleteAddressData(
+                                      address.addressID,
+                                      "You should be Remove address?",
+                                      "Yes, Remove it"
+                                    )
+                                  }
+                                ></i>
+                              </div>
+                              <label className="rdio-box1">
+                                <span className="b-tt">{address.name}</span>{" "}
+                                <span className="add-type">
+                                  {address.addressType}
+                                </span>{" "}
+                                <span className="b-tt">{address.mobile}</span>
+                                <span className="adress-rdio">
+                                  {address.address}
+                                  <span className="b-tt"> - {address.pincode}</span>
+                                </span>
+                                <input
+                                  type="radio"
+                                  id={address.addressID}
+                                  className="form-control"
+                                  checked={
+                                    this.state.mainaddress === address.addressID
+                                      ? true
+                                      : false
+                                  }
+                                  onChange={this.change}
+                                  name="main"
+                                />
+                                <span className="checkmark"></span>
+                              </label>
+                              <a
+                                className="chk-outbtn"
+                                id={address.addressID}
+                                onClick={this.change}
+                              >
+                                CONTINUE CHECKOUT
+                              </a>
+                            </div>
+                          )
+                        )
+                      ):('')
+                  ) : (
+                    [1, 2, 3, 4].map((data: any, index: number) => (
+                      <div key={index}>
+                        <SkeletonTheme color="#202020" highlightColor="#444">
+                            <h3 className="tt-1">
+                          <Skeleton count={1}>
+      
+                          </Skeleton>
+                            </h3>
+                          <p>
+                            <Skeleton count={5} />
+                          </p>
+                         
+                        </SkeletonTheme>
+                      </div>
+                    ))
+                  )
+                }
               </div>
               <div className="add-new-adres" onClick={this.showSection}>
                 <span className="add-icon">+</span>
