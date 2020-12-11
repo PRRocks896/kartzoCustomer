@@ -1591,7 +1591,7 @@ class PlaceOrder extends React.Component<{
             <div className="pey-upi">
               <div className="opti1 opti2">
                 <div className="box-input1">
-                  <div className="form-group">
+                  <div className="form-group" style={{marginBottom:'0px'}}>
                     <input
                       type="text"
                       id="from"
