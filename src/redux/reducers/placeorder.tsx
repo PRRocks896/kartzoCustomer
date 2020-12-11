@@ -11,7 +11,9 @@ const initialState = {
   getcouponapply:"",
   removecoupon:"",
   orderdata:"",
-  updateaddress:""
+  updateaddress:"",
+  addcard:"",
+  deletecard:""
 };
 
 /**
@@ -91,7 +93,8 @@ const placeOrder = (state = initialState, action: any) => {
         };
       case ACTION.card.ADD_CARD_SUCCESS:
         return {
-          ...state
+          ...state,
+          addcard:action.addcard
         };
       case ACTION.card.ADD_CARD_FAILURE:
         return {
@@ -189,6 +192,22 @@ const placeOrder = (state = initialState, action: any) => {
                       ...state,
                       error: action.error,
                     };
+
+                    case ACTION.card.DELETE_CARD_REQUEST:
+                      return {
+                        ...state,
+                      };
+                    case ACTION.card.DELETE_CARD_SUCCESS:
+                      return {
+                        ...state,
+                        deletecard: action.deletecard
+                      };
+                    case ACTION.card.DELETE_CARD_FAILURE:
+                      return {
+                        ...state,
+                        error: action.error,
+                      };
+    
   
 
     default:

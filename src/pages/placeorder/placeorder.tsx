@@ -142,7 +142,8 @@ class PlaceOrder extends React.Component<{
     isShowApplied: this.placeOrderState.isShowApplied,
     upiid: "",
     upiiderror: "",
-    qtydisable:false
+    qtydisable:false,
+    banktypeerror:""
   };
 
   /** Constructor call */
@@ -417,7 +418,31 @@ class PlaceOrder extends React.Component<{
     if (prevProps.deletedata !== placeorder.deletedata) {
       this.deleteAddress(placeorder.deletedata);
     }
+    if (prevProps.addcard !== placeorder.addcard) {
+      this.addCardData(placeorder.addcard);
+    }
+    if (prevProps.deletecard !== placeorder.deletecard) {
+      this.deleteCard(placeorder.deletecard);
+    }
     
+  }
+
+  deleteCard(data:any) {
+    if(data.status === 200) {
+      this.getCard();
+    }
+  }
+
+  addCardData(data:any) {
+    if(data.status === 200) {
+      this.setState({
+        cardnumber: "",
+        cardholder: "",
+        month: 1,
+        year: 2020,
+      });
+      this.getCard();
+    }
   }
 
   addAddressNew(data:any) {
@@ -997,7 +1022,7 @@ class PlaceOrder extends React.Component<{
       cardnumber: "",
       cardholder: "",
       month: 1,
-      year: 20,
+      year: 2020,
       cardUpdateTrue: (this.state.cardUpdateTrue = false),
       isCard: (this.state.isCard = true),
     });
@@ -1601,6 +1626,11 @@ class PlaceOrder extends React.Component<{
   }
 
   async payWallet(data: any) {
+    const isValid = this.validateWallet();
+    if (isValid) {
+      this.setState({
+        walletnumbererror: "",
+      });
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     var total: any = this.state.cartarray.reduce(
@@ -1637,7 +1667,7 @@ class PlaceOrder extends React.Component<{
         amount: (total * 100),// in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
         currency: "INR", // Default is INR. We support more than 90 currencies.
         email: user.email,
-        contact: user.phone,
+        contact: this.state.walletnumber,
         order_id: getOrderData.data.resultObject
           ? getOrderData.data.resultObject.id
           : "0000", // Replace with Order ID generated in Step 4
@@ -1674,6 +1704,7 @@ class PlaceOrder extends React.Component<{
         alert(resp.error.description);
       }); // will pass error object to error handler
     }
+  }
   }
 
   /** Wallet payment block */
@@ -1713,7 +1744,7 @@ class PlaceOrder extends React.Component<{
                   </label>
                   {this.state.changewallet === 1 ? (
                     <div className="box-input1">
-                      <div className="form-group">
+                      <div className="form-group" style={{marginBottom:'0px'}}>
                         {/* <span className="verfy-tt">Link Now</span> */}
                         <input
                           type="text"
@@ -1730,10 +1761,10 @@ class PlaceOrder extends React.Component<{
                         >
                           Enter linked no.
                         </label>
+                      </div>
                         <div className="text-danger">
                           {this.state.walletnumbererror}
                         </div>
-                      </div>
                       <button
                         id="rzp-button1"
                         className="continue-btn"
@@ -1907,17 +1938,13 @@ class PlaceOrder extends React.Component<{
     }
 
     const tempMonth: any = this.state.month;
-    console.log(tempMonth);
     const tempYear: any = this.state.year;
-    console.log(tempYear);
     let isValid1 = true;
     if (new Date().getFullYear() === tempYear) {
       if (tempMonth < new Date().getMonth() + 1) {
         isValid1 = false;
       }
     }
-
-    console.log(isValid1);
 
     if (isValid1 === false) {
       montherror = "please select enter valid date or year";
@@ -1935,7 +1962,7 @@ class PlaceOrder extends React.Component<{
   }
 
   /** Add Card (credit/debit) */
-  addCard() {
+  async addCard() {
     const isValid = this.validateCard();
     if (isValid) {
       this.setState({
@@ -1954,25 +1981,17 @@ class PlaceOrder extends React.Component<{
         });
       }
 
-      const obj = {
-        id: user.userID,
-        cardNumber: this.state.cardnumber,
-        cardName: this.state.cardholder,
-        cardType: this.state.cardtype,
-        expiryMonth: this.state.month,
-        expiryYear: this.state.year,
-        isActive: true,
-      };
-      this.props.addCard(obj);
-      setTimeout(() => {
-        this.setState({
-          cardnumber: "",
-          cardholder: "",
-          month: 1,
-          year: 20,
-        });
-        this.getCard();
-      }, 300);
+      // const obj = {
+      //   id: user.userID,
+      //   cardNumber: this.state.cardnumber,
+      //   cardName: this.state.cardholder,
+      //   cardType: this.state.cardtype,
+      //   expiryMonth: this.state.month,
+      //   expiryYear: this.state.year,
+      //   isActive: true,
+      // };
+      // await this.props.addCard(obj);
+    
     }
   }
 
@@ -1981,7 +2000,7 @@ class PlaceOrder extends React.Component<{
    * @param e : cvv enter with card
    */
   changeCVV(data: any) {
-    console.log("data", data);
+    // console.log("data", data);
     this.setState({
       cvvid: (this.state.cvvid = parseInt(data.cardID)),
       cardnumber: data.cardNumber,
@@ -2042,7 +2061,7 @@ class PlaceOrder extends React.Component<{
           cardnumber: "",
           cardholder: "",
           month: 1,
-          year: 20,
+          year: 2020,
         });
         this.getCard();
       }, 250);
@@ -2252,7 +2271,7 @@ class PlaceOrder extends React.Component<{
                                 4
                               )}
                           </span>{" "}
-                          <span className="cardtype">{card.cardType}</span>{" "}
+                          <span className="cardtype">{card.cardType.toUpperCase()}</span>{" "}
                           <span className="add-type">{card.cardName}</span>{" "}
                           <input
                             type="radio"
@@ -2264,9 +2283,9 @@ class PlaceOrder extends React.Component<{
                             onChange={() => this.changeCVV(card)}
                             name="cvvid"
                             disabled={
-                              card.cardType.toUpperCase() === this.state.AMEX ||
+                              card.cardType.toUpperCase() === "AMERICAN-EXPRESS" ||
                               card.cardType.toUpperCase() ===
-                                this.state.BAJAJ ||
+                               "BAJAJ" ||
                               card.cardType.toUpperCase() === this.state.DICL ||
                               card.cardType.toUpperCase() === this.state.JCB ||
                               card.cardType.toUpperCase() === this.state.MAES ||
@@ -2491,7 +2510,28 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  validateBank() {
+    let banktypeerror = "";
+
+    if (!this.state.banktype) {
+      banktypeerror = "please select bank";
+    } 
+    if (banktypeerror) {
+      this.setState({
+        banktypeerror
+      });
+      return false;
+    }
+    return true;
+  }
+
   async payWithNetBanking() {
+    const isValid = this.validateBank();
+    if (isValid) {
+      this.setState({
+        banktypeerror: "",
+      });
+
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     var total: any = this.state.cartarray.reduce(
@@ -2566,6 +2606,7 @@ class PlaceOrder extends React.Component<{
         alert(resp.error.description);
       }); // will pass error object to error handler
     }
+  }
   }
 
   /** Net banking block */
@@ -2675,6 +2716,9 @@ class PlaceOrder extends React.Component<{
                 </select>
               </div>
 
+              <div className="text-danger">
+                          {this.state.banktypeerror}
+                        </div>
               <button className="continue-btn" onClick={this.payWithNetBanking}>
                 PAY
               </button>
@@ -2706,7 +2750,7 @@ class PlaceOrder extends React.Component<{
         freecharge: response.methods.wallet.freecharge,
         olamoney: response.methods.wallet.olamoney,
         payzapp: response.methods.wallet.payzapp,
-        AMEX: response.methods.card_networks.AMEX ? "AMEERICAN-EXPRESS" : "",
+        AMEX: response.methods.card_networks.AMEX  ? "AMERICAN-EXPRESS" : "",
         BAJAJ: response.methods.card_networks.BAJAJ ? "BAJAJ" : "",
         DICL: response.methods.card_networks.DICL === 1 ? "DICL" : "",
         JCB: response.methods.card_networks.JCB === 1 ? "JCB" : "",
@@ -3462,7 +3506,9 @@ const mapStateToProps = (state: any) => ({
   updateCart: state.product.updatecart,
   updateaddress:state.placeOrder.updateaddress,
   addaddress:state.placeOrder.addaddress,
-  deletedata:state.placeOrder.deletedata
+  deletedata:state.placeOrder.deletedata,
+  addcard:state.placeOrder.addcard,
+  deletecard:state.placeOrder.deletecard
 });
 
 /**

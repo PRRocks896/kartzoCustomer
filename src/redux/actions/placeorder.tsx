@@ -153,9 +153,9 @@ function addCard(data: any) {
 
     PlaceOrderAPI.addCardData(data)
       .then(async (addcard: any) => {
-        // console.log("addcard", addcard);
+        console.log("addcard", addcard);
         if (addcard.status === 200) {
-          dispatch(success(await addcard.data.resultObject));
+          dispatch(success(await addcard));
         }
       })
       .catch((err: any) => {
@@ -246,9 +246,9 @@ function deleteCard(data: any) {
 
     PlaceOrderAPI.deletecard(data)
       .then(async (deletecard: any) => {
-        // console.log("deletecard", deletecard);
+        console.log("deletecard", deletecard);
         if (deletecard.status === 200) {
-          dispatch(success(await deletecard.data.resultObject));
+          dispatch(success(await deletecard));
         }
       })
       .catch((err: any) => {
