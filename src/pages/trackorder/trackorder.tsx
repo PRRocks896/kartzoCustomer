@@ -108,13 +108,29 @@ class TrackOrder extends React.Component<{show: boolean}> {
                   </a> */}
                 </div>
                 <div className="right-content">
-                  <div className="cart-icon">
-                    <img src={trackorder.shopping} alt="cart-icon" />
+                <div className="cart-icon">
+                  <div className="quty-icon">
+                    {localStorage.getItem("cartcount")
+                      ? localStorage.getItem("cartcount")
+                      : 0}
                   </div>
-                  <a href="#" className="sign-tt">
-                    Sign in
-                  </a>
+                  <Link to="/cart">
+                    <img src={trackorder.shopping} alt="cart-icon" />
+                  </Link>
                 </div>
+
+                {localStorage.getItem("token") ? (
+                  <div className="cart-icon m-0">
+                    <Link className="cart-icon" to="/profile">
+                      <i className="fas fa-user-circle user_icon1"></i>
+                    </Link>
+                  </div>
+                ) : (
+                  <Link className="sign-tt" to="/signin">
+                    Sign in
+                  </Link>
+                )}
+              </div>
               </div>
             </div>
           </header>

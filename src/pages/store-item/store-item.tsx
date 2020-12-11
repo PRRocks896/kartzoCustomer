@@ -961,7 +961,7 @@ class StoreItem extends React.Component<{
                 <div className="right-content">
                   <div className="cart-icon">
                     <div className="quty-icon">
-                      {localStorage.getItem("cartcount") !== undefined
+                      {localStorage.getItem("cartcount")
                         ? localStorage.getItem("cartcount")
                         : 0}
                     </div>
