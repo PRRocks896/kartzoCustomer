@@ -74,7 +74,7 @@ class Header extends React.Component {
                 <Link className="cart-icon" to="/cart">
                   <div className="cart-icon m-0">
                   <div className="quty-icon">
-                      {this.state.count
+                      {this.state.count !== undefined
                         ? this.state.count
                         : 0}
                     </div>

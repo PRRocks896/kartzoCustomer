@@ -1278,6 +1278,14 @@ class Profile extends React.Component<{
                                           >
                                             HELP
                                           </button>
+                                          <button
+                                            className="help-btn"
+                                            onClick={() =>
+                                              this.helpOrder(order)
+                                            }
+                                          >
+                                            Cancel Order
+                                          </button>
                                          
                                         </div>
                                     </div>
