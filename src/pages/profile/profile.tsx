@@ -197,24 +197,6 @@ class Profile extends React.Component<{
    * @param nextProps : updated props
    */
   componentWillReceiveProps(nextProps: any) {
-    console.log("props", nextProps);
-    if (nextProps.addressDetails) {
-      this.setState({
-        show: (this.state.show = false),
-      });
-      this.getAddressDetailsData(nextProps.addressDetails);
-    }
-    if (nextProps.orderDetails) {
-      this.getOrderDetails(nextProps.orderDetails);
-    }
-    if (nextProps.profileData) {
-      this.getProfileData(nextProps.profileData);
-    }
-
-    if (nextProps.getCartDetail) {
-      this.getCartAllProductData(nextProps.getCartDetail);
-    }
-
     if (nextProps.updateProfileData) {
       this.setState({
         disable: false,
@@ -224,6 +206,45 @@ class Profile extends React.Component<{
       this.setState({
         disable: false,
       });
+    }
+  }
+
+  componentDidUpdate(prevProps:any) {
+    const profile:any = this.props;
+    if (prevProps.addressDetails !== profile.addressDetails) {
+      this.setState({
+        show: (this.state.show = false),
+      });
+      this.getAddressDetailsData(profile.addressDetails);
+    }
+    if (prevProps.orderDetails !== profile.orderDetails) {
+      this.getOrderDetails(profile.orderDetails);
+    }
+    if (prevProps.profileData !== profile.profileData) {
+      this.getProfileData(profile.profileData);
+    }
+    if (prevProps.getCartDetail !== profile.getCartDetail) {
+      this.getCartAllProductData(profile.getCartDetail);
+    }
+    if (prevProps.updateaddress !== profile.updateaddress) {
+      this.updateAddress(profile.updateaddress);
+    }
+    if (prevProps.deletedata !== profile.deletedata) {
+      this.deleteAddress(profile.deletedata);
+    }
+  }
+
+  deleteAddress(data:any) {
+    if(data.status === 200) {
+     
+      this.getAddressDetails();
+    }
+  }
+
+  updateAddress(data:any) {
+    if(data.status === 200) {
+    
+      this.getAddressDetails();
     }
   }
 
@@ -498,7 +519,7 @@ class Profile extends React.Component<{
   }
 
   /** Edit address */
-  editAddress() {
+  async editAddress() {
     const isValid = this.validate();
     if (isValid) {
       this.setState({
@@ -534,11 +555,7 @@ class Profile extends React.Component<{
             : "",
         isActive: true,
       };
-      this.props.updateAddress(obj);
-
-      setTimeout(() => {
-        this.getAddressDetails();
-      }, 200);
+      await this.props.updateAddress(obj);
     }
   }
 
@@ -556,11 +573,7 @@ class Profile extends React.Component<{
         moduleName: "Address",
         id: deleteArray,
       };
-      this.props.deleteAddress(obj);
-
-      setTimeout(() => {
-        this.getAddressDetails();
-      }, 200);
+      await this.props.deleteAddress(obj);
     }
   }
 
@@ -2319,6 +2332,8 @@ const mapStateToProps = (state: any) => ({
   profileData: state.auth.profiledata,
   updateProfileData: state.auth.updateprofiledata,
   getCartDetail: state.product.getcartdetails,
+  updateaddress:state.placeOrder.updateaddress,
+  deletedata:state.placeOrder.deletedata
 });
 
 /**

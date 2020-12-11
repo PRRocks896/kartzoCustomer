@@ -56,7 +56,7 @@ function addToCart(data: any) {
       .then(async (addtocartdata: any) => {
         // console.log("addtocartdata", addtocartdata);
         if (addtocartdata.status === 200) {
-          dispatch(success(await addtocartdata.data.resultObject));
+          dispatch(success(await addtocartdata));
         }
       })
       .catch((err: any) => {
@@ -117,9 +117,9 @@ function updateToCart(data: any, id: any) {
 
     StoreAPI.updatecart(data, id)
       .then(async (updateToCart: any) => {
-        // console.log("updateToCart", updateToCart);
+        console.log("updateToCart", updateToCart);
         if (updateToCart.status === 200) {
-          dispatch(success(await updateToCart.data.resultObject));
+          dispatch(success(await updateToCart));
         }
       })
       .catch((err: any) => {
@@ -128,13 +128,13 @@ function updateToCart(data: any, id: any) {
   };
 
   function request(updateToCart: any) {
-    return { type: ACTION.product.ADD_CART_REQUEST, updateToCart };
+    return { type: ACTION.product.UPDATE_CART_REQUEST, updateToCart };
   }
   function success(updateToCart: any) {
-    return { type: ACTION.product.ADD_CART_SUCCESS, updateToCart };
+    return { type: ACTION.product.UPDATE_CART_SUCCESS, updateToCart };
   }
   function failure(error: any) {
-    return { type: ACTION.product.ADD_CART_FAILURE, error };
+    return { type: ACTION.product.UPDATE_CART_FAILURE, error };
   }
 }
 
@@ -148,9 +148,9 @@ function removeProductFromCart(data: any) {
 
     StoreAPI.removeProductFromCart(data)
       .then(async (removedata: any) => {
-        // console.log("removedata", removedata);
+        console.log("removedata", removedata);
         if (removedata.status === 200) {
-          dispatch(success(await removedata.data.resultObject));
+          dispatch(success(await removedata.data));
         }
       })
       .catch((err: any) => {

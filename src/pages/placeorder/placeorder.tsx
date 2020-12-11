@@ -142,6 +142,7 @@ class PlaceOrder extends React.Component<{
     isShowApplied: this.placeOrderState.isShowApplied,
     upiid: "",
     upiiderror: "",
+    qtydisable:false
   };
 
   /** Constructor call */
@@ -369,39 +370,84 @@ class PlaceOrder extends React.Component<{
 
   /**
    *
-   * @param nextProps : get updated props value
+   * @param prevProps : get updated props value
    */
-  componentWillReceiveProps(nextProps: any, newState: any) {
-    console.log("props", nextProps);
-    if (nextProps.getCartDetail) {
-      this.getCartAllProductData(nextProps.getCartDetail);
+
+  componentDidUpdate(prevProps:any) {
+    const placeorder:any = this.props;
+    if (prevProps.getCartDetail !== placeorder.getCartDetail) {
+      this.getCartAllProductData(placeorder.getCartDetail);
     }
-    if (nextProps.addressDetails) {
+    if (prevProps.addressDetails !== placeorder.addressDetails) {
       this.setState({
         showSection: (this.state.showSection = false),
       });
-      this.getAddressDetailsData(nextProps.addressDetails);
+      this.getAddressDetailsData(placeorder.addressDetails);
     }
-    if (nextProps.getCardDetail) {
+    if (prevProps.getCardDetail !== placeorder.getCardDetail) {
       this.setState({
         isCard: (this.state.isCard = false),
       });
-      this.getCardDetails(nextProps.getCardDetail);
+      this.getCardDetails(placeorder.getCardDetail);
     }
-    if (nextProps.getCouponDetail) {
-      this.getCouponDetails(nextProps.getCouponDetail);
+    if (prevProps.getCouponDetail !== placeorder.getCouponDetail) {
+      this.getCouponDetails(placeorder.getCouponDetail);
     }
-    if (nextProps.applycoupon) {
-      this.CouponappliedDetails(nextProps.applycoupon);
+    if (prevProps.applycoupon !== placeorder.applycoupon) {
+      this.CouponappliedDetails(placeorder.applycoupon);
     }
-    if (nextProps.getApplyCouponData) {
-      this.getApplyCouponDetails(nextProps.getApplyCouponData);
+    if (prevProps.getApplyCouponData !== placeorder.getApplyCouponData) {
+      this.getApplyCouponDetails(placeorder.getApplyCouponData);
     }
-    if (nextProps.removeCouponData) {
-      this.removeCouponApplied(nextProps.removeCouponData);
+    if (prevProps.removeCouponData !== placeorder.removeCouponData) {
+      this.removeCouponApplied(placeorder.removeCouponData);
     }
-    if (nextProps.orderDetail) {
-      this.orderSuccess(nextProps.orderDetail);
+    if (prevProps.orderDetail !== placeorder.orderDetail) {
+      this.orderSuccess(placeorder.orderDetail);
+    }
+    if (prevProps.updateCart !== placeorder.updateCart) {
+      this.updateCart(placeorder.updateCart);
+    }
+    if (prevProps.updateaddress !== placeorder.updateaddress) {
+      this.updateAddress(placeorder.updateaddress);
+    }
+    if (prevProps.addaddress !== placeorder.addaddress) {
+      this.addAddressNew(placeorder.addaddress);
+    }
+    if (prevProps.deletedata !== placeorder.deletedata) {
+      this.deleteAddress(placeorder.deletedata);
+    }
+    
+  }
+
+  addAddressNew(data:any) {
+    if(data.status === 200) {
+      this.setState({
+        showSection: (this.state.showSection = false),
+      });
+      this.getAddressDetails();
+    }
+  }
+
+  deleteAddress(data:any) {
+    if(data.status === 200) {
+     
+      this.getAddressDetails();
+    }
+  }
+
+  updateAddress(data:any) {
+    if(data.status === 200) {
+      this.setState({
+        showSection: (this.state.showSection = false),
+      });
+      this.getAddressDetails();
+    }
+  }
+
+  updateCart(data:any) {
+    if(data.status === 200) {
+      this.getCartData();
     }
   }
 
@@ -531,6 +577,7 @@ class PlaceOrder extends React.Component<{
    */
   getCartAllProductData(data: any) {
     this.setState({
+      qtydisable:this.state.qtydisable = false,
       cartarray: (this.state.cartarray = data.data),
     });
     localStorage.setItem("cartcount", data.totalcount);
@@ -742,7 +789,10 @@ class PlaceOrder extends React.Component<{
    *
    * @param data : increment quantity in cart product
    */
-  incrementQty(data: any) {
+ async incrementQty(data: any) {
+  this.setState({
+    qtydisable:true
+  })
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -753,17 +803,20 @@ class PlaceOrder extends React.Component<{
       discountApplied: data.discountApplied,
       merchantID: data.merchantID,
     };
-    this.props.updateToCart(obj, data.orderCartID);
-    setTimeout(() => {
-      this.getCartData();
-    }, 200);
+    await this.props.updateToCart(obj, data.orderCartID);
+    // setTimeout(() => {
+    //   this.getCartData();
+    // }, 200);
   }
 
   /**
    *
    * @param data : decrement quantity in cart product
    */
-  decrementQty(data: any) {
+  async decrementQty(data: any) {
+    this.setState({
+      qtydisable:true
+    })
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -774,14 +827,14 @@ class PlaceOrder extends React.Component<{
       discountApplied: data.discountApplied,
       merchantID: data.merchantID,
     };
-    this.props.updateToCart(obj, data.orderCartID);
-    setTimeout(() => {
-      this.getCartData();
-    }, 200);
+    await this.props.updateToCart(obj, data.orderCartID);
+    // setTimeout(() => {
+    //   this.getCartData();
+    // }, 200);
   }
 
   /** Add Address functionality */
-  addAddress() {
+  async addAddress() {
     const isValid = this.validate();
     if (isValid) {
       this.setState({
@@ -816,11 +869,11 @@ class PlaceOrder extends React.Component<{
             : "",
         isActive: true,
       };
-      this.props.addAddress(obj);
+      await this.props.addAddress(obj);
 
-      setTimeout(() => {
-        this.getAddressDetails();
-      }, 300);
+      // setTimeout(() => {
+      //   this.getAddressDetails();
+      // }, 300);
     }
   }
 
@@ -870,7 +923,7 @@ class PlaceOrder extends React.Component<{
   }
 
   /** Edit Address value */
-  editAddress() {
+ async editAddress() {
     const isValid = this.validate();
     if (isValid) {
       this.setState({
@@ -906,11 +959,11 @@ class PlaceOrder extends React.Component<{
             : "",
         isActive: true,
       };
-      this.props.updateAddress(obj);
+      await this.props.updateAddress(obj);
 
-      setTimeout(() => {
-        this.getAddressDetails();
-      }, 200);
+      // setTimeout(() => {
+      //   this.getAddressDetails();
+      // }, 200);
     }
   }
 
@@ -928,11 +981,11 @@ class PlaceOrder extends React.Component<{
         moduleName: "Address",
         id: deleteArray,
       };
-      this.props.deleteAddress(obj);
+     await this.props.deleteAddress(obj);
 
-      setTimeout(() => {
-        this.getAddressDetails();
-      }, 200);
+      // setTimeout(() => {
+      //   this.getAddressDetails();
+      // }, 200);
     }
   }
 
@@ -2847,7 +2900,9 @@ class PlaceOrder extends React.Component<{
           {this.state.cartarray
             ? this.state.cartarray.length > 0 &&
               this.state.cartarray.map((cartdata: any, index: any) => (
-                <div className="flex-box" key={index}>
+                <div className="flex-box" key={index} style={{
+                  pointerEvents: this.state.qtydisable === true ? "none" : "visible",
+                }}>
                   <div className="bdr-roud"></div>
                   <div className="item-title ">
                     <h4>{cartdata.productName}</h4>
@@ -2865,6 +2920,7 @@ class PlaceOrder extends React.Component<{
                       name="qty"
                       value={cartdata.quantity ? cartdata.quantity : ""}
                       onChange={(e: any) => this.onChangeEvent(e)}
+                      disabled={this.state.qtydisable === true ? true : false}
                     />
                     <span
                       className="plus"
@@ -3402,7 +3458,11 @@ const mapStateToProps = (state: any) => ({
   applycoupon: state.placeOrder.applycoupon,
   getApplyCouponData: state.placeOrder.getcouponapply,
   removeCouponData: state.placeOrder.removecoupon,
-  orderDetail:state.placeOrder.orderdata
+  orderDetail:state.placeOrder.orderdata,
+  updateCart: state.product.updatecart,
+  updateaddress:state.placeOrder.updateaddress,
+  addaddress:state.placeOrder.addaddress,
+  deletedata:state.placeOrder.deletedata
 });
 
 /**

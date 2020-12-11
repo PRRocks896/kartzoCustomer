@@ -33,6 +33,7 @@ class Cart extends React.Component<{
     isShowCard: this.cartState.isShowCard,
     cartarray: this.cartState.cartarray,
     isOpen: this.cartState.isOpen,
+    qtydisable:false
   };
   constructor(props: any) {
     super(props);
@@ -77,12 +78,31 @@ class Cart extends React.Component<{
 
   /**
    *
-   * @param nextProps : get updated props
+   * @param prevProps : get updated props
    */
-  componentWillReceiveProps(nextProps: any) {
-    // console.log("props", nextProps);
-    if (nextProps.getCartDetail) {
-      this.getCartAllProductData(nextProps.getCartDetail);
+
+  componentDidUpdate(prevProps:any) {
+    const cart:any = this.props;
+    if (prevProps.getCartDetail !== cart.getCartDetail) {
+      this.getCartAllProductData(cart.getCartDetail);
+    }
+    if (prevProps.updateCart !== cart.updateCart) {
+      this.updateCart(cart.updateCart);
+    }
+    if (prevProps.deleteCart !== cart.deleteCart) {
+      this.deleteCart(cart.deleteCart);
+    }
+  }
+
+  updateCart(data:any) {
+    if(data.status === 200) {
+      this.getCartData();
+    }
+  }
+
+  deleteCart(data:any) {
+    if(data.status === 200) {
+      this.getCartData();
     }
   }
 
@@ -93,6 +113,7 @@ class Cart extends React.Component<{
   getCartAllProductData(data: any) {
     console.log("data", data);
     this.setState({
+      qtydisable:this.state.qtydisable = false,
       cartarray: (this.state.cartarray =
         data.data && data.data.length > 0 ? data.data : null),
     });
@@ -136,7 +157,10 @@ class Cart extends React.Component<{
    *
    * @param data : cart item quantity increment
    */
-  incrementQty(data: any) {
+ async incrementQty(data: any) {
+  this.setState({
+    qtydisable:true
+  })
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -148,11 +172,11 @@ class Cart extends React.Component<{
       merchantID: data.merchantID,
     };
 
-    this.props.updateToCart(obj, data.orderCartID);
+  await this.props.updateToCart(obj, data.orderCartID);
 
-    setTimeout(() => {
-      this.getCartData();
-    }, 200);
+    // setTimeout(() => {
+    //   this.getCartData();
+    // }, 200);
     // let tempCart = this.state.cartarray;
     // tempCart[index].qty = parseInt(tempCart[index].qty) + 1;
     // this.setState({ cartarray: tempCart });
@@ -162,7 +186,10 @@ class Cart extends React.Component<{
    *
    * @param data : cart item quantity decrement
    */
-  decrementQty(data: any) {
+  async decrementQty(data: any) {
+    this.setState({
+      qtydisable:true
+    })
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -173,10 +200,10 @@ class Cart extends React.Component<{
       discountApplied: data.discountApplied,
       merchantID: data.merchantID,
     };
-    this.props.updateToCart(obj, data.orderCartID);
-    setTimeout(() => {
-      this.getCartData();
-    }, 200);
+   await this.props.updateToCart(obj, data.orderCartID);
+    // setTimeout(() => {
+    //   this.getCartData();
+    // }, 200);
   }
 
   /** Open block */
@@ -200,10 +227,10 @@ class Cart extends React.Component<{
         moduleName: "OrderCart",
         id: idArray,
       };
-      this.props.removeProductFromCart(obj);
-      setTimeout(() => {
-        this.getCartData();
-      }, 200);
+      await this.props.removeProductFromCart(obj);
+      // setTimeout(() => {
+      //   this.getCartData();
+      // }, 200);
     }
   }
 
@@ -261,7 +288,9 @@ class Cart extends React.Component<{
                       ? this.state.cartarray.length > 0 &&
                         this.state.cartarray.map(
                           (cartdata: any, index: any) => (
-                            <div className="card-list" key={index}>
+                            <div className="card-list" key={index} style={{
+                              pointerEvents: this.state.qtydisable === true ? "none" : "visible",
+                            }}>
                               <div className="card-item-1">
                                 <div className="content-box1">
                                   <div className="img-box">
@@ -315,6 +344,7 @@ class Cart extends React.Component<{
                                       onChange={(e: any) =>
                                         this.onChangeEvent(e, index)
                                       }
+                                      disabled={this.state.qtydisable === true ? true : false}
                                     />
                                     <span
                                       className="plus"
@@ -416,6 +446,8 @@ class Cart extends React.Component<{
 const mapStateToProps = (state: any) => ({
   addToCartDetail: state.product.addcartdata,
   getCartDetail: state.product.getcartdetails,
+  updateCart: state.product.updatecart,
+  deleteCart:state.product.deletecart
 });
 
 /**

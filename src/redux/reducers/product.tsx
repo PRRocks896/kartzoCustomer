@@ -6,7 +6,9 @@ const initialState = {
   addcartdata: "",
   getcartdetails: "",
   searchdata: "",
-  searchproduct:""
+  searchproduct:"",
+  updatecart:"",
+  deletecart:""
 };
 
 /**
@@ -71,12 +73,12 @@ const product = (state = initialState, action: any) => {
     case ACTION.product.UPDATE_CART_SUCCESS:
       return {
         ...state,
-        addcartdata: action.updateToCart,
+        updatecart: action.updateToCart,
       };
     case ACTION.product.UPDATE_CART_FAILURE:
       return {
         ...state,
-        addcartdata: {},
+        updatecart: {},
         error: action.error,
       };
 
@@ -111,6 +113,22 @@ const product = (state = initialState, action: any) => {
           searchproduct: {},
           error: action.error,
         };
+
+        case ACTION.product.DELETE_CART_REQUEST:
+          return {
+            ...state,
+          };
+        case ACTION.product.DELETE_CART_SUCCESS:
+          return {
+            ...state,
+            deletecart: action.removedata,
+          };
+        case ACTION.product.DELETE_CART_FAILURE:
+          return {
+            ...state,
+            deletecart: {},
+            error: action.error,
+          };
 
     default:
       return state;

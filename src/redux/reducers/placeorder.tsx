@@ -10,7 +10,8 @@ const initialState = {
   applycoupon:"",
   getcouponapply:"",
   removecoupon:"",
-  orderdata:""
+  orderdata:"",
+  updateaddress:""
 };
 
 /**
@@ -59,12 +60,12 @@ const placeOrder = (state = initialState, action: any) => {
     case ACTION.placeOrder.EDIT_ADDRESS_SUCCESS:
       return {
         ...state,
-        getaddressdata: action.getaddressbyid,
+        updateaddress: action.updateaddress,
       };
     case ACTION.placeOrder.EDIT_ADDRESS_FAILURE:
       return {
         ...state,
-        getaddressdata: {},
+        updateaddress: {},
         error: action.error,
       };
 

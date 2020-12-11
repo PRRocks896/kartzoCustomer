@@ -60,9 +60,9 @@ function addAddress(data: any) {
 
     PlaceOrderAPI.addAddressData(data)
       .then(async (addaddress: any) => {
-        // console.log("addaddress", addaddress);
+        console.log("addaddress", addaddress);
         if (addaddress.status === 200) {
-          dispatch(success(await addaddress.data.resultObject));
+          dispatch(success(await addaddress));
         }
       })
       .catch((err: any) => {
@@ -91,9 +91,9 @@ function updateAddress(data: any) {
 
     PlaceOrderAPI.updateAddress(data)
       .then(async (updateaddress: any) => {
-        // console.log("updateaddress", updateaddress);
+        console.log("updateaddress", updateaddress);
         if (updateaddress.status === 200) {
-          dispatch(success(await updateaddress.data.resultObject));
+          dispatch(success(await updateaddress));
         }
       })
       .catch((err: any) => {
@@ -122,9 +122,9 @@ function deleteAddress(data: any) {
 
     PlaceOrderAPI.deleteAddress(data)
       .then(async (deleteaddress: any) => {
-        // console.log("deleteaddress", deleteaddress);
+        console.log("deleteaddress", deleteaddress);
         if (deleteaddress.status === 200) {
-          dispatch(success(await deleteaddress.data.resultObject));
+          dispatch(success(await deleteaddress));
         }
       })
       .catch((err: any) => {

@@ -57,6 +57,7 @@ class StoreItem extends React.Component<{
     loadingid: this.storeItemState.loadingid,
     show: this.storeItemState.show,
     isLoading: this.storeItemState.isLoading,
+    qtydisable:false
   };
 
   /** Constructor call */
@@ -138,6 +139,9 @@ class StoreItem extends React.Component<{
    * @param data : cart item in increment quantity
    */
   async incrementQty(data: any) {
+    this.setState({
+      qtydisable:true
+    })
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -149,9 +153,9 @@ class StoreItem extends React.Component<{
       merchantID: data.merchantID,
     };
     await this.props.updateToCart(obj, data.orderCartID);
-    setTimeout(async () => {
-      await this.getCartData();
-    }, 100);
+    // setTimeout(async () => {
+    //   await this.getCartData();
+    // }, 100);
     // let tempCart = this.state.cartarray;
     // tempCart[index].qty = parseInt(tempCart[index].qty) + 1;
     // this.setState({ cartarray: tempCart });
@@ -162,6 +166,9 @@ class StoreItem extends React.Component<{
    * @param data : cart item in decrement quantity
    */
   async decrementQty(data: any) {
+    this.setState({
+      qtydisable:true
+    })
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -173,9 +180,9 @@ class StoreItem extends React.Component<{
       merchantID: data.merchantID,
     };
     await this.props.updateToCart(obj, data.orderCartID);
-    setTimeout(async () => {
-      await this.getCartData();
-    }, 100);
+    // setTimeout(async () => {
+    //   await this.getCartData();
+    // }, 100);
   }
 
   /**
@@ -215,25 +222,77 @@ class StoreItem extends React.Component<{
    *
    * @param nextProps : get updated props value
    */
-  componentWillReceiveProps(nextProps: any) {
-    // console.log("props", nextProps);
-    if (nextProps.productDetail) {
-      this.getSubCategory(nextProps.productDetail.subcategory);
+  // componentWillReceiveProps(nextProps: any) {
+  //   // console.log("props", nextProps);
+  //   if (nextProps.productDetail) {
+  //     this.getSubCategory(nextProps.productDetail.subcategory);
 
-      this.productData(nextProps.productDetail.data);
+  //     this.productData(nextProps.productDetail.data);
+  //   }
+  //   // if (nextProps.getCartDetail) {
+  //   //   this.getCartAllProductData(nextProps.getCartDetail);
+  //   // }
+  //   if (nextProps.searchDetail) {
+  //     this.getProductListingData(nextProps.searchDetail);
+  //   }
+  //   // if (nextProps.updateCart) {
+  //   //   this.updateCart(nextProps.updateCart);
+  //   // }
+  //   if (nextProps.searchableProduct) {
+  //     this.searchableDataProduct(nextProps.searchableProduct.data);
+  //   } else {
+  //     this.setState({
+  //       searchproductdatadetails: (this.state.searchproductdatadetails = []),
+  //     });
+  //   }
+  // }
+
+  componentDidUpdate(prevProps:any) {
+      let cart:any = this.props;
+      if (prevProps.productDetail !== cart.productDetail) {
+        this.getSubCategory(cart.productDetail.subcategory);
+
+        this.productData(cart.productDetail.data);
+      }
+      if (prevProps.searchDetail !== cart.searchDetail) {
+        this.getProductListingData(cart.searchDetail);
+      }
+    if(prevProps.getCartDetail !== cart.getCartDetail) {
+      this.getCartAllProductData(cart.getCartDetail);
     }
-    if (nextProps.getCartDetail) {
-      this.getCartAllProductData(nextProps.getCartDetail);
+    if (prevProps.updateCart !== cart.updateCart) {
+      this.updateCart(cart.updateCart);
     }
-    if (nextProps.searchDetail) {
-      this.getProductListingData(nextProps.searchDetail);
+    if (prevProps.searchableProduct !== cart.searchableProduct) {
+      this.searchableDataProduct(cart.searchableProduct.data);
+    } 
+    if (prevProps.addToCartDetail !== cart.addToCartDetail) {
+      this.addCart(cart.addToCartDetail);
     }
-    if (nextProps.searchableProduct) {
-      this.searchableDataProduct(nextProps.searchableProduct.data);
-    } else {
+    if (prevProps.deleteCart !== cart.deleteCart) {
+      this.deleteCart(cart.deleteCart);
+    }
+  }
+
+  deleteCart(data:any) {
+    if(data.status === 200) {
+      this.getCartData();
+      localStorage.removeItem("merchantID");
       this.setState({
-        searchproductdatadetails: (this.state.searchproductdatadetails = []),
+        show: (this.state.show = false),
       });
+    }
+  }
+
+  addCart(data:any) {
+    if(data.status === 200) {
+      this.getCartData();
+    }
+  }
+
+  updateCart(data:any) {
+    if(data.status === 200) {
+      this.getCartData();
     }
   }
 
@@ -299,6 +358,7 @@ class StoreItem extends React.Component<{
    */
   getCartAllProductData(data: any) {
     this.setState({
+      qtydisable:this.state.qtydisable = false,
       isButton: (this.state.isButton = false),
       cartarray: (this.state.cartarray = data.data),
     });
@@ -374,9 +434,9 @@ class StoreItem extends React.Component<{
           // console.log("increment object: ", obj);
           this.props.updateToCart(obj, this.state.cartarray[index].orderCartID);
 
-          setTimeout(() => {
-            this.getCartData();
-          }, 200);
+          // setTimeout(() => {
+          //   this.getCartData();
+          // }, 200);
         } else {
           const users: any = localStorage.getItem("user");
           let user = JSON.parse(users);
@@ -391,9 +451,9 @@ class StoreItem extends React.Component<{
           };
           this.props.addToCart(obj);
 
-          setTimeout(() => {
-            this.getCartData();
-          }, 200);
+          // setTimeout(() => {
+          //   this.getCartData();
+          // }, 200);
         }
       } else {
         this.setState({
@@ -415,9 +475,9 @@ class StoreItem extends React.Component<{
       };
       this.props.addToCart(obj);
 
-      setTimeout(() => {
-        this.getCartData();
-      }, 200);
+      // setTimeout(() => {
+      //   this.getCartData();
+      // }, 200);
     }
   }
 
@@ -478,7 +538,9 @@ class StoreItem extends React.Component<{
               {this.state.cartarray
                 ? this.state.cartarray.length > 0 &&
                   this.state.cartarray.map((cartdata: any, index: number) => (
-                    <div className="flex-box" key={index}>
+                    <div className="flex-box" key={index}  style={{
+                      pointerEvents: this.state.qtydisable === true ? "none" : "visible",
+                    }}>
                       <div className="bdr-roud"></div>
                       <div className="item-title">
                         <h4>{cartdata.productName}</h4>
@@ -488,6 +550,7 @@ class StoreItem extends React.Component<{
                         <span
                           className="minus"
                           onClick={() => this.decrementQty(cartdata)}
+                        
                         >
                           -
                         </span>
@@ -496,6 +559,7 @@ class StoreItem extends React.Component<{
                           name="qty"
                           value={cartdata.quantity ? cartdata.quantity : ""}
                           onChange={(e: any) => this.onChangeEvent(e)}
+                          disabled={this.state.qtydisable === true ? true : false}
                         />
                         <span
                           className="plus"
@@ -534,7 +598,7 @@ class StoreItem extends React.Component<{
   }
 
   /** Clear old cart */
-  clearOldCart() {
+  async clearOldCart() {
     let cartdeletearray = [];
     for (var i = 0; i < this.state.cartarray.length; i++) {
       cartdeletearray.push(this.state.cartarray[i].orderCartID);
@@ -543,15 +607,7 @@ class StoreItem extends React.Component<{
       moduleName: "OrderCart",
       id: cartdeletearray,
     };
-    this.props.removeProductFromCart(obj);
-
-    setTimeout(() => {
-      this.getCartData();
-      localStorage.removeItem("merchantID");
-      this.setState({
-        show: (this.state.show = false),
-      });
-    }, 50);
+    await this.props.removeProductFromCart(obj);
   }
 
   /**
@@ -993,6 +1049,8 @@ const mapStateToProps = (state: any) => ({
   getCartDetail: state.product.getcartdetails,
   searchDetail: state.product.searchdata,
   searchableProduct: state.product.searchproduct,
+  updateCart: state.product.updatecart,
+  deleteCart:state.product.deletecart
 });
 
 /**

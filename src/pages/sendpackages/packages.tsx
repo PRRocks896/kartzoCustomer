@@ -88,7 +88,8 @@ class Packages extends React.Component<{
     displaydesc: this.packagesState.displaydesc,
     addressmaintype: this.packagesState.addressmaintype,
     addressmaintype1: this.packagesState.addressmaintype1,
-    sameaddress:false
+    sameaddress:false,
+    qtydisable:false
   };
 
   /** Constructor call */
@@ -196,16 +197,27 @@ class Packages extends React.Component<{
    *
    * @param nextProps : get updated props value
    */
-  componentWillReceiveProps(nextProps: any) {
-    // console.log("props", nextProps);
-    if (nextProps.addressDetails) {
-      this.getAddressDetailsData(nextProps.addressDetails);
+
+  componentDidUpdate(prevProps:any) {
+    const packageData:any = this.props;
+    if (prevProps.addressDetails !== packageData.addressDetails) {
+      this.getAddressDetailsData(packageData.addressDetails);
     }
-    if (nextProps.searchAddressDetails) {
-      this.getSearchAddressData(nextProps.searchAddressDetails);
+    if (prevProps.updateCart !== packageData.updateCart) {
+      this.updateCart(packageData.updateCart);
     }
-    if (nextProps.getCartDetail) {
-      this.getCartAllProductData(nextProps.getCartDetail);
+    if (prevProps.searchAddressDetails !== packageData.searchAddressDetails) {
+      this.getSearchAddressData(packageData.searchAddressDetails);
+    }
+    if (prevProps.getCartDetail !== packageData.getCartDetail) {
+      this.getCartAllProductData(packageData.getCartDetail);
+    }
+  }
+
+  
+  updateCart(data:any) {
+    if(data.status === 200) {
+      this.getCartData();
     }
   }
 
@@ -215,6 +227,7 @@ class Packages extends React.Component<{
    */
   getCartAllProductData(data: any) {
     this.setState({
+      qtydisable:this.state.qtydisable = false,
       cartarray: this.state.cartarray = data.data,
     });
     localStorage.setItem("cartcount", data.totalcount);
@@ -859,7 +872,10 @@ class Packages extends React.Component<{
    *
    * @param data : increment quantity in cart product
    */
-  incrementQty(data: any) {
+  async incrementQty(data: any) {
+    this.setState({
+      qtydisable:true
+    })
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -870,17 +886,18 @@ class Packages extends React.Component<{
       discountApplied: data.discountApplied,
       merchantID: data.merchantID,
     };
-    this.props.updateToCart(obj, data.orderCartID);
-    setTimeout(() => {
-      this.getCartData();
-    }, 200);
+   await this.props.updateToCart(obj, data.orderCartID);
+  
   }
 
   /**
    *
    * @param data : decrement quantity in cart product
    */
-  decrementQty(data: any) {
+ async decrementQty(data: any) {
+  this.setState({
+    qtydisable:true
+  })
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -891,10 +908,7 @@ class Packages extends React.Component<{
       discountApplied: data.discountApplied,
       merchantID: data.merchantID,
     };
-    this.props.updateToCart(obj, data.orderCartID);
-    setTimeout(() => {
-      this.getCartData();
-    }, 200);
+    await this.props.updateToCart(obj, data.orderCartID);
   }
 
   /** Clear old cart */
@@ -974,7 +988,9 @@ class Packages extends React.Component<{
             {this.state.cartarray
               ? this.state.cartarray.length > 0 &&
                 this.state.cartarray.map((cartdata: any, index: any) => (
-                  <div className="flex-box" key={index}>
+                  <div className="flex-box" key={index} style={{
+                    pointerEvents: this.state.qtydisable === true ? "none" : "visible",
+                  }}>
                     <div className="bdr-roud"></div>
                     <div className="item-title ">
                       <h4>{cartdata.productName}</h4>
@@ -991,6 +1007,7 @@ class Packages extends React.Component<{
                         name="qty"
                         value={cartdata.quantity ? cartdata.quantity : ""}
                         onChange={this.addressChange}
+                        disabled={this.state.qtydisable === true ? true : false}
                       />
                       <span
                         className="plus"
@@ -2008,6 +2025,7 @@ const mapStateToProps = (state: any) => ({
   addressDetails: state.placeOrder.addressdata,
   searchAddressDetails: state.sendpackage.searchaddressdata,
   getCartDetail: state.product.getcartdetails,
+  updateCart: state.product.updatecart
 });
 
 /**
