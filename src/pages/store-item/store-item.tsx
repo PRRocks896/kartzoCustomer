@@ -577,7 +577,7 @@ class StoreItem extends React.Component<{
                             +
                           </span>
                         </div>
-                        <span className="price">R{cartdata.sellingPrice}</span>
+                        <span className="price"><i className="fa fa-rupee"></i> {cartdata.sellingPrice.toFixed(2)}</span>
                       </div>
                     ))
                   : ""
@@ -597,12 +597,12 @@ class StoreItem extends React.Component<{
             <div className="total-price">
               <div className="total-item">Item total </div>
               <div className="total-item">
-                R{" "}
+              <i className="fa fa-rupee"></i> {" "}
                 {this.state.cartarray
                   ? this.state.cartarray.reduce(
                       (sum: number, i: any) => (sum += i.sellingPrice),
                       0
-                    )
+                    ).toFixed(2)
                   : 0}
               </div>
             </div>
@@ -710,7 +710,7 @@ class StoreItem extends React.Component<{
                                 <h4 className="tt-2">{product.productName}</h4>
                                 <span className="price">
                                   <i className="fa fa-rupee"></i>{" "}
-                                  {product.price}
+                                  {product.price.toFixed(2)}
                                 </span>
                                 <p
                                   dangerouslySetInnerHTML={{

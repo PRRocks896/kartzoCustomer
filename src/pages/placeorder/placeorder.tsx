@@ -3260,7 +3260,7 @@ class PlaceOrder extends React.Component<{
                 ? this.state.cartarray.reduce(
                     (sum: number, i: any) => (sum += i.sellingPrice),
                     0
-                  )
+                  ).toFixed(2)
                 : 0}
             </div>
           </div>
