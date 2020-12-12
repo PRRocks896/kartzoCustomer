@@ -1675,7 +1675,8 @@ class Profile extends React.Component<{
                                             >
                                               <div className="p-flex-box">
                                                 <div className="p-list-1">
-                                                  <h4>{data.productName}</h4>
+                                                  <h4>{data.productName} x{" "}
+                                              {data.quantity}</h4>
                                                   <span className="p-descri-1">
                                                     {/* 9" Inch */}
                                                   </span>
