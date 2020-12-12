@@ -94,5 +94,17 @@ export default {
       Constant.apiUrl + apiUrl.storeProductController.addreorder,data,false
     );
   },
+
+  /**
+   * 
+   * @param data : re-order 
+   */
+  cancelOrder: async function (data: any) {
+    return WebReqUrl.get(
+      Constant.apiUrl + apiUrl.storeProductController.cancelorder + `?OrderID=${data.orderid}&PaymentID=${data.paymentid}`,false
+    );
+  },
+
+  
   
 };

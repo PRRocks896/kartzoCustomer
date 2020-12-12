@@ -16,7 +16,7 @@ function searchAddressData(data: any) {
 
     PackageAPI.searchAddressData(data)
       .then(async (searchdata: any) => {
-        console.log("searchdata", searchdata);
+        // console.log("searchdata", searchdata);
         if (searchdata.status === 200) {
           dispatch(success(await searchdata.resultObject));
         }

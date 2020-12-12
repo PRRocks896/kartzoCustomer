@@ -168,7 +168,7 @@ function updateProfileData(data:any) {
     UserAPI
       .updateprofile(data)
       .then(async (getprofiledata:any) => {
-        console.log("getprofiledata", getprofiledata);
+        // console.log("getprofiledata", getprofiledata);
         if (getprofiledata.status === 200) {
           // const msg = otpdata.message;
           // showSuccess(msg);
@@ -205,7 +205,7 @@ function getProfile(data:any) {
     UserAPI
       .getprofile(data)
       .then(async (getprofiledata:any) => {
-        console.log("getprofiledata", getprofiledata);
+        // console.log("getprofiledata", getprofiledata);
         if (getprofiledata.status === 200) {
           // const msg = otpdata.message;
           // showSuccess(msg);
@@ -241,7 +241,7 @@ function getCommonToken(data:any) {
     UserAPI
       .getCommonTokenData(data)
       .then(async (getcommontoken:any) => {
-        console.log("getcommontoken", getcommontoken);
+        // console.log("getcommontoken", getcommontoken);
         if (getcommontoken.status === 200) {
           // const msg = otpdata.message;
           // showSuccess(msg);

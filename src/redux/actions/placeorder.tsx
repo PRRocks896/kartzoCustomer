@@ -246,7 +246,7 @@ function deleteCard(data: any) {
 
     PlaceOrderAPI.deletecard(data)
       .then(async (deletecard: any) => {
-        console.log("deletecard", deletecard);
+        // console.log("deletecard", deletecard);
         if (deletecard.status === 200) {
           dispatch(success(await deletecard));
         }
@@ -277,7 +277,7 @@ function createOrder(data: any) {
 
     PlaceOrderAPI.createorder(data)
       .then(async (orderdata: any) => {
-        console.log("orderdata", orderdata);
+        // console.log("orderdata", orderdata);
         if (orderdata.status === 200) {
           showSuccess(orderdata.message);
           dispatch(success(await orderdata));
@@ -340,7 +340,7 @@ function applyCoupon(data: any) {
 
     PlaceOrderAPI.applyCoupon(data)
       .then(async (applyCoupon: any) => {
-        console.log("applyCoupon", applyCoupon);
+        // console.log("applyCoupon", applyCoupon);
         if (applyCoupon.status === 200) {
             // showSuccess(applyCoupon.message);
            dispatch(success(await applyCoupon));
@@ -373,7 +373,7 @@ function getApplyList(data: any) {
 
     PlaceOrderAPI.getApplyCoupon(data)
       .then(async (getApplyCoupon: any) => {
-        console.log("getApplyCoupon", getApplyCoupon);
+        // console.log("getApplyCoupon", getApplyCoupon);
         if (getApplyCoupon.status === 200) {
            dispatch(success(await getApplyCoupon));
         }
@@ -406,7 +406,7 @@ function removeCoupon(data: any) {
 
     PlaceOrderAPI.removeAppliedCoupon(data)
       .then(async (removeApplyCoupon: any) => {
-        console.log("removeApplyCoupon", removeApplyCoupon);
+        // console.log("removeApplyCoupon", removeApplyCoupon);
         if (removeApplyCoupon.status === 200) {
            dispatch(success(await removeApplyCoupon));
         }

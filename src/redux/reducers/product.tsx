@@ -8,7 +8,8 @@ const initialState = {
   searchdata: "",
   searchproduct:"",
   updatecart:"",
-  deletecart:""
+  deletecart:"",
+  refunddata:""
 };
 
 /**
@@ -129,6 +130,23 @@ const product = (state = initialState, action: any) => {
             deletecart: {},
             error: action.error,
           };
+
+          case ACTION.product.CANCEL_ORDER_REQUEST:
+            return {
+              ...state,
+            };
+          case ACTION.product.CANCEL_ORDER_SUCCESS:
+            return {
+              ...state,
+              refunddata: action.cancelorder,
+            };
+          case ACTION.product.CANCEL_ORDER_FAILURE:
+            return {
+              ...state,
+              refunddata: {},
+              error: action.error,
+            };
+  
 
     default:
       return state;

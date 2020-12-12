@@ -34,7 +34,8 @@ const apiUrl = {
         deleteData:'delete',
         getsearchproduct:'address/get-product-list',
         addreorder:'ordercart/re-ordercart',
-        deletecouponData:'RedeemCoupon'
+        deletecouponData:'RedeemCoupon',
+        cancelorder:'order/get-refund'
     },
     cardController: {
         getcard:'card/get-card-list',

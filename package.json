@@ -50,6 +50,7 @@
     "react-select-search": "^2.1.1",
     "reactstrap": "^8.6.0",
     "redux-thunk": "^2.3.0",
+    "socket.io-client": "^3.0.4",
     "sweetalert2": "^10.3.6",
     "typescript": "^3.9.7",
     "wowjs": "^1.1.3"

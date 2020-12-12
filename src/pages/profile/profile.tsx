@@ -34,6 +34,7 @@ class Profile extends React.Component<{
   getcartData: any;
   removeProductFromCart: any;
   reOrder: any;
+  cancelOrderData: any;
 }> {
   /** Profile Page State */
   profileState: profileStateRequest = constant.profilePage.state;
@@ -235,8 +236,17 @@ class Profile extends React.Component<{
     if (prevProps.updateprofiledata !== profile.updateprofiledata) {
       this.updateProfiledata(profile.updateprofiledata);
     }
-
+    if (prevProps.refundData !== profile.refundData) {
+      this.refundData(profile.refundData);
+    }
     
+  }
+
+  refundData(data:any) {
+    console.log("data",data);
+    if(data.status === 200) {
+      this.getOrderList();
+    }
   }
 
   updateProfiledata(data:any) {
@@ -903,6 +913,15 @@ class Profile extends React.Component<{
     });
   }
 
+  cancelOrder(data:any) {
+    const obj = {
+      orderid:data.orderID,
+      paymentid:data.razorpayPaymentID
+    }
+
+    this.props.cancelOrderData(obj);
+  }
+
   /** Render DOM */
   render() {
     var reorderhelp: any = this.state.updateOrder ? this.state.updateOrder : "";
@@ -1289,14 +1308,18 @@ class Profile extends React.Component<{
                                           >
                                             HELP
                                           </button>
+                                          {
+                                            order.paymentStatus === "Success" ? (
                                           <button
                                             className="help-btn"
                                             onClick={() =>
-                                              this.helpOrder(order)
+                                              this.cancelOrder(order)
                                             }
                                           >
                                             Cancel Order
                                           </button>
+                                            ) : ('')
+                                          }
                                          
                                         </div>
                                     </div>
@@ -2353,7 +2376,8 @@ const mapStateToProps = (state: any) => ({
   getCartDetail: state.product.getcartdetails,
   updateaddress:state.placeOrder.updateaddress,
   deletedata:state.placeOrder.deletedata,
-  updateprofiledata:state.auth.updateprofiledata
+  updateprofiledata:state.auth.updateprofiledata,
+  refundData:state.product.refunddata
 });
 
 /**
@@ -2389,6 +2413,10 @@ const mapDispatchToProps = (dispatch: any) => ({
 
   /** Reorder */
   reOrder: (data: any) => dispatch(productService.reOrder(data)),
+
+    /** Reorder */
+    cancelOrderData: (data: any) => dispatch(productService.cancelOrderData(data)),
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

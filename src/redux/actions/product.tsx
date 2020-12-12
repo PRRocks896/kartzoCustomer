@@ -1,5 +1,6 @@
 import * as ACTION from "../index";
 import { StoreAPI } from "../../service/index";
+import { showSuccess } from "../../pages/utils";
 
 /** Product service */
 export const productService = {
@@ -10,11 +11,12 @@ export const productService = {
   removeProductFromCart,
   getSearchProduct,
   getProductDataWithSearching,
-  reOrder
+  reOrder,
+  cancelOrderData,
 };
 
 /**
- * 
+ *
  * @param data : get product data
  */
 export function getProductsData(data: any) {
@@ -45,7 +47,7 @@ export function getProductsData(data: any) {
 }
 
 /**
- * 
+ *
  * @param data : add to cart
  */
 function addToCart(data: any) {
@@ -76,7 +78,7 @@ function addToCart(data: any) {
 }
 
 /**
- * 
+ *
  * @param data : get cart data
  */
 function getcartData(data: any) {
@@ -107,7 +109,7 @@ function getcartData(data: any) {
 }
 
 /**
- * 
+ *
  * @param data : update cart data
  * @param id : update product id
  */
@@ -139,7 +141,7 @@ function updateToCart(data: any, id: any) {
 }
 
 /**
- * 
+ *
  * @param data : reomove product from cart
  */
 function removeProductFromCart(data: any) {
@@ -148,7 +150,7 @@ function removeProductFromCart(data: any) {
 
     StoreAPI.removeProductFromCart(data)
       .then(async (removedata: any) => {
-        console.log("removedata", removedata);
+        // console.log("removedata", removedata);
         if (removedata.status === 200) {
           dispatch(success(await removedata.data));
         }
@@ -170,7 +172,7 @@ function removeProductFromCart(data: any) {
 }
 
 /**
- * 
+ *
  * @param data : get search product
  */
 function getSearchProduct(data: any) {
@@ -201,7 +203,7 @@ function getSearchProduct(data: any) {
 }
 
 /**
- * 
+ *
  * @param data : get product with searching
  */
 function getProductDataWithSearching(data: any) {
@@ -221,19 +223,24 @@ function getProductDataWithSearching(data: any) {
   };
 
   function request(searchdatadetail: any) {
-    return { type: ACTION.product.SEARCH_PRODUCT_DETAILS_REQUEST, searchdatadetail };
+    return {
+      type: ACTION.product.SEARCH_PRODUCT_DETAILS_REQUEST,
+      searchdatadetail,
+    };
   }
   function success(searchdatadetail: any) {
-    return { type: ACTION.product.SEARCH_PRODUCT_DETAILS_SUCCESS, searchdatadetail };
+    return {
+      type: ACTION.product.SEARCH_PRODUCT_DETAILS_SUCCESS,
+      searchdatadetail,
+    };
   }
   function failure(error: any) {
     return { type: ACTION.product.SEARCH_PRODUCT_DETAILS_FAILURE, error };
   }
 }
 
-
 /**
- * 
+ *
  * @param data : get product with searching
  */
 function reOrder(data: any) {
@@ -242,7 +249,7 @@ function reOrder(data: any) {
 
     StoreAPI.reOrder(data)
       .then(async (reOrder: any) => {
-        console.log("reOrder", reOrder);
+        // console.log("reOrder", reOrder);
         if (reOrder.status === 200) {
           dispatch(success(await reOrder.data.resultObject));
         }
@@ -263,3 +270,34 @@ function reOrder(data: any) {
   }
 }
 
+/**
+ *
+ * @param data : get product with searching
+ */
+function cancelOrderData(data: any) {
+  return (dispatch: any) => {
+    dispatch(request({ data }));
+
+    StoreAPI.cancelOrder(data)
+      .then(async (cancelorder: any) => {
+        console.log("cancelorder", cancelorder);
+        if (cancelorder.status === 200) {
+          showSuccess(cancelorder.message);
+          dispatch(success(await cancelorder));
+        }
+      })
+      .catch((err: any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(cancelorder: any) {
+    return { type: ACTION.product.CANCEL_ORDER_REQUEST, cancelorder };
+  }
+  function success(cancelorder: any) {
+    return { type: ACTION.product.CANCEL_ORDER_SUCCESS, cancelorder };
+  }
+  function failure(error: any) {
+    return { type: ACTION.product.CANCEL_ORDER_FAILURE, error };
+  }
+}

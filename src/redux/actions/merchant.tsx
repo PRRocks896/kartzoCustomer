@@ -17,7 +17,7 @@ function getMerchantData(data: any) {
 
     FindStoreAPI.getMerchantData(data)
       .then(async (merchantdata: any) => {
-        console.log("merchantdata", merchantdata);
+        // console.log("merchantdata", merchantdata);
         if (merchantdata.status === 200) {
           dispatch(success(await merchantdata.resultObject));
         }
@@ -48,7 +48,7 @@ function searchLocationResponse(data: any) {
 
     FindStoreAPI.getlocationData(data)
       .then(async (locationdata: any) => {
-        console.log("locationdata", locationdata);
+        // console.log("locationdata", locationdata);
         if (locationdata.status === 200) {
           dispatch(success(await locationdata.resultObject));
         }
