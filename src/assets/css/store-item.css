@@ -540,6 +540,7 @@ input {
 	font-size: 14px;
 	font-weight: 600;
 	color: #071828;
+	min-width: 85px;
 }
 
 .card-item .check-out {

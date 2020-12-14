@@ -302,12 +302,14 @@ class StoreItem extends React.Component<{
    * @param e : search value success response
    */
   searchItemDataKeyUp(e: any) {
-    const data: any = this.state.maindata;
-    const obj: searchProductListRequest = {
-      name: e.target.value,
-      merchantid: data.merchantID,
-    };
-    this.props.getSearchProduct(obj);
+    if(e.target.value) {
+      const data: any = this.state.maindata;
+      const obj: searchProductListRequest = {
+        name: e.target.value,
+        merchantid: data.merchantID,
+      };
+      this.props.getSearchProduct(obj);
+    }
   }
 
   /**
@@ -333,6 +335,9 @@ class StoreItem extends React.Component<{
     };
     this.props.getProductDataWithSearching(obj);
     setTimeout(() => {
+      this.setState({
+        searchproductdata:[]
+      })
       this.getProductData();
     }, 12);
   }
@@ -538,7 +543,7 @@ class StoreItem extends React.Component<{
           <div className="card-price-item">
             <div className="itemcardlist">
               {this.state.loading === false
-                ? (this.state.cartarray
+                ? this.state.cartarray
                   ? this.state.cartarray.length > 0 &&
                     this.state.cartarray.map((cartdata: any, index: number) => (
                       <div
@@ -577,11 +582,14 @@ class StoreItem extends React.Component<{
                             +
                           </span>
                         </div>
-                        <span className="price"><i className="fa fa-rupee"></i> {cartdata.sellingPrice.toFixed(2)}</span>
+                        <span className="price">
+                          <i className="fa fa-rupee"></i>{" "}
+                          {cartdata.sellingPrice.toFixed(2)}
+                        </span>
                       </div>
                     ))
                   : ""
-                ):([1, 2, 3, 4].map((data: any, index: number) => (
+                : [1, 2, 3, 4].map((data: any, index: number) => (
                     <div key={index}>
                       <SkeletonTheme color="black" highlightColor="black">
                         <p>
@@ -589,7 +597,7 @@ class StoreItem extends React.Component<{
                         </p>
                       </SkeletonTheme>
                     </div>
-                  )))}
+                  ))}
             </div>
           </div>
 
@@ -597,12 +605,14 @@ class StoreItem extends React.Component<{
             <div className="total-price">
               <div className="total-item">Item total </div>
               <div className="total-item">
-              <i className="fa fa-rupee"></i> {" "}
+                <i className="fa fa-rupee"></i>{" "}
                 {this.state.cartarray
-                  ? this.state.cartarray.reduce(
-                      (sum: number, i: any) => (sum += i.sellingPrice),
-                      0
-                    ).toFixed(2)
+                  ? this.state.cartarray
+                      .reduce(
+                        (sum: number, i: any) => (sum += i.sellingPrice),
+                        0
+                      )
+                      .toFixed(2)
                   : 0}
               </div>
             </div>
@@ -636,7 +646,33 @@ class StoreItem extends React.Component<{
   getProductItem(categorydata: any, productdata: any) {
     return (
       <div className="item-dtl">
-        <div className="serch-box" onKeyUp={this.searchItemDataKeyUp}>
+        <div className="serch-box hide-res">
+          <div className="search_product_div">
+            <input
+              type="search"
+              name="search"
+              placeholder="Search for an item"
+              onKeyUp={this.searchItemDataKeyUp}
+            />
+            {
+              this.state.searchproductdata ? (
+                <div className="main_search_box_div">
+                  {
+                  this.state.searchproductdata.length > 0 && this.state.searchproductdata.map((data:any,index:number) => (
+              <div className="search_results_div" key={index} onClick={() => this.onProductSelectId(data.value)}>
+                <i className="fas fa-search"></i>
+                <p>{data.name}</p>
+              </div>             
+                ))
+                  }
+                </div>
+              ) : (
+                ''
+              )
+            }
+          </div>
+        </div>
+        {/* <div className="serch-box" onKeyUp={this.searchItemDataKeyUp}>
           <SelectSearch
             options={
               this.state.searchproductdata &&
@@ -648,7 +684,7 @@ class StoreItem extends React.Component<{
             search
             onChange={this.onProductSelectId}
           />
-        </div>
+        </div> */}
         <div className="all-item">
           {/** Search Item */}
           {this.searchItem()}
@@ -760,11 +796,9 @@ class StoreItem extends React.Component<{
             : [1, 2, 3, 4].map((data: any, index: number) => (
                 <div key={index}>
                   <SkeletonTheme color="#202020" highlightColor="#444">
-                      <h3 className="tt-1">
-                    <Skeleton count={1}>
-
-                    </Skeleton>
-                      </h3>
+                    <h3 className="tt-1">
+                      <Skeleton count={1}></Skeleton>
+                    </h3>
                     <p>
                       <Skeleton count={3} />
                     </p>

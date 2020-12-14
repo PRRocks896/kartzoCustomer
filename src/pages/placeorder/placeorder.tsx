@@ -2998,7 +2998,7 @@ class PlaceOrder extends React.Component<{
                     </span>
                   </div>
                   <span className="price">
-                    <i className="fa fa-rupee"></i> {cartdata.sellingPrice}
+                    <i className="fa fa-rupee"></i> {(cartdata.sellingPrice).toFixed(2)}
                   </span>
                 </div>
               ))

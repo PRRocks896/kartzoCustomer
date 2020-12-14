@@ -1164,7 +1164,7 @@ class Profile extends React.Component<{
                   >
                     <li className="nav-item">
                       <a
-                        className="nav-link "
+                        className="nav-link active"
                         id="home-tab"
                         data-toggle="tab"
                         href="#home"
@@ -1216,7 +1216,7 @@ class Profile extends React.Component<{
                     </li>
                     <li className="nav-item">
                       <a
-                        className="nav-link active"
+                        className="nav-link"
                         id="support-tab"
                         data-toggle="tab"
                         href="#support"
@@ -1231,7 +1231,7 @@ class Profile extends React.Component<{
 
                   <div className="tab-content" id="myTabContent">
                     <div
-                      className="tab-pane fade "
+                      className="tab-pane fade show active"
                       id="home"
                       role="tabpanel"
                       aria-labelledby="home-tab"
@@ -2282,7 +2282,7 @@ class Profile extends React.Component<{
                       </div>
                     </div>
                     <div
-                      className="tab-pane fade show active"
+                      className="tab-pane fade"
                       id="support"
                       role="tabpanel"
                       aria-labelledby="support-tab"

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import EventEmitter from "../../event";
 import constant from "../constant/constant";
 import { scrollToTop } from "../utils";
@@ -69,11 +70,13 @@ class Payment extends React.Component {
               <div className="order-content2">
                 <div className="order-tt">
                   <span className="order-id">
-                    Order: <a href="#">{maindata.razorpayOrderID}</a>
+                    Order: <a href="">{maindata.razorpayOrderID}</a>
                   </span>
+                  <Link to = "/profile">
                   <button className="manage-order-btn">
                     View or Manage Order
                   </button>
+                  </Link>
                 </div>
                 <div className="order-tt2">
                   <div className="text-box1">
