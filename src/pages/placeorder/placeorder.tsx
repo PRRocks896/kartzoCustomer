@@ -143,9 +143,9 @@ class PlaceOrder extends React.Component<{
     isShowApplied: this.placeOrderState.isShowApplied,
     upiid: "",
     upiiderror: "",
-    qtydisable:false,
-    banktypeerror:"",
-    isLoading:true
+    qtydisable: false,
+    banktypeerror: "",
+    isLoading: true,
   };
 
   /** Constructor call */
@@ -376,8 +376,8 @@ class PlaceOrder extends React.Component<{
    * @param prevProps : get updated props value
    */
 
-  componentDidUpdate(prevProps:any) {
-    const placeorder:any = this.props;
+  componentDidUpdate(prevProps: any) {
+    const placeorder: any = this.props;
     if (prevProps.getCartDetail !== placeorder.getCartDetail) {
       this.getCartAllProductData(placeorder.getCartDetail);
     }
@@ -426,17 +426,16 @@ class PlaceOrder extends React.Component<{
     if (prevProps.deletecard !== placeorder.deletecard) {
       this.deleteCard(placeorder.deletecard);
     }
-    
   }
 
-  deleteCard(data:any) {
-    if(data.status === 200) {
+  deleteCard(data: any) {
+    if (data.status === 200) {
       this.getCard();
     }
   }
 
-  addCardData(data:any) {
-    if(data.status === 200) {
+  addCardData(data: any) {
+    if (data.status === 200) {
       this.setState({
         cardnumber: "",
         cardholder: "",
@@ -447,8 +446,8 @@ class PlaceOrder extends React.Component<{
     }
   }
 
-  addAddressNew(data:any) {
-    if(data.status === 200) {
+  addAddressNew(data: any) {
+    if (data.status === 200) {
       this.setState({
         showSection: (this.state.showSection = false),
       });
@@ -456,15 +455,14 @@ class PlaceOrder extends React.Component<{
     }
   }
 
-  deleteAddress(data:any) {
-    if(data.status === 200) {
-     
+  deleteAddress(data: any) {
+    if (data.status === 200) {
       this.getAddressDetails();
     }
   }
 
-  updateAddress(data:any) {
-    if(data.status === 200) {
+  updateAddress(data: any) {
+    if (data.status === 200) {
       this.setState({
         showSection: (this.state.showSection = false),
       });
@@ -472,19 +470,19 @@ class PlaceOrder extends React.Component<{
     }
   }
 
-  updateCart(data:any) {
-    if(data.status === 200) {
+  updateCart(data: any) {
+    if (data.status === 200) {
       this.getCartData();
     }
   }
 
-  orderSuccess(data:any) {
-    if(data.status === 200) {
-      console.log("payment",data)
+  orderSuccess(data: any) {
+    if (data.status === 200) {
+      console.log("payment", data);
       // window.location.href = "/payment"
       this.props.history.push({
         pathname: "/payment",
-      state: { data: data.resultObject },
+        state: { data: data.resultObject },
       });
     }
   }
@@ -582,7 +580,7 @@ class PlaceOrder extends React.Component<{
    */
   getAddressDetailsData(data: any) {
     this.setState({
-      isLoading:false,
+      isLoading: false,
       addressarray: (this.state.addressarray = data.data),
     });
   }
@@ -605,7 +603,7 @@ class PlaceOrder extends React.Component<{
    */
   getCartAllProductData(data: any) {
     this.setState({
-      qtydisable:this.state.qtydisable = false,
+      qtydisable: (this.state.qtydisable = false),
       cartarray: (this.state.cartarray = data.data),
     });
     localStorage.setItem("cartcount", data.totalcount);
@@ -817,10 +815,10 @@ class PlaceOrder extends React.Component<{
    *
    * @param data : increment quantity in cart product
    */
- async incrementQty(data: any) {
-  this.setState({
-    qtydisable:true
-  })
+  async incrementQty(data: any) {
+    this.setState({
+      qtydisable: true,
+    });
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -843,8 +841,8 @@ class PlaceOrder extends React.Component<{
    */
   async decrementQty(data: any) {
     this.setState({
-      qtydisable:true
-    })
+      qtydisable: true,
+    });
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -951,7 +949,7 @@ class PlaceOrder extends React.Component<{
   }
 
   /** Edit Address value */
- async editAddress() {
+  async editAddress() {
     const isValid = this.validate();
     if (isValid) {
       this.setState({
@@ -1009,7 +1007,7 @@ class PlaceOrder extends React.Component<{
         moduleName: "Address",
         id: deleteArray,
       };
-     await this.props.deleteAddress(obj);
+      await this.props.deleteAddress(obj);
 
       // setTimeout(() => {
       //   this.getAddressDetails();
@@ -1046,86 +1044,81 @@ class PlaceOrder extends React.Component<{
                     </div> --> */}
             <div className="nm-info">
               <div className="main0adress">
-                {
-                  this.state.isLoading === false ? (
-
-                    this.state.addressarray
-                      ? (this.state.addressarray.length > 0 &&
-                        this.state.addressarray.map(
-                          (address: any, index: number) => (
-                            <div className="adrss-1" key={index}>
-                              <div
-                                className="row"
-                                style={{ justifyContent: "flex-end" }}
-                              >
-                                <i
-                                  className="fas fa-edit edit-adres"
-                                  onClick={() => this.getAddressData(address)}
-                                ></i>
-                                <i
-                                  className="fas fa-trash edit-adres ml-4"
-                                  onClick={() =>
-                                    this.deleteAddressData(
-                                      address.addressID,
-                                      "You should be Remove address?",
-                                      "Yes, Remove it"
-                                    )
-                                  }
-                                ></i>
-                              </div>
-                              <label className="rdio-box1">
-                                <span className="b-tt">{address.name}</span>{" "}
-                                <span className="add-type">
-                                  {address.addressType}
-                                </span>{" "}
-                                <span className="b-tt">{address.mobile}</span>
-                                <span className="adress-rdio">
-                                  {address.address}
-                                  <span className="b-tt"> - {address.pincode}</span>
-                                </span>
-                                <input
-                                  type="radio"
-                                  id={address.addressID}
-                                  className="form-control"
-                                  checked={
-                                    this.state.mainaddress === address.addressID
-                                      ? true
-                                      : false
-                                  }
-                                  onChange={this.change}
-                                  name="main"
-                                />
-                                <span className="checkmark"></span>
-                              </label>
-                              <a
-                                className="chk-outbtn"
-                                id={address.addressID}
-                                onClick={this.change}
-                              >
-                                CONTINUE CHECKOUT
-                              </a>
+                {this.state.isLoading === false
+                  ? this.state.addressarray
+                    ? this.state.addressarray.length > 0 &&
+                      this.state.addressarray.map(
+                        (address: any, index: number) => (
+                          <div className="adrss-1" key={index}>
+                            <div
+                              className="row"
+                              style={{ justifyContent: "flex-end" }}
+                            >
+                              <i
+                                className="fas fa-edit edit-adres"
+                                onClick={() => this.getAddressData(address)}
+                              ></i>
+                              <i
+                                className="fas fa-trash edit-adres ml-4"
+                                onClick={() =>
+                                  this.deleteAddressData(
+                                    address.addressID,
+                                    "You should be Remove address?",
+                                    "Yes, Remove it"
+                                  )
+                                }
+                              ></i>
                             </div>
-                          )
+                            <label className="rdio-box1">
+                              <span className="b-tt">{address.name}</span>{" "}
+                              <span className="add-type">
+                                {address.addressType}
+                              </span>{" "}
+                              <span className="b-tt">{address.mobile}</span>
+                              <span className="adress-rdio">
+                                {address.address}
+                                <span className="b-tt">
+                                  {" "}
+                                  - {address.pincode}
+                                </span>
+                              </span>
+                              <input
+                                type="radio"
+                                id={address.addressID}
+                                className="form-control"
+                                checked={
+                                  this.state.mainaddress === address.addressID
+                                    ? true
+                                    : false
+                                }
+                                onChange={this.change}
+                                name="main"
+                              />
+                              <span className="checkmark"></span>
+                            </label>
+                            <a
+                              className="chk-outbtn"
+                              id={address.addressID}
+                              onClick={this.change}
+                            >
+                              CONTINUE CHECKOUT
+                            </a>
+                          </div>
                         )
-                      ):('')
-                  ) : (
-                    [1, 2, 3, 4].map((data: any, index: number) => (
+                      )
+                    : ""
+                  : [1, 2, 3, 4].map((data: any, index: number) => (
                       <div key={index}>
                         <SkeletonTheme color="#202020" highlightColor="#444">
-                            <h3 className="tt-1">
-                          <Skeleton count={1}>
-      
-                          </Skeleton>
-                            </h3>
+                          <h3 className="tt-1">
+                            <Skeleton count={1}></Skeleton>
+                          </h3>
                           <p>
                             <Skeleton count={5} />
                           </p>
-                         
                         </SkeletonTheme>
                       </div>
-                    ))
-                  )
-                }
+                    ))}
               </div>
               <div className="add-new-adres" onClick={this.showSection}>
                 <span className="add-icon">+</span>
@@ -1489,7 +1482,7 @@ class PlaceOrder extends React.Component<{
       this.setState({
         upiiderror: "",
       });
-      let _this:any = this;
+      let _this: any = this;
       let order: any = [];
       if (this.state.cartarray) {
         this.state.cartarray.map((cart: any, index: number) => {
@@ -1508,7 +1501,7 @@ class PlaceOrder extends React.Component<{
         0
       );
       const obj: any = {
-        amount: (total * 100),
+        amount: total * 100,
         currency: "INR",
       };
       const getOrderData: any = await OrderAPI.getOrderData(obj);
@@ -1522,7 +1515,7 @@ class PlaceOrder extends React.Component<{
         });
 
         var data: any = {
-          amount: (total * 100), // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+          amount: total * 100, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
           currency: "INR", // Default is INR. We support more than 90 currencies.
           email: user.email,
           contact: user.phone,
@@ -1556,7 +1549,7 @@ class PlaceOrder extends React.Component<{
             razorpayPaymentID: resp.razorpay_payment_id,
             razorpayOrderID: resp.razorpay_order_id,
             razorpaySignature: resp.razorpay_signature,
-            orderDetails: order
+            orderDetails: order,
           };
           _this.props.createOrder(obj);
         }); // will pass payment ID, order ID, and Razorpay signature to success handler.
@@ -1591,7 +1584,7 @@ class PlaceOrder extends React.Component<{
             <div className="pey-upi">
               <div className="opti1 opti2">
                 <div className="box-input1">
-                  <div className="form-group" style={{marginBottom:'0px'}}>
+                  <div className="form-group" style={{ marginBottom: "0px" }}>
                     <input
                       type="text"
                       id="from"
@@ -1655,18 +1648,18 @@ class PlaceOrder extends React.Component<{
       this.setState({
         walletnumbererror: "",
       });
-    const users: any = localStorage.getItem("user");
-    let user = JSON.parse(users);
-    var total: any = this.state.cartarray.reduce(
-      (sum: number, i: any) => (sum += i.sellingPrice),
-      0
-    );
-    const obj: any = {
-      amount: (total * 100),
-      currency: "INR",
-    };
+      const users: any = localStorage.getItem("user");
+      let user = JSON.parse(users);
+      var total: any = this.state.cartarray.reduce(
+        (sum: number, i: any) => (sum += i.sellingPrice),
+        0
+      );
+      const obj: any = {
+        amount: total * 100,
+        currency: "INR",
+      };
 
-    let _this:any = this;
+      let _this: any = this;
       let order: any = [];
       if (this.state.cartarray) {
         this.state.cartarray.map((cart: any, index: number) => {
@@ -1677,58 +1670,58 @@ class PlaceOrder extends React.Component<{
           });
         });
       }
-    const getOrderData: any = await OrderAPI.getOrderData(obj);
-    console.log("getOrderData", getOrderData);
+      const getOrderData: any = await OrderAPI.getOrderData(obj);
+      console.log("getOrderData", getOrderData);
 
-    if (getOrderData.data.resultObject) {
-      var razorpay = new Razorpay({
-        key: "rzp_test_c9r1dW7E0qCBz5",
-        // logo, displayed in the popup
-        image: "https://i.imgur.com/n5tjHFD.png",
-      });
+      if (getOrderData.data.resultObject) {
+        var razorpay = new Razorpay({
+          key: "rzp_test_c9r1dW7E0qCBz5",
+          // logo, displayed in the popup
+          image: "https://i.imgur.com/n5tjHFD.png",
+        });
 
-      var data: any = {
-        amount: (total * 100),// in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
-        currency: "INR", // Default is INR. We support more than 90 currencies.
-        email: user.email,
-        contact: this.state.walletnumber,
-        order_id: getOrderData.data.resultObject
-          ? getOrderData.data.resultObject.id
-          : "0000", // Replace with Order ID generated in Step 4
-        method: "wallet",
-        wallet: data,
-      };
-      razorpay.createPayment(data);
-
-      razorpay.on("payment.success", function (resp: any) {
-        console.log("resp", resp);
-        const obj = {
-          userID: user.userID,
-          couponID: _this.state.couponid ? _this.state.couponid : 0,
-          addressID: _this.state.mainaddress ? _this.state.mainaddress : 0,
-          paymentMethod: "Wallet",
-          paymentStatus: "Success",
-          distance: 0,
-          totalQty: _this.state.cartarray ? _this.state.cartarray.length : 0,
-          totalAmount: parseInt(_this.state.totalpay),
-          discountAmount: _this.state.discount
-            ? parseInt(_this.state.discount)
-            : 0,
-          taxAmount: 0,
-          deliveryAmount: 0,
-          razorpayPaymentID: resp.razorpay_payment_id,
-          razorpayOrderID: resp.razorpay_order_id,
-          razorpaySignature: resp.razorpay_signature,
-          orderDetails: order
+        var data: any = {
+          amount: total * 100, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+          currency: "INR", // Default is INR. We support more than 90 currencies.
+          email: user.email,
+          contact: this.state.walletnumber,
+          order_id: getOrderData.data.resultObject
+            ? getOrderData.data.resultObject.id
+            : "0000", // Replace with Order ID generated in Step 4
+          method: "wallet",
+          wallet: data,
         };
-        _this.props.createOrder(obj);
-      }); // will pass payment ID, order ID, and Razorpay signature to success handler.
+        razorpay.createPayment(data);
 
-      razorpay.on("payment.error", function (resp: any) {
-        alert(resp.error.description);
-      }); // will pass error object to error handler
+        razorpay.on("payment.success", function (resp: any) {
+          console.log("resp", resp);
+          const obj = {
+            userID: user.userID,
+            couponID: _this.state.couponid ? _this.state.couponid : 0,
+            addressID: _this.state.mainaddress ? _this.state.mainaddress : 0,
+            paymentMethod: "Wallet",
+            paymentStatus: "Success",
+            distance: 0,
+            totalQty: _this.state.cartarray ? _this.state.cartarray.length : 0,
+            totalAmount: parseInt(_this.state.totalpay),
+            discountAmount: _this.state.discount
+              ? parseInt(_this.state.discount)
+              : 0,
+            taxAmount: 0,
+            deliveryAmount: 0,
+            razorpayPaymentID: resp.razorpay_payment_id,
+            razorpayOrderID: resp.razorpay_order_id,
+            razorpaySignature: resp.razorpay_signature,
+            orderDetails: order,
+          };
+          _this.props.createOrder(obj);
+        }); // will pass payment ID, order ID, and Razorpay signature to success handler.
+
+        razorpay.on("payment.error", function (resp: any) {
+          alert(resp.error.description);
+        }); // will pass error object to error handler
+      }
     }
-  }
   }
 
   /** Wallet payment block */
@@ -1768,7 +1761,10 @@ class PlaceOrder extends React.Component<{
                   </label>
                   {this.state.changewallet === 1 ? (
                     <div className="box-input1">
-                      <div className="form-group" style={{marginBottom:'0px'}}>
+                      <div
+                        className="form-group"
+                        style={{ marginBottom: "0px" }}
+                      >
                         {/* <span className="verfy-tt">Link Now</span> */}
                         <input
                           type="text"
@@ -1786,9 +1782,9 @@ class PlaceOrder extends React.Component<{
                           Enter linked no.
                         </label>
                       </div>
-                        <div className="text-danger">
-                          {this.state.walletnumbererror}
-                        </div>
+                      <div className="text-danger">
+                        {this.state.walletnumbererror}
+                      </div>
                       <button
                         id="rzp-button1"
                         className="continue-btn"
@@ -1817,7 +1813,10 @@ class PlaceOrder extends React.Component<{
                   </label>
                   {this.state.changewallet === 2 ? (
                     <div className="box-input1">
-                      <div className="form-group">
+                      <div
+                        className="form-group"
+                        style={{ marginBottom: "0px" }}
+                      >
                         {/* <span className="verfy-tt">Link Now</span> */}
                         <input
                           type="text"
@@ -1834,9 +1833,9 @@ class PlaceOrder extends React.Component<{
                         >
                           Enter linked no.
                         </label>
-                        <div className="text-danger">
-                          {this.state.walletnumbererror}
-                        </div>
+                      </div>
+                      <div className="text-danger">
+                        {this.state.walletnumbererror}
                       </div>
                       <button
                         id="rzp-button1"
@@ -1866,7 +1865,10 @@ class PlaceOrder extends React.Component<{
                   </label>
                   {this.state.changewallet === 3 ? (
                     <div className="box-input1">
-                      <div className="form-group">
+                      <div
+                        className="form-group"
+                        style={{ marginBottom: "0px" }}
+                      >
                         {/* <span className="verfy-tt">Link Now</span> */}
                         <input
                           type="text"
@@ -1883,9 +1885,9 @@ class PlaceOrder extends React.Component<{
                         >
                           Enter linked no.
                         </label>
-                        <div className="text-danger">
-                          {this.state.walletnumbererror}
-                        </div>
+                      </div>
+                      <div className="text-danger">
+                        {this.state.walletnumbererror}
                       </div>
                       <button
                         className="continue-btn"
@@ -2015,7 +2017,6 @@ class PlaceOrder extends React.Component<{
       //   isActive: true,
       // };
       // await this.props.addCard(obj);
-    
     }
   }
 
@@ -2152,7 +2153,7 @@ class PlaceOrder extends React.Component<{
       }
 
       const obj: any = {
-        amount: (total * 100),
+        amount: total * 100,
         currency: "INR",
       };
       const getOrderData: any = await OrderAPI.getOrderData(obj);
@@ -2178,7 +2179,7 @@ class PlaceOrder extends React.Component<{
         });
 
         var data: any = {
-          amount: (total * 100), // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+          amount: total * 100, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
           currency: "INR", // Default is INR. We support more than 90 currencies.
           email: user.email,
           contact: user.phone,
@@ -2205,9 +2206,9 @@ class PlaceOrder extends React.Component<{
             distance: 0,
             totalQty: _this.state.cartarray ? _this.state.cartarray.length : 0,
             totalAmount: parseInt(_this.state.totalpay),
-            cardNumber:_this.state.cardnumber,
-            cardExpiryMonth:_this.state.month,
-            cardExpiryYear:_this.state.year,
+            cardNumber: _this.state.cardnumber,
+            cardExpiryMonth: _this.state.month,
+            cardExpiryYear: _this.state.year,
             discountAmount: _this.state.discount
               ? parseInt(_this.state.discount)
               : 0,
@@ -2216,7 +2217,7 @@ class PlaceOrder extends React.Component<{
             razorpayPaymentID: resp.razorpay_payment_id,
             razorpayOrderID: resp.razorpay_order_id,
             razorpaySignature: resp.razorpay_signature,
-            orderDetails: order
+            orderDetails: order,
           };
           _this.props.createOrder(obj);
         }); // will pass payment ID, order ID, and Razorpay signature to success handler.
@@ -2295,7 +2296,9 @@ class PlaceOrder extends React.Component<{
                                 4
                               )}
                           </span>{" "}
-                          <span className="cardtype">{card.cardType.toUpperCase()}</span>{" "}
+                          <span className="cardtype">
+                            {card.cardType.toUpperCase()}
+                          </span>{" "}
                           <span className="add-type">{card.cardName}</span>{" "}
                           <input
                             type="radio"
@@ -2307,9 +2310,9 @@ class PlaceOrder extends React.Component<{
                             onChange={() => this.changeCVV(card)}
                             name="cvvid"
                             disabled={
-                              card.cardType.toUpperCase() === "AMERICAN-EXPRESS" ||
                               card.cardType.toUpperCase() ===
-                               "BAJAJ" ||
+                                "AMERICAN-EXPRESS" ||
+                              card.cardType.toUpperCase() === "BAJAJ" ||
                               card.cardType.toUpperCase() === this.state.DICL ||
                               card.cardType.toUpperCase() === this.state.JCB ||
                               card.cardType.toUpperCase() === this.state.MAES ||
@@ -2539,10 +2542,10 @@ class PlaceOrder extends React.Component<{
 
     if (!this.state.banktype) {
       banktypeerror = "please select bank";
-    } 
+    }
     if (banktypeerror) {
       this.setState({
-        banktypeerror
+        banktypeerror,
       });
       return false;
     }
@@ -2556,81 +2559,81 @@ class PlaceOrder extends React.Component<{
         banktypeerror: "",
       });
 
-    const users: any = localStorage.getItem("user");
-    let user = JSON.parse(users);
-    var total: any = this.state.cartarray.reduce(
-      (sum: number, i: any) => (sum += i.sellingPrice),
-      0
-    );
-    const obj: any = {
-      amount: (total * 100),
-      currency: "INR",
-    };
-
-    let order: any = [];
-    if (this.state.cartarray) {
-      this.state.cartarray.map((cart: any, index: number) => {
-        order.push({
-          productId: cart.productID,
-          orderQty: cart.quantity,
-          productPrice: cart.sellingPrice,
-        });
-      });
-    }
-
-    const getOrderData: any = await OrderAPI.getOrderData(obj);
-    console.log("getOrderData", getOrderData);
-
-    if (getOrderData.data.resultObject) {
-      let _this: any = this;
-      var razorpay = new Razorpay({
-        key: "rzp_test_c9r1dW7E0qCBz5",
-        // logo, displayed in the popup
-        image: "https://i.imgur.com/n5tjHFD.png",
-      });
-
-      var data: any = {
-        amount: (total * 100), // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
-        currency: "INR", // Default is INR. We support more than 90 currencies.
-        email: user.email,
-        contact: user.phone,
-        order_id: getOrderData.data.resultObject
-          ? getOrderData.data.resultObject.id
-          : "0000", // Replace with Order ID generated in Step 4
-        method: "netbanking",
-        bank: this.state.banktype,
+      const users: any = localStorage.getItem("user");
+      let user = JSON.parse(users);
+      var total: any = this.state.cartarray.reduce(
+        (sum: number, i: any) => (sum += i.sellingPrice),
+        0
+      );
+      const obj: any = {
+        amount: total * 100,
+        currency: "INR",
       };
-      razorpay.createPayment(data);
 
-      razorpay.on("payment.success", function (resp: any) {
-        console.log("resp", resp);
-        const obj = {
-          userID: user.userID,
-          couponID: _this.state.couponid ? _this.state.couponid : 0,
-          addressID: _this.state.mainaddress ? _this.state.mainaddress : 0,
-          paymentMethod: "NetBanking",
-          paymentStatus: "Success",
-          distance: 0,
-          totalQty: _this.state.cartarray ? _this.state.cartarray.length : 0,
-          totalAmount: parseInt(_this.state.totalpay),
-          discountAmount: _this.state.discount
-            ? parseInt(_this.state.discount)
-            : 0,
-          taxAmount: 0,
-          deliveryAmount: 0,
-          razorpayPaymentID: resp.razorpay_payment_id,
-          razorpayOrderID: resp.razorpay_order_id,
-          razorpaySignature: resp.razorpay_signature,
-          orderDetails: order
+      let order: any = [];
+      if (this.state.cartarray) {
+        this.state.cartarray.map((cart: any, index: number) => {
+          order.push({
+            productId: cart.productID,
+            orderQty: cart.quantity,
+            productPrice: cart.sellingPrice,
+          });
+        });
+      }
+
+      const getOrderData: any = await OrderAPI.getOrderData(obj);
+      console.log("getOrderData", getOrderData);
+
+      if (getOrderData.data.resultObject) {
+        let _this: any = this;
+        var razorpay = new Razorpay({
+          key: "rzp_test_c9r1dW7E0qCBz5",
+          // logo, displayed in the popup
+          image: "https://i.imgur.com/n5tjHFD.png",
+        });
+
+        var data: any = {
+          amount: total * 100, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+          currency: "INR", // Default is INR. We support more than 90 currencies.
+          email: user.email,
+          contact: user.phone,
+          order_id: getOrderData.data.resultObject
+            ? getOrderData.data.resultObject.id
+            : "0000", // Replace with Order ID generated in Step 4
+          method: "netbanking",
+          bank: this.state.banktype,
         };
-        _this.props.createOrder(obj);
-      }); // will pass payment ID, order ID, and Razorpay signature to success handler.
+        razorpay.createPayment(data);
 
-      razorpay.on("payment.error", function (resp: any) {
-        alert(resp.error.description);
-      }); // will pass error object to error handler
+        razorpay.on("payment.success", function (resp: any) {
+          console.log("resp", resp);
+          const obj = {
+            userID: user.userID,
+            couponID: _this.state.couponid ? _this.state.couponid : 0,
+            addressID: _this.state.mainaddress ? _this.state.mainaddress : 0,
+            paymentMethod: "NetBanking",
+            paymentStatus: "Success",
+            distance: 0,
+            totalQty: _this.state.cartarray ? _this.state.cartarray.length : 0,
+            totalAmount: parseInt(_this.state.totalpay),
+            discountAmount: _this.state.discount
+              ? parseInt(_this.state.discount)
+              : 0,
+            taxAmount: 0,
+            deliveryAmount: 0,
+            razorpayPaymentID: resp.razorpay_payment_id,
+            razorpayOrderID: resp.razorpay_order_id,
+            razorpaySignature: resp.razorpay_signature,
+            orderDetails: order,
+          };
+          _this.props.createOrder(obj);
+        }); // will pass payment ID, order ID, and Razorpay signature to success handler.
+
+        razorpay.on("payment.error", function (resp: any) {
+          alert(resp.error.description);
+        }); // will pass error object to error handler
+      }
     }
-  }
   }
 
   /** Net banking block */
@@ -2728,7 +2731,11 @@ class PlaceOrder extends React.Component<{
 
               <div className="select-bank">
                 <span className="b-tt">Other Banks</span>
-                <select className="_1CV081" onChange={this.selectBank} value={this.state.banktype ? this.state.banktype : ''}>
+                <select
+                  className="_1CV081"
+                  onChange={this.selectBank}
+                  value={this.state.banktype ? this.state.banktype : ""}
+                >
                   <option value="SELECT_BANK">---Select Bank---</option>
                   {this.state.bankarray
                     ? this.state.bankarray.map((data: any, index: number) => (
@@ -2740,9 +2747,7 @@ class PlaceOrder extends React.Component<{
                 </select>
               </div>
 
-              <div className="text-danger">
-                          {this.state.banktypeerror}
-                        </div>
+              <div className="text-danger">{this.state.banktypeerror}</div>
               <button className="continue-btn" onClick={this.payWithNetBanking}>
                 PAY
               </button>
@@ -2774,7 +2779,7 @@ class PlaceOrder extends React.Component<{
         freecharge: response.methods.wallet.freecharge,
         olamoney: response.methods.wallet.olamoney,
         payzapp: response.methods.wallet.payzapp,
-        AMEX: response.methods.card_networks.AMEX  ? "AMERICAN-EXPRESS" : "",
+        AMEX: response.methods.card_networks.AMEX ? "AMERICAN-EXPRESS" : "",
         BAJAJ: response.methods.card_networks.BAJAJ ? "BAJAJ" : "",
         DICL: response.methods.card_networks.DICL === 1 ? "DICL" : "",
         JCB: response.methods.card_networks.JCB === 1 ? "JCB" : "",
@@ -2968,9 +2973,14 @@ class PlaceOrder extends React.Component<{
           {this.state.cartarray
             ? this.state.cartarray.length > 0 &&
               this.state.cartarray.map((cartdata: any, index: any) => (
-                <div className="flex-box" key={index} style={{
-                  pointerEvents: this.state.qtydisable === true ? "none" : "visible",
-                }}>
+                <div
+                  className="flex-box"
+                  key={index}
+                  style={{
+                    pointerEvents:
+                      this.state.qtydisable === true ? "none" : "visible",
+                  }}
+                >
                   <div className="bdr-roud"></div>
                   <div className="item-title ">
                     <h4>{cartdata.productName}</h4>
@@ -2998,7 +3008,8 @@ class PlaceOrder extends React.Component<{
                     </span>
                   </div>
                   <span className="price">
-                    <i className="fa fa-rupee"></i> {(cartdata.sellingPrice).toFixed(2)}
+                    <i className="fa fa-rupee"></i>{" "}
+                    {cartdata.sellingPrice.toFixed(2)}
                   </span>
                 </div>
               ))
@@ -3257,10 +3268,9 @@ class PlaceOrder extends React.Component<{
             <div className="price">
               <i className="fa fa-rupee" aria-hidden="true"></i>{" "}
               {this.state.cartarray
-                ? this.state.cartarray.reduce(
-                    (sum: number, i: any) => (sum += i.sellingPrice),
-                    0
-                  ).toFixed(2)
+                ? this.state.cartarray
+                    .reduce((sum: number, i: any) => (sum += i.sellingPrice), 0)
+                    .toFixed(2)
                 : 0}
             </div>
           </div>
@@ -3526,13 +3536,13 @@ const mapStateToProps = (state: any) => ({
   applycoupon: state.placeOrder.applycoupon,
   getApplyCouponData: state.placeOrder.getcouponapply,
   removeCouponData: state.placeOrder.removecoupon,
-  orderDetail:state.placeOrder.orderdata,
+  orderDetail: state.placeOrder.orderdata,
   updateCart: state.product.updatecart,
-  updateaddress:state.placeOrder.updateaddress,
-  addaddress:state.placeOrder.addaddress,
-  deletedata:state.placeOrder.deletedata,
-  addcard:state.placeOrder.addcard,
-  deletecard:state.placeOrder.deletecard
+  updateaddress: state.placeOrder.updateaddress,
+  addaddress: state.placeOrder.addaddress,
+  deletedata: state.placeOrder.deletedata,
+  addcard: state.placeOrder.addcard,
+  deletecard: state.placeOrder.deletecard,
 });
 
 /**

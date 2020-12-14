@@ -82,30 +82,23 @@ axios.interceptors.response.use(
   
               
               const data = {
-                deviceType: 1,
-                deviceId: "deviceId",
-                ipAddress: ipaddress ? ipaddress : '',
-                loginToken: user.token,
-                refreshToken: user.refreshToken,
+                id:'2120d758-b8bd-42cd-a265-a3ca30845e2f',
+                userName: 'b3EB+9LJEVMrXNFQ6ZekiPGVTSAirzq1xcYlUViCxic=',
+                password:'O8QziWH1Sq75LO+lH9Q9AqB/HbgvlglvDYPUXykFRvM=',
+                key:'digitalvicharcommonkartzoapi'
               };
   
-              // localStorage.removeItem("token");
-              // localStorage.removeItem("user");
-              // localStorage.removeItem("merchantToken");
-              // localStorage.removeItem("rolePreveliges");
-              // localStorage.removeItem("menuItems");
-              // window.location.href = "/#/login";
+  
               setTimeout(() => {
   
               
               let res = axios
-                .post(constant.apiUrl + "token", data)
+                .post(constant.apiUrl + "token/get-common-token", data)
                 .then((res: any) => {
                   console.log("res", res);
                   const users: any = localStorage.getItem("user");
                   let user = JSON.parse(users);
                   user.token = res.data.token;
-                  user.refreshToken =  res.data.refreshToken;
                   localStorage.setItem("user",JSON.stringify(user));
                   localStorage.setItem("token",res.data.token);
                   window.location.reload();
@@ -190,7 +183,7 @@ axios.interceptors.response.use(
                 });
                 
               resolve(res);
-            }, 5000);
+            },1000);
             });
         } else {
           const msg1 = "Internal server error";
