@@ -2923,22 +2923,49 @@ class PlaceOrder extends React.Component<{
   }
 
   applyCoupon() {
-    if (this.state.codename) {
-      this.setState({
-        couponerror: "",
-      });
-      const users: any = localStorage.getItem("user");
-      let user = JSON.parse(users);
+    let couponflag = false;
+    var maxtotal: any = this.state.cartarray
+    ? this.state.cartarray.reduce(
+        (sum: number, i: any) => (sum += i.sellingPrice),
+        0
+      )
+    : 0;
+    if(this.state.coupondetails) {
+      this.state.coupondetails.map((coupon:any,index:number) => {
+        if(coupon.couponCode === this.state.codename.toUpperCase()) {
+          console.log(coupon.minAmountOrder,maxtotal);
+          if(coupon.minAmountOrder > maxtotal) {
+            couponflag = true;
+            this.setState({
+              openModel: (this.state.openModel = false),
+              couponShow: (this.state.couponShow = true),
+              isShowApplied: (this.state.isShowApplied = true),
+            });
+          } else {
+            couponflag = false;
+          }
+        }
+      })
+    }
 
-      const obj = {
-        Code: this.state.codename.toUpperCase(),
-        UserID: user.userID,
-      };
-      this.props.applyCoupon(obj);
-    } else {
-      this.setState({
-        couponerror: "Please enter valid coupon code",
-      });
+    if(couponflag === false) {
+      if (this.state.codename) {
+        this.setState({
+          couponerror: "",
+        });
+        const users: any = localStorage.getItem("user");
+        let user = JSON.parse(users);
+  
+        const obj = {
+          Code: this.state.codename.toUpperCase(),
+          UserID: user.userID,
+        };
+        this.props.applyCoupon(obj);
+      } else {
+        this.setState({
+          couponerror: "Please enter valid coupon code",
+        });
+      }
     }
   }
 
