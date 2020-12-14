@@ -1025,7 +1025,7 @@ class PlaceOrder extends React.Component<{
       month: 1,
       year: 2020,
       cardUpdateTrue: (this.state.cardUpdateTrue = false),
-      isCard: (this.state.isCard = true),
+      isCard: (this.state.isCard = true)
     });
   }
 
