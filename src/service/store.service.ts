@@ -105,6 +105,19 @@ export default {
     );
   },
 
+   /**
+   * 
+   * @param data : re-order 
+   */
+  addRatingData: async function (data: any) {
+    return WebReqUrl.post(
+      Constant.apiUrl + apiUrl.storeProductController.addrating,data,false
+    );
+  },
+
+
+  
+
   
   
 };

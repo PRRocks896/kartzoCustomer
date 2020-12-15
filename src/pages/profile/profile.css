@@ -1038,4 +1038,8 @@ svg#Capa_2 {
     right: 0px;
     bottom: 12px;
 }
+
+.merchant_star_rating i {
+    font-size: 40px;
+}
 /* view-order-dtl end */

@@ -9,7 +9,8 @@ const initialState = {
   searchproduct:"",
   updatecart:"",
   deletecart:"",
-  refunddata:""
+  refunddata:"",
+  addratingdata:""
 };
 
 /**
@@ -146,6 +147,22 @@ const product = (state = initialState, action: any) => {
               refunddata: {},
               error: action.error,
             };
+
+            case ACTION.product.ADD_RATING_REQUEST:
+              return {
+                ...state,
+              };
+            case ACTION.product.ADD_RATING_SUCCESS:
+              return {
+                ...state,
+                addratingdata: action.addrating,
+              };
+            case ACTION.product.ADD_RATING_FAILURE:
+              return {
+                ...state,
+                addratingdata: {},
+                error: action.error,
+              };
   
 
     default:

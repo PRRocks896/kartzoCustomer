@@ -21,6 +21,7 @@ import "./profile.css";
 import { connect } from "react-redux";
 import { Modal } from "react-bootstrap";
 import moment from "moment";
+import StarRatingComponent from "react-star-rating-component";
 
 class Profile extends React.Component<{
   show: boolean;
@@ -35,6 +36,7 @@ class Profile extends React.Component<{
   removeProductFromCart: any;
   reOrder: any;
   cancelOrderData: any;
+  addRating:any;
 }> {
   /** Profile Page State */
   profileState: profileStateRequest = constant.profilePage.state;
@@ -95,7 +97,13 @@ class Profile extends React.Component<{
     reorderdata: "",
     isShowHelp: false,
     updateOrder: "",
-    merchantaddress:""
+    merchantaddress: "",
+    orderratingmodel: false,
+    rating: 1,
+    ratingmerchant: "",
+    ratingmerchantaddress: "",
+    reviewdetails:"",
+    ratingmerchantid:0
   };
 
   /** Constructor call */
@@ -120,6 +128,10 @@ class Profile extends React.Component<{
     this.clearOldCart = this.clearOldCart.bind(this);
     this.handleClearModel = this.handleClearModel.bind(this);
     this.helpOrder = this.helpOrder.bind(this);
+    this.openOrderRatingModel = this.openOrderRatingModel.bind(this);
+    this.handleratingModel = this.handleratingModel.bind(this);
+    this.onChangeEvent = this.onChangeEvent.bind(this);
+    this.updateRatingsData = this.updateRatingsData.bind(this);
   }
 
   /** Page Render Call */
@@ -138,6 +150,13 @@ class Profile extends React.Component<{
     this.getOrderList();
     this.getProfile();
     scrollToTop();
+  }
+
+  onChangeEvent(event: any) {
+    event.preventDefault();
+    const state: any = this.state;
+    state[event.target.name] = event.target.value;
+    this.setState(state);
   }
 
   /**
@@ -210,8 +229,9 @@ class Profile extends React.Component<{
     }
   }
 
-  componentDidUpdate(prevProps:any) {
-    const profile:any = this.props;
+  componentDidUpdate(prevProps: any) {
+    const profile: any = this.props;
+    console.log("profile",profile);
     if (prevProps.addressDetails !== profile.addressDetails) {
       this.setState({
         show: (this.state.show = false),
@@ -239,32 +259,47 @@ class Profile extends React.Component<{
     if (prevProps.refundData !== profile.refundData) {
       this.refundData(profile.refundData);
     }
-    
+
+    if (prevProps.addRatingData !== profile.addRatingData) {
+      this.rattingSuccess(profile.addRatingData);
+    }
   }
 
-  refundData(data:any) {
+  rattingSuccess(data:any) {
     console.log("data",data);
     if(data.status === 200) {
+      this.setState({
+        rating:1,
+        ratingmerchant:'',
+        ratingmerchantaddress:'',
+        ratingmerchantid:0,
+        orderratingmodel:false
+      })
+    }
+  }
+
+
+  refundData(data: any) {
+    console.log("data", data);
+    if (data.status === 200) {
       this.getOrderList();
     }
   }
 
-  updateProfiledata(data:any) {
-    if(data.status === 200) {
+  updateProfiledata(data: any) {
+    if (data.status === 200) {
       this.getProfile();
     }
   }
 
-  deleteAddress(data:any) {
-    if(data.status === 200) {
-     
+  deleteAddress(data: any) {
+    if (data.status === 200) {
       this.getAddressDetails();
     }
   }
 
-  updateAddress(data:any) {
-    if(data.status === 200) {
-    
+  updateAddress(data: any) {
+    if (data.status === 200) {
       this.getAddressDetails();
     }
   }
@@ -299,7 +334,7 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : get profile data
    */
   getProfileData(data: any) {
@@ -314,7 +349,7 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : update profile data
    */
   updateProfileData(data: any) {
@@ -743,7 +778,7 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : open order listing model
    */
   openOrderModel(data: any) {
@@ -756,7 +791,7 @@ class Profile extends React.Component<{
       productdetail: data.orderDetails,
       totalprice: data.totalAmount,
       showOrder: !this.state.showOrder,
-      merchantaddress: data.merchantAddress
+      merchantaddress: data.merchantAddress,
     });
   }
 
@@ -801,7 +836,7 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param cart : add to cart functionality
    */
   addToCart(cart: any) {
@@ -874,8 +909,8 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
-   * @param data : repet order functionality 
+   *
+   * @param data : repet order functionality
    */
   reOrder(data: any) {
     this.setState({
@@ -902,7 +937,7 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : click on help buttop open help features
    */
   helpOrder(data: any) {
@@ -913,13 +948,45 @@ class Profile extends React.Component<{
     });
   }
 
-  cancelOrder(data:any) {
+  cancelOrder(data: any) {
     const obj = {
-      orderid:data.orderID,
-      paymentid:data.razorpayPaymentID
-    }
+      orderid: data.orderID,
+      paymentid: data.razorpayPaymentID,
+    };
 
     this.props.cancelOrderData(obj);
+  }
+
+  openOrderRatingModel(data: any) {
+    this.setState({
+      ratingmerchantid:data.merchantID,
+      ratingmerchant: data.orderDetails[0].merchantName,
+      ratingmerchantaddress: data.merchantAddress,
+      orderratingmodel: !this.state.orderratingmodel,
+    });
+  }
+
+  handleratingModel(data: any) {
+    this.setState({
+      orderratingmodel: !this.state.orderratingmodel,
+    });
+  }
+
+  onStarClick(nextValue: any, prevValue: any, name: any) {
+    this.setState({ rating: nextValue });
+  }
+
+  updateRatingsData() {
+    const users: any = localStorage.getItem("user");
+    let user = JSON.parse(users);
+    const obj = {
+      userID: user.userID,
+  merchantID: this.state.ratingmerchantid,
+  reviewDetail: this.state.reviewdetails,
+  rating: this.state.rating
+    }
+
+    this.props.addRating(obj);
   }
 
   /** Render DOM */
@@ -1274,6 +1341,19 @@ class Profile extends React.Component<{
                                         >
                                           View Details
                                         </button>
+                                        {
+                                          order.isReviewed === false ? (
+
+                                        <button
+                                          className="view-dtl ml-4"
+                                          onClick={() =>
+                                            this.openOrderRatingModel(order)
+                                          }
+                                        >
+                                          Ratings
+                                        </button>
+                                          ) : ('')
+                                        }
                                       </div>
                                     </div>
 
@@ -1293,23 +1373,20 @@ class Profile extends React.Component<{
                                             )
                                           : ""}
                                       </div>
-                                        <div className="mt-2 fix-btn-12">
-                                          <button
-                                            className="order-btn"
-                                            onClick={() => this.reOrder(order)}
-                                          >
-                                            REORDER
-                                          </button>
-                                          <button
-                                            className="help-btn"
-                                            onClick={() =>
-                                              this.helpOrder(order)
-                                            }
-                                          >
-                                            HELP
-                                          </button>
-                                          {
-                                            order.paymentStatus === "Success" ? (
+                                      <div className="mt-2 fix-btn-12">
+                                        <button
+                                          className="order-btn"
+                                          onClick={() => this.reOrder(order)}
+                                        >
+                                          REORDER
+                                        </button>
+                                        <button
+                                          className="help-btn"
+                                          onClick={() => this.helpOrder(order)}
+                                        >
+                                          HELP
+                                        </button>
+                                        {order.paymentStatus === "Success" ? (
                                           <button
                                             className="help-btn"
                                             onClick={() =>
@@ -1318,10 +1395,10 @@ class Profile extends React.Component<{
                                           >
                                             Cancel Order
                                           </button>
-                                            ) : ('')
-                                          }
-                                         
-                                        </div>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </div>
                                     </div>
                                   </div>
                                 )
@@ -1384,7 +1461,7 @@ class Profile extends React.Component<{
                                       {reorderhelp.orderDetails[0].merchantName}
                                     </h4>
                                     <div className="address-nm">
-                                    {reorderhelp.merchantAddress}
+                                      {reorderhelp.merchantAddress}
                                     </div>
                                     <div className="shop-id">
                                       ORDER # {reorderhelp.orderNo} |{" "}
@@ -1430,7 +1507,7 @@ class Profile extends React.Component<{
                                             <span
                                               className="item-nm"
                                               key={index}
-                                              style={{marginLeft:'10px'}}
+                                              style={{ marginLeft: "10px" }}
                                             >
                                               {data.productName} x{" "}
                                               {data.quantity}
@@ -1547,7 +1624,7 @@ class Profile extends React.Component<{
                                         {this.state.merchantname}
                                       </div>
                                       <div className="pickup-location">
-                                       {this.state.merchantaddress}
+                                        {this.state.merchantaddress}
                                       </div>
                                       <div className="circle-box">
                                         <div className="icon-dot-bg1">
@@ -1675,8 +1752,10 @@ class Profile extends React.Component<{
                                             >
                                               <div className="p-flex-box">
                                                 <div className="p-list-1">
-                                                  <h4>{data.productName} x{" "}
-                                              {data.quantity}</h4>
+                                                  <h4>
+                                                    {data.productName} x{" "}
+                                                    {data.quantity}
+                                                  </h4>
                                                   <span className="p-descri-1">
                                                     {/* 9" Inch */}
                                                   </span>
@@ -2359,6 +2438,69 @@ class Profile extends React.Component<{
               </div>
             </div>
           </div>
+          <Modal
+            className="modal-dialog-centered d-ct"
+            show={this.state.orderratingmodel}
+            onHide={this.handleratingModel}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Rating</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="merchant_star_rating">
+                <h2 style={{ margin: "0px" }}>{this.state.ratingmerchant}</h2>
+                <p style={{ margin: "0px" }}>
+                  {this.state.ratingmerchantaddress}
+                </p>
+                <StarRatingComponent
+                  name="rate1"
+                  starCount={5}
+                  value={this.state.rating}
+                  onStarClick={this.onStarClick.bind(this)}
+                />
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <label
+                        className="form-control-placeholder"
+                        htmlFor="from1"
+                      >
+                        Rating Details :
+                      </label>
+                      <textarea    
+                        id="textarea"
+                        name="reviewdetails"
+                        className="form-control"
+                        onChange={this.onChangeEvent}
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <div className="col-md-12">
+                <div className="deliver">
+                  <button
+                    type="button"
+                    className="save-delivry"
+                    onClick={this.updateRatingsData}
+                  >
+                    Save
+                  </button>
+
+                  <button
+                    type="button"
+                    className="btb-text"
+                    onClick={this.handleratingModel}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </Modal.Footer>
+          </Modal>
         </section>
       </>
     );
@@ -2375,10 +2517,11 @@ const mapStateToProps = (state: any) => ({
   profileData: state.auth.profiledata,
   updateProfileData: state.auth.updateprofiledata,
   getCartDetail: state.product.getcartdetails,
-  updateaddress:state.placeOrder.updateaddress,
-  deletedata:state.placeOrder.deletedata,
-  updateprofiledata:state.auth.updateprofiledata,
-  refundData:state.product.refunddata
+  updateaddress: state.placeOrder.updateaddress,
+  deletedata: state.placeOrder.deletedata,
+  updateprofiledata: state.auth.updateprofiledata,
+  refundData: state.product.refunddata,
+  addRatingData: state.product.addratingdata
 });
 
 /**
@@ -2415,9 +2558,14 @@ const mapDispatchToProps = (dispatch: any) => ({
   /** Reorder */
   reOrder: (data: any) => dispatch(productService.reOrder(data)),
 
+  /** Reorder */
+  cancelOrderData: (data: any) =>
+    dispatch(productService.cancelOrderData(data)),
+
     /** Reorder */
-    cancelOrderData: (data: any) => dispatch(productService.cancelOrderData(data)),
-  
+    addRating: (data: any) =>
+  dispatch(productService.addRating(data)),
+    
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

@@ -13,6 +13,7 @@ export const productService = {
   getProductDataWithSearching,
   reOrder,
   cancelOrderData,
+  addRating
 };
 
 /**
@@ -301,3 +302,36 @@ function cancelOrderData(data: any) {
     return { type: ACTION.product.CANCEL_ORDER_FAILURE, error };
   }
 }
+
+/**
+ *
+ * @param data : get product with searching
+ */
+function addRating(data: any) {
+  return (dispatch: any) => {
+    dispatch(request({ data }));
+
+    StoreAPI.addRatingData(data)
+      .then(async (addrating: any) => {
+        console.log("addrating", addrating);
+        if (addrating.status === 200) {
+          dispatch(success(await addrating));
+        }
+      })
+      .catch((err: any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(addrating: any) {
+    return { type: ACTION.product.ADD_RATING_REQUEST, addrating };
+  }
+  function success(addrating: any) {
+    return { type: ACTION.product.ADD_RATING_SUCCESS, addrating };
+  }
+  function failure(error: any) {
+    return { type: ACTION.product.ADD_RATING_FAILURE, error };
+  }
+}
+
+
