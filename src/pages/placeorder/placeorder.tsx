@@ -1531,7 +1531,7 @@ class PlaceOrder extends React.Component<{
         0
       );
       const obj: any = {
-        amount: total * 100,
+        amount: this.state.totalpay ? (parseInt(this.state.totalpay) * 100) : total,
         currency: "INR",
       };
       const getOrderData: any = await OrderAPI.getOrderData(obj);
@@ -1545,7 +1545,7 @@ class PlaceOrder extends React.Component<{
         });
 
         var data: any = {
-          amount: total * 100, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+          amount: this.state.totalpay ? (parseInt(this.state.totalpay) * 100) : total,// in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
           currency: "INR", // Default is INR. We support more than 90 currencies.
           email: user.email,
           contact: user.phone,
@@ -1693,7 +1693,7 @@ class PlaceOrder extends React.Component<{
         0
       );
       const obj: any = {
-        amount: total * 100,
+        amount: this.state.totalpay ? (parseInt(this.state.totalpay) * 100) : total,
         currency: "INR",
       };
 
@@ -1719,7 +1719,7 @@ class PlaceOrder extends React.Component<{
         });
 
         var data: any = {
-          amount: total * 100, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+          amount: this.state.totalpay ? (parseInt(this.state.totalpay) * 100) : total,// in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
           currency: "INR", // Default is INR. We support more than 90 currencies.
           email: user.email,
           contact: this.state.walletnumber,
@@ -2196,7 +2196,7 @@ class PlaceOrder extends React.Component<{
       }
 
       const obj: any = {
-        amount: total * 100,
+        amount: this.state.totalpay ? (parseInt(this.state.totalpay) * 100) : total,
         currency: "INR",
       };
       const getOrderData: any = await OrderAPI.getOrderData(obj);
@@ -2222,7 +2222,7 @@ class PlaceOrder extends React.Component<{
         });
 
         var data: any = {
-          amount: total * 100, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+          amount: this.state.totalpay ? (parseInt(this.state.totalpay) * 100) : total, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
           currency: "INR", // Default is INR. We support more than 90 currencies.
           email: user.email,
           contact: user.phone,
@@ -2615,7 +2615,7 @@ class PlaceOrder extends React.Component<{
         0
       );
       const obj: any = {
-        amount: total * 100,
+        amount: this.state.totalpay ? (parseInt(this.state.totalpay) * 100) : total,
         currency: "INR",
       };
 
@@ -2642,7 +2642,7 @@ class PlaceOrder extends React.Component<{
         });
 
         var data: any = {
-          amount: total * 100, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
+          amount: this.state.totalpay ? (parseInt(this.state.totalpay) * 100) : total, // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
           currency: "INR", // Default is INR. We support more than 90 currencies.
           email: user.email,
           contact: user.phone,
