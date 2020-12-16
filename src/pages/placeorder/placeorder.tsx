@@ -1550,6 +1550,7 @@ class PlaceOrder extends React.Component<{
             razorpayOrderID: resp.razorpay_order_id,
             razorpaySignature: resp.razorpay_signature,
             orderDetails: order,
+            merchantID:_this.state.cartarray && _this.state.cartarray.length > 0 ? _this.state.cartarray[0].merchantID : 0 
           };
           _this.props.createOrder(obj);
         }); // will pass payment ID, order ID, and Razorpay signature to success handler.
@@ -1713,6 +1714,7 @@ class PlaceOrder extends React.Component<{
             razorpayOrderID: resp.razorpay_order_id,
             razorpaySignature: resp.razorpay_signature,
             orderDetails: order,
+            merchantID:_this.state.cartarray && _this.state.cartarray.length > 0 ? _this.state.cartarray[0].merchantID : 0 
           };
           _this.props.createOrder(obj);
         }); // will pass payment ID, order ID, and Razorpay signature to success handler.
@@ -2218,6 +2220,7 @@ class PlaceOrder extends React.Component<{
             razorpayOrderID: resp.razorpay_order_id,
             razorpaySignature: resp.razorpay_signature,
             orderDetails: order,
+            merchantID:_this.state.cartarray && _this.state.cartarray.length > 0 ? _this.state.cartarray[0].merchantID : 0 
           };
           _this.props.createOrder(obj);
         }); // will pass payment ID, order ID, and Razorpay signature to success handler.
@@ -2625,6 +2628,7 @@ class PlaceOrder extends React.Component<{
             razorpayOrderID: resp.razorpay_order_id,
             razorpaySignature: resp.razorpay_signature,
             orderDetails: order,
+            merchantID:_this.state.cartarray && _this.state.cartarray.length > 0 ? _this.state.cartarray[0].merchantID : 0 
           };
           _this.props.createOrder(obj);
         }); // will pass payment ID, order ID, and Razorpay signature to success handler.
