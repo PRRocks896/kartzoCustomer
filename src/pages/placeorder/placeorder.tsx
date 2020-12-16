@@ -428,12 +428,20 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /**
+   *
+   * @param data : delete card
+   */
   deleteCard(data: any) {
     if (data.status === 200) {
       this.getCard();
     }
   }
 
+  /**
+   *
+   * @param data : add card
+   */
   addCardData(data: any) {
     if (data.status === 200) {
       this.setState({
@@ -446,6 +454,10 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /**
+   *
+   * @param data : add address
+   */
   addAddressNew(data: any) {
     if (data.status === 200) {
       this.setState({
@@ -455,12 +467,20 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /**
+   *
+   * @param data : delete address
+   */
   deleteAddress(data: any) {
     if (data.status === 200) {
       this.getAddressDetails();
     }
   }
 
+  /**
+   *
+   * @param data : update address
+   */
   updateAddress(data: any) {
     if (data.status === 200) {
       this.setState({
@@ -470,12 +490,20 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /**
+   *
+   * @param data : update cart
+   */
   updateCart(data: any) {
     if (data.status === 200) {
       this.getCartData();
     }
   }
 
+  /**
+   *
+   * @param data : order sucess
+   */
   orderSuccess(data: any) {
     if (data.status === 200) {
       console.log("payment", data);
@@ -1025,7 +1053,7 @@ class PlaceOrder extends React.Component<{
       month: 1,
       year: 2020,
       cardUpdateTrue: (this.state.cardUpdateTrue = false),
-      isCard: (this.state.isCard = true)
+      isCard: (this.state.isCard = true),
     });
   }
 
@@ -1457,6 +1485,7 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  /** validate UPI */
   validateUPI() {
     let upiiderror = "";
 
@@ -1476,6 +1505,7 @@ class PlaceOrder extends React.Component<{
     return true;
   }
 
+  /** pay with upi */
   async payWithUPI() {
     const isValid = this.validateUPI();
     if (isValid) {
@@ -1550,7 +1580,10 @@ class PlaceOrder extends React.Component<{
             razorpayOrderID: resp.razorpay_order_id,
             razorpaySignature: resp.razorpay_signature,
             orderDetails: order,
-            merchantID:_this.state.cartarray && _this.state.cartarray.length > 0 ? _this.state.cartarray[0].merchantID : 0 
+            merchantID:
+              _this.state.cartarray && _this.state.cartarray.length > 0
+                ? _this.state.cartarray[0].merchantID
+                : 0,
           };
           _this.props.createOrder(obj);
         }); // will pass payment ID, order ID, and Razorpay signature to success handler.
@@ -1643,6 +1676,10 @@ class PlaceOrder extends React.Component<{
     return true;
   }
 
+  /**
+   *
+   * @param data : pay with wallet
+   */
   async payWallet(data: any) {
     const isValid = this.validateWallet();
     if (isValid) {
@@ -1714,7 +1751,10 @@ class PlaceOrder extends React.Component<{
             razorpayOrderID: resp.razorpay_order_id,
             razorpaySignature: resp.razorpay_signature,
             orderDetails: order,
-            merchantID:_this.state.cartarray && _this.state.cartarray.length > 0 ? _this.state.cartarray[0].merchantID : 0 
+            merchantID:
+              _this.state.cartarray && _this.state.cartarray.length > 0
+                ? _this.state.cartarray[0].merchantID
+                : 0,
           };
           _this.props.createOrder(obj);
         }); // will pass payment ID, order ID, and Razorpay signature to success handler.
@@ -2137,6 +2177,7 @@ class PlaceOrder extends React.Component<{
     return true;
   }
 
+  /** payment with card */
   async paymentWithCard() {
     const isValid = this.validateCVV();
     if (isValid) {
@@ -2220,7 +2261,10 @@ class PlaceOrder extends React.Component<{
             razorpayOrderID: resp.razorpay_order_id,
             razorpaySignature: resp.razorpay_signature,
             orderDetails: order,
-            merchantID:_this.state.cartarray && _this.state.cartarray.length > 0 ? _this.state.cartarray[0].merchantID : 0 
+            merchantID:
+              _this.state.cartarray && _this.state.cartarray.length > 0
+                ? _this.state.cartarray[0].merchantID
+                : 0,
           };
           _this.props.createOrder(obj);
         }); // will pass payment ID, order ID, and Razorpay signature to success handler.
@@ -2540,6 +2584,7 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  /** validate bank */
   validateBank() {
     let banktypeerror = "";
 
@@ -2555,6 +2600,7 @@ class PlaceOrder extends React.Component<{
     return true;
   }
 
+  /** pay with netbanking */
   async payWithNetBanking() {
     const isValid = this.validateBank();
     if (isValid) {
@@ -2628,7 +2674,10 @@ class PlaceOrder extends React.Component<{
             razorpayOrderID: resp.razorpay_order_id,
             razorpaySignature: resp.razorpay_signature,
             orderDetails: order,
-            merchantID:_this.state.cartarray && _this.state.cartarray.length > 0 ? _this.state.cartarray[0].merchantID : 0 
+            merchantID:
+              _this.state.cartarray && _this.state.cartarray.length > 0
+                ? _this.state.cartarray[0].merchantID
+                : 0,
           };
           _this.props.createOrder(obj);
         }); // will pass payment ID, order ID, and Razorpay signature to success handler.
@@ -2859,6 +2908,7 @@ class PlaceOrder extends React.Component<{
     );
   }
 
+  /** Open Model */
   openApplyModel() {
     var newData1: any = this.state.cartarray
       ? this.state.cartarray.reduce(
@@ -2877,12 +2927,17 @@ class PlaceOrder extends React.Component<{
     });
   }
 
+  /** Close Model */
   handleCloseModel() {
     this.setState({
       openModel: !this.state.openModel,
     });
   }
 
+  /**
+   *
+   * @param data : coupon apply data
+   */
   couponApply(data: any) {
     let coupondata: any = data;
     console.log("data", coupondata);
@@ -2896,6 +2951,7 @@ class PlaceOrder extends React.Component<{
     this.props.applyCoupon(obj);
   }
 
+  /** Get Coupon Apply */
   getCouponApply() {
     this.setState({
       couponapplieddata: "",
@@ -2910,6 +2966,11 @@ class PlaceOrder extends React.Component<{
     // this.props.getApplyList(obj);
   }
 
+  /**
+   *
+   * @param data :
+   *
+   */
   removeCoupon(data: any) {
     var newData: any = this.state.cartarray
       ? this.state.cartarray.reduce(
@@ -2926,19 +2987,20 @@ class PlaceOrder extends React.Component<{
     });
   }
 
+  /** Apply coupon */
   applyCoupon() {
     let couponflag = false;
     var maxtotal: any = this.state.cartarray
-    ? this.state.cartarray.reduce(
-        (sum: number, i: any) => (sum += i.sellingPrice),
-        0
-      )
-    : 0;
-    if(this.state.coupondetails) {
-      this.state.coupondetails.map((coupon:any,index:number) => {
-        if(coupon.couponCode === this.state.codename.toUpperCase()) {
-          console.log(coupon.minAmountOrder,maxtotal);
-          if(coupon.minAmountOrder > maxtotal) {
+      ? this.state.cartarray.reduce(
+          (sum: number, i: any) => (sum += i.sellingPrice),
+          0
+        )
+      : 0;
+    if (this.state.coupondetails) {
+      this.state.coupondetails.map((coupon: any, index: number) => {
+        if (coupon.couponCode === this.state.codename.toUpperCase()) {
+          console.log(coupon.minAmountOrder, maxtotal);
+          if (coupon.minAmountOrder > maxtotal) {
             couponflag = true;
             this.setState({
               openModel: (this.state.openModel = false),
@@ -2949,17 +3011,17 @@ class PlaceOrder extends React.Component<{
             couponflag = false;
           }
         }
-      })
+      });
     }
 
-    if(couponflag === false) {
+    if (couponflag === false) {
       if (this.state.codename) {
         this.setState({
           couponerror: "",
         });
         const users: any = localStorage.getItem("user");
         let user = JSON.parse(users);
-  
+
         const obj = {
           Code: this.state.codename.toUpperCase(),
           UserID: user.userID,
@@ -2973,6 +3035,10 @@ class PlaceOrder extends React.Component<{
     }
   }
 
+  /**
+   *
+   * @param data : coupon not apply data
+   */
   notapply(data: any) {
     this.setState({
       couponapplieddata: (this.state.couponapplieddata = data),
