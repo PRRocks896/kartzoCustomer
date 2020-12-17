@@ -27,6 +27,7 @@ import {
 import { OrderAPI } from "../../service";
 import creditCardType from "credit-card-type";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import StarRatingComponent from "react-star-rating-component";
 declare var Razorpay: any;
 var $ = require("jquery");
 

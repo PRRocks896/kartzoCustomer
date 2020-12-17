@@ -115,9 +115,14 @@ export default {
     );
   },
 
-
-  
-
-  
+     /**
+   * 
+   * @param data : re-order 
+   */
+  getRatingCountData: async function (data: any) {
+    return WebReqUrl.get(
+      Constant.apiUrl + apiUrl.storeProductController.getratingdata + `?id=${data}`,false
+    );
+  }
   
 };

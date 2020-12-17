@@ -13,7 +13,8 @@ export const productService = {
   getProductDataWithSearching,
   reOrder,
   cancelOrderData,
-  addRating
+  addRating,
+  getRatingCount
 };
 
 /**
@@ -331,6 +332,37 @@ function addRating(data: any) {
   }
   function failure(error: any) {
     return { type: ACTION.product.ADD_RATING_FAILURE, error };
+  }
+}
+
+/**
+ *
+ * @param data : get product with searching
+ */
+function getRatingCount(data: any) {
+  return (dispatch: any) => {
+    dispatch(request({ data }));
+
+    StoreAPI.getRatingCountData(data)
+      .then(async (getratingdata: any) => {
+        console.log("getratingdata", getratingdata);
+        if (getratingdata.status === 200) {
+          dispatch(success(await getratingdata));
+        }
+      })
+      .catch((err: any) => {
+        dispatch(failure(err.toString()));
+      });
+  };
+
+  function request(getratingdata: any) {
+    return { type: ACTION.product.GET_RATING_DATA_REQUEST, getratingdata };
+  }
+  function success(getratingdata: any) {
+    return { type: ACTION.product.GET_RATING_DATA_SUCCESS, getratingdata };
+  }
+  function failure(error: any) {
+    return { type: ACTION.product.GET_RATING_DATA_FAILURE, error };
   }
 }
 

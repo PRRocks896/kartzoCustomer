@@ -11,7 +11,6 @@ import { connect } from "react-redux";
 import constant from "../constant/constant";
 import { getAppName } from "../utils";
 import "./store-item.css";
-import SelectSearch from "react-select-search";
 import {
   addCartRequest,
   getCartListRequest,
@@ -23,6 +22,7 @@ import {
 import { productService } from "../../redux/index";
 import { Modal } from "react-bootstrap";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import StarRatingComponent from "react-star-rating-component";
 // import {Link} from 'react-scroll'
 
 class StoreItem extends React.Component<{
@@ -36,6 +36,7 @@ class StoreItem extends React.Component<{
   getSearchProduct: any;
   getProductDataWithSearching: any;
   removeProductFromCart: any;
+  getRatingCount:any;
 }> {
   prevRef = null;
   ref: any = {};
@@ -59,6 +60,7 @@ class StoreItem extends React.Component<{
     isLoading: this.storeItemState.isLoading,
     loading: true,
     qtydisable: false,
+    rating:0
   };
 
   /** Constructor call */
@@ -108,7 +110,13 @@ class StoreItem extends React.Component<{
     if (localStorage.getItem("token")) {
       localStorage.setItem("merchantID", datamain.merchantID);
       this.getCartData();
+      this.getRatingCount();
     }
+  }
+
+  getRatingCount() {
+    let m:any = this.state.maindata;
+    this.props.getRatingCount(m.merchantID);
   }
 
   /**
@@ -273,6 +281,17 @@ class StoreItem extends React.Component<{
     if (prevProps.deleteCart !== cart.deleteCart) {
       this.deleteCart(cart.deleteCart);
     }
+    if (prevProps.ratingData !== cart.ratingData) {
+      this.ratingData(cart.ratingData);
+    }
+    
+  }
+
+  ratingData(data:any) {
+    console.log("data",data);
+    this.setState({
+      rating:Math.round( data.resultObject )
+    })
   }
 
   deleteCart(data: any) {
@@ -966,6 +985,20 @@ class StoreItem extends React.Component<{
     );
   }
 
+  rating() {
+    return(
+      <>
+      <StarRatingComponent
+                  name="rate1"
+                  starCount={5}
+                  starColor="red"
+                  value={this.state.rating ? this.state.rating : 0}
+      />
+      {/* {Math.round(this.state.rating)} */}
+      </>
+    )
+  }
+
   /** Render DOM */
   render() {
     const { categorydata, productdata, maindata }: any = this.state;
@@ -1047,8 +1080,9 @@ class StoreItem extends React.Component<{
 
                     <div className="name">
                       <div className="small-text">{maindata.categoryName}</div>
-                      <h3>{maindata.shopName}</h3>
+                      <h3>{maindata.shopName} </h3>
                       <p>{maindata.address}</p>
+                      <div style={{paddingTop:'15px'}}>{this.rating()} </div>
                     </div>
                   </div>
                 </div>
@@ -1114,7 +1148,9 @@ class StoreItem extends React.Component<{
                   {this.state.isShowCard === false
                     ? this.cardItem(false)
                     : this.cardItem(true)}
+
                 </div>
+                
               </div>
             </div>
           </div>
@@ -1136,6 +1172,7 @@ const mapStateToProps = (state: any) => ({
   searchableProduct: state.product.searchproduct,
   updateCart: state.product.updatecart,
   deleteCart: state.product.deletecart,
+  ratingData: state.product.ratingdata
 });
 
 /**
@@ -1168,6 +1205,11 @@ const mapDispatchToProps = (dispatch: any) => ({
   /** Remove Product form cart */
   removeProductFromCart: (data: any) =>
     dispatch(productService.removeProductFromCart(data)),
+
+      /** Remove Product form cart */
+      getRatingCount: (data: any) =>
+  dispatch(productService.getRatingCount(data)),
+    
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoreItem);

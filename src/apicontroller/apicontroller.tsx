@@ -36,7 +36,8 @@ const apiUrl = {
         addreorder:'ordercart/re-ordercart',
         deletecouponData:'RedeemCoupon',
         cancelorder:'order/get-refund',
-        addrating:'MerchantReview'
+        addrating:'MerchantReview',
+        getratingdata:'MerchantReview/average-rating'
     },
     cardController: {
         getcard:'card/get-card-list',
