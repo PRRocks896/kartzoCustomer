@@ -991,7 +991,7 @@ class StoreItem extends React.Component<{
       <StarRatingComponent
                   name="rate1"
                   starCount={5}
-                  starColor="red"
+                  starColor="#fff"
                   value={this.state.rating ? this.state.rating : 0}
       />
       {/* {Math.round(this.state.rating)} */}
