@@ -948,6 +948,10 @@ class Profile extends React.Component<{
     });
   }
 
+  /**
+   * 
+   * @param data : cancel order
+   */
   cancelOrder(data: any) {
     const obj = {
       orderid: data.orderID,
@@ -957,6 +961,10 @@ class Profile extends React.Component<{
     this.props.cancelOrderData(obj);
   }
 
+  /**
+   * 
+   * @param data : order rating model
+   */
   openOrderRatingModel(data: any) {
     this.setState({
       ratingmerchantid:data.merchantID,
@@ -966,16 +974,27 @@ class Profile extends React.Component<{
     });
   }
 
+  /**
+   * 
+   * @param data : rating model close
+   */
   handleratingModel(data: any) {
     this.setState({
       orderratingmodel: !this.state.orderratingmodel,
     });
   }
 
+  /**
+   * 
+   * @param nextValue : star value
+   * @param prevValue : prev value
+   * @param name : title
+   */
   onStarClick(nextValue: any, prevValue: any, name: any) {
     this.setState({ rating: nextValue });
   }
 
+  /** Update Rating Data */
   updateRatingsData() {
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);

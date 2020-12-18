@@ -88,8 +88,8 @@ class Packages extends React.Component<{
     displaydesc: this.packagesState.displaydesc,
     addressmaintype: this.packagesState.addressmaintype,
     addressmaintype1: this.packagesState.addressmaintype1,
-    sameaddress:false,
-    qtydisable:false
+    sameaddress: false,
+    qtydisable: false,
   };
 
   /** Constructor call */
@@ -98,16 +98,16 @@ class Packages extends React.Component<{
 
     EventEmitter.subscribe("latlong", (data: any) => {
       this.setState({
-        lat: this.state.lat = data.lat().toString(),
-        long: this.state.long = data.lng().toString(),
+        lat: (this.state.lat = data.lat().toString()),
+        long: (this.state.long = data.lng().toString()),
       });
       this.getAddress(this.state.lat, this.state.long);
     });
 
     EventEmitter.subscribe("latlongdrop", (data: any) => {
       this.setState({
-        lat1: this.state.lat1 = data.lat().toString(),
-        long1: this.state.long1 = data.lng().toString(),
+        lat1: (this.state.lat1 = data.lat().toString()),
+        long1: (this.state.long1 = data.lng().toString()),
       });
       this.getAddressDropMapData(this.state.lat1, this.state.long1);
     });
@@ -198,8 +198,8 @@ class Packages extends React.Component<{
    * @param nextProps : get updated props value
    */
 
-  componentDidUpdate(prevProps:any) {
-    const packageData:any = this.props;
+  componentDidUpdate(prevProps: any) {
+    const packageData: any = this.props;
     if (prevProps.addressDetails !== packageData.addressDetails) {
       this.getAddressDetailsData(packageData.addressDetails);
     }
@@ -214,9 +214,8 @@ class Packages extends React.Component<{
     }
   }
 
-  
-  updateCart(data:any) {
-    if(data.status === 200) {
+  updateCart(data: any) {
+    if (data.status === 200) {
       this.getCartData();
     }
   }
@@ -227,13 +226,13 @@ class Packages extends React.Component<{
    */
   getCartAllProductData(data: any) {
     this.setState({
-      qtydisable:this.state.qtydisable = false,
-      cartarray: this.state.cartarray = data.data,
+      qtydisable: (this.state.qtydisable = false),
+      cartarray: (this.state.cartarray = data.data),
     });
     localStorage.setItem("cartcount", data.totalcount);
     if (this.state.cartarray && this.state.cartarray.length > 0) {
       this.setState({
-        cartarray: this.state.cartarray = data.data,
+        cartarray: (this.state.cartarray = data.data),
         displaydesc: false,
       });
     } else {
@@ -251,7 +250,7 @@ class Packages extends React.Component<{
    */
   getAddressDetailsData(data: any) {
     this.setState({
-      addressarray: this.state.addressarray = data.data,
+      addressarray: (this.state.addressarray = data.data),
     });
   }
 
@@ -261,15 +260,15 @@ class Packages extends React.Component<{
    */
   getSearchAddressData(data: any) {
     this.setState({
-      searchaddress: this.state.searchaddress = data,
+      searchaddress: (this.state.searchaddress = data),
     });
     if (this.state.searchaddress.length > 0) {
       this.setState({
-        searchSection: this.state.searchSection = true,
+        searchSection: (this.state.searchSection = true),
       });
     } else {
       this.setState({
-        searchSection: this.state.searchSection = false,
+        searchSection: (this.state.searchSection = false),
       });
     }
   }
@@ -395,13 +394,13 @@ class Packages extends React.Component<{
 
   /** Model Open */
   modelOpenDrop() {
-    console.log("search",this.state.searchSection)
+    console.log("search", this.state.searchSection);
     this.setState({
       show1: !this.state.show1,
     });
-    if(this.state.selectedaddress) {
+    if (this.state.selectedaddress) {
       this.setState({
-        searchSection: this.state.searchSection =  false,
+        searchSection: (this.state.searchSection = false),
       });
     }
   }
@@ -426,7 +425,7 @@ class Packages extends React.Component<{
     this.setState({
       showMap1: !this.state.showMap1,
       show1: !this.state.show1,
-      searchSection: this.state.searchSection = false,
+      searchSection: (this.state.searchSection = false),
     });
   }
 
@@ -435,31 +434,31 @@ class Packages extends React.Component<{
     this.setState({
       showMap: !this.state.showMap,
       show: !this.state.show,
-      searchSection: this.state.searchSection = false,
+      searchSection: (this.state.searchSection = false),
     });
   }
 
   /** Map Open */
   mapOpen() {
     this.setState({
-      showMap: this.state.showMap = true,
-      show: this.state.show = false,
-      falt: this.state.flat = "",
-      reach: this.state.reach = "",
-      lat: this.state.lat = 22.2856,
-      long: this.state.long = 70.7561,
+      showMap: (this.state.showMap = true),
+      show: (this.state.show = false),
+      falt: (this.state.flat = ""),
+      reach: (this.state.reach = ""),
+      lat: (this.state.lat = 22.2856),
+      long: (this.state.long = 70.7561),
     });
   }
 
   /** Map Open */
   mapOpenDrop() {
     this.setState({
-      showMap1: this.state.showMap1 = true,
-      show1: this.state.show1 = false,
-      flat1: this.state.flat1 = "",
-      reach1: this.state.reach1 = "",
-      lat1: this.state.lat1 = 22.2856,
-      long1: this.state.long1 = 70.7561,
+      showMap1: (this.state.showMap1 = true),
+      show1: (this.state.show1 = false),
+      flat1: (this.state.flat1 = ""),
+      reach1: (this.state.reach1 = ""),
+      lat1: (this.state.lat1 = 22.2856),
+      long1: (this.state.long1 = 70.7561),
     });
   }
 
@@ -467,20 +466,20 @@ class Packages extends React.Component<{
   addressSelect(data: any) {
     this.setState({
       show: !this.state.show,
-      selectblock: this.state.selectblock = true,
-      selectedaddress: this.state.selectedaddress = data.address,
-      name: this.state.name = data.name,
-      mobile: this.state.mobile = data.mobile,
+      selectblock: (this.state.selectblock = true),
+      selectedaddress: (this.state.selectedaddress = data.address),
+      name: (this.state.name = data.name),
+      mobile: (this.state.mobile = data.mobile),
       addressmaintype: data.addressType,
     });
-    if(this.state.selectedaddress === this.state.selectedaddressdrop) {
+    if (this.state.selectedaddress === this.state.selectedaddressdrop) {
       this.setState({
-        sameaddress:true
-      })
+        sameaddress: true,
+      });
     } else {
       this.setState({
-        sameaddress:false
-      })
+        sameaddress: false,
+      });
     }
   }
 
@@ -488,20 +487,20 @@ class Packages extends React.Component<{
   addressSelectDrop(data: any) {
     this.setState({
       show1: !this.state.show1,
-      selectblock1: this.state.selectblock1 = true,
-      selectedaddressdrop: this.state.selectedaddressdrop = data.address,
-      name1: this.state.name1 = data.name,
-      mobile1: this.state.mobile1 = data.mobile,
+      selectblock1: (this.state.selectblock1 = true),
+      selectedaddressdrop: (this.state.selectedaddressdrop = data.address),
+      name1: (this.state.name1 = data.name),
+      mobile1: (this.state.mobile1 = data.mobile),
       addressmaintype1: data.addressType,
     });
-    if(this.state.selectedaddress === this.state.selectedaddressdrop) {
+    if (this.state.selectedaddress === this.state.selectedaddressdrop) {
       this.setState({
-        sameaddress:true
-      })
+        sameaddress: true,
+      });
     } else {
       this.setState({
-        sameaddress:false
-      })
+        sameaddress: false,
+      });
     }
   }
 
@@ -523,53 +522,53 @@ class Packages extends React.Component<{
   changeAddress(e: any) {
     if (e.target.id === "1") {
       this.setState({
-        addresstype: this.state.addresstype = e.target.id,
+        addresstype: (this.state.addresstype = e.target.id),
       });
       let addresslist: any = this.state.addressarray;
-      if(addresslist.length > 0) {
-      addresslist.map((data: any, index: number) =>
-        data.addressType === "Home"
-          ? this.setState({
-              homeerror: this.state.homeerror =
-                "An address is already saved as HOME",
-              workerror: this.state.workerror = "",
-            })
-          : ""
-      );
-          } else {
-            if(this.state.workerror) {
-              this.setState({
-                workerror: this.state.workerror = ""
+      if (addresslist.length > 0) {
+        addresslist.map((data: any, index: number) =>
+          data.addressType === "Home"
+            ? this.setState({
+                homeerror: (this.state.homeerror =
+                  "An address is already saved as HOME"),
+                workerror: (this.state.workerror = ""),
               })
-            }
-          }
+            : ""
+        );
+      } else {
+        if (this.state.workerror) {
+          this.setState({
+            workerror: (this.state.workerror = ""),
+          });
+        }
+      }
     } else if (e.target.id === "2") {
       this.setState({
-        addresstype: this.state.addresstype = e.target.id,
+        addresstype: (this.state.addresstype = e.target.id),
       });
       let addresslist: any = this.state.addressarray;
-      if(addresslist.length > 0) {
-      addresslist.map((data: any, index: number) =>
-        data.addressType === "Work"
-          ? this.setState({
-              homeerror: this.state.homeerror = "",
-              workerror: this.state.workerror =
-                "An address is already saved as WORK",
-            })
-          : ""
-      );
-          } else {
-            if(this.state.homeerror) {
-              this.setState({
-                homeerror: this.state.homeerror = ""
+      if (addresslist.length > 0) {
+        addresslist.map((data: any, index: number) =>
+          data.addressType === "Work"
+            ? this.setState({
+                homeerror: (this.state.homeerror = ""),
+                workerror: (this.state.workerror =
+                  "An address is already saved as WORK"),
               })
-            }
-          }
+            : ""
+        );
+      } else {
+        if (this.state.homeerror) {
+          this.setState({
+            homeerror: (this.state.homeerror = ""),
+          });
+        }
+      }
     } else if (e.target.id === "3") {
       this.setState({
-        homeerror: this.state.homeerror = "",
-        workerror: this.state.workerror = "",
-        addresstype: this.state.addresstype = e.target.id,
+        homeerror: (this.state.homeerror = ""),
+        workerror: (this.state.workerror = ""),
+        addresstype: (this.state.addresstype = e.target.id),
       });
     }
   }
@@ -581,55 +580,53 @@ class Packages extends React.Component<{
   changeDropAddress(e: any) {
     if (e.target.id === "1") {
       this.setState({
-        addressdroptype: this.state.addressdroptype = e.target.id,
+        addressdroptype: (this.state.addressdroptype = e.target.id),
       });
       let addresslist: any = this.state.addressarray;
-      if(addresslist.length > 0) {
-      addresslist.map((data: any, index: number) =>
-        data.addressType === "Home"
-          ? this.setState({
-              home1error: this.state.home1error =
-                "An address is already saved as HOME",
-              work1error: this.state.work1error = "",
-            })
-          : ""
-      );
-          } else {
-
-            if(this.state.work1error) {
-              this.setState({
-                work1error: this.state.work1error = ""
-              })
-            }
-          }
-    } else if (e.target.id === "2") {
-      this.setState({
-        addressdroptype: this.state.addressdroptype = e.target.id,
-      });
-      let addresslist: any = this.state.addressarray;
-      if(addresslist.length > 0) {
+      if (addresslist.length > 0) {
         addresslist.map((data: any, index: number) =>
-          data.addressType === "Work"
+          data.addressType === "Home"
             ? this.setState({
-                home1error: this.state.home1error = "",
-                work1error: this.state.work1error =
-                  "An address is already saved as WORK",
+                home1error: (this.state.home1error =
+                  "An address is already saved as HOME"),
+                work1error: (this.state.work1error = ""),
               })
             : ""
         );
       } else {
-       
-        if(this.state.home1error) {
+        if (this.state.work1error) {
           this.setState({
-            home1error: this.state.home1error = ""
-          })
+            work1error: (this.state.work1error = ""),
+          });
+        }
+      }
+    } else if (e.target.id === "2") {
+      this.setState({
+        addressdroptype: (this.state.addressdroptype = e.target.id),
+      });
+      let addresslist: any = this.state.addressarray;
+      if (addresslist.length > 0) {
+        addresslist.map((data: any, index: number) =>
+          data.addressType === "Work"
+            ? this.setState({
+                home1error: (this.state.home1error = ""),
+                work1error: (this.state.work1error =
+                  "An address is already saved as WORK"),
+              })
+            : ""
+        );
+      } else {
+        if (this.state.home1error) {
+          this.setState({
+            home1error: (this.state.home1error = ""),
+          });
         }
       }
     } else if (e.target.id === "3") {
       this.setState({
-        home1error: this.state.home1error = "",
-        work1error: this.state.work1error = "",
-        addressdroptype: this.state.addressdroptype = e.target.id,
+        home1error: (this.state.home1error = ""),
+        work1error: (this.state.work1error = ""),
+        addressdroptype: (this.state.addressdroptype = e.target.id),
       });
     }
   }
@@ -717,14 +714,14 @@ class Packages extends React.Component<{
       addresslist.map((data: any, index: number) =>
         data.addressType === "Home"
           ? this.setState({
-              homeerror: this.state.homeerror =
-                "An address is already saved as HOME",
-              workerror: this.state.workerror = "",
+              homeerror: (this.state.homeerror =
+                "An address is already saved as HOME"),
+              workerror: (this.state.workerror = ""),
             })
           : ""
       );
     }
-   
+
     const isValid = this.validate();
     if (isValid) {
       this.setState({
@@ -756,26 +753,26 @@ class Packages extends React.Component<{
       addresslist.map((data: any, index: number) =>
         data.addressType === "Home"
           ? this.setState({
-              home1error: this.state.home1error =
-                "An address is already saved as HOME",
-              work1error: this.state.work1error = "",
+              home1error: (this.state.home1error =
+                "An address is already saved as HOME"),
+              work1error: (this.state.work1error = ""),
             })
           : ""
       );
     }
-    if(this.state.addresstype === "1" && this.state.addressdroptype === "1") {
+    if (this.state.addresstype === "1" && this.state.addressdroptype === "1") {
       this.setState({
-        home1error: this.state.home1error =
-          "An address is already saved as HOME",
-          work1error: this.state.work1error = ""
-      })
-    } 
-    if(this.state.addresstype === "2" && this.state.addressdroptype === "2") {
+        home1error: (this.state.home1error =
+          "An address is already saved as HOME"),
+        work1error: (this.state.work1error = ""),
+      });
+    }
+    if (this.state.addresstype === "2" && this.state.addressdroptype === "2") {
       this.setState({
-        work1error: this.state.work1error =
-          "An address is already saved as WORK",
-          home1error: this.state.home1error = ""
-      })
+        work1error: (this.state.work1error =
+          "An address is already saved as WORK"),
+        home1error: (this.state.home1error = ""),
+      });
     }
     const isValid = this.validateDrop();
     if (isValid) {
@@ -833,8 +830,8 @@ class Packages extends React.Component<{
         const { lat, lng } = response.results[0].geometry.location;
         console.log(lat, lng);
         this.setState({
-          lat: this.state.lat = lat,
-          long: this.state.long = lng,
+          lat: (this.state.lat = lat),
+          long: (this.state.long = lng),
           show: !this.state.show,
           showMap: !this.state.showMap,
         });
@@ -856,8 +853,8 @@ class Packages extends React.Component<{
         const { lat, lng } = response.results[0].geometry.location;
         console.log(lat, lng);
         this.setState({
-          lat1: this.state.lat1 = lat,
-          long1: this.state.long1 = lng,
+          lat1: (this.state.lat1 = lat),
+          long1: (this.state.long1 = lng),
           show1: !this.state.show1,
           showMap1: !this.state.showMap1,
         });
@@ -874,8 +871,8 @@ class Packages extends React.Component<{
    */
   async incrementQty(data: any) {
     this.setState({
-      qtydisable:true
-    })
+      qtydisable: true,
+    });
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -886,18 +883,17 @@ class Packages extends React.Component<{
       discountApplied: data.discountApplied,
       merchantID: data.merchantID,
     };
-   await this.props.updateToCart(obj, data.orderCartID);
-  
+    await this.props.updateToCart(obj, data.orderCartID);
   }
 
   /**
    *
    * @param data : decrement quantity in cart product
    */
- async decrementQty(data: any) {
-  this.setState({
-    qtydisable:true
-  })
+  async decrementQty(data: any) {
+    this.setState({
+      qtydisable: true,
+    });
     const users: any = localStorage.getItem("user");
     let user = JSON.parse(users);
     const mid: any = localStorage.getItem("merchantID");
@@ -928,7 +924,7 @@ class Packages extends React.Component<{
       this.setState({
         clearcart: false,
         show: true,
-        displaydesc: this.state.displaydesc = true,
+        displaydesc: (this.state.displaydesc = true),
       });
       this.getCartData();
       localStorage.removeItem("merchantID");
@@ -988,9 +984,14 @@ class Packages extends React.Component<{
             {this.state.cartarray
               ? this.state.cartarray.length > 0 &&
                 this.state.cartarray.map((cartdata: any, index: any) => (
-                  <div className="flex-box" key={index} style={{
-                    pointerEvents: this.state.qtydisable === true ? "none" : "visible",
-                  }}>
+                  <div
+                    className="flex-box"
+                    key={index}
+                    style={{
+                      pointerEvents:
+                        this.state.qtydisable === true ? "none" : "visible",
+                    }}
+                  >
                     <div className="bdr-roud"></div>
                     <div className="item-title ">
                       <h4>{cartdata.productName}</h4>
@@ -1502,8 +1503,7 @@ class Packages extends React.Component<{
                             onClick={() => this.addressSelectDrop(address)}
                           >
                             <img
-                             src={require("../../assets/images/home-icon.png")}
-                              
+                              src={require("../../assets/images/home-icon.png")}
                             />
                             <div className="add-map">
                               <div className="text-address">
@@ -1533,7 +1533,7 @@ class Packages extends React.Component<{
                             }
                           >
                             <img
-                             src={require("../../assets/images/search.svg")}
+                              src={require("../../assets/images/search.svg")}
                             />
                             <div className="add-map">
                               <div className="text-address">
@@ -1822,25 +1822,24 @@ class Packages extends React.Component<{
           )}
           <div className="btn-line"></div>
           <div className="circle-box">
-            { 
-            this.state.selectedaddress ? (
-               <div className="icon-dot-bg">
-              <svg
-                version="1.1"
-                id="Layer_1"
-                xmlns="http://www.w3.org/2000/svg"
-                x="0px"
-                y="0px"
-                viewBox="0 0 319 318"
-              >
-                <g>
-                  <path d="M159.8,8.68c82.77,0.05,150.08,67.18,150.01,149.59c-0.07,83.76-67.4,151.54-150.41,151.43   C76.4,309.59,8.27,241.72,8.26,159.11C8.24,75.32,75.43,8.63,159.8,8.68z M124.36,146.18c1.32-1.45,2.09-2.36,2.92-3.21   c5.91-5.93,11.91-11.78,17.74-17.79c4.8-4.94,4.71-11.2,0.01-16.01c-4.79-4.91-11.33-5.14-16.28-0.24   c-13.94,13.8-27.82,27.67-41.63,41.61c-5.01,5.06-5.03,11.59-0.07,16.72c13.46,13.93,27,27.79,40.58,41.59   c4.78,4.86,11.19,4.86,16.04,0.29c5.04-4.75,5.32-11.12,0.45-16.27c-5.83-6.18-11.85-12.19-17.77-18.28   c-0.72-0.75-1.35-1.59-2.43-2.86c2.03,0,3.37,0,4.72,0c30.75-0.01,61.5-0.01,92.24-0.02c6.54,0,11.45-3.41,13.17-9.05   c2.59-8.48-3.71-16.46-13.15-16.47c-30.62-0.04-61.25-0.02-91.87-0.02C127.73,146.18,126.41,146.18,124.36,146.18z" />
-                </g>
-              </svg>
-            </div>
-            ) : ('')
-            } 
-           
+            {this.state.selectedaddress ? (
+              <div className="icon-dot-bg">
+                <svg
+                  version="1.1"
+                  id="Layer_1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 319 318"
+                >
+                  <g>
+                    <path d="M159.8,8.68c82.77,0.05,150.08,67.18,150.01,149.59c-0.07,83.76-67.4,151.54-150.41,151.43   C76.4,309.59,8.27,241.72,8.26,159.11C8.24,75.32,75.43,8.63,159.8,8.68z M124.36,146.18c1.32-1.45,2.09-2.36,2.92-3.21   c5.91-5.93,11.91-11.78,17.74-17.79c4.8-4.94,4.71-11.2,0.01-16.01c-4.79-4.91-11.33-5.14-16.28-0.24   c-13.94,13.8-27.82,27.67-41.63,41.61c-5.01,5.06-5.03,11.59-0.07,16.72c13.46,13.93,27,27.79,40.58,41.59   c4.78,4.86,11.19,4.86,16.04,0.29c5.04-4.75,5.32-11.12,0.45-16.27c-5.83-6.18-11.85-12.19-17.77-18.28   c-0.72-0.75-1.35-1.59-2.43-2.86c2.03,0,3.37,0,4.72,0c30.75-0.01,61.5-0.01,92.24-0.02c6.54,0,11.45-3.41,13.17-9.05   c2.59-8.48-3.71-16.46-13.15-16.47c-30.62-0.04-61.25-0.02-91.87-0.02C127.73,146.18,126.41,146.18,124.36,146.18z" />
+                  </g>
+                </svg>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
           <div className="line-dot-1"> </div>
         </div>
@@ -1885,27 +1884,27 @@ class Packages extends React.Component<{
 
           <div className="btn-line"></div>
           <div className="circle-box">
-            { 
-            this.state.selectedaddressdrop ? (
-               <div className="icon-dot-bg2">
-              <svg
-                version="1.1"
-                id="Layer_1"
-                xmlns="http://www.w3.org/2000/svg"
-                x="0px"
-                y="0px"
-                viewBox="0 0 319 318"
-              >
-                <g>
-                  <path d="M159.8,8.68c82.77,0.05,150.08,67.18,150.01,149.59c-0.07,83.76-67.4,151.54-150.41,151.43   C76.4,309.59,8.27,241.72,8.26,159.11C8.24,75.32,75.43,8.63,159.8,8.68z M124.36,146.18c1.32-1.45,2.09-2.36,2.92-3.21   c5.91-5.93,11.91-11.78,17.74-17.79c4.8-4.94,4.71-11.2,0.01-16.01c-4.79-4.91-11.33-5.14-16.28-0.24   c-13.94,13.8-27.82,27.67-41.63,41.61c-5.01,5.06-5.03,11.59-0.07,16.72c13.46,13.93,27,27.79,40.58,41.59   c4.78,4.86,11.19,4.86,16.04,0.29c5.04-4.75,5.32-11.12,0.45-16.27c-5.83-6.18-11.85-12.19-17.77-18.28   c-0.72-0.75-1.35-1.59-2.43-2.86c2.03,0,3.37,0,4.72,0c30.75-0.01,61.5-0.01,92.24-0.02c6.54,0,11.45-3.41,13.17-9.05   c2.59-8.48-3.71-16.46-13.15-16.47c-30.62-0.04-61.25-0.02-91.87-0.02C127.73,146.18,126.41,146.18,124.36,146.18z" />
-                </g>
-              </svg>
-            </div>
-            ) : ('')
-            } 
+            {this.state.selectedaddressdrop ? (
+              <div className="icon-dot-bg2">
+                <svg
+                  version="1.1"
+                  id="Layer_1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 319 318"
+                >
+                  <g>
+                    <path d="M159.8,8.68c82.77,0.05,150.08,67.18,150.01,149.59c-0.07,83.76-67.4,151.54-150.41,151.43   C76.4,309.59,8.27,241.72,8.26,159.11C8.24,75.32,75.43,8.63,159.8,8.68z M124.36,146.18c1.32-1.45,2.09-2.36,2.92-3.21   c5.91-5.93,11.91-11.78,17.74-17.79c4.8-4.94,4.71-11.2,0.01-16.01c-4.79-4.91-11.33-5.14-16.28-0.24   c-13.94,13.8-27.82,27.67-41.63,41.61c-5.01,5.06-5.03,11.59-0.07,16.72c13.46,13.93,27,27.79,40.58,41.59   c4.78,4.86,11.19,4.86,16.04,0.29c5.04-4.75,5.32-11.12,0.45-16.27c-5.83-6.18-11.85-12.19-17.77-18.28   c-0.72-0.75-1.35-1.59-2.43-2.86c2.03,0,3.37,0,4.72,0c30.75-0.01,61.5-0.01,92.24-0.02c6.54,0,11.45-3.41,13.17-9.05   c2.59-8.48-3.71-16.46-13.15-16.47c-30.62-0.04-61.25-0.02-91.87-0.02C127.73,146.18,126.41,146.18,124.36,146.18z" />
+                  </g>
+                </svg>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
           <div className="line-dot-2"> </div>
-      </div>
+        </div>
       </div>
     );
   }
@@ -1913,43 +1912,44 @@ class Packages extends React.Component<{
   /** Same Address Model Close */
   handleSameAddress() {
     this.setState({
-      sameaddress:!this.state.sameaddress
-    })
+      sameaddress: !this.state.sameaddress,
+    });
   }
 
   /** Same Address Model Open */
   sameaddress() {
-    return(
+    return (
       <Modal
-      className="modal-dialog-centered d-ct"
-      show={this.state.sameaddress}
-      onHide={this.handleSameAddress}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title></Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div className="clear-cart">
-          <img
-            src={require("../../assets/images/location.svg")}
-            alt="cart icon"
-          />
-          <h1>Closeby locations detected</h1>
-          <p>
-            <strong>
-            The pickup and drop addresses are exactly same. Please check the locations{" "}
-            </strong>
-          </p>
-          <div className="flex-btn">
-            <button className="cencel-btn" onClick={this.handleSameAddress}>
-              Ok
-            </button>
+        className="modal-dialog-centered d-ct"
+        show={this.state.sameaddress}
+        onHide={this.handleSameAddress}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="clear-cart">
+            <img
+              src={require("../../assets/images/location.svg")}
+              alt="cart icon"
+            />
+            <h1>Closeby locations detected</h1>
+            <p>
+              <strong>
+                The pickup and drop addresses are exactly same. Please check the
+                locations{" "}
+              </strong>
+            </p>
+            <div className="flex-btn">
+              <button className="cencel-btn" onClick={this.handleSameAddress}>
+                Ok
+              </button>
+            </div>
           </div>
-        </div>
-      </Modal.Body>
-      <Modal.Footer></Modal.Footer>
-    </Modal>
-    )
+        </Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
+    );
   }
 
   /** Render DOM */
@@ -2025,7 +2025,7 @@ const mapStateToProps = (state: any) => ({
   addressDetails: state.placeOrder.addressdata,
   searchAddressDetails: state.sendpackage.searchaddressdata,
   getCartDetail: state.product.getcartdetails,
-  updateCart: state.product.updatecart
+  updateCart: state.product.updatecart,
 });
 
 /**
@@ -2033,7 +2033,6 @@ const mapStateToProps = (state: any) => ({
  * @param dispatch : call api with action
  */
 const mapDispatchToProps = (dispatch: any) => ({
-  
   /** Get Address List */
   getAddressList: (data: any) =>
     dispatch(placeOrderService.getAddressList(data)),

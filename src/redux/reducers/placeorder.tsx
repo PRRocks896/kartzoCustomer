@@ -6,18 +6,18 @@ const initialState = {
   addaddress: "",
   getaddressdata: "",
   deletedata: "",
-  getcarddata:"",
-  applycoupon:"",
-  getcouponapply:"",
-  removecoupon:"",
-  orderdata:"",
-  updateaddress:"",
-  addcard:"",
-  deletecard:""
+  getcarddata: "",
+  applycoupon: "",
+  getcouponapply: "",
+  removecoupon: "",
+  orderdata: "",
+  updateaddress: "",
+  addcard: "",
+  deletecard: "",
 };
 
 /**
- * 
+ *
  * @param state : intial state
  * @param action : action response
  */
@@ -87,128 +87,125 @@ const placeOrder = (state = initialState, action: any) => {
         error: action.error,
       };
 
-      case ACTION.card.ADD_CARD_REQUEST:
-        return {
-          ...state,
-        };
-      case ACTION.card.ADD_CARD_SUCCESS:
-        return {
-          ...state,
-          addcard:action.addcard
-        };
-      case ACTION.card.ADD_CARD_FAILURE:
-        return {
-          ...state,
-          error: action.error,
-        };
+    case ACTION.card.ADD_CARD_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.card.ADD_CARD_SUCCESS:
+      return {
+        ...state,
+        addcard: action.addcard,
+      };
+    case ACTION.card.ADD_CARD_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      };
 
-        case ACTION.card.GET_CARD_REQUEST:
-          return {
-            ...state,
-          };
-        case ACTION.card.GET_CARD_SUCCESS:
-          return {
-            ...state,
-            getcarddata: action.getcard
-          };
-        case ACTION.card.GET_CARD_FAILURE:
-          return {
-            ...state,
-            getcarddata: {},
-            error: action.error,
-          };
+    case ACTION.card.GET_CARD_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.card.GET_CARD_SUCCESS:
+      return {
+        ...state,
+        getcarddata: action.getcard,
+      };
+    case ACTION.card.GET_CARD_FAILURE:
+      return {
+        ...state,
+        getcarddata: {},
+        error: action.error,
+      };
 
-          case ACTION.card.EDIT_CARD_REQUEST:
-            return {
-              ...state,
-            };
-          case ACTION.card.EDIT_CARD_SUCCESS:
-            return {
-              ...state
-            };
-          case ACTION.card.EDIT_CARD_FAILURE:
-            return {
-              ...state,
-              error: action.error,
-            };
+    case ACTION.card.EDIT_CARD_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.card.EDIT_CARD_SUCCESS:
+      return {
+        ...state,
+      };
+    case ACTION.card.EDIT_CARD_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      };
 
-            case ACTION.order.APPLY_COUPON_REQUEST:
-              return {
-                ...state,
-              };
-            case ACTION.order.APPLY_COUPON_SUCCESS:
-              return {
-                ...state,
-                applycoupon: action.applyCoupon
-              };
-            case ACTION.order.APPLY_COUPON_FAILURE:
-              return {
-                ...state,
-                error: action.error,
-              };
+    case ACTION.order.APPLY_COUPON_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.order.APPLY_COUPON_SUCCESS:
+      return {
+        ...state,
+        applycoupon: action.applyCoupon,
+      };
+    case ACTION.order.APPLY_COUPON_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      };
 
-              case ACTION.order.GET_COUPON_APPLY_REQUEST:
-                return {
-                  ...state,
-                };
-              case ACTION.order.GET_COUPON_APPLY_SUCCESS:
-                return {
-                  ...state,
-                  getcouponapply: action.getApplyCoupon
-                };
-              case ACTION.order.GET_COUPON_APPLY_FAILURE:
-                return {
-                  ...state,
-                  error: action.error,
-                };
+    case ACTION.order.GET_COUPON_APPLY_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.order.GET_COUPON_APPLY_SUCCESS:
+      return {
+        ...state,
+        getcouponapply: action.getApplyCoupon,
+      };
+    case ACTION.order.GET_COUPON_APPLY_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      };
 
-                case ACTION.order.REMOVE_APPLY_COUPON_REQUEST:
-                  return {
-                    ...state,
-                  };
-                case ACTION.order.REMOVE_APPLY_COUPON_SUCCESS:
-                  return {
-                    ...state,
-                    removecoupon: action.removeApplyCoupon
-                  };
-                case ACTION.order.REMOVE_APPLY_COUPON_FAILURE:
-                  return {
-                    ...state,
-                    error: action.error,
-                  };
+    case ACTION.order.REMOVE_APPLY_COUPON_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.order.REMOVE_APPLY_COUPON_SUCCESS:
+      return {
+        ...state,
+        removecoupon: action.removeApplyCoupon,
+      };
+    case ACTION.order.REMOVE_APPLY_COUPON_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      };
 
+    case ACTION.order.CREATE_ORDER_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.order.CREATE_ORDER_SUCCESS:
+      return {
+        ...state,
+        orderdata: action.orderdata,
+      };
+    case ACTION.order.CREATE_ORDER_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      };
 
-                  case ACTION.order.CREATE_ORDER_REQUEST:
-                    return {
-                      ...state,
-                    };
-                  case ACTION.order.CREATE_ORDER_SUCCESS:
-                    return {
-                      ...state,
-                      orderdata: action.orderdata
-                    };
-                  case ACTION.order.CREATE_ORDER_FAILURE:
-                    return {
-                      ...state,
-                      error: action.error,
-                    };
-
-                    case ACTION.card.DELETE_CARD_REQUEST:
-                      return {
-                        ...state,
-                      };
-                    case ACTION.card.DELETE_CARD_SUCCESS:
-                      return {
-                        ...state,
-                        deletecard: action.deletecard
-                      };
-                    case ACTION.card.DELETE_CARD_FAILURE:
-                      return {
-                        ...state,
-                        error: action.error,
-                      };
-    
-  
+    case ACTION.card.DELETE_CARD_REQUEST:
+      return {
+        ...state,
+      };
+    case ACTION.card.DELETE_CARD_SUCCESS:
+      return {
+        ...state,
+        deletecard: action.deletecard,
+      };
+    case ACTION.card.DELETE_CARD_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      };
 
     default:
       return state;
