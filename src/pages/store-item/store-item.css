@@ -118,7 +118,7 @@
 }
 
 .store-name .store, .show-store-res .store {
-	padding-top: 50px;
+	padding-top: 25px;
 	color: #fff;
 }
 
@@ -130,7 +130,7 @@
 }
 .store-name .store img {
 	width: 100%;
-    height: 100px;
+    height: 85px;
 }
 .cart-icon{
 	position: relative;
@@ -160,15 +160,16 @@
 }
 
 .store-name .store h3, .show-store-res .store h3{
-	font-size: 25px;
+	font-size: 20px;
 	font-weight: 600;
 	color: #fff;
 	margin: 1px 0px;
 }
 
 .store-name .store p, .show-store-res {
-	font-weight: 600;
-	font-size: 16px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 0px;
 }
 
 /* add to card Item */
@@ -599,13 +600,13 @@
 }
 
 .pro-img {
-    float: left;
+	float: left;
     width: 110px;
-    height: 100px;
+    height: 85px;
     border-radius: 4px;
     overflow: hidden;
     margin-right: 15px;
-    margin-bottom: -15px;
+    margin-bottom: 0px;
 }
 /* responsive code start here */
 
@@ -905,4 +906,12 @@
 .d-ct .modal-dialog {
     min-width: 600px;
     margin: 1.75rem auto;
+}
+.store-name .store .name {
+    overflow: hidden;
+}
+
+.rating-icon-svg svg {
+	margin-right: 5px;
+	margin-top: -5px;
 }

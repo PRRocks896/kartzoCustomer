@@ -36,7 +36,7 @@ class StoreItem extends React.Component<{
   getSearchProduct: any;
   getProductDataWithSearching: any;
   removeProductFromCart: any;
-  getRatingCount:any;
+  getRatingCount: any;
 }> {
   prevRef = null;
   ref: any = {};
@@ -60,7 +60,8 @@ class StoreItem extends React.Component<{
     isLoading: this.storeItemState.isLoading,
     loading: true,
     qtydisable: false,
-    rating:0
+    rating: 0,
+    userratingcount:0
   };
 
   /** Constructor call */
@@ -107,15 +108,16 @@ class StoreItem extends React.Component<{
     }
     console.log("maindata", this.state.maindata);
     let datamain: any = this.state.maindata;
+    this.getRatingCount();
     if (localStorage.getItem("token")) {
       localStorage.setItem("merchantID", datamain.merchantID);
       this.getCartData();
-      this.getRatingCount();
+      
     }
   }
 
   getRatingCount() {
-    let m:any = this.state.maindata;
+    let m: any = this.state.maindata;
     this.props.getRatingCount(m.merchantID);
   }
 
@@ -284,14 +286,14 @@ class StoreItem extends React.Component<{
     if (prevProps.ratingData !== cart.ratingData) {
       this.ratingData(cart.ratingData);
     }
-    
   }
 
-  ratingData(data:any) {
-    console.log("data",data);
+  ratingData(data: any) {
+    console.log("data", data);
     this.setState({
-      rating:Math.round( data.resultObject )
-    })
+      rating: Math.round(data.resultObject.averageRating),
+      userratingcount: data.resultObject.userCount
+    });
   }
 
   deleteCart(data: any) {
@@ -321,7 +323,7 @@ class StoreItem extends React.Component<{
    * @param e : search value success response
    */
   searchItemDataKeyUp(e: any) {
-    if(e.target.value) {
+    if (e.target.value) {
       const data: any = this.state.maindata;
       const obj: searchProductListRequest = {
         name: e.target.value,
@@ -355,8 +357,8 @@ class StoreItem extends React.Component<{
     this.props.getProductDataWithSearching(obj);
     setTimeout(() => {
       this.setState({
-        searchproductdata:[]
-      })
+        searchproductdata: [],
+      });
       this.getProductData();
     }, 12);
   }
@@ -420,7 +422,7 @@ class StoreItem extends React.Component<{
   searchableDataProduct(data: any) {
     this.setState({
       searchproductdatadetails: (this.state.searchproductdatadetails = data),
-      activeLink: null,
+      activeLink: this.state.activeLink =  0,
     });
   }
 
@@ -529,7 +531,7 @@ class StoreItem extends React.Component<{
 
   /** Search results link active */
   handleClickStoreItemEvent() {
-    this.setState({ activeLink: null });
+    this.setState({ activeLink: 0 });
   }
 
   /**
@@ -673,22 +675,25 @@ class StoreItem extends React.Component<{
               placeholder="Search for an item"
               onKeyUp={this.searchItemDataKeyUp}
             />
-            {
-              this.state.searchproductdata ? (
-                <div className="main_search_box_div">
-                  {
-                  this.state.searchproductdata.length > 0 && this.state.searchproductdata.map((data:any,index:number) => (
-              <div className="search_results_div" key={index} onClick={() => this.onProductSelectId(data.value)}>
-                <i className="fas fa-search"></i>
-                <p>{data.name}</p>
-              </div>             
-                ))
-                  }
-                </div>
-              ) : (
-                ''
-              )
-            }
+            {this.state.searchproductdata ? (
+              <div className="main_search_box_div">
+                {this.state.searchproductdata.length > 0 &&
+                  this.state.searchproductdata.map(
+                    (data: any, index: number) => (
+                      <div
+                        className="search_results_div"
+                        key={index}
+                        onClick={() => this.onProductSelectId(data.value)}
+                      >
+                        <i className="fas fa-search"></i>
+                        <p>{data.name}</p>
+                      </div>
+                    )
+                  )}
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         {/* <div className="serch-box" onKeyUp={this.searchItemDataKeyUp}>
@@ -986,17 +991,16 @@ class StoreItem extends React.Component<{
   }
 
   rating() {
-    return(
+    return (
       <>
-      <StarRatingComponent
-                  name="rate1"
-                  starCount={5}
-                  starColor="#fff"
-                  value={this.state.rating ? this.state.rating : 0}
-      />
-      {/* {Math.round(this.state.rating)} */}
+      <div className="rating-icon-svg">
+      <svg xmlns="http://www.w3.org/2000/svg" height="12px" viewBox="0 -10 511.99143 511" width="12px" fill="#fff"><path d="m510.652344 185.882812c-3.371094-10.367187-12.566406-17.707031-23.402344-18.6875l-147.796875-13.417968-58.410156-136.75c-4.3125-10.046875-14.125-16.53125-25.046875-16.53125s-20.738282 6.484375-25.023438 16.53125l-58.410156 136.75-147.820312 13.417968c-10.835938 1-20.011719 8.339844-23.402344 18.6875-3.371094 10.367188-.257813 21.738282 7.9375 28.925782l111.722656 97.964844-32.941406 145.085937c-2.410156 10.667969 1.730468 21.699219 10.582031 28.097656 4.757813 3.457031 10.347656 5.183594 15.957031 5.183594 4.820313 0 9.644532-1.28125 13.953125-3.859375l127.445313-76.203125 127.421875 76.203125c9.347656 5.585938 21.101562 5.074219 29.933593-1.324219 8.851563-6.398437 12.992188-17.429687 10.582032-28.097656l-32.941406-145.085937 111.722656-97.964844c8.191406-7.1875 11.308594-18.535156 7.9375-28.925782zm-252.203125 223.722657"/>
+      <path xmlns="http://www.w3.org/2000/svg" d="m510.652344 185.882812c-3.371094-10.367187-12.566406-17.707031-23.402344-18.6875l-147.796875-13.417968-58.410156-136.75c-4.3125-10.046875-14.125-16.53125-25.046875-16.53125s-20.738282 6.484375-25.023438 16.53125l-58.410156 136.75-147.820312 13.417968c-10.835938 1-20.011719 8.339844-23.402344 18.6875-3.371094 10.367188-.257813 21.738282 7.9375 28.925782l111.722656 97.964844-32.941406 145.085937c-2.410156 10.667969 1.730468 21.699219 10.582031 28.097656 4.757813 3.457031 10.347656 5.183594 15.957031 5.183594 4.820313 0 9.644532-1.28125 13.953125-3.859375l127.445313-76.203125 127.421875 76.203125c9.347656 5.585938 21.101562 5.074219 29.933593-1.324219 8.851563-6.398437 12.992188-17.429687 10.582032-28.097656l-32.941406-145.085937 111.722656-97.964844c8.191406-7.1875 11.308594-18.535156 7.9375-28.925782zm-252.203125 223.722657"/></svg>
+      <span style={{fontWeight:600}}>{this.state.rating ? this.state.rating : 0} </span>
+      </div>
+      <span style={{fontSize:'12px'}}>{this.state.userratingcount ? this.state.userratingcount : 0} Ratings</span>
       </>
-    )
+    );
   }
 
   /** Render DOM */
@@ -1082,7 +1086,7 @@ class StoreItem extends React.Component<{
                       <div className="small-text">{maindata.categoryName}</div>
                       <h3>{maindata.shopName} </h3>
                       <p>{maindata.address}</p>
-                      <div style={{paddingTop:'15px'}}>{this.rating()} </div>
+                      <div>{this.rating()} </div>
                     </div>
                   </div>
                 </div>
@@ -1101,7 +1105,7 @@ class StoreItem extends React.Component<{
                       this.state.searchproductdatadetails.length > 0 ? (
                         <li
                           className={
-                            this.state.activeLink === null ? "icon-add" : ""
+                            this.state.activeLink === 0 ? "icon-add" : ""
                           }
                         >
                           <a onClick={() => this.handleClickStoreItemEvent()}>
@@ -1148,9 +1152,7 @@ class StoreItem extends React.Component<{
                   {this.state.isShowCard === false
                     ? this.cardItem(false)
                     : this.cardItem(true)}
-
                 </div>
-                
               </div>
             </div>
           </div>
@@ -1172,7 +1174,7 @@ const mapStateToProps = (state: any) => ({
   searchableProduct: state.product.searchproduct,
   updateCart: state.product.updatecart,
   deleteCart: state.product.deletecart,
-  ratingData: state.product.ratingdata
+  ratingData: state.product.ratingdata,
 });
 
 /**
@@ -1206,10 +1208,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   removeProductFromCart: (data: any) =>
     dispatch(productService.removeProductFromCart(data)),
 
-      /** Remove Product form cart */
-      getRatingCount: (data: any) =>
-  dispatch(productService.getRatingCount(data)),
-    
+  /** Remove Product form cart */
+  getRatingCount: (data: any) => dispatch(productService.getRatingCount(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoreItem);

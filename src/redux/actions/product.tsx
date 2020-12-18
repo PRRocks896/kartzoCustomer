@@ -345,7 +345,7 @@ function getRatingCount(data: any) {
 
     StoreAPI.getRatingCountData(data)
       .then(async (getratingdata: any) => {
-        console.log("getratingdata", getratingdata);
+        // console.log("getratingdata", getratingdata);
         if (getratingdata.status === 200) {
           dispatch(success(await getratingdata));
         }

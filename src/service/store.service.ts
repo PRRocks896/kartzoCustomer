@@ -121,7 +121,7 @@ export default {
    */
   getRatingCountData: async function (data: any) {
     return WebReqUrl.get(
-      Constant.apiUrl + apiUrl.storeProductController.getratingdata + `?id=${data}`,false
+      Constant.apiUrl + apiUrl.storeProductController.getratingdata + `?id=${data}`,true
     );
   }
   
