@@ -1559,6 +1559,7 @@ class PlaceOrder extends React.Component<{
             flow: "collect",
           },
         };
+
         razorpay.createPayment(data);
 
         razorpay.on("payment.success", function (resp: any) {

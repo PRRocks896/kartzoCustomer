@@ -36,7 +36,7 @@ class Profile extends React.Component<{
   removeProductFromCart: any;
   reOrder: any;
   cancelOrderData: any;
-  addRating:any;
+  addRating: any;
 }> {
   /** Profile Page State */
   profileState: profileStateRequest = constant.profilePage.state;
@@ -102,8 +102,8 @@ class Profile extends React.Component<{
     rating: 1,
     ratingmerchant: "",
     ratingmerchantaddress: "",
-    reviewdetails:"",
-    ratingmerchantid:0
+    reviewdetails: "",
+    ratingmerchantid: 0,
   };
 
   /** Constructor call */
@@ -231,7 +231,7 @@ class Profile extends React.Component<{
 
   componentDidUpdate(prevProps: any) {
     const profile: any = this.props;
-    console.log("profile",profile);
+    console.log("profile", profile);
     if (prevProps.addressDetails !== profile.addressDetails) {
       this.setState({
         show: (this.state.show = false),
@@ -265,19 +265,18 @@ class Profile extends React.Component<{
     }
   }
 
-  rattingSuccess(data:any) {
-    console.log("data",data);
-    if(data.status === 200) {
+  rattingSuccess(data: any) {
+    console.log("data", data);
+    if (data.status === 200) {
       this.setState({
-        rating:1,
-        ratingmerchant:'',
-        ratingmerchantaddress:'',
-        ratingmerchantid:0,
-        orderratingmodel:false
-      })
+        rating: 1,
+        ratingmerchant: "",
+        ratingmerchantaddress: "",
+        ratingmerchantid: 0,
+        orderratingmodel: false,
+      });
     }
   }
-
 
   refundData(data: any) {
     console.log("data", data);
@@ -309,7 +308,7 @@ class Profile extends React.Component<{
    * @param data : get all cart data
    */
   getCartAllProductData(data: any) {
-    console.log("enter");
+    // console.log("enter");
     if (data.data) {
       this.setState({
         cartarray: (this.state.cartarray = data.data),
@@ -949,7 +948,7 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : cancel order
    */
   cancelOrder(data: any) {
@@ -962,12 +961,12 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : order rating model
    */
   openOrderRatingModel(data: any) {
     this.setState({
-      ratingmerchantid:data.merchantID,
+      ratingmerchantid: data.merchantID,
       ratingmerchant: data.orderDetails[0].merchantName,
       ratingmerchantaddress: data.merchantAddress,
       orderratingmodel: !this.state.orderratingmodel,
@@ -975,7 +974,7 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param data : rating model close
    */
   handleratingModel(data: any) {
@@ -985,7 +984,7 @@ class Profile extends React.Component<{
   }
 
   /**
-   * 
+   *
    * @param nextValue : star value
    * @param prevValue : prev value
    * @param name : title
@@ -1000,10 +999,10 @@ class Profile extends React.Component<{
     let user = JSON.parse(users);
     const obj = {
       userID: user.userID,
-  merchantID: this.state.ratingmerchantid,
-  reviewDetail: this.state.reviewdetails,
-  rating: this.state.rating
-    }
+      merchantID: this.state.ratingmerchantid,
+      reviewDetail: this.state.reviewdetails,
+      rating: this.state.rating,
+    };
 
     this.props.addRating(obj);
   }
@@ -1360,19 +1359,18 @@ class Profile extends React.Component<{
                                         >
                                           View Details
                                         </button>
-                                        {
-                                          order.isReviewed === false ? (
-
-                                        <button
-                                          className="view-dtl ml-4"
-                                          onClick={() =>
-                                            this.openOrderRatingModel(order)
-                                          }
-                                        >
-                                          Ratings
-                                        </button>
-                                          ) : ('')
-                                        }
+                                        {order.isReviewed === false ? (
+                                          <button
+                                            className="view-dtl ml-4"
+                                            onClick={() =>
+                                              this.openOrderRatingModel(order)
+                                            }
+                                          >
+                                            Ratings
+                                          </button>
+                                        ) : (
+                                          ""
+                                        )}
                                       </div>
                                     </div>
 
@@ -2486,7 +2484,7 @@ class Profile extends React.Component<{
                       >
                         Rating Details :
                       </label>
-                      <textarea    
+                      <textarea
                         id="textarea"
                         name="reviewdetails"
                         className="form-control"
@@ -2540,7 +2538,7 @@ const mapStateToProps = (state: any) => ({
   deletedata: state.placeOrder.deletedata,
   updateprofiledata: state.auth.updateprofiledata,
   refundData: state.product.refunddata,
-  addRatingData: state.product.addratingdata
+  addRatingData: state.product.addratingdata,
 });
 
 /**
@@ -2581,10 +2579,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   cancelOrderData: (data: any) =>
     dispatch(productService.cancelOrderData(data)),
 
-    /** Reorder */
-    addRating: (data: any) =>
-  dispatch(productService.addRating(data)),
-    
+  /** Reorder */
+  addRating: (data: any) => dispatch(productService.addRating(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
