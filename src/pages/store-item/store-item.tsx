@@ -258,6 +258,10 @@ class StoreItem extends React.Component<{
   //   }
   // }
 
+  /**
+   * 
+   * @param prevProps : props updated value
+   */
   componentDidUpdate(prevProps: any) {
     let cart: any = this.props;
     if (prevProps.productDetail !== cart.productDetail) {
@@ -288,6 +292,10 @@ class StoreItem extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param data : rating data
+   */
   ratingData(data: any) {
     console.log("data", data);
     this.setState({
@@ -296,6 +304,10 @@ class StoreItem extends React.Component<{
     });
   }
 
+  /**
+   * 
+   * @param data : delete cart
+   */
   deleteCart(data: any) {
     if (data.status === 200) {
       this.getCartData();
@@ -306,12 +318,20 @@ class StoreItem extends React.Component<{
     }
   }
 
+  /**
+   * 
+   * @param data : add cart
+   */
   addCart(data: any) {
     if (data.status === 200) {
       this.getCartData();
     }
   }
 
+  /**
+   * 
+   * @param data : update cart
+   */
   updateCart(data: any) {
     if (data.status === 200) {
       this.getCartData();
@@ -871,6 +891,7 @@ class StoreItem extends React.Component<{
     );
   }
 
+  /** Search Item */
   searchItem() {
     return (
       <>
@@ -990,6 +1011,7 @@ class StoreItem extends React.Component<{
     );
   }
 
+  /** Rating Block */
   rating() {
     return (
       <>
